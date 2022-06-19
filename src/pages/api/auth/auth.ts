@@ -3,5 +3,5 @@ import { getSession } from 'next-auth/react'
 export default async function handler(req, res) {
    supabase.auth.api.setAuthCookie(req, res)
     const session = await getSession({ req })
-    console.log(session)
+    console.log({session})
 }

@@ -30,11 +30,8 @@ export default function Profile({ user }) {
 
 export async function getServerSideProps({ req }) {
   const { user } = await supabase.auth.api.getUserByCookie(req)
+console.log({user})
 
-  if (!user) {
-    // If no user, redirect to index.
-    return { props: {}, redirect: { destination: '/', permanent: false } }
-  }
 
   // If there is a user, return it.
   return { props: { user } }

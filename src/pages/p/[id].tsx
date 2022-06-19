@@ -63,7 +63,7 @@ const Post: React.FC<PostProps> = (props) => {
           <button onClick={() => deletePost(props.id)}>Delete</button>
         )}
       </div>
-      <style jsx>{`
+      {/* <style jsx>{`
         .page {
           background: white;
           padding: 2rem;
@@ -83,7 +83,7 @@ const Post: React.FC<PostProps> = (props) => {
         button + button {
           margin-left: 1rem;
         }
-      `}</style>
+      `}</style> */}
     </Layout>
   );
 };
