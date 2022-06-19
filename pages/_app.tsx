@@ -7,9 +7,9 @@ import './../style.css'
 
 const App = ({ Component, pageProps }: AppProps) => {
   return (<Auth.UserContextProvider supabaseClient={supabase}>
-    <SessionProvider session={pageProps.session}>
+    {/* <SessionProvider session={pageProps.session}> */}
       <Component {...pageProps} />
-    </SessionProvider>
+    {/* </SessionProvider> */}
   </Auth.UserContextProvider>)
 };
 
