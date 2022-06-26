@@ -16,7 +16,7 @@ model User {
   createdAt  DateTime   @default(now()) @map(name: "created_at")
   updatedAt  DateTime   @updatedAt @map(name: "updated_at")
   banned     Boolean    @default(false)
-  posts      Post[]
+  posts      Post[]    
   postFlags  PostFlag[]
   followers  Follows[]  @relation("following")
   following  Follows[]  @relation("follower")
@@ -31,9 +31,9 @@ model User {
 // create a model for followers and following with their avatar url
 model Follows {
   follower           User    @relation("follower", fields: [followerId], references: [id])
-  followerId         String
+  followerId         String  @db.Uuid
   folowerAvatarUrl   String?
-  followingId        String
+  followingId        String  @db.Uuid
   following          User    @relation("following", fields: [followingId], references: [id])
   followingAvatarUrl String?
 
@@ -71,7 +71,7 @@ model Post {
 model Comment {
   id        String   @id @default(cuid()) @db.Uuid
   content   String
-  userId    String
+  userId    String   @db.Uuid
   user      User     @relation(fields: [userId], references: [id])
   postId    String
   post      Post?    @relation(fields: [postId], references: [id], onDelete: Cascade)
@@ -102,7 +102,7 @@ enum FlagReason {
 
 model PostFlag {
   postId    String
-  userId    String
+  userId    String  @db.Uuid
   reason    FlagReason
   content   String?
   createdAt DateTime   @default(now())
@@ -118,7 +118,7 @@ model PostFlag {
 model PostLike {
   postId    String
   post      Post?    @relation(fields: [postId], references: [id], onDelete: Cascade)
-  userId    String
+  userId    String   @db.Uuid
   user      User?    @relation(fields: [userId], references: [id], onDelete: Cascade)
   createdAt DateTime @default(now())
   doesLike  Boolean  @default(true)
