@@ -3,7 +3,7 @@ import useSWR from 'swr';
 import { Auth, Card, Typography, Space, Button, Icon } from '@supabase/ui';
 import { supabase } from '../lib/initSupabase';
 import { useEffect, useState } from 'react';
-
+import seedUtils, { createUsers } from '../../prisma/utils/seedUtils';
 const fetcher = (url, token) =>
   fetch(url, {
     method: 'GET',
@@ -12,6 +12,7 @@ const fetcher = (url, token) =>
   }).then((res) => res.json());
 
 const Index = () => {
+  const users = createUsers('');
   const { user, session } = Auth.useUser();
   const { data, error } = useSWR(
     session ? ['/api/getUser', session.access_token] : null,
@@ -40,10 +41,7 @@ const Index = () => {
       authListener.unsubscribe();
     };
   }, []);
-  useEffect(() => {
-    // update some client side state to say it is now safe to render the client-side only component
-    this.state.renderClientSideComponent = true;
-  });
+
   const View = () => {
     if (!user)
       return (
@@ -77,9 +75,7 @@ const Index = () => {
               onClick={() => supabase.auth.signOut()}>
               Log out
             </Button>
-            {error && (
-              <Typography.Text danger>Failed to fetch user!</Typography.Text>
-            )}
+            {error && <Typography.Text>Failed to fetch user!</Typography.Text>}
             {data && !error ? (
               <>
                 <Typography.Text type='success'>
