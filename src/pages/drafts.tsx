@@ -1,10 +1,9 @@
-import React from "react";
-import { GetServerSideProps } from "next";
-import Layout from "../components/Layout";
-import Post, { PostProps } from "../components/Post";
-import { useSession, getSession } from "next-auth/react";
-import prisma from '../lib/prisma'
-
+import React from 'react';
+import { GetServerSideProps } from 'next';
+import Layout from '../common/layout';
+import Post, { PostProps } from '../../components/Post';
+import { useSession, getSession } from 'next-auth/react';
+import prisma from '../lib/prisma';
 
 export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
   const session = await getSession({ req });
@@ -34,7 +33,7 @@ type Props = {
 };
 
 const Drafts: React.FC<Props> = (props) => {
-  const {data: session}= useSession();
+  const { data: session } = useSession();
 
   if (!session) {
     return (
@@ -47,11 +46,11 @@ const Drafts: React.FC<Props> = (props) => {
 
   return (
     <Layout>
-      <div className="page">
+      <div className='page'>
         <h1>My Drafts</h1>
         <main>
           {props.drafts.map((post) => (
-            <div key={post.id} className="post">
+            <div key={post.id} className='post'>
               <Post post={post} />
             </div>
           ))}

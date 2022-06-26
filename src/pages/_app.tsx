@@ -1,6 +1,6 @@
 import { ChakraProvider } from '@chakra-ui/react';
 import { Auth } from '@supabase/ui';
-import { supabase } from '../../lib/initSupabase';
+import { supabase } from '../lib/initSupabase';
 import './../style.css';
 
 export default function MyApp({ Component, pageProps }) {
