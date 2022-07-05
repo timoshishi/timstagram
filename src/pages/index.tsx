@@ -3,7 +3,7 @@ import useSWR from 'swr';
 import { Auth, Card, Typography, Space, Button, Icon } from '@supabase/ui';
 import { supabase } from '../lib/initSupabase';
 import { useEffect, useState } from 'react';
-import seedUtils, { createUsers } from '../../prisma/utils/seedUtils';
+import seedUtils, { createUsers } from '../../prisma/utils/seed-utils';
 const fetcher = (url, token) =>
   fetch(url, {
     method: 'GET',
