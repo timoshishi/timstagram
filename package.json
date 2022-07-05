@@ -16,6 +16,8 @@
     "@emotion/styled": "^11",
     "@next-auth/prisma-adapter": "1.0.3",
     "@prisma/client": "^4",
+    "@supabase/auth-helpers-nextjs": "^0.2.2",
+    "@supabase/auth-helpers-react": "^0.2.2",
     "@supabase/supabase-js": "^1.35.3",
     "@supabase/ui": "^0.36.5",
     "framer-motion": "^6",

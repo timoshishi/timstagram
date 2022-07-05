@@ -2,8 +2,13 @@ import Link from 'next/link';
 import useSWR from 'swr';
 import { Auth, Card, Typography, Space, Button, Icon } from '@supabase/ui';
 import { supabase } from '../lib/initSupabase';
-import { useEffect, useState } from 'react';
-import seedUtils, { createUsers } from '../../prisma/utils/seed-utils';
+import { withPageAuth, getUser } from '@supabase/auth-helpers-nextjs';
+import { useState, useEffect } from 'react';
+import { GetServerSideProps } from 'next';
+import { CookieOptions } from '@supabase/auth-helpers-shared';
+import Profile from './profile';
+// import seedUtils, { createUsers } from '../../prisma/utils/seed-utils';
+
 const fetcher = (url, token) =>
   fetch(url, {
     method: 'GET',
@@ -11,9 +16,11 @@ const fetcher = (url, token) =>
     credentials: 'same-origin',
   }).then((res) => res.json());
 
-const Index = () => {
-  const users = createUsers('');
+const Index = ({ profile }) => {
+  console.log(profile);
+  // const users = createUsers('');
   const { user, session } = Auth.useUser();
+  console.log(session);
   const { data, error } = useSWR(
     session ? ['/api/getUser', session.access_token] : null,
     fetcher
@@ -109,5 +116,28 @@ const Index = () => {
     </div>
   );
 };
+
+export const getServerSideProps = withPageAuth({
+  redirectTo: '/',
+  authRequired: false,
+
+  async getServerSideProps(ctx) {
+    // Retrieve provider_token from cookies
+    const provider_token = ctx.req.cookies['sb-provider-token'];
+    // Get logged in user's third-party id from metadata
+    const { user } = await getUser(ctx);
+    const userId = user?.user_metadata.provider_id;
+    const profile = await (
+      await fetch(`https://api.example.com/users/${userId}`, {
+        method: 'GET',
+        headers: {
+          Authorization: `Bearer ${provider_token}`,
+        },
+      })
+    ).json();
+    console.log({ profile, user });
+    return { props: { profile } };
+  },
+});
 
 export default Index;
