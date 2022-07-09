@@ -1,4 +1,7 @@
 const nextConfig = {
+  experimental: {
+    images: { allowFutureImage: true },
+  },
   eslint: {
     ignoreBuildErrors: true,
     dirs: ['src'],
