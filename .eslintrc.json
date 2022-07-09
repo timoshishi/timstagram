@@ -1,0 +1,12 @@
+{
+  "extends": "next/core-web-vitals",
+  "ignorePatterns": [
+    "/prisma/utils/seed-utils.ts",
+    "**/types/*",
+    "**/stories/**/*"
+  ],
+  "rules": {
+    "import/no-anonymous-default-export": "off",
+    "react/no-unescaped-entities": "off"
+  }
+}

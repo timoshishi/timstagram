@@ -1,16 +1,22 @@
 import { ChakraProvider } from '@chakra-ui/react';
 import { Auth } from '@supabase/ui';
 import { supabase } from '../lib/initSupabase';
-// import './../style.css';
+import theme from '../common/theme';
 import '../style.css';
-export default function MyApp({ Component, pageProps }) {
+import { NextComponentType, NextPageContext } from 'next';
+
+export default function MyApp<P>({
+  Component,
+  pageProps,
+}: {
+  Component: NextComponentType<NextPageContext, any, P>;
+  pageProps: P;
+}) {
   return (
-    <main className={'dark'}>
-      <Auth.UserContextProvider supabaseClient={supabase}>
-        <ChakraProvider>
-          <Component {...pageProps} />
-        </ChakraProvider>
-      </Auth.UserContextProvider>
-    </main>
+    <Auth.UserContextProvider supabaseClient={supabase}>
+      <ChakraProvider>
+        <Component {...pageProps} />
+      </ChakraProvider>
+    </Auth.UserContextProvider>
   );
 }

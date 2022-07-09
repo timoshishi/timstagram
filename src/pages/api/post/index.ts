@@ -13,14 +13,14 @@ export default async function handle(
 
   const session = await getSession({ req });
   if (session) {
-    const result = await prisma.post.create({
-      data: {
-        title: title,
-        content: content,
-        author: { connect: { email: session?.user?.email } },
-      },
-    });
-    res.json(result);
+    // const result = await prisma.post.create({
+    //   data: {
+    //     title: title,
+    //     content: content,
+    //     author: { connect: { email: session?.user?.email } },
+    //   },
+    // });
+    res.json({ result: 'result' });
   } else {
     res.status(401).send({ message: 'Unauthorized' });
   }

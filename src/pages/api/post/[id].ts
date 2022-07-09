@@ -13,10 +13,10 @@ export default async function handle(
 
   if (req.method === 'DELETE') {
     if (session) {
-      const post = await prisma.post.delete({
-        where: { id: Number(postId) },
-      });
-      res.json(post);
+      // const post = await prisma.post.delete({
+      //   where: { id: Number(postId) },
+      // });
+      res.json({ post: 'post deleted' });
     } else {
       res.status(401).send({ message: 'Unauthorized' });
     }

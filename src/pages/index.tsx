@@ -7,16 +7,20 @@ import { useState, useEffect } from 'react';
 import { GetServerSideProps } from 'next';
 import { CookieOptions } from '@supabase/auth-helpers-shared';
 import Profile from './profile';
+import { ViewType } from 'types/authtypes';
 // import seedUtils, { createUsers } from '../../prisma/utils/seed-utils';
-
-const fetcher = (url, token) =>
+import Image from 'next/image';
+import { User } from '@supabase/supabase-js';
+import { Box, Checkbox, Container } from '@chakra-ui/react';
+import { Navbar } from '@common/layout/Navbar';
+const fetcher = (url: string, token: string) =>
   fetch(url, {
     method: 'GET',
     headers: new Headers({ 'Content-Type': 'application/json', token }),
     credentials: 'same-origin',
   }).then((res) => res.json());
 
-const Index = ({ profile }) => {
+const Index = ({ profile }: { profile: User }) => {
   console.log(profile);
   // const users = createUsers('');
   const { user, session } = Auth.useUser();
@@ -25,8 +29,7 @@ const Index = ({ profile }) => {
     session ? ['/api/getUser', session.access_token] : null,
     fetcher
   );
-  const [authView, setAuthView] = useState('sign_in');
-
+  const [authView, setAuthView] = useState<ViewType>('sign_in');
   useEffect(() => {
     const { data: authListener } = supabase.auth.onAuthStateChange(
       (event, session) => {
@@ -54,14 +57,18 @@ const Index = ({ profile }) => {
       return (
         <Space direction='vertical' size={8}>
           <div>
-            <img
-              src='https://app.supabase.io/img/supabase-dark.svg'
+            <Image
+              src='/images/flow.svg'
               width='96'
+              height='96'
+              alt='supabase'
             />
             <Typography.Title level={3}>
               Welcome to Supabase Auth
             </Typography.Title>
           </div>
+          <Checkbox />
+
           <Auth supabaseClient={supabase} view={authView} />
         </Space>
       );
@@ -75,9 +82,8 @@ const Index = ({ profile }) => {
           <>
             <Typography.Text>You're signed in</Typography.Text>
             <Typography.Text strong>Email: {user.email}</Typography.Text>
-
             <Button
-              icon={<Icon type='LogOut' />}
+              icon={<Icon src='/images/flow.svg' type='LogOut' />}
               type='outline'
               onClick={() => supabase.auth.signOut()}>
               Log out
@@ -109,11 +115,14 @@ const Index = ({ profile }) => {
   };
 
   return (
-    <div style={{ maxWidth: '420px', margin: '96px auto' }}>
-      <Card>
-        <View />
-      </Card>
-    </div>
+    <Box style={{ width: '100vw' }}>
+      <Navbar />
+      <div style={{ maxWidth: '420px', margin: '96px auto' }}>
+        <Card>
+          <View />
+        </Card>
+      </div>
+    </Box>
   );
 };
 
