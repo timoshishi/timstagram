@@ -4,6 +4,7 @@ import { supabase } from '../lib/initSupabase';
 import theme from '../common/theme';
 import '../style.css';
 import { NextComponentType, NextPageContext } from 'next';
+import { UserProvider } from '@supabase/auth-helpers-react';
 
 export default function MyApp<P>({
   Component,
@@ -13,10 +14,10 @@ export default function MyApp<P>({
   pageProps: P;
 }) {
   return (
-    <Auth.UserContextProvider supabaseClient={supabase}>
+    <UserProvider supabaseClient={supabase}>
       <ChakraProvider>
         <Component {...pageProps} />
       </ChakraProvider>
-    </Auth.UserContextProvider>
+    </UserProvider>
   );
 }

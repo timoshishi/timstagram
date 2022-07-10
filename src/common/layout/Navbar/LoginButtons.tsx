@@ -1,4 +1,4 @@
-import { Stack, Button } from '@chakra-ui/react';
+import { Stack, Button, Show } from '@chakra-ui/react';
 export const LoginButtons = () => {
   return (
     <Stack
@@ -6,14 +6,16 @@ export const LoginButtons = () => {
       justify={'flex-end'}
       direction={'row'}
       spacing={6}>
-      <Button
-        as={'a'}
-        fontSize={'sm'}
-        fontWeight={400}
-        variant={'link'}
-        href={'#'}>
-        Sign In
-      </Button>
+      <Show above='sm'>
+        <Button
+          as={'a'}
+          fontSize={'sm'}
+          fontWeight={400}
+          variant={'link'}
+          href={'#'}>
+          Sign In
+        </Button>
+      </Show>
       <Button
         display={{ base: 'none', md: 'inline-flex' }}
         fontSize={'sm'}

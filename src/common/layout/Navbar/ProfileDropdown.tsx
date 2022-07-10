@@ -7,20 +7,18 @@ import {
   MenuList,
   MenuItem,
   MenuDivider,
-  useDisclosure,
 } from '@chakra-ui/react';
 
 export const ProfileDropdown = ({ isLoggedIn = true }) => {
   return (
     <>
       <Flex alignItems={'center'}>
-        <Menu>
+        <Menu isLazy>
           <MenuButton
             as={Button}
             rounded={'full'}
             variant={'link'}
-            cursor={'pointer'}
-            minW={0}>
+            cursor={'pointer'}>
             <Avatar
               size={'sm'}
               src={

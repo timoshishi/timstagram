@@ -1,47 +1,82 @@
-import { ReactNode } from 'react';
-import { Flex, Link, useColorModeValue } from '@chakra-ui/react';
-import Image, { ImageProps } from 'next/image';
+import { useState } from 'react';
+import {
+  BoxProps,
+  FlexProps,
+  Icon,
+  Flex,
+  Link,
+  Show,
+  useMediaQuery,
+} from '@chakra-ui/react';
+import { FiHome, FiTrendingUp, FiCompass, FiStar } from 'react-icons/fi';
+import { IconType } from 'react-icons';
+import { Search } from './Search/Search';
+interface LinkItemProps {
+  name: string;
+  icon: IconType;
+}
+const LinkItems: Array<LinkItemProps> = [
+  { name: 'Home', icon: FiHome },
+  { name: 'Trending', icon: FiTrendingUp },
+  { name: 'Explore', icon: FiCompass },
+  { name: 'Favourites', icon: FiStar },
+];
 
-export const NavbarLinks = () => {
+export const NavbarLinks = (props: BoxProps) => {
+  const isBelowTabletSize = useMediaQuery('(max-width: 768px)')[0];
+  const [isSearchFocused, setIsSearchFocused] = useState(false);
   return (
-    <Flex
-      h={16}
-      alignItems={'center'}
-      justifyContent={'space-between'}
-      gap='6px'>
-      <NavbarIcon src='/images/fire.svg' height={25} width={25} alt='popular' />
-      <NavbarIcon
-        src='/images/trending.svg'
-        height={60}
-        width={30}
-        alt='popular'
-      />
-      <NavbarIcon src='/images/star.svg' height={20} width={20} alt='popular' />
-      <NavbarIcon
-        src='/images/add-post.svg'
-        height={20}
-        width={20}
-        alt='popular'
-      />
+    <Flex flexShrink={1}>
+      <Search isFocused={isSearchFocused} setIsFocused={setIsSearchFocused} />
+      {isSearchFocused && isBelowTabletSize ? null : (
+        <>
+          {LinkItems.map((link) => (
+            <NavItem key={link.name} icon={link.icon} name={link.name} />
+          ))}
+        </>
+      )}
     </Flex>
   );
 };
 
-const NavLink = ({ children }: { children: ReactNode }) => (
-  <Link
-    px={2}
-    py={1}
-    rounded={'md'}
-    _hover={{
-      textDecoration: 'none',
-      bg: useColorModeValue('gray.200', 'gray.700'),
-    }}
-    href={'#'}>
-    {children}
-  </Link>
-);
-
-export const NavbarIcon = (props: ImageProps) => {
-  const { height, width, alt, src } = props;
-  return <Image height={height} width={width} alt={alt} src={src} />;
+interface NavItemProps extends FlexProps {
+  icon: IconType;
+  name: string;
+}
+export const NavItem = ({ icon, name, ...rest }: NavItemProps) => {
+  return (
+    <Link
+      href='#'
+      style={{ textDecoration: 'none' }}
+      _focus={{ boxShadow: 'none' }}>
+      <NavbarIcon icon={icon} name={name} />
+    </Link>
+  );
+};
+export const NavbarIcon = ({ icon, name, ...rest }: NavItemProps) => {
+  return (
+    <Flex
+      align='center'
+      p={[0, 4, 5]}
+      borderRadius='sm'
+      role='group'
+      cursor='pointer'
+      _hover={{
+        bg: 'cyan.400',
+        color: 'white',
+      }}
+      {...rest}>
+      {icon && (
+        <Icon
+          mx={[2]}
+          fontSize='16'
+          _groupHover={{
+            color: 'white',
+          }}
+          as={icon}
+        />
+      )}
+      <Show above='md'>{name}</Show>
+    </Flex>
+  );
 };

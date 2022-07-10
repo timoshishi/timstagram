@@ -1,49 +1,30 @@
-import { ReactNode } from 'react';
-import {
-  Box,
-  Flex,
-  Avatar,
-  HStack,
-  Link,
-  IconButton,
-  Button,
-  Menu,
-  MenuButton,
-  MenuList,
-  MenuItem,
-  MenuDivider,
-  useDisclosure,
-  useColorModeValue,
-  Stack,
-} from '@chakra-ui/react';
+import { Box, Flex, Show, useColorModeValue } from '@chakra-ui/react';
 import { BrandLogo } from './BrandLogo';
-const Links = ['Dashboard', 'Projects', 'Team'];
 import { ProfileDropdown } from './ProfileDropdown';
 import { LoginButtons } from './LoginButtons';
 import { NavbarLinks } from './NavbarLinks';
-import Image, { ImageProps } from 'next/image';
-const NavLink = ({ children }: { children: ReactNode }) => (
-  <Link
-    px={2}
-    py={1}
-    rounded={'md'}
-    _hover={{
-      textDecoration: 'none',
-      bg: useColorModeValue('gray.200', 'gray.700'),
-    }}
-    href={'#'}>
-    {children}
-  </Link>
-);
+import { useUser } from '@supabase/auth-helpers-react';
 
-export const Navbar = ({ isLoggedIn = false }) => {
+export const Navbar = () => {
+  const { user, isLoading } = useUser();
+  const colorMode = useColorModeValue('gray.100', 'gray.900');
+  if (isLoading) {
+    return <div>isLoading...</div>;
+  }
   return (
     <>
-      <Box bg={useColorModeValue('gray.100', 'gray.900')} px={4}>
-        <Flex h={16} alignItems={'center'} justifyContent={'space-between'}>
+      <Show above='lg'>
+        <Box width={'50%'} />
+      </Show>
+      <Box bg={colorMode} px={4}>
+        <Flex
+          h={16}
+          alignItems='center'
+          justifyContent={['space-between', 'flex-end']}
+          minWidth='max-content'>
           <BrandLogo />
           <NavbarLinks />
-          {isLoggedIn ? <ProfileDropdown /> : <LoginButtons />}
+          {!!user && !isLoading ? <ProfileDropdown /> : <LoginButtons />}
         </Flex>
       </Box>
       <Box p={4}>Main Content Here</Box>
