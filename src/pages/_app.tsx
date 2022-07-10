@@ -5,7 +5,7 @@ import theme from '../common/theme';
 import '../style.css';
 import { NextComponentType, NextPageContext } from 'next';
 import { UserProvider } from '@supabase/auth-helpers-react';
-
+import { ModalContextProvider } from '@chakra-ui/react';
 export default function MyApp<P>({
   Component,
   pageProps,
