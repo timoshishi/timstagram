@@ -1,3 +1,4 @@
+import { supabase } from 'src/lib/initSupabase';
 import {
   Flex,
   Avatar,
@@ -9,7 +10,7 @@ import {
   MenuDivider,
 } from '@chakra-ui/react';
 
-export const ProfileDropdown = ({ isLoggedIn = true }) => {
+export const ProfileDropdown = () => {
   return (
     <>
       <Flex alignItems={'center'}>
@@ -30,7 +31,7 @@ export const ProfileDropdown = ({ isLoggedIn = true }) => {
             <MenuItem>Link 1</MenuItem>
             <MenuItem>Link 2</MenuItem>
             <MenuDivider />
-            <MenuItem>Link 3</MenuItem>
+            <MenuItem onClick={() => supabase.auth.signOut()}>SignOut</MenuItem>
           </MenuList>
         </Menu>
       </Flex>
