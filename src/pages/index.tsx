@@ -32,7 +32,6 @@ const Index = () => {
                 <Typography.Text type='success'>
                   User data retrieved server-side (in API route):
                 </Typography.Text>
-
                 <Typography.Text>
                   <pre>{JSON.stringify(user, null, 2)}</pre>
                 </Typography.Text>
