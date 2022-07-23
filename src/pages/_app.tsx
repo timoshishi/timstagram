@@ -6,6 +6,7 @@ import '../style.css';
 import { NextComponentType, NextPageContext } from 'next';
 import { UserProvider } from '@supabase/auth-helpers-react';
 import { ModalContextProvider } from '@chakra-ui/react';
+import { Layout } from '@common/layout';
 export default function MyApp<P>({
   Component,
   pageProps,
@@ -16,7 +17,9 @@ export default function MyApp<P>({
   return (
     <UserProvider supabaseClient={supabase}>
       <ChakraProvider>
-        <Component {...pageProps} />
+        <Layout>
+          <Component {...pageProps} />
+        </Layout>
       </ChakraProvider>
     </UserProvider>
   );

@@ -46,8 +46,8 @@ const Index = () => {
   };
 
   return (
-    <Box style={{ width: '100vw' }}>
-      <Navbar />
+    <Box w='full' h='150vh'>
+      {/* <Navbar /> */}
       <div style={{ maxWidth: '420px', margin: '96px auto' }}>
         <Card>
           <View />

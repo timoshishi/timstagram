@@ -1,10 +1,16 @@
-import { Box, Flex, Show, useColorModeValue } from '@chakra-ui/react';
+import {
+  Box,
+  Flex,
+  Show,
+  useColorModeValue,
+  Container,
+} from '@chakra-ui/react';
 import { BrandLogo } from './BrandLogo';
 import { ProfileDropdown } from './ProfileDropdown';
 import { LoginButtons } from './LoginButtons';
 import { NavbarLinks } from './NavbarLinks';
 import { useUser } from '@supabase/auth-helpers-react';
-
+import { useScroll } from '@common/hooks/useScroll';
 export const Navbar = () => {
   const { user, isLoading } = useUser();
   const colorMode = useColorModeValue('gray.100', 'gray.900');
@@ -12,7 +18,17 @@ export const Navbar = () => {
     return <div>isLoading...</div>;
   }
   return (
-    <>
+    <Box
+      w='full'
+      minW='full'
+      position='fixed'
+      // add a 0.3s transition
+      top={0}
+      left={0}
+      zIndex={1}
+      bg={colorMode}
+      as='nav'
+      id='navbar'>
       <Show above='lg'>
         <Box width={'50%'} />
       </Show>
@@ -27,7 +43,6 @@ export const Navbar = () => {
           {!!user && !isLoading ? <ProfileDropdown /> : <LoginButtons />}
         </Flex>
       </Box>
-      <Box p={4}>Main Content Here</Box>
-    </>
+    </Box>
   );
 };
