@@ -1,8 +1,10 @@
 import Link from 'next/link';
 import { Card, Typography, Space } from '@supabase/ui';
 import { supabase } from '../lib/initSupabase';
+import { User } from 'next-auth';
+import { NextRequest } from 'next/server';
 
-export default function Profile({ user }) {
+export default function Profile({ user }: { user: User }) {
   return (
     <div style={{ maxWidth: '420px', margin: '96px auto' }}>
       <Card>
@@ -28,9 +30,8 @@ export default function Profile({ user }) {
   );
 }
 
-export async function getServerSideProps({ req }) {
+export async function getServerSideProps({ req }: { req: NextRequest }) {
   const { user } = await supabase.auth.api.getUserByCookie(req);
-  console.log({ user });
 
   // If there is a user, return it.
   return { props: { user } };

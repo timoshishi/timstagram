@@ -1,0 +1,1 @@
+export { isMobileBrowser } from './isMobile';
