@@ -93,11 +93,12 @@ model Media {
   category  String?
   deleted   Boolean  @default(false)
   createdAt DateTime @default(now())
-  userId    String 
+  userId    String
   metadata  Json?
   user      User     @relation(fields: [userId], references: [id])
   posts     Post[]
   tags      Tag[]
+
   @@map("media")
 }
 
@@ -137,13 +138,13 @@ model TagOnPosts {
 }
 
 model Tag {
-  id    String       @id @default(cuid())
-  name  String       @unique
-  posts TagOnPosts[]
+  id      String       @id @default(cuid())
+  name    String       @unique
+  mediaId String?
+  Media   Media?       @relation(fields: [mediaId], references: [id])
+  posts   TagOnPosts[]
 
   @@map("tags")
-  Media   Media?  @relation(fields: [mediaId], references: [id])
-  mediaId String?
 }
 
 enum FlagReason {
