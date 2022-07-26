@@ -10,7 +10,6 @@ import {
 } from '@chakra-ui/react';
 import { FaInstagram, FaTwitter, FaYoutube } from 'react-icons/fa';
 import { ReactNode } from 'react';
-import { BrandLogo } from '../Navbar/BrandLogo';
 
 const SocialButton = ({
   children,
@@ -46,25 +45,9 @@ const SocialButton = ({
 export const Footer = () => {
   return (
     <Box
-      bg={useColorModeValue('gray.50', 'gray.900')}
-      color={useColorModeValue('gray.700', 'gray.200')}>
-      <Container
-        as={Stack}
-        maxW={'6xl'}
-        py={4}
-        spacing={4}
-        justify={'center'}
-        align={'center'}>
-        <BrandLogo />
-        <Stack direction={'row'} spacing={6}>
-          <Link href={'#'}>Home</Link>
-          <Link href={'#'}>Terms</Link>
-          <Link href={'#'}>Privacy</Link>
-          <Link href={'#'}>Blog</Link>
-          <Link href={'#'}>Contact</Link>
-        </Stack>
-      </Container>
-
+      bg={useColorModeValue('gray.100', 'gray.900')}
+      color={useColorModeValue('gray.700', 'gray.200')}
+      w='full'>
       <Box
         borderTopWidth={1}
         borderStyle={'solid'}
@@ -79,8 +62,14 @@ export const Footer = () => {
           align={{ base: 'center', md: 'center' }}>
           <Text>
             © {new Date().getFullYear()} {process.env.NEXT_PUBLIC_APP_NAME} Inc.
-            All rights reserved
           </Text>
+          <Stack direction={'row'} spacing={6}>
+            <Link href={'#'}>Home</Link>
+            <Link href={'#'}>Terms</Link>
+            <Link href={'#'}>Privacy</Link>
+            <Link href={'#'}>Blog</Link>
+            <Link href={'#'}>Contact</Link>
+          </Stack>
           <Stack direction={'row'} spacing={6}>
             <SocialButton label={'Twitter'} href={'#'}>
               <FaTwitter />

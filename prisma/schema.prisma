@@ -1,27 +1,29 @@
 generator client {
   provider = "prisma-client-js"
 }
-
+generator erd {
+  provider = "prisma-erd-generator"
+}
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
 
+
 model User {
   id         String     @id @default(cuid())
   username   String     @unique
   verifiedAt DateTime?  @map("email_verified")
-  isVerified Boolean    @default(false)
-  avatarUrl  String?
+  avatarUrl  String?    @map("avatar_url")
   createdAt  DateTime   @default(now()) @map("created_at")
   updatedAt  DateTime   @updatedAt @map("updated_at")
   banned     Boolean    @default(false)
-  isBot      Boolean    @default(false)
+  isBot      Boolean    @default(false) @map("is_bot")
   email      String
   comments   Comment[]
   following  Follows[]  @relation("follower")
   followers  Follows[]  @relation("following")
-  Media      Media[]
+  media      Media[]
   postFlags  PostFlag[]
   likes      PostLike[]
   posts      Post[]
@@ -31,10 +33,10 @@ model User {
 }
 
 model Follows {
-  followerId         String
-  folowerAvatarUrl   String?
-  followingId        String
-  followingAvatarUrl String?
+  followerId         String  @map("follower_id")
+  folowerAvatarUrl   String? @map("follower_avatar_url")
+  followingId        String  @map("following_id")
+  followingAvatarUrl String? @map("following_avatar_url")
   follower           User    @relation("follower", fields: [followerId], references: [id])
   following          User    @relation("following", fields: [followingId], references: [id])
 
@@ -47,20 +49,20 @@ model Post {
   title         String
   content       String?
   published     Boolean      @default(true)
-  userId        String
-  userDeleted   Boolean      @default(false)
+  userId        String       @map("user_id")
+  userDeleted   Boolean      @default(false) @map("user_deleted")
   flagged       Boolean      @default(false)
   deleted       Boolean      @default(false)
-  flagCount     Int          @default(0)
-  viewCount     Int          @default(0)
+  flagCount     Int          @default(0) @map("flag_count")
+  viewCount     Int          @default(0) @map("view_count")
   likes         Int          @default(0)
-  mediaType     String?
-  mediaUrl      String?      @unique
-  mediaId       String
-  createdAt     DateTime     @default(now())
-  isBotPost     Boolean      @default(false)
-  isShared      Boolean      @default(false)
-  userAvatarUrl String
+  mediaType     String?      @map("media_type")
+  mediaUrl      String?      @unique @map("media_url")
+  mediaId       String       @map("media_id")
+  createdAt     DateTime     @default(now()) @map("created_at")
+  isBotPost     Boolean      @default(false) @map("is_bot_post")
+  isShared      Boolean      @default(false) @map("is_shared")
+  userAvatarUrl String       @map("user_avatar_url")
   username      String
   media         Media        @relation(fields: [mediaId], references: [id])
   user          User         @relation(fields: [userId], references: [id])
@@ -75,9 +77,9 @@ model Post {
 model Comment {
   id        String   @id @default(cuid())
   content   String
-  userId    String
-  postId    String
-  createdAt DateTime @default(now())
+  userId    String   @map("user_id")
+  postId    String   @map("post_id")
+  createdAt DateTime @default(now()) @map("created_at")
   post      Post     @relation(fields: [postId], references: [id], onDelete: Cascade)
   user      User     @relation(fields: [userId], references: [id])
 
@@ -87,14 +89,20 @@ model Comment {
 model Media {
   id        String   @id
   url       String   @unique
-  bucket    String?
-  type      String?
-  size      Int?
+  bucket    String
+  type      String
+  alt       String?
+  size      Int
+  width     Int
+  height    Int
+  scraped   Boolean  @default(false)
   category  String?
   deleted   Boolean  @default(false)
-  createdAt DateTime @default(now())
-  userId    String
+  createdAt DateTime @default(now()) @map("created_at")
+  userId    String   @map("user_id")
+  hash      String
   metadata  Json?
+  source    String
   user      User     @relation(fields: [userId], references: [id])
   posts     Post[]
   tags      Tag[]
@@ -107,7 +115,7 @@ model PostFlag {
   userId    String
   reason    FlagReason
   content   String?
-  createdAt DateTime   @default(now())
+  createdAt DateTime   @default(now()) @map("created_at")
   post      Post       @relation(fields: [postId], references: [id])
   user      User       @relation(fields: [userId], references: [id])
 
@@ -116,9 +124,9 @@ model PostFlag {
 }
 
 model PostLike {
-  postId    String
-  userId    String
-  createdAt DateTime @default(now())
+  postId    String   @map("post_id")
+  userId    String   @map("user_id")
+  createdAt DateTime @default(now()) @map("created_at")
   doesLike  Boolean  @default(true)
   post      Post     @relation(fields: [postId], references: [id], onDelete: Cascade)
   user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
@@ -128,8 +136,8 @@ model PostLike {
 }
 
 model TagOnPosts {
-  postId String
-  tagId  String
+  postId String @map("post_id")
+  tagId  String @map("tag_id")
   post   Post   @relation(fields: [postId], references: [id], onDelete: Cascade)
   tag    Tag    @relation(fields: [tagId], references: [id], onDelete: Cascade)
 
@@ -140,8 +148,8 @@ model TagOnPosts {
 model Tag {
   id      String       @id @default(cuid())
   name    String       @unique
-  mediaId String?
-  Media   Media?       @relation(fields: [mediaId], references: [id])
+  mediaId String?      @map("media_id")
+  media   Media?       @relation(fields: [mediaId], references: [id])
   posts   TagOnPosts[]
 
   @@map("tags")

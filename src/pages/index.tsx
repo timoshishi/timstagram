@@ -1,10 +1,9 @@
 import { Auth, Card, Typography, Space, Button, Icon } from '@supabase/ui';
 import { supabase } from '../lib/initSupabase';
-import { Box } from '@chakra-ui/react';
-import { Navbar } from '@common/layout/Navbar';
+import { Box, Center, HStack, Show, VStack } from '@chakra-ui/react';
 import { useUser } from '@supabase/auth-helpers-react';
-
-const Index = () => {
+import { NextPageWithLayout } from 'types/page-types';
+const Feed: NextPageWithLayout = () => {
   const { user, error, isLoading } = useUser();
 
   const View = () => {
@@ -46,15 +45,36 @@ const Index = () => {
   };
 
   return (
-    <Box style={{ width: '100vw' }}>
-      <Navbar />
-      <div style={{ maxWidth: '420px', margin: '96px auto' }}>
-        <Card>
-          <View />
-        </Card>
-      </div>
+    <Box w='full' minH='100vh' mt='60px' maxW='100%'>
+      <HStack
+        w='100%'
+        bg='pink'
+        alignItems='flex-start'
+        rowGap={12}
+        columnGap={4}
+        pt={50}>
+        <VStack
+          spacing={10}
+          justifyContent='flex-start'
+          flexGrow={1}
+          h='100%'
+          bg='silver'>
+          {new Array(20).fill(
+            <Box w='100%' h='250px' bg='salmon'>
+              <Center>
+                <h4>A Box</h4>
+              </Center>
+            </Box>
+          )}
+          {/* <Card>
+            <View />
+          </Card> */}
+        </VStack>
+        <Show above='s'>
+          <Box w='200px' bg='orange' zIndex={25} h='450px' mt='30rem' />
+        </Show>
+      </HStack>
     </Box>
   );
 };
-
-export default Index;
+export default Feed;

@@ -6,16 +6,17 @@ import { Container } from '@chakra-ui/react';
 
 // More on default export: https://storybook.js.org/docs/react/writing-stories/introduction#default-export
 export default {
-  title: 'Example/Navbar',
+  title: 'Layout/Navbar',
   component: Navbar,
   // More on argTypes: https://storybook.js.org/docs/react/api/argtypes
-  argTypes: {
-    backgroundColor: { control: 'color' },
-  },
 } as ComponentMeta<typeof Navbar>;
 
 // More on component templates: https://storybook.js.org/docs/react/writing-stories/introduction#using-args
-const Template: ComponentStory<typeof Navbar> = () => <Navbar />;
+const Template: ComponentStory<typeof Navbar> = () => (
+  <Container as='main' minH={'120vh'}>
+    <Navbar />
+  </Container>
+);
 
 export const Primary = Template.bind({});
 // More on args: https://storybook.js.org/docs/react/writing-stories/args
