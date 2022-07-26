@@ -1,22 +1,24 @@
 import React from 'react';
 import { ComponentStory, ComponentMeta } from '@storybook/react';
 
-import { Layout } from '../../common/layout/Layout';
+import { AppLayout } from '../../common/layout/app-layout';
 import { Container } from '@chakra-ui/react';
 
 // More on default export: https://storybook.js.org/docs/react/writing-stories/introduction#default-export
 export default {
   title: 'Layout/Layout',
-  component: Layout,
+  component: AppLayout,
   // More on argTypes: https://storybook.js.org/docs/react/api/argtypes
   argTypes: {
     backgroundColor: { control: 'color' },
   },
-} as ComponentMeta<typeof Layout>;
+} as ComponentMeta<typeof AppLayout>;
 
 // More on component templates: https://storybook.js.org/docs/react/writing-stories/introduction#using-args
-const Template: ComponentStory<typeof Layout> = () => (
-  <Layout>this is the layout</Layout>
+const Template: ComponentStory<typeof AppLayout> = () => (
+  <AppLayout>
+    <>this is the layout</>
+  </AppLayout>
 );
 
 export const Primary = Template.bind({});

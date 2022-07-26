@@ -1,4 +1,3 @@
-import { Layout } from '@common/layout';
 import Document, { Html, Head, Main, NextScript } from 'next/document';
 
 class MainDocument extends Document {
