@@ -1,7 +1,7 @@
 import React from 'react';
 import { ComponentStory, ComponentMeta } from '@storybook/react';
 
-import { Navbar } from '../../common/layout/Navbar';
+import { Navbar } from '../../common/layout/app-layout/Navbar';
 import { Container } from '@chakra-ui/react';
 
 // More on default export: https://storybook.js.org/docs/react/writing-stories/introduction#default-export

@@ -70,8 +70,8 @@ const Feed: NextPageWithLayout = () => {
             <View />
           </Card> */}
         </VStack>
-        <Show above='s'>
-          <Box w='200px' bg='orange' zIndex={25} h='450px' mt='30rem' />
+        <Show above='lg' ssr>
+          <Box w='200px' bg='orange' h='450px' mt='30rem' />
         </Show>
       </HStack>
     </Box>
