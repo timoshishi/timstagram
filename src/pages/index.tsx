@@ -1,10 +1,10 @@
 import { Auth, Card, Typography, Space, Button, Icon } from '@supabase/ui';
 import { supabase } from '../lib/initSupabase';
 import { Box } from '@chakra-ui/react';
-import { Navbar } from '@common/layout/Navbar';
 import { useUser } from '@supabase/auth-helpers-react';
+import { NextPageWithLayout } from 'types/page-types';
 
-const Index = () => {
+const Index: NextPageWithLayout = () => {
   const { user, error, isLoading } = useUser();
 
   const View = () => {
@@ -47,7 +47,6 @@ const Index = () => {
 
   return (
     <Box w='full' h='150vh'>
-      {/* <Navbar /> */}
       <div style={{ maxWidth: '420px', margin: '96px auto' }}>
         <Card>
           <View />

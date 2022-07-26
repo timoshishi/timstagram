@@ -22,7 +22,6 @@ export const Navbar = () => {
       w='full'
       minW='full'
       position='fixed'
-      // add a 0.3s transition
       top={0}
       left={0}
       zIndex={1}
@@ -32,7 +31,7 @@ export const Navbar = () => {
       <Show above='lg'>
         <Box width={'50%'} />
       </Show>
-      <Box bg={colorMode} px={4}>
+      <Box bg={colorMode} px={4} minW='1/2'>
         <Flex
           h={16}
           alignItems='center'

@@ -1,25 +1,19 @@
 import { ChakraProvider } from '@chakra-ui/react';
-import { Auth } from '@supabase/ui';
 import { supabase } from '../lib/initSupabase';
-import theme from '../common/theme';
-import '../style.css';
-import { NextComponentType, NextPageContext } from 'next';
 import { UserProvider } from '@supabase/auth-helpers-react';
-import { ModalContextProvider } from '@chakra-ui/react';
-import { Layout } from '@common/layout';
-export default function MyApp<P>({
-  Component,
-  pageProps,
-}: {
-  Component: NextComponentType<NextPageContext, any, P>;
-  pageProps: P;
-}) {
+import { AppLayout } from '@common/layout/app-layout';
+import type { AppPropsWithLayout } from 'types/page-types';
+
+export default function MyApp<P>({ Component, pageProps }: AppPropsWithLayout) {
+  const getLayout = Component.getLayout ?? ((page) => page);
   return (
     <UserProvider supabaseClient={supabase}>
       <ChakraProvider>
-        <Layout>
-          <Component {...pageProps} />
-        </Layout>
+        {getLayout(
+          <AppLayout>
+            <Component {...pageProps} />
+          </AppLayout>
+        )}
       </ChakraProvider>
     </UserProvider>
   );
