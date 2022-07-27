@@ -7,6 +7,9 @@ directory.
 
 Then run `yarn storybook` to open the storybook.
 
+Dates - use dateFormatter from utils which is just dayjs extended with relative
+times
+
 # Fullstack Authentication Example with Next.js and NextAuth.js
 
 This example shows how to implement a **fullstack app in TypeScript with

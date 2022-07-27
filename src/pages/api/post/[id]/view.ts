@@ -1,13 +1,14 @@
 import { NextApiRequest, NextApiResponse } from 'next';
-import { post } from '../../../../__mocks__/fixtures/post';
+import { post } from '../../../../../__mocks__/fixtures/post';
 
+// POST that a user has viewed a post
 // make a handler that returns a single post
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
   try {
-    const postId = req.query.postId;
+    const postId = req.query.postId as string;
 
     if (req.method === 'GET') {
       return res.json(post);

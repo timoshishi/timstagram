@@ -10,7 +10,7 @@ export interface PostCardProps {
   commentsToRender: [PostComment?, PostComment?, PostComment?];
   hasLiked: boolean;
   isFollowing: boolean;
-  repostsCount?: number;
+  repostsCount: number;
   likesCount: number;
   imageURL: string;
   poster: Poster;
@@ -20,25 +20,29 @@ export interface PostCardProps {
 }
 
 export const PostCard = ({
-  postId,
-  viewsCount,
-  description,
-  commentsCount,
-  commentsToRender,
-  hasLiked,
-  createdAt,
-  isFollowing,
-  repostsCount,
-  likesCount,
-  imageURL,
-  poster,
-  tags,
-}: PostCardProps) => {
+  post: {
+    postId,
+    viewsCount,
+    description,
+    commentsCount,
+    commentsToRender,
+    hasLiked,
+    createdAt,
+    isFollowing,
+    repostsCount,
+    likesCount,
+    imageURL,
+    poster,
+    tags,
+  },
+}: {
+  post: PostCardProps;
+}) => {
   return (
-    <Flex p={100} w='full' alignItems='center' justifyContent='center'>
+    <Flex w='100%' alignItems='center' justifyContent='center'>
       <Box
         bg={useColorModeValue('white', 'gray.800')}
-        maxW='md'
+        maxW='100%'
         minW='md'
         borderWidth='1px'
         rounded='lg'
@@ -52,7 +56,9 @@ export const PostCard = ({
             createdAt={createdAt}
             isFollowing={isFollowing}
           />
-          <PostImage imageURL={imageURL} tags={tags} />
+          <Box minW='100%' h='auto' position='relative'>
+            <PostImage imageURL={imageURL} tags={tags} />
+          </Box>
         </Box>
         <PostFooter
           tags={tags}

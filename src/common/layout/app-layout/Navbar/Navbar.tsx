@@ -10,7 +10,6 @@ import { ProfileDropdown } from './ProfileDropdown';
 import { LoginButtons } from './LoginButtons';
 import { NavbarLinks } from './NavbarLinks';
 import { useUser } from '@supabase/auth-helpers-react';
-import { useScroll } from '@common/hooks/useScroll';
 export const Navbar = () => {
   const { user, isLoading } = useUser();
   const colorMode = useColorModeValue('gray.100', 'gray.900');

@@ -3,6 +3,7 @@ import { getSession } from 'next-auth/react';
 import prisma from '../../../lib/prisma';
 
 // PUT /api/publish/:id
+// POST TO PUBLISH A POST
 export default async function handle(
   req: NextApiRequest,
   res: NextApiResponse

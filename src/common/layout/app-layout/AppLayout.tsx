@@ -10,12 +10,11 @@ export const AppLayout = ({ children }: { children: ReactElement }) => (
       as='main'
       minH='100vh'
       position='relative'
-      bg='red'
       mt='0'
       minW='full'
       centerContent
       p={0}>
-      <VStack spacing={0} bg='blue' width={['100%', '100%', '80%', '60%']}>
+      <VStack spacing={0} width={['100%', '100%', '80%', '60%']}>
         {children}
       </VStack>
     </Container>
