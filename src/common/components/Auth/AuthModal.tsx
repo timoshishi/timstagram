@@ -1,15 +1,17 @@
-import { Auth, Typography, Space, Button } from '@supabase/ui';
+import { Auth } from '@supabase/ui';
 import { supabase } from '../../../lib/initSupabase';
-import { supabaseClient } from '@supabase/auth-helpers-nextjs';
-import Image from 'next/image';
-import { ViewType } from 'types/authtypes';
+import { ViewType } from 'types/auth.types';
 import {
   UseDisclosureReturn,
   Modal,
   ModalOverlay,
   ModalContent,
   Flex,
+  Text,
+  Button,
+  Box,
 } from '@chakra-ui/react';
+import { BrandLogo } from '@common/layout/app-layout/Navbar/BrandLogo';
 interface AuthModalProps {
   isOpen: UseDisclosureReturn['isOpen'];
   onClose: UseDisclosureReturn['onClose'];
@@ -21,18 +23,12 @@ const AuthModal = ({ isOpen, onClose, viewType }: AuthModalProps) => {
       <ModalOverlay />
       <ModalContent p={4}>
         <Flex flexDirection='column' p={6}>
-          <div>
-            <Image
-              src='/images/flow.svg'
-              width='96'
-              height='96'
-              alt='supabase'
-            />
-            <Typography.Title level={3}>
-              Welcome to Supabase Auth
-            </Typography.Title>
-          </div>
-          <Button onClick={supabaseClient.auth.signOut}>Signout</Button>
+          <Box m={25}>
+            <BrandLogo />
+            <Text fontSize='xl'>
+              Welcome to {process.env.NEXT_PUBLIC_APP_NAME}
+            </Text>
+          </Box>
           <Auth supabaseClient={supabase} view={viewType} />
         </Flex>
       </ModalContent>

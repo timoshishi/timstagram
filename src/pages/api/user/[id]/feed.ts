@@ -7,7 +7,6 @@ export default async function handler(
   res: NextApiResponse
 ) {
   const page = req.query.page ? parseInt(req.query.page as string) : 1;
-  console.log('IN THE SERVER');
   const count = 100;
   const posts = new Array(count).fill(post);
 

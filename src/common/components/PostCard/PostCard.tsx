@@ -1,22 +1,16 @@
 import { Flex, Box, useColorModeValue } from '@chakra-ui/react';
 import { PostHeader } from './PostHeader';
 import { PostImage } from './PostImage';
-import type { Poster, PostComment } from './post.types';
+import type { Post } from 'types/post.types';
 import { PostFooter } from './PostFooter';
-export interface PostCardProps {
-  postId: string;
-  viewsCount: number;
-  commentsCount: number;
-  commentsToRender: [PostComment?, PostComment?, PostComment?];
-  hasLiked: boolean;
-  isFollowing: boolean;
-  repostsCount: number;
-  likesCount: number;
-  imageURL: string;
-  poster: Poster;
-  description: string;
-  tags: string[];
-  createdAt: string;
+
+interface PostCardProps {
+  post: Post;
+  setSize: (size: number) => void;
+  size: number;
+  refreshIdx: number;
+  currentIdx: number;
+  page: number;
 }
 
 export const PostCard = ({
@@ -35,9 +29,13 @@ export const PostCard = ({
     poster,
     tags,
   },
-}: {
-  post: PostCardProps;
-}) => {
+  setSize,
+  size,
+  refreshIdx,
+  currentIdx,
+  page,
+}: PostCardProps) => {
+  console.log(page);
   return (
     <Flex w='100%' alignItems='center' justifyContent='center'>
       <Box
@@ -57,7 +55,15 @@ export const PostCard = ({
             isFollowing={isFollowing}
           />
           <Box minW='100%' h='auto' position='relative'>
-            <PostImage imageURL={imageURL} tags={tags} />
+            <PostImage
+              imageURL={imageURL}
+              tags={tags}
+              setSize={setSize}
+              size={size}
+              refreshIdx={refreshIdx}
+              currentIdx={currentIdx}
+              page={page}
+            />
           </Box>
         </Box>
         <PostFooter
