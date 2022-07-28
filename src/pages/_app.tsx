@@ -6,6 +6,7 @@ import { UserProvider } from '@supabase/auth-helpers-react';
 import type { AppPropsWithLayout } from 'types/page.types';
 import { AppLayout } from '@common/layout/app-layout';
 import { ErrorBoundary } from '@common/components/ErrorBoundary';
+import { GlobalModal } from '@common/components/Modal/ModalContext';
 
 export default function MyApp({ Component, pageProps }: AppPropsWithLayout) {
   const getLayout =
@@ -15,7 +16,7 @@ export default function MyApp({ Component, pageProps }: AppPropsWithLayout) {
       <UserProvider supabaseClient={supabase}>
         <ChakraProvider>
           {/* <ErrorBoundary> */}
-          {getLayout(<Component {...pageProps} />)}
+          <GlobalModal>{getLayout(<Component {...pageProps} />)}</GlobalModal>
           {/* </ErrorBoundary> */}
         </ChakraProvider>
       </UserProvider>

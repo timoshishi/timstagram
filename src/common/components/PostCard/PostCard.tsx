@@ -1,10 +1,10 @@
-import { Flex, Box, useColorModeValue } from '@chakra-ui/react';
+import { Flex, Box, useColorModeValue, useDisclosure } from '@chakra-ui/react';
 import { PostHeader } from './PostHeader';
 import { PostImage } from './PostImage';
 import type { Post } from 'types/post.types';
 import { PostFooter } from './PostFooter';
 
-interface PostCardProps {
+export interface PostCardProps {
   post: Post;
   setSize: (size: number) => void;
   size: number;
@@ -35,7 +35,6 @@ export const PostCard = ({
   currentIdx,
   page,
 }: PostCardProps) => {
-  console.log(page);
   return (
     <Flex w='100%' alignItems='center' justifyContent='center'>
       <Box

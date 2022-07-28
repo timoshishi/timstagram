@@ -1,13 +1,14 @@
 import { Stack, Button, Show, useDisclosure } from '@chakra-ui/react';
-import AuthModal from '@components/Auth/AuthModal';
+import { ViewType } from 'types/auth.types';
+// import AuthModal from '@components/Auth/AuthModal';
 
-export const LoginButtons = () => {
-  const { onOpen, onClose, isOpen } = useDisclosure({
-    id: 'login-modal',
-  });
+export const LoginButtons = ({
+  handleLogin,
+}: {
+  handleLogin: (viewType: ViewType) => void;
+}) => {
   return (
     <>
-      <AuthModal onClose={onClose} isOpen={isOpen} viewType={'sign_in'} />
       <Stack
         flex={{ base: 1, md: 0 }}
         justify={'flex-end'}
@@ -19,7 +20,7 @@ export const LoginButtons = () => {
             fontSize={'sm'}
             fontWeight={400}
             variant={'link'}
-            onClick={onOpen}>
+            onClick={() => handleLogin('sign_in')}>
             Sign In
           </Button>
         </Show>
@@ -31,7 +32,7 @@ export const LoginButtons = () => {
           _hover={{
             bg: 'pink.300',
           }}
-          onClick={onOpen}>
+          onClick={() => handleLogin('sign_up')}>
           Sign Up
         </Button>
       </Stack>

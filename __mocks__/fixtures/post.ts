@@ -1,9 +1,9 @@
-import { PostCardProps } from '@common/components/PostCard';
+import { Post } from 'types/post.types';
 import { makeFixture } from './makeFixture';
 import { faker } from '@faker-js/faker';
 import { randomIntInRange } from '@common/utils';
 
-export const post: PostCardProps = {
+export const post: Post = {
   postId: faker.datatype.uuid(),
   viewsCount: 30,
   commentsCount: 23,
@@ -29,7 +29,7 @@ export const post: PostCardProps = {
   createdAt: '2020-01-01',
 };
 export const createPost = () => {
-  const post: PostCardProps = {
+  const post: Post = {
     postId: faker.datatype.uuid(),
     viewsCount: numOrNumInRange(0, 100),
     commentsCount: numOrNumInRange(0, 100),
