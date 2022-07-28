@@ -3,7 +3,7 @@ import { supabase } from '../../../lib/initSupabase';
 import { ViewType } from 'types/auth.types';
 import {
   UseDisclosureReturn,
-  Modal,
+  // Modal,console.log('RENDERING', viewType);
   ModalOverlay,
   ModalContent,
   Flex,
@@ -12,14 +12,16 @@ import {
   Box,
 } from '@chakra-ui/react';
 import { BrandLogo } from '@common/layout/app-layout/Navbar/BrandLogo';
-interface AuthModalProps {
-  isOpen: UseDisclosureReturn['isOpen'];
-  onClose: UseDisclosureReturn['onClose'];
-  viewType: ViewType;
-}
-const AuthModal = ({ isOpen, onClose, viewType }: AuthModalProps) => {
+import { AuthModalProps, useGlobalModalContext } from '../Modal/ModalContext';
+
+const AuthModal = () => {
+  const {
+    store: {
+      modalProps: { viewType },
+    },
+  } = useGlobalModalContext<AuthModalProps>();
   return (
-    <Modal onClose={onClose} isOpen={isOpen} size='lg'>
+    <>
       <ModalOverlay />
       <ModalContent p={4}>
         <Flex flexDirection='column' p={6}>
@@ -32,7 +34,7 @@ const AuthModal = ({ isOpen, onClose, viewType }: AuthModalProps) => {
           <Auth supabaseClient={supabase} view={viewType} />
         </Flex>
       </ModalContent>
-    </Modal>
+    </>
   );
 };
 
