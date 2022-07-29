@@ -1,6 +1,12 @@
+/**
+ * @type {import('next/config').NextConfig}
+ */
 const nextConfig = {
   experimental: {
     images: { allowFutureImage: true },
+  },
+  images: {
+    domains: ['picsum.photos'],
   },
   eslint: {
     ignoreBuildErrors: true,

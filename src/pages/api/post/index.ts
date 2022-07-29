@@ -1,27 +1,21 @@
-import type { NextApiRequest, NextApiResponse } from 'next';
-import prisma from '../../../lib/prisma';
-import { getSession } from 'next-auth/react';
+import { NextApiRequest, NextApiResponse } from 'next';
+import { post } from '../../../../__mocks__/fixtures/post';
 
-// POST /api/post
-// Required fields in body: title
-// Optional fields in body: content
-export default async function handle(
+// make a handler that returns a single post
+export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
-  const { title, content } = req.body;
+  try {
+    const postId = req.query.postId;
 
-  const session = await getSession({ req });
-  if (session) {
-    // const result = await prisma.post.create({
-    //   data: {
-    //     title: title,
-    //     content: content,
-    //     author: { connect: { email: session?.user?.email } },
-    //   },
-    // });
-    res.json({ result: 'result' });
-  } else {
-    res.status(401).send({ message: 'Unauthorized' });
+    if (req.method === 'GET') {
+      return res.json(post);
+    } else {
+      return res.status(405).send(`Method ${req.method} not allowed`);
+    }
+  } catch (error) {
+    console.error(error);
+    res.status(500).send('Server Error');
   }
 }

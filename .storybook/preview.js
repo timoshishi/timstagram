@@ -1,5 +1,9 @@
+import { UserProvider } from '@supabase/auth-helpers-react';
+import { GlobalModal } from '../src/common/components/Modal/GlobalModal';
+import { supabase } from '../src/lib/initSupabase';
 export const parameters = {
   actions: { argTypesRegex: '^on[A-Z].*' },
+
   controls: {
     matchers: {
       color: /(background|color)$/i,
@@ -7,3 +11,13 @@ export const parameters = {
     },
   },
 };
+
+export const decorators = [
+  (Story) => (
+    <UserProvider supabaseClient={supabase}>
+      <GlobalModal>
+        <Story />
+      </GlobalModal>
+    </UserProvider>
+  ),
+];

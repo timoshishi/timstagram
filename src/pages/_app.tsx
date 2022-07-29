@@ -1,22 +1,25 @@
 import { ChakraProvider } from '@chakra-ui/react';
-import { Auth } from '@supabase/ui';
 import { supabase } from '../lib/initSupabase';
-import theme from '../common/theme';
 import '../style.css';
-import { NextComponentType, NextPageContext } from 'next';
+import { StrictMode } from 'react';
+import { UserProvider } from '@supabase/auth-helpers-react';
+import type { AppPropsWithLayout } from 'types/page.types';
+import { AppLayout } from '@common/layout/app-layout';
+import { ErrorBoundary } from '@common/components/ErrorBoundary';
+import { GlobalModal } from '@common/components/Modal/GlobalModal';
 
-export default function MyApp<P>({
-  Component,
-  pageProps,
-}: {
-  Component: NextComponentType<NextPageContext, any, P>;
-  pageProps: P;
-}) {
+export default function MyApp({ Component, pageProps }: AppPropsWithLayout) {
+  const getLayout =
+    Component.getLayout ?? ((page) => <AppLayout children={page} />);
   return (
-    <Auth.UserContextProvider supabaseClient={supabase}>
-      <ChakraProvider>
-        <Component {...pageProps} />
-      </ChakraProvider>
-    </Auth.UserContextProvider>
+    <StrictMode>
+      <UserProvider supabaseClient={supabase}>
+        <ChakraProvider>
+          {/* <ErrorBoundary> */}
+          <GlobalModal>{getLayout(<Component {...pageProps} />)}</GlobalModal>
+          {/* </ErrorBoundary> */}
+        </ChakraProvider>
+      </UserProvider>
+    </StrictMode>
   );
 }

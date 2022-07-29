@@ -1,152 +1,91 @@
-import Link from 'next/link';
-import useSWR from 'swr';
-import { Auth, Card, Typography, Space, Button, Icon } from '@supabase/ui';
-import { supabase } from '../lib/initSupabase';
-import { withPageAuth, getUser } from '@supabase/auth-helpers-nextjs';
-import { useState, useEffect } from 'react';
-import { GetServerSideProps } from 'next';
-import { CookieOptions } from '@supabase/auth-helpers-shared';
-import Profile from './profile';
-import { ViewType } from 'types/authtypes';
-// import seedUtils, { createUsers } from '../../prisma/utils/seed-utils';
-import Image from 'next/image';
-import { User } from '@supabase/supabase-js';
-import { Box, Checkbox, Container } from '@chakra-ui/react';
-import { Navbar } from '@common/layout/Navbar';
-const fetcher = (url: string, token: string) =>
-  fetch(url, {
-    method: 'GET',
-    headers: new Headers({ 'Content-Type': 'application/json', token }),
-    credentials: 'same-origin',
-  }).then((res) => res.json());
+import { Box, HStack, Show, VStack } from '@chakra-ui/react';
+import useUser from '@common/hooks/useUser';
+import { NextPageWithLayout } from 'types/page.types';
+import { SWRConfig } from 'swr';
+import useSWRInfinite, { SWRInfiniteResponse } from 'swr/infinite';
+import getFeed from '@common/api/getFeed';
+import { PostCard } from '@common/components/PostCard';
+import { fetcher } from 'src/lib/axios';
+import { PostResponse } from 'types/post.types';
 
-const Index = ({ profile }: { profile: User }) => {
-  console.log(profile);
-  // const users = createUsers('');
-  const { user, session } = Auth.useUser();
-  console.log(session);
-  const { data, error } = useSWR(
-    session ? ['/api/getUser', session.access_token] : null,
-    fetcher
-  );
-  const [authView, setAuthView] = useState<ViewType>('sign_in');
-  useEffect(() => {
-    const { data: authListener } = supabase.auth.onAuthStateChange(
-      (event, session) => {
-        if (event === 'PASSWORD_RECOVERY') setAuthView('update_password');
-        if (event === 'USER_UPDATED')
-          setTimeout(() => setAuthView('sign_in'), 1000);
-        // Send session to /api/auth route to set the auth cookie.
-        // NOTE: this is only needed if you're doing SSR (getServerSideProps)!
-        fetch('/api/auth', {
-          method: 'POST',
-          headers: new Headers({ 'Content-Type': 'application/json' }),
-          credentials: 'same-origin',
-          body: JSON.stringify({ event, session }),
-        }).then((res) => res.json());
-      }
-    );
+const API = '/post/popular';
 
-    return () => {
-      authListener.unsubscribe();
-    };
-  }, []);
-
-  const View = () => {
-    if (!user)
-      return (
-        <Space direction='vertical' size={8}>
-          <div>
-            <Image
-              src='/images/flow.svg'
-              width='96'
-              height='96'
-              alt='supabase'
-            />
-            <Typography.Title level={3}>
-              Welcome to Supabase Auth
-            </Typography.Title>
-          </div>
-          <Checkbox />
-
-          <Auth supabaseClient={supabase} view={authView} />
-        </Space>
-      );
-
-    return (
-      <Space direction='vertical' size={6}>
-        {authView === 'update_password' && (
-          <Auth.UpdatePassword supabaseClient={supabase} />
-        )}
-        {user && (
-          <>
-            <Typography.Text>You're signed in</Typography.Text>
-            <Typography.Text strong>Email: {user.email}</Typography.Text>
-            <Button
-              icon={<Icon src='/images/flow.svg' type='LogOut' />}
-              type='outline'
-              onClick={() => supabase.auth.signOut()}>
-              Log out
-            </Button>
-            {error && <Typography.Text>Failed to fetch user!</Typography.Text>}
-            {data && !error ? (
-              <>
-                <Typography.Text type='success'>
-                  User data retrieved server-side (in API route):
-                </Typography.Text>
-
-                <Typography.Text>
-                  <pre>{JSON.stringify(data, null, 2)}</pre>
-                </Typography.Text>
-              </>
-            ) : (
-              <div>Loading...</div>
-            )}
-
-            <Typography.Text>
-              <Link href='/profile'>
-                <a>SSR example with getServerSideProps</a>
-              </Link>
-            </Typography.Text>
-          </>
-        )}
-      </Space>
-    );
+export async function getStaticProps() {
+  const posts: PostResponse = await getFeed();
+  return {
+    revalidate: 600,
+    props: {
+      fallback: {
+        [API]: posts,
+      },
+    },
   };
+}
+const PAGE_SIZE = 25;
 
+const getKey = (pageIndex: number, previousPageData: PostResponse) => {
+  if (previousPageData && !previousPageData.data.length) return null;
+  if (pageIndex === 0) return `${API}?page=${1}&limit=${PAGE_SIZE}`;
+  return `${API}?page=${previousPageData.page + 1}&limit=${PAGE_SIZE}`;
+};
+
+const Feed: NextPageWithLayout = () => {
+  const { user, error, isLoading } = useUser();
+  // const { data, error: feedError }: SWRResponse<PostCardProps[], any> =
+  //   useSWR(API);
+  const {
+    data,
+    error: feedError,
+    mutate,
+    size,
+    setSize,
+    isValidating,
+  } = useSWRInfinite(getKey, fetcher);
+  let postResponses: PostResponse[] = data ? [].concat(...data) : [];
+  const isLoadingInitialData = !data && !error;
+
+  // const isLoadingMore =
+  // isLoadingInitialData ||
+  // (size > 0 && data && typeof data[size - 1] === 'undefined');
+  // const isEmpty = data?.[0]?.length === 0;
+  // const isReachingEnd =
+  // isEmpty || (data && data[data.length - 1]?.length < PAGE_SIZE);
+  // const isRefreshing = isValidating && data && data.length === size;
   return (
-    <Box style={{ width: '100vw' }}>
-      <Navbar />
-      <div style={{ maxWidth: '420px', margin: '96px auto' }}>
-        <Card>
-          <View />
-        </Card>
-      </div>
+    <Box w='full' minH='100vh' mt='60px' maxW='100%'>
+      <HStack
+        w='100%'
+        alignItems='flex-start'
+        rowGap={12}
+        columnGap={4}
+        pt={50}>
+        <VStack spacing={10} justifyContent='flex-start' flexGrow={1} h='100%'>
+          {postResponses.map(({ data: posts, page }) =>
+            posts.map((post, currentIdx) => (
+              <Box w='100%' key={post.postId}>
+                <PostCard
+                  post={post}
+                  setSize={setSize}
+                  size={size}
+                  refreshIdx={PAGE_SIZE - 5}
+                  currentIdx={currentIdx}
+                  page={page}
+                />
+              </Box>
+            ))
+          )}
+        </VStack>
+        <Show above='lg' ssr>
+          <Box w='200px' bg='orange' h='450px' mt='30rem' />
+        </Show>
+      </HStack>
     </Box>
   );
 };
-
-export const getServerSideProps = withPageAuth({
-  redirectTo: '/',
-  authRequired: false,
-
-  async getServerSideProps(ctx) {
-    // Retrieve provider_token from cookies
-    const provider_token = ctx.req.cookies['sb-provider-token'];
-    // Get logged in user's third-party id from metadata
-    const { user } = await getUser(ctx);
-    const userId = user?.user_metadata.provider_id;
-    const profile = await (
-      await fetch(`https://api.example.com/users/${userId}`, {
-        method: 'GET',
-        headers: {
-          Authorization: `Bearer ${provider_token}`,
-        },
-      })
-    ).json();
-    console.log({ profile, user });
-    return { props: { profile } };
-  },
-});
-
-export default Index;
+export default function SWRPage({ fallback }: { fallback: any }) {
+  return (
+    <SWRConfig value={{ fallback }}>
+      <Feed />
+    </SWRConfig>
+  );
+}

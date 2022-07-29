@@ -1,22 +1,21 @@
 import React from 'react';
 import { ComponentStory, ComponentMeta } from '@storybook/react';
 
-import { Navbar } from '../../common/layout/Navbar';
+import { Navbar } from '../../common/layout/app-layout/Navbar';
 import { Container } from '@chakra-ui/react';
 
 // More on default export: https://storybook.js.org/docs/react/writing-stories/introduction#default-export
 export default {
-  title: 'Example/Navbar',
+  title: 'Layout/Navbar',
   component: Navbar,
   // More on argTypes: https://storybook.js.org/docs/react/api/argtypes
-  argTypes: {
-    backgroundColor: { control: 'color' },
-  },
 } as ComponentMeta<typeof Navbar>;
 
 // More on component templates: https://storybook.js.org/docs/react/writing-stories/introduction#using-args
-const Template: ComponentStory<typeof Navbar> = (args: Record<any, any>) => (
-  <Navbar {...args} />
+const Template: ComponentStory<typeof Navbar> = () => (
+  <Container as='main' minH={'120vh'}>
+    <Navbar />
+  </Container>
 );
 
 export const Primary = Template.bind({});

@@ -4,7 +4,7 @@
     "lib": ["dom", "dom.iterable", "esnext"],
     "allowJs": true,
     "skipLibCheck": true,
-    "strict": false,
+    "strict": true,
     "forceConsistentCasingInFileNames": true,
     "noEmit": true,
     "esModuleInterop": true,
@@ -13,6 +13,10 @@
     "resolveJsonModule": true,
     "noImplicitAny": true,
     "isolatedModules": true,
+    "strictNullChecks": true,
+    "strictFunctionTypes": true,
+    "strictPropertyInitialization": true,
+    "strictBindCallApply": true,
     "jsx": "preserve",
     "incremental": true,
     "baseUrl": ".",
@@ -23,7 +27,8 @@
       "types/*": ["./src/types/*"],
       "@views/*": ["./src/views/*"],
       "*": ["./*"],
-      "@api/*": ["src/api/*"]
+      "@api/*": ["src/api/*"],
+      "@src/*": ["./src/*"]
     }
   },
   "exclude": ["node_modules", "**/types/*", "**/stories/**/*"],
