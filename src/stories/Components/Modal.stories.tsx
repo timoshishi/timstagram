@@ -1,44 +1,51 @@
 import React from 'react';
-import { ComponentStory, ComponentMeta } from '@storybook/react';
+import { ComponentMeta } from '@storybook/react';
+import { Button } from '@chakra-ui/react';
 import {
+  AuthModalProps,
   GlobalModal,
   useGlobalModalContext,
-} from '../../common/components/Modal/ModalContext';
-import { ViewType } from '../../types/auth.types';
+} from '../../common/components/Modal/GlobalModal';
 // More on default export: https://storybook.js.org/docs/react/writing-stories/introduction#default-export
 export default {
   title: 'Components/Modal',
-  component: Modal,
+  component: GlobalModal,
   centered: true,
-  // More on argTypes: https://storybook.js.org/docs/react/api/argtypes
-} as ComponentMeta<typeof Modal>;
+} as ComponentMeta<typeof GlobalModal>;
 
-// More on component templates: https://storybook.js.org/docs/react/writing-stories/introduction#using-arg
-const ModalComp = () => {
-  // const { handleModal, isOpen, setModalProps } = useModal();4
-  const { showModal } = useGlobalModalContext<{ viewType: ViewType }>();
+export const AuthModal = (...args) => {
+  const { showModal } = useGlobalModalContext<AuthModalProps>();
+
   return (
-    <div>
-      <button
-        onClick={() =>
-          showModal('AuthModal', {
-            viewType: 'sign_up',
-          })
-        }>
-        Open Modal
-      </button>
-    </div>
-  );
-};
-const Template: ComponentStory<typeof GlobalModal> = () => {
-  return (
-    <GlobalModal>
-      <ModalComp />
-    </GlobalModal>
+    <Button
+      onClick={() =>
+        showModal(
+          'AuthModal',
+          { viewType: args[0].viewType },
+          args[0].modalProps
+        )
+      }>
+      Open the modal
+    </Button>
   );
 };
 
-export const Primary = Template.bind({});
+AuthModal.argTypes = {
+  viewType: {
+    control: { type: 'radio' },
+    options: [
+      'sign_up',
+      'sign_in',
+      'forgotten_password',
+      'magic_link',
+      'update_password',
+    ],
+    default: 'sign_up',
+  },
+  modalProps: {
+    size: 'sm',
+  },
+};
 // More on args: https://storybook.js.org/docs/react/writing-stories/args
 
 // Primary.args = {
