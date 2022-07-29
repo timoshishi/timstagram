@@ -39,11 +39,13 @@ export const PostCard = ({
     <Flex w='100%' alignItems='center' justifyContent='center'>
       <Box
         bg={useColorModeValue('white', 'gray.800')}
-        maxW='100%'
-        minW='md'
-        borderWidth='1px'
+        maxW='100vw'
+        borderBottomWidth={1}
+        borderTopWidth={1}
+        borderLeftWidth={[0, 1]}
+        borderRightWidth={[0, 1]}
         rounded='lg'
-        shadow='sm'
+        shadow={['none', 'sm']}
         position='relative'>
         <Box w='100%' h='70%' display='block'>
           <PostHeader

@@ -1,29 +1,28 @@
 import { Auth } from '@supabase/ui';
 import { supabase } from '../../../lib/initSupabase';
-import { ViewType } from 'types/auth.types';
 import {
-  UseDisclosureReturn,
-  // Modal,console.log('RENDERING', viewType);
-  ModalOverlay,
   ModalContent,
   Flex,
   Text,
-  Button,
   Box,
+  ModalCloseButton,
+  ModalOverlay,
 } from '@chakra-ui/react';
 import { BrandLogo } from '@common/layout/app-layout/Navbar/BrandLogo';
-import { AuthModalProps, useGlobalModalContext } from '../Modal/ModalContext';
+import { AuthModalProps, useGlobalModalContext } from '../Modal/GlobalModal';
 
 const AuthModal = () => {
   const {
     store: {
-      modalProps: { viewType },
+      componentProps: { viewType },
     },
   } = useGlobalModalContext<AuthModalProps>();
+
   return (
     <>
       <ModalOverlay />
       <ModalContent p={4}>
+        <ModalCloseButton />
         <Flex flexDirection='column' p={6}>
           <Box m={25}>
             <BrandLogo />

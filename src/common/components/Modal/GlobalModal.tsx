@@ -1,6 +1,13 @@
 import React, { useState, createContext, useContext, Children } from 'react';
 import { AuthModal } from '../Auth';
-import { Portal, Modal as ChakraModal } from '@chakra-ui/react';
+import {
+  Portal,
+  Modal as ChakraModal,
+  ModalOverlay,
+  ModalProps,
+  Box,
+  Center,
+} from '@chakra-ui/react';
 import { ViewType } from 'types/auth.types';
 
 export interface AuthModalProps {
@@ -15,11 +22,18 @@ type ModalType = keyof typeof MODAL_COMPONENTS;
 type ModalComponent = typeof MODAL_COMPONENTS[ModalType];
 interface Store<P = {}> {
   modalType: ModalType | null;
-  modalProps: P;
+  componentProps: P;
+  modalProps: Partial<ModalProps>;
 }
 
+type ShowModal = <P>(
+  modalType: ModalType,
+  componentProps: P,
+  modalProps?: Partial<ModalProps>
+) => void;
+
 type ContextType<P> = {
-  showModal: (modalType: ModalType, modalProps: P) => void;
+  showModal: ShowModal;
   hideModal: () => void;
   isOpen: boolean;
   store: Store<P>;
@@ -33,6 +47,7 @@ const initalState: InitialContext = {
   isOpen: false,
   store: {
     modalType: null,
+    componentProps: {},
     modalProps: {},
   },
 };
@@ -44,45 +59,51 @@ export function useGlobalModalContext<P>(): ContextType<P> {
 }
 
 export const GlobalModal = ({ children }: { children: React.ReactNode }) => {
-  // debugger;
   const [store, setStore] = useState({} as Store<{}>);
-  const { modalType, modalProps }: Store = store;
+  const { modalType, componentProps, modalProps }: Store = store;
   const [isOpen, setIsOpen] = useState(false);
-  function showModal<P>(modalType: ModalType, modalProps: P) {
+  function showModal<P>(
+    modalType: ModalType,
+    componentProps: P,
+    modalProps = {}
+  ) {
     setStore({
       modalType,
+      componentProps,
       modalProps,
     });
     setIsOpen(true);
   }
 
   const hideModal = () => {
+    setIsOpen(false);
     setStore({
       modalType: null,
+      componentProps: {},
       modalProps: {},
     });
-    setIsOpen(false);
   };
 
   const renderComponent = () => {
     if (modalType === null) {
-      return <></>;
+      return null;
     }
     const ModalComponent: ModalComponent = MODAL_COMPONENTS[modalType];
     if (!!ModalComponent) {
       return (
         <Portal>
           <ChakraModal
-            isOpen={!!store.modalType && !!ModalComponent}
+            isOpen={isOpen}
             onClose={hideModal}
-            id='global-modal'>
-            <ModalComponent {...modalProps} />
+            id='global-modal'
+            {...modalProps}>
+            <ModalComponent {...componentProps} />
           </ChakraModal>
         </Portal>
       );
     }
-    return null;
   };
+
   GlobalModalContext.displayName = 'GlobalModalContext';
   return (
     <GlobalModalContext.Provider

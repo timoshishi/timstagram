@@ -4,8 +4,8 @@ import { ProfileDropdown } from './ProfileDropdown';
 import { LoginButtons } from './LoginButtons';
 import { NavbarLinks } from './NavbarLinks';
 import { useUser } from '@supabase/auth-helpers-react';
-import { useGlobalModalContext } from '@common/components/Modal/ModalContext';
-import { AuthModalProps } from '@common/components/Modal/ModalContext';
+import { useGlobalModalContext } from '@common/components/Modal/GlobalModal';
+import { AuthModalProps } from '@common/components/Modal/GlobalModal';
 import { User } from '@supabase/supabase-js';
 export const Navbar = () => {
   const { user, isLoading } = useUser();
@@ -17,7 +17,7 @@ export const Navbar = () => {
     console.log('OPEN', isOpen, user);
   }
   const handleAuthModal = (viewType: AuthModalProps['viewType']) => {
-    showModal('AuthModal', { viewType });
+    showModal('AuthModal', { viewType }, { size: ['md', 'lg'] });
   };
 
   const colorMode = useColorModeValue('gray.100', 'gray.900');
@@ -26,8 +26,8 @@ export const Navbar = () => {
   }
   return (
     <Box
-      w='full'
-      minW='full'
+      minW='100vw'
+      maxW='100vw'
       position='fixed'
       top={0}
       left={0}
@@ -38,13 +38,15 @@ export const Navbar = () => {
       <Show above='lg'>
         <Box width={'50%'} />
       </Show>
-      <Box bg={colorMode} px={4} minW='1/2'>
+      <Box bg={colorMode} px={4} minW='1/2' maxW='100%'>
         <Flex
           h={16}
           alignItems='center'
           justifyContent={['space-between', 'flex-end']}
           minWidth='max-content'>
-          <BrandLogo />
+          <Show above='xs'>
+            <BrandLogo />
+          </Show>
           <NavbarLinks />
           {!!user && !isLoading ? (
             <ProfileDropdown />

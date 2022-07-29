@@ -12,6 +12,7 @@ export const AppLayout = ({ children }: { children: ReactElement }) => (
       position='relative'
       mt='0'
       minW='full'
+      maxW='100vw'
       centerContent
       p={0}>
       <VStack spacing={0} width={['100%', '100%', '80%', '60%']}>
