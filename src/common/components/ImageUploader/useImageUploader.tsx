@@ -10,7 +10,6 @@ const ACCEPTED_FILE_TYPES = {
   'image/png': [],
   'image/jpeg': [],
 };
-
 function sizeValidator(file: File) {
   if (file.size > MEGABYTE * MAX_MEGABYTES) {
     return {
