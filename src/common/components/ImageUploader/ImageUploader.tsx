@@ -1,67 +1,44 @@
-import {
-  Modal,
-  ModalContent,
-  ModalOverlay,
-  ModalCloseButton,
-  useDisclosure,
-  Box,
-  Center,
-  Flex,
-  Text,
-  Button,
-} from '@chakra-ui/react';
-import Image from 'next/image';
+import { ModalContent, ModalCloseButton, Box } from '@chakra-ui/react';
 import { Dropzone } from './Dropzone';
 import { useImageUploader } from './useImageUploader';
+import { Cropper } from './Cropper';
+import { ErrorMessage } from '../ErrorMessage';
+import { handleCroppedImage } from './imageUploader.functions';
+
 export const ImageUploader = () => {
-  const { onClose, isOpen } = useDisclosure();
   const {
     getRootProps,
     getInputProps,
     isDragActive,
-    clearPreviewOnLoad,
     preview,
     error,
     file,
     dimensions,
     aspectRatio,
     clearFile,
-    scaleImage,
   } = useImageUploader();
 
   return (
-    <Modal isOpen={true} onClose={onClose}>
-      <ModalOverlay />
-      <ModalContent>
-        <ModalCloseButton />
-        {file && dimensions && aspectRatio ? (
-          <Flex alignItems={'center'} justifyContent='center' flexDir='column'>
-            <Center p={10}>
-              <Image
-                src={preview}
-                onLoad={clearPreviewOnLoad}
-                width={scaleImage(dimensions, 400, 400).width}
-                height={scaleImage(dimensions, 400, 400).height}
-                onLoadingComplete={clearPreviewOnLoad}
-              />
-            </Center>
-            <Button onClick={clearFile}>Replace Image</Button>
-          </Flex>
-        ) : (
+    <ModalContent>
+      <ModalCloseButton />
+      {preview ? (
+        <>
+          <Cropper
+            previewUrl={preview}
+            handleCroppedImage={handleCroppedImage}
+            clearFile={clearFile}
+          />
+        </>
+      ) : (
+        <Box>
           <Dropzone
             getRootProps={getRootProps}
             getInputProps={getInputProps}
             isDragActive={isDragActive}
           />
-        )}
-        {error && (
-          <Box p={2}>
-            <Text fontSize='sm' color='red.500'>
-              {error.message}
-            </Text>
-          </Box>
-        )}
-      </ModalContent>
-    </Modal>
+        </Box>
+      )}
+      <ErrorMessage errorMessage={error?.message} />
+    </ModalContent>
   );
 };

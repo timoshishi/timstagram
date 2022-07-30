@@ -1,6 +1,4 @@
-import { useDropzone } from 'react-dropzone';
-import { OnDrop, onDrop } from '../imageUploader.functions';
-import { useCallback } from 'react';
+import { DropzoneState } from 'react-dropzone';
 import {
   Center,
   useColorModeValue,
@@ -12,37 +10,16 @@ import {
 } from '@chakra-ui/react';
 import { MdCloudUpload } from 'react-icons/md';
 
-const ACCEPTED_FILE_TYPES = {
-  'image/*': [],
-};
-
 interface DropzoneProps {
-  onDrop: OnDrop;
+  isDragActive: DropzoneState['isDragActive'];
+  getRootProps: DropzoneState['getRootProps'];
+  getInputProps: DropzoneState['getInputProps'];
 }
 export const Dropzone = ({
   isDragActive,
   getRootProps,
   getInputProps,
-}: {
-  isDragActive: boolean;
-  getRootProps: any;
-  getInputProps: any;
-}) => {
-  // const onDrop: OnDrop = useCallback((acceptedFiles) => {
-  //   acceptedFiles.forEach((file) => {
-  //     const reader = new FileReader();
-
-  //     reader.onabort = () => console.log('file reading was aborted');
-  //     reader.onerror = () => console.log('file reading has failed');
-  //     reader.onload = () => {
-  //       // Do whatever you want with the file contents
-  //       const binaryStr = reader.result;
-  //       console.log(binaryStr);
-  //     };
-  //     reader.readAsArrayBuffer(file);
-  //   });
-  // }, []);
-
+}: DropzoneProps) => {
   const baseText = useBreakpointValue({
     base: 'Tap here to select an image',
     md: 'Drag and drop or click here to select an image',

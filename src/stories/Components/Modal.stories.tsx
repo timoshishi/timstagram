@@ -3,15 +3,15 @@ import { ComponentStory, ComponentMeta } from '@storybook/react';
 import {
   GlobalModal,
   useGlobalModalContext,
-} from '../../common/components/Modal/ModalContext';
+} from '../../common/components/Modal/GlobalModal';
 import { ViewType } from '../../types/auth.types';
 // More on default export: https://storybook.js.org/docs/react/writing-stories/introduction#default-export
 export default {
   title: 'Components/Modal',
-  component: Modal,
+  component: GlobalModal,
   centered: true,
   // More on argTypes: https://storybook.js.org/docs/react/api/argtypes
-} as ComponentMeta<typeof Modal>;
+} as ComponentMeta<typeof GlobalModal>;
 
 // More on component templates: https://storybook.js.org/docs/react/writing-stories/introduction#using-arg
 const ModalComp = () => {

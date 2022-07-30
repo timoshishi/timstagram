@@ -1,6 +1,8 @@
 import React from 'react';
 import { ComponentStory, ComponentMeta } from '@storybook/react';
 import { ImageUploader } from '../../common/components/ImageUploader/ImageUploader';
+import { noOp } from '../../common/utils';
+import { Modal } from '@chakra-ui/react';
 // More on default export: https://storybook.js.org/docs/react/writing-stories/introduction#default-export
 export default {
   title: 'Components/ImageUploader',
@@ -12,7 +14,9 @@ export default {
 
 // More on component templates: https://storybook.js.org/docs/react/writing-stories/introduction#using-args
 const Template: ComponentStory<typeof ImageUploader> = (args) => (
-  <ImageUploader />
+  <Modal isOpen={true} onClose={noOp} size='full'>
+    <ImageUploader />
+  </Modal>
 );
 
 export const Primary = Template.bind({});

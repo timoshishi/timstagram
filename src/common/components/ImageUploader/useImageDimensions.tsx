@@ -1,31 +1,6 @@
 import { useState, useEffect } from 'react';
 
-export type ScaleImage = (
-  dimensions: {
-    width: number;
-    height: number;
-  },
-  maxWidth: number,
-  maxHeight: number
-) => {
-  width: number;
-  height: number;
-};
-
-export type Dimensions = {
-  width: number;
-  height: number;
-};
-
-export type AspectRatio = number;
-
-export type UseImageUploader = {
-  dimensions: Dimensions;
-  aspectRatio: AspectRatio;
-  scaleImage: ScaleImage;
-};
-
-export const useImageDimensions = (file: File | null): UseImageUploader => {
+export const useImageDimensions = (file: File | null) => {
   const [dimensions, setDimensions] = useState<{
     width: number;
     height: number;
