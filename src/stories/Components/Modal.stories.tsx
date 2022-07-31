@@ -3,8 +3,12 @@ import { ComponentStory, ComponentMeta } from '@storybook/react';
 import {
   GlobalModal,
   useGlobalModalContext,
+  ModalType,
 } from '../../common/components/Modal/GlobalModal';
 import { ViewType } from '../../types/auth.types';
+import { AuthModalProps } from '../../common/components/Auth/AuthModal';
+
+import { Button } from '@chakra-ui/button';
 // More on default export: https://storybook.js.org/docs/react/writing-stories/introduction#default-export
 export default {
   title: 'Components/Modal',
@@ -14,35 +18,38 @@ export default {
 } as ComponentMeta<typeof GlobalModal>;
 
 // More on component templates: https://storybook.js.org/docs/react/writing-stories/introduction#using-arg
-const ModalComp = () => {
-  // const { handleModal, isOpen, setModalProps } = useModal();4
-  const { showModal } = useGlobalModalContext<{ viewType: ViewType }>();
+const ModalComp = (args) => {
+  // const { handleModal, isOpen, setModalProps } = useModal();
+  const [modalType, modalArgs] = args.openModalParams;
+  const { showModal } = useGlobalModalContext<typeof modalArgs>();
   return (
     <div>
-      <button
-        onClick={() =>
-          showModal('AuthModal', {
-            viewType: 'sign_up',
-          })
-        }>
+      <Button onClick={() => showModal(modalType, modalArgs)}>
         Open Modal
-      </button>
+      </Button>
     </div>
   );
 };
-const Template: ComponentStory<typeof GlobalModal> = () => {
+
+const Template: ComponentStory<typeof GlobalModal> = (args) => {
   return (
     <GlobalModal>
-      <ModalComp />
+      <ModalComp {...args} />
     </GlobalModal>
   );
 };
 
-export const Primary = Template.bind({});
-// More on args: https://storybook.js.org/docs/react/writing-stories/args
+type AuthModalParams = [ModalType, AuthModalProps];
+export const AuthModalStory = Template.bind({});
+const authModalParams: AuthModalParams = ['AuthModal', { viewType: 'sign_up' }];
+AuthModalStory.args = {
+  openModalParams: authModalParams,
+};
 
-// Primary.args = {
-//   onFileAccepted: (file) => {
-//     console.log(file, 'FILE');
-//   },
-// };
+export const ImageUploaderModal = Template.bind({});
+ImageUploaderModal.args = {
+  openModalParams: [
+    'ImageUploader',
+    { cropType: 'rect', title: "Let's upload an image" },
+  ],
+};

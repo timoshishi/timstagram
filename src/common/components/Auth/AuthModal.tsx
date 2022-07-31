@@ -9,8 +9,11 @@ import {
   ModalOverlay,
 } from '@chakra-ui/react';
 import { BrandLogo } from '@common/layout/app-layout/Navbar/BrandLogo';
-import { AuthModalProps, useGlobalModalContext } from '../Modal/GlobalModal';
-
+import { useGlobalModalContext } from '../Modal/GlobalModal';
+import { ViewType } from 'types/auth.types';
+export interface AuthModalProps {
+  viewType: ViewType;
+}
 const AuthModal = () => {
   const {
     store: {

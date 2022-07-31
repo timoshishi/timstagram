@@ -3,6 +3,12 @@ import { ComponentStory, ComponentMeta } from '@storybook/react';
 import { ImageUploader } from '../../common/components/ImageUploader/ImageUploader';
 import { noOp } from '../../common/utils';
 import { Modal } from '@chakra-ui/react';
+import * as CropperStories from './Cropper.stories';
+
+const ASPECT_1 = 'https://picsum.photos/400/400';
+const ASPECT_4_5 = 'https://picsum.photos/400/500';
+const ASPECT_16_9 = 'https://picsum.photos/533/300';
+const ASPECT_19_10 = 'https://picsum.photos/573/300';
 // More on default export: https://storybook.js.org/docs/react/writing-stories/introduction#default-export
 export default {
   title: 'Components/ImageUploader',
@@ -18,8 +24,8 @@ export default {
     title: {
       control: {
         type: 'text',
-        defaultValue: 'Upload Image',
       },
+      defaultValue: 'Upload Image',
     },
   },
   // More on argTypes: https://storybook.js.org/docs/react/api/argtypes
@@ -27,10 +33,12 @@ export default {
 
 // More on component templates: https://storybook.js.org/docs/react/writing-stories/introduction#using-args
 const Template: ComponentStory<typeof ImageUploader> = (args) => (
-  <Modal isOpen={true} onClose={noOp} size='full'>
-    <ImageUploader {...args} />
-  </Modal>
+  <ImageUploader {...args} />
 );
 
 export const Primary = Template.bind({});
+Primary.argTypes = {
+  testImg: CropperStories.Primary.argTypes?.previewUrl,
+};
+
 // More on args: https://storybook.js.org/docs/react/writing-stories/args

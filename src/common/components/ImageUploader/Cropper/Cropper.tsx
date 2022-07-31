@@ -1,11 +1,9 @@
 import { useState, useCallback } from 'react';
-import { Text, Box, Flex, Icon, Button, Center } from '@chakra-ui/react';
+import { Box, Flex, Button } from '@chakra-ui/react';
 import Cropper, { Area } from 'react-easy-crop';
 import { getCroppedImg } from './cropper.functions';
-import { FiRotateCw } from 'react-icons/fi';
-import { Zoom } from './Zoom';
-import { AspectRatio } from './AspectRatio';
 import type { HandleCroppedImage } from '../imageUploader.types';
+import { Controls } from './Controls/Controls';
 
 interface CropperProps {
   previewUrl: string;
@@ -30,7 +28,6 @@ export const EasyCropper = ({
     x: 0,
     y: 0,
   });
-  // const [croppedImage, setCroppedImage] = useState<File | null>(null);
 
   const onCropComplete = useCallback((_: Area, croppedAreaPixels: Area) => {
     setCroppedAreaPixels(croppedAreaPixels);
@@ -50,7 +47,6 @@ export const EasyCropper = ({
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [previewUrl, croppedAreaPixels, rotation, aspectRatio]);
-
   const handleRotate = () => {
     if (rotation < 360) {
       setRotation(rotation + 90);
@@ -64,48 +60,70 @@ export const EasyCropper = ({
   }, []);
 
   return (
-    <Flex alignItems={'center'} justifyContent='center' flexDir='column'>
-      <Center p={10}>
-        <Flex minH='100%' minW='100%' flexDir='column' position='relative'>
-          <Box>
-            <Cropper
-              image={previewUrl}
-              crop={crop}
-              rotation={rotation}
-              zoom={zoom}
-              style={{
-                containerStyle: {
-                  maxHeight: '50vh',
-                  minHeight: '50vh',
-                  position: 'relative',
-                },
-              }}
-              cropShape={cropShape}
-              aspect={aspectRatio}
-              onCropChange={setCrop}
-              onRotationChange={setRotation}
-              onCropComplete={onCropComplete}
-            />
-          </Box>
-          <Flex
-            alignContent={'center'}
-            w='100vw'
-            justifyContent={'space-around'}>
-            <Box w='50%'>
-              <Zoom setZoom={setZoom} />
-            </Box>
-            <Box>
-              <AspectRatio setAspectRatio={setAspectRatio} />
-            </Box>
-            <Box>
-              <Text fontSize='16px'>Rotation</Text>
-              <Icon as={FiRotateCw} onClick={handleRotate} w={25} h={25} />
-            </Box>
-          </Flex>
-          <Button onClick={getCroppedImage}>Crop</Button>
-          <Button onClick={clearFile}>Clear Image</Button>
+    <Flex
+      minH={['100vh', '50%']}
+      maxH='100vh'
+      flexDir='column'
+      position='relative'
+      bg='teal.50'
+      justifyContent={['space-between']}>
+      <Cropper
+        image={previewUrl}
+        crop={crop}
+        rotation={rotation}
+        zoom={zoom}
+        showGrid={false}
+        style={{
+          containerStyle: {
+            width: '100%',
+            height: '100%',
+            backgroundColor: 'blackAlpha.100',
+            position: 'relative',
+          },
+          mediaStyle: {
+            width: '100%',
+            height: 'auto',
+          },
+        }}
+        objectFit='auto-cover'
+        cropShape={cropShape}
+        aspect={aspectRatio}
+        onCropChange={setCrop}
+        onRotationChange={setRotation}
+        onCropComplete={onCropComplete}
+      />
+      <Box
+        display='flex'
+        flexDir='column'
+        alignContent={['space-around']}
+        justifyContent={['flex-end']}>
+        <Controls
+          setZoom={setZoom}
+          setAspectRatio={setAspectRatio}
+          handleRotate={handleRotate}
+          cropShape={cropShape}
+        />
+        <Flex
+          justifyContent={['space-between', 'space-betwee', 'flex-end']}
+          w='100%'
+          p='5'
+          alignSelf={'flex-end'}>
+          <Button
+            variant='outline'
+            colorScheme='telegram'
+            onClick={clearFile}
+            size={['md', 'md', 'lg']}>
+            Cancel
+          </Button>
+          <Button
+            variant='solid'
+            colorScheme='telegram'
+            size={['md', 'md', 'lg']}
+            onClick={getCroppedImage}>
+            Upload
+          </Button>
         </Flex>
-      </Center>
+      </Box>
     </Flex>
   );
 };
