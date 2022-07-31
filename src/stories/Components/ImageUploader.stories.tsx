@@ -8,22 +8,29 @@ export default {
   title: 'Components/ImageUploader',
   component: ImageUploader,
   centered: true,
-
+  argTypes: {
+    cropShape: {
+      control: {
+        type: 'radio',
+        options: ['rect', 'round'],
+      },
+    },
+    title: {
+      control: {
+        type: 'text',
+        defaultValue: 'Upload Image',
+      },
+    },
+  },
   // More on argTypes: https://storybook.js.org/docs/react/api/argtypes
 } as ComponentMeta<typeof ImageUploader>;
 
 // More on component templates: https://storybook.js.org/docs/react/writing-stories/introduction#using-args
 const Template: ComponentStory<typeof ImageUploader> = (args) => (
   <Modal isOpen={true} onClose={noOp} size='full'>
-    <ImageUploader />
+    <ImageUploader {...args} />
   </Modal>
 );
 
 export const Primary = Template.bind({});
 // More on args: https://storybook.js.org/docs/react/writing-stories/args
-
-Primary.args = {
-  onFileAccepted: (file) => {
-    console.log(file, 'FILE');
-  },
-};

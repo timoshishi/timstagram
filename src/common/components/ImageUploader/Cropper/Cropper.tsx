@@ -11,12 +11,14 @@ interface CropperProps {
   previewUrl: string;
   handleCroppedImage: HandleCroppedImage;
   clearFile: () => void;
+  cropShape: 'round' | 'rect';
 }
 
 export const EasyCropper = ({
   previewUrl,
   handleCroppedImage,
   clearFile,
+  cropShape = 'rect',
 }: CropperProps) => {
   const [crop, setCrop] = useState({ x: 0, y: 0 });
   const [rotation, setRotation] = useState(0);
@@ -46,13 +48,8 @@ export const EasyCropper = ({
     } catch (e) {
       console.error(e);
     }
-  }, [
-    previewUrl,
-    croppedAreaPixels,
-    rotation,
-    aspectRatio,
-    handleCroppedImage,
-  ]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [previewUrl, croppedAreaPixels, rotation, aspectRatio]);
 
   const handleRotate = () => {
     if (rotation < 360) {
@@ -83,6 +80,7 @@ export const EasyCropper = ({
                   position: 'relative',
                 },
               }}
+              cropShape={cropShape}
               aspect={aspectRatio}
               onCropChange={setCrop}
               onRotationChange={setRotation}
