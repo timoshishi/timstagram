@@ -36,15 +36,9 @@ export const ImageUploader = ({
   } = useImageUploader();
   const imgUrl = testImg ?? preview;
   return (
-    <Modal isOpen={true} onClose={noOp} size={['full', 'full', '2xl']}>
+    <Modal isOpen={true} onClose={noOp} size={['md', 'md', 'lg']}>
       <ModalOverlay />
-      <ModalContent p='0' bg='teal' display={'flex'} flexDir='column'>
-        <ModalCloseButton
-          fill='white'
-          zIndex={10000}
-          color='white'
-          onClick={clearFile}
-        />
+      <ModalContent p='0' display={'flex'} flexDir='column'>
         {imgUrl ? (
           <>
             <Cropper

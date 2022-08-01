@@ -1,14 +1,8 @@
 import React from 'react';
 import { ComponentStory, ComponentMeta } from '@storybook/react';
 import { ImageUploader } from '../../common/components/ImageUploader/ImageUploader';
-import { noOp } from '../../common/utils';
-import { Modal } from '@chakra-ui/react';
 import * as CropperStories from './Cropper.stories';
 
-const ASPECT_1 = 'https://picsum.photos/400/400';
-const ASPECT_4_5 = 'https://picsum.photos/400/500';
-const ASPECT_16_9 = 'https://picsum.photos/533/300';
-const ASPECT_19_10 = 'https://picsum.photos/573/300';
 // More on default export: https://storybook.js.org/docs/react/writing-stories/introduction#default-export
 export default {
   title: 'Components/ImageUploader',

@@ -1,7 +1,6 @@
 import React from 'react';
 import { ComponentStory, ComponentMeta } from '@storybook/react';
-import { post } from '../../../__mocks__/fixtures/post';
-import { Center, Box, Flex } from '@chakra-ui/react';
+import { Box } from '@chakra-ui/react';
 import {
   Zoom,
   ZoomProps,
@@ -18,12 +17,12 @@ export default {
 
 // More on component templates: https://storybook.js.org/docs/react/writing-stories/introduction#using-args
 const Template: ComponentStory<typeof Zoom> = (args) => (
-  <Box h='100vh' w='100vw'>
-    <Center>
-      <Flex alignItems={'center'} justifyContent='center' w='400px' h='100vh'>
+  <Box h='100vh' w='100vw' position='relative' bg='blackAlpha.400'>
+    <Box position='absolute' w='100vw' h='100vh' top='50%' left='50%'>
+      <Box>
         <Zoom {...args} />
-      </Flex>
-    </Center>
+      </Box>
+    </Box>
   </Box>
 );
 

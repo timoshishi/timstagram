@@ -65,64 +65,62 @@ export const EasyCropper = ({
       maxH='100vh'
       flexDir='column'
       position='relative'
-      bg='teal.50'
+      bg='whiteAlpha.100'
       justifyContent={['space-between']}>
-      <Cropper
-        image={previewUrl}
-        crop={crop}
-        rotation={rotation}
-        zoom={zoom}
-        showGrid={false}
-        style={{
-          containerStyle: {
-            width: '100%',
-            height: '100%',
-            backgroundColor: 'blackAlpha.100',
-            position: 'relative',
-          },
-          mediaStyle: {
-            width: '100%',
-            height: 'auto',
-          },
-        }}
-        objectFit='auto-cover'
-        cropShape={cropShape}
-        aspect={aspectRatio}
-        onCropChange={setCrop}
-        onRotationChange={setRotation}
-        onCropComplete={onCropComplete}
-      />
-      <Box
-        display='flex'
-        flexDir='column'
-        alignContent={['space-around']}
-        justifyContent={['flex-end']}>
-        <Controls
-          setZoom={setZoom}
-          setAspectRatio={setAspectRatio}
-          handleRotate={handleRotate}
+      <Flex
+        justifyContent={['space-between', 'space-between', 'flex-end']}
+        w='100%'
+        p='3'
+        alignSelf={'flex-end'}>
+        <Button
+          variant='outline'
+          colorScheme='telegram'
+          onClick={clearFile}
+          size={['sm', 'sm', 'sm']}>
+          Cancel
+        </Button>
+        <Button
+          variant='solid'
+          colorScheme='telegram'
+          size={['sm', 'sm', 'sm']}
+          onClick={getCroppedImage}>
+          Next
+        </Button>
+      </Flex>
+      <Box position='relative'>
+        <Cropper
+          image={previewUrl}
+          crop={crop}
+          rotation={rotation}
+          zoom={zoom}
+          showGrid={false}
+          style={{
+            containerStyle: {
+              width: '100%',
+              height: '100%',
+              backgroundColor: 'blackAlpha.100',
+              position: 'relative',
+            },
+            mediaStyle: {
+              width: '100%',
+              height: 'auto',
+            },
+          }}
+          objectFit='auto-cover'
           cropShape={cropShape}
+          aspect={aspectRatio}
+          onCropChange={setCrop}
+          onRotationChange={setRotation}
+          onCropComplete={onCropComplete}
         />
-        <Flex
-          justifyContent={['space-between', 'space-betwee', 'flex-end']}
-          w='100%'
-          p='5'
-          alignSelf={'flex-end'}>
-          <Button
-            variant='outline'
-            colorScheme='telegram'
-            onClick={clearFile}
-            size={['md', 'md', 'lg']}>
-            Cancel
-          </Button>
-          <Button
-            variant='solid'
-            colorScheme='telegram'
-            size={['md', 'md', 'lg']}
-            onClick={getCroppedImage}>
-            Upload
-          </Button>
-        </Flex>
+        <Box position='absolute' bottom='0'>
+          <Controls
+            setZoom={setZoom}
+            setAspectRatio={setAspectRatio}
+            handleRotate={handleRotate}
+            cropShape={cropShape}
+          />
+        </Box>
       </Box>
     </Flex>
   );
