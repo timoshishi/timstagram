@@ -21,7 +21,6 @@ export const Zoom = ({ setZoom, zoom }: ZoomProps) => {
       <Popover
         trigger='hover'
         placement='top-start'
-        isOpen={true}
         isLazy={true}
         closeDelay={300}
         openDelay={100}
@@ -38,6 +37,7 @@ export const Zoom = ({ setZoom, zoom }: ZoomProps) => {
               stroke='white'
               fill='none'
               strokeWidth='2'
+              aria-label='zoom in'
             />
           </Box>
         </PopoverTrigger>
@@ -62,7 +62,13 @@ export const Zoom = ({ setZoom, zoom }: ZoomProps) => {
               <SliderFilledTrack />
             </SliderTrack>
             <SliderThumb w={[6]} h={[6]}>
-              <Box color='orange.400' as={FiZoomIn} h={6} w={6} />
+              <Box
+                color='orange.400'
+                as={FiZoomIn}
+                h={6}
+                w={6}
+                aria-label='zoom slider'
+              />
             </SliderThumb>
           </Slider>
         </PopoverContent>
