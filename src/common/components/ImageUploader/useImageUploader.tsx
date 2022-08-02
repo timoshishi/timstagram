@@ -1,10 +1,10 @@
 import { useDropzone, FileError, DropzoneState } from 'react-dropzone';
-import { useState, useEffect, useCallback } from 'react';
-import { getOrientation } from 'get-orientation/browser.es5';
-import { Dimensions } from './imageUploader.types';
-import { createImage, getRotatedImage } from './Cropper/cropper.functions';
-import { SetStateAction } from 'react';
-import { EmptyNoReturnFn } from '@common/utils';
+import { useState, useEffect } from 'react';
+import {
+  Dimensions,
+  ScaleImage,
+  useImageDimensions,
+} from './useImageDimensions';
 const MEGABYTE = 1000000;
 const MAX_MEGABYTES = 5;
 const ACCEPTED_FILE_TYPES = {
@@ -47,33 +47,6 @@ function sizeValidator(file: File) {
   return null;
 }
 
-export const readFile = (file: File) =>
-  new Promise<string>((resolve, reject) => {
-    const reader = new FileReader();
-    reader.onload = () => {
-      resolve(reader.result as string);
-    };
-    reader.onerror = (error) => {
-      reject(error);
-    };
-    reader.readAsDataURL(file);
-  });
-
-export const scaleImage = (
-  dimensions: Dimensions,
-  maxWidth: number,
-  maxHeight: number
-): Dimensions => {
-  const scaleFactor = Math.min(
-    maxWidth / dimensions.width,
-    maxHeight / dimensions.height
-  );
-  return {
-    width: dimensions.width * scaleFactor,
-    height: dimensions.height * scaleFactor,
-  };
-};
-export type ScaleImage = typeof scaleImage;
 export type UseImageUploader = {
   file: File | null;
   error: FileError | null;
@@ -81,32 +54,20 @@ export type UseImageUploader = {
   getRootProps: DropzoneState['getRootProps'];
   getInputProps: DropzoneState['getInputProps'];
   isDragActive: DropzoneState['isDragActive'];
-  clearPreviewOnLoad: EmptyNoReturnFn;
+  clearPreviewOnLoad: () => void;
   preview: string | null;
-  clearFile: EmptyNoReturnFn;
-  originalDimensions: Dimensions;
-  aspectRatio: number;
+  clearFile: () => void;
   scaleImage: ScaleImage;
+  dimensions: Dimensions;
+  aspectRatio: number;
 };
-
-const ORIENTATION_TO_ANGLE = {
-  '3': 180,
-  '6': 90,
-  '8': -90,
-};
-
-type OrientationKey = keyof typeof ORIENTATION_TO_ANGLE;
 
 export const useImageUploader = (): UseImageUploader => {
   const [file, setFile] = useState<File | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [preview, setPreview] = useState<string | null>(null);
   const [error, setError] = useState<FileError | null>(null);
-  const [aspectRatio, setAspectRatio] = useState(1);
-  const [dimensions, setDimensions] = useState<Dimensions>({
-    width: 0,
-    height: 0,
-  });
+  const { dimensions, aspectRatio, scaleImage } = useImageDimensions(file);
   const {
     getRootProps,
     getInputProps,
@@ -120,30 +81,6 @@ export const useImageUploader = (): UseImageUploader => {
     accept: ACCEPTED_FILE_TYPES,
   });
 
-  const handleFile = useCallback(async (file: File) => {
-    try {
-      const orientation = (await getOrientation(
-        file
-      )) as unknown as OrientationKey;
-      let imgUrl = await readFile(file);
-      const image = await createImage(imgUrl);
-      const { width, height } = image;
-      setAspectRatio(width / height);
-      const rotation = ORIENTATION_TO_ANGLE[orientation] ?? 0;
-      if (rotation) {
-        imgUrl = await getRotatedImage(imgUrl, rotation);
-      }
-      setPreview(imgUrl);
-      setFile(file);
-      return null;
-    } catch (error) {
-      setError({
-        code: 'invalid-file',
-        message: 'File is not a valid image',
-      });
-    }
-  }, []);
-
   useEffect(() => {
     return () => {
       setFile(null);
@@ -153,7 +90,6 @@ export const useImageUploader = (): UseImageUploader => {
       setPreview(null);
       setError(null);
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const clearPreviewOnLoad = () => () => {
@@ -173,11 +109,10 @@ export const useImageUploader = (): UseImageUploader => {
       setFile(null);
     }
     if (acceptedFiles.length > 0) {
-      handleFile(acceptedFiles[0]).catch((err) => {
-        console.log(err);
-      });
+      setError(null);
+      setFile(acceptedFiles[0]);
+      setPreview(URL.createObjectURL(acceptedFiles[0]));
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [acceptedFiles, fileRejections]);
 
   return {
@@ -189,7 +124,7 @@ export const useImageUploader = (): UseImageUploader => {
     isLoading,
     error,
     file,
-    originalDimensions: dimensions,
+    dimensions,
     aspectRatio,
     clearFile,
     scaleImage,

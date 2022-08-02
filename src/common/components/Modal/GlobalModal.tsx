@@ -1,15 +1,25 @@
 import React, { useState, createContext, useContext, Children } from 'react';
 import { AuthModal } from '../Auth';
-import { Portal, Modal as ChakraModal, ModalProps } from '@chakra-ui/react';
-import { ImageUploader } from '../ImageUploader';
+import {
+  Portal,
+  Modal as ChakraModal,
+  ModalOverlay,
+  ModalProps,
+  Box,
+  Center,
+} from '@chakra-ui/react';
+import { ViewType } from 'types/auth.types';
+
+export interface AuthModalProps {
+  viewType: ViewType;
+}
 
 export const MODAL_COMPONENTS = {
   AuthModal: AuthModal,
-  ImageUploader: ImageUploader,
 };
 
-export type ModalType = keyof typeof MODAL_COMPONENTS;
-export type ModalComponent = typeof MODAL_COMPONENTS[ModalType];
+type ModalType = keyof typeof MODAL_COMPONENTS;
+type ModalComponent = typeof MODAL_COMPONENTS[ModalType];
 interface Store<P = {}> {
   modalType: ModalType | null;
   componentProps: P;
