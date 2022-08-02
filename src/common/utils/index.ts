@@ -5,3 +5,5 @@ export function randomIntInRange(min: number, max: number) {
 }
 
 export const noOp: () => void = () => {};
+
+export type EmptyNoReturnFn = () => void;

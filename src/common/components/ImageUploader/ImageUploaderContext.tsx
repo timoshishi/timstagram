@@ -1,51 +1,22 @@
 import { useDropzone, FileError, DropzoneState } from 'react-dropzone';
-import { useState, useEffect, useCallback } from 'react';
+import {
+  useState,
+  useEffect,
+  useCallback,
+  createContext,
+  useContext,
+  Context,
+  Dispatch,
+} from 'react';
 import { getOrientation } from 'get-orientation/browser.es5';
 import { Dimensions } from './imageUploader.types';
 import { createImage, getRotatedImage } from './Cropper/cropper.functions';
 import { SetStateAction } from 'react';
-import { EmptyNoReturnFn } from '@common/utils';
-const MEGABYTE = 1000000;
-const MAX_MEGABYTES = 5;
+import { EmptyNoReturnFn, noOp } from '@common/utils';
 const ACCEPTED_FILE_TYPES = {
   'image/png': [],
   'image/jpeg': [],
 };
-function sizeValidator(file: File) {
-  if (file.size > MEGABYTE * MAX_MEGABYTES) {
-    return {
-      code: 'too-large',
-      message: ` File is too large. Max size is ${MAX_MEGABYTES}MB.`,
-    };
-  }
-  // check if the file is an image
-  if (file.type !== 'image/png' && file.type !== 'image/jpeg') {
-    return {
-      code: 'invalid-type',
-      message: 'File must be a PNG or JPG',
-    };
-  }
-  //check if the file is a valid image
-  const img = new Image();
-  img.src = URL.createObjectURL(file);
-  img.onload = () => {
-    if (img.width < 300 || img.height < 300) {
-      return {
-        code: 'invalid-type',
-        message: 'Image must be at least 300px by 300px',
-      };
-    }
-    URL.revokeObjectURL(img.src);
-  };
-  img.onerror = () => {
-    return {
-      code: 'invalid-type',
-      message: 'File must be a PNG or JPG',
-    };
-  };
-
-  return null;
-}
 
 export const readFile = (file: File) =>
   new Promise<string>((resolve, reject) => {
@@ -73,8 +44,9 @@ export const scaleImage = (
     height: dimensions.height * scaleFactor,
   };
 };
+
 export type ScaleImage = typeof scaleImage;
-export type UseImageUploader = {
+export type UseImageUploaderReturn = {
   file: File | null;
   error: FileError | null;
   isLoading: boolean;
@@ -85,8 +57,10 @@ export type UseImageUploader = {
   preview: string | null;
   clearFile: EmptyNoReturnFn;
   originalDimensions: Dimensions;
-  aspectRatio: number;
+  originalAspectRatio: number;
   scaleImage: ScaleImage;
+  cropShape: 'round' | 'rect';
+  setCropShape: Dispatch<SetStateAction<'round' | 'rect'>>;
 };
 
 const ORIENTATION_TO_ANGLE = {
@@ -97,12 +71,13 @@ const ORIENTATION_TO_ANGLE = {
 
 type OrientationKey = keyof typeof ORIENTATION_TO_ANGLE;
 
-export const useImageUploader = (): UseImageUploader => {
+export const useCreateUploaderContext = (): UseImageUploaderReturn => {
   const [file, setFile] = useState<File | null>(null);
+  const [cropShape, setCropShape] = useState<'round' | 'rect'>('rect');
   const [isLoading, setIsLoading] = useState(false);
   const [preview, setPreview] = useState<string | null>(null);
   const [error, setError] = useState<FileError | null>(null);
-  const [aspectRatio, setAspectRatio] = useState(1);
+  const [originalAspectRatio, setOriginalAspectRatio] = useState(1);
   const [dimensions, setDimensions] = useState<Dimensions>({
     width: 0,
     height: 0,
@@ -116,7 +91,7 @@ export const useImageUploader = (): UseImageUploader => {
   } = useDropzone({
     maxFiles: 1,
     multiple: false,
-    validator: sizeValidator,
+    // validator: sizeValidator,
     accept: ACCEPTED_FILE_TYPES,
   });
 
@@ -128,7 +103,7 @@ export const useImageUploader = (): UseImageUploader => {
       let imgUrl = await readFile(file);
       const image = await createImage(imgUrl);
       const { width, height } = image;
-      setAspectRatio(width / height);
+      setOriginalAspectRatio(width / height);
       const rotation = ORIENTATION_TO_ANGLE[orientation] ?? 0;
       if (rotation) {
         imgUrl = await getRotatedImage(imgUrl, rotation);
@@ -190,8 +165,47 @@ export const useImageUploader = (): UseImageUploader => {
     error,
     file,
     originalDimensions: dimensions,
-    aspectRatio,
+    originalAspectRatio,
     clearFile,
     scaleImage,
+    cropShape,
+    setCropShape,
   } as const;
+};
+//create a context using this file
+export const ImageUploaderContext: Context<UseImageUploaderReturn> =
+  createContext<UseImageUploaderReturn>({
+    getRootProps: () => ({}),
+    getInputProps: () => ({}),
+    isDragActive: false,
+    clearPreviewOnLoad: noOp,
+    preview: null,
+    isLoading: false,
+    error: null,
+    file: null,
+    originalDimensions: {
+      width: 0,
+      height: 0,
+    },
+    originalAspectRatio: 1,
+    clearFile: noOp,
+    scaleImage: () => ({ width: 0, height: 0 }),
+    cropShape: 'rect',
+    setCropShape: noOp,
+  } as UseImageUploaderReturn);
+
+//create a provider using this file
+export const useImageUploaderContext = () => useContext(ImageUploaderContext);
+export const ImageUploaderProvider = ({
+  children,
+  initialValue,
+}: {
+  children: React.ReactNode;
+  initialValue: UseImageUploaderReturn;
+}) => {
+  return (
+    <ImageUploaderContext.Provider value={initialValue}>
+      {children}
+    </ImageUploaderContext.Provider>
+  );
 };

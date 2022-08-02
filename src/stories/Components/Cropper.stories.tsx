@@ -3,7 +3,7 @@ import { ComponentStory, ComponentMeta } from '@storybook/react';
 import { Cropper } from '../../common/components/ImageUploader/Cropper';
 import { noOp } from '../../common/utils';
 import { Modal, ModalOverlay, ModalContent } from '@chakra-ui/react';
-
+// import imageFile from './static/658-400x500.jpg';
 const ASPECT_1 = 'https://picsum.photos/400/400';
 const ASPECT_4_3 = 'https://picsum.photos/400/300';
 const ASPECT_16_9 = 'https://picsum.photos/533/300';
@@ -31,13 +31,14 @@ const URL =
 
 export const Primary: ComponentStory<typeof Cropper> = (args) => {
   const [isOpen, setIsOpen] = React.useState<boolean>(true);
-
   return (
     <Modal isOpen={true} onClose={noOp} size={['md', 'md', 'lg']}>
       <ModalOverlay />
       <ModalContent>
         <Cropper
           previewUrl={args.previewUrl}
+          // previewUrl={'/storybook/aspect-1-1.jpg'}
+          originalDimensions={{ width: 400, height: 400 }}
           handleCroppedImage={(img) => {
             console.log(img);
             return null;
@@ -52,10 +53,15 @@ export const Primary: ComponentStory<typeof Cropper> = (args) => {
 
 Primary.argTypes = {
   previewUrl: {
-    defaultValue: ASPECT_1,
+    defaultValue: 'https://picsum.photos/1900/1000',
+
     control: {
       type: 'radio',
-      options: [ASPECT_1, ASPECT_4_3, ASPECT_16_9],
+      options: [
+        '/storybook/aspect-1-1.jpg',
+        '/storybook/aspect-4-3.jpg',
+        '/storybook/aspect-16-9.jpg',
+      ],
     },
   },
 };

@@ -49,7 +49,7 @@ export const Controls = ({
               h={[6, 8]}
               stroke='white'
               fill='none'
-              stroke-width='2'
+              strokeWidth='2'
             />
           </Box>
           {cropShape === 'rect' && (
@@ -58,7 +58,7 @@ export const Controls = ({
             </Box>
           )}
         </Flex>
-        <Box p='2' mt='1'>
+        <Box p='2' mt='0'>
           <Zoom setZoom={setZoom} />
         </Box>
       </Flex>

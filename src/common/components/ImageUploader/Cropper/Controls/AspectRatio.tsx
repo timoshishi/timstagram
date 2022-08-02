@@ -25,12 +25,7 @@ export const AspectRatio = ({ setAspectRatio }: AspectRatioSelectProps) => {
     }
   };
   return (
-    <Menu
-      size={['sm']}
-      defaultIsOpen={true}
-      isLazy={true}
-      placement='top'
-      matchWidth={true}>
+    <Menu size={['sm', 'md']} isLazy={true} placement='top' matchWidth={true}>
       <MenuButton
         as={IconButton}
         size='sm'
@@ -40,29 +35,33 @@ export const AspectRatio = ({ setAspectRatio }: AspectRatioSelectProps) => {
         }}
         _active={{
           cursor: 'pointer',
-          bg: 'rgba(0,0,0,0.3)',
+          bg: 'rgba(0,0,0,0)',
         }}
         icon={<FaExpandArrowsAlt fill='white' size='lg' />}
       />
-      <MenuList minW='14' pb='0' pt='4'>
+      <MenuList minW='14' pb='0.5' pt='2' mb='0.5'>
         <MenuOptionGroup defaultValue={'1:1'} onChange={handleSelect}>
           {ASPECT_RATIOS.map(({ label, value }) => {
             return (
               <MenuItemOption
                 key={value}
                 minH='1'
-                maxH='2'
+                maxH='6'
                 value={value}
                 p='0'
-                minW='0'
+                minW='14'
                 maxW='12'
+                mb='.05'
                 _hover={{
                   cursor: 'pointer',
-                  bg: 'telegram.200',
+                  bg: 'rgba(0,0,0,0)',
+                }}
+                _active={{
+                  cursor: 'pointer',
+                  bg: 'rgba(0,0,0,0)',
                 }}
                 style={{
-                  marginLeft: '-1rem',
-                  fontSize: '1rem',
+                  marginLeft: '-0.5rem',
                   fontWeight: 'semibold',
                 }}>
                 {label}

@@ -4,57 +4,33 @@ import {
   Box,
   ModalOverlay,
   Modal,
+  useModal,
+  UseModalReturn,
+  useDimensions,
 } from '@chakra-ui/react';
+import {
+  ImageUploaderProvider,
+  useImageUploaderContext,
+} from './ImageUploaderContext';
 import { Dropzone } from './Dropzone';
 import { useImageUploader } from './useImageUploader';
 import { Cropper } from './Cropper';
 import { ErrorMessage } from '../ErrorMessage';
 import { handleCroppedImage } from './imageUploader.functions';
 import { noOp } from '@common/utils';
+import { useRef } from 'react';
 
-interface ImageUploaderProps {
-  cropShape?: 'round' | 'rect';
-  title?: string;
-  testImg?: string;
-}
-
-export const ImageUploader = ({
-  cropShape = 'rect',
-  title = 'Upload your image',
-  testImg,
-}: ImageUploaderProps) => {
-  const {
-    getRootProps,
-    getInputProps,
-    isDragActive,
-    preview,
-    error,
-    file,
-    dimensions,
-    aspectRatio,
-    clearFile,
-  } = useImageUploader();
-  const imgUrl = testImg ?? preview;
+export const ImageUploader = () => {
+  const { error, preview } = useImageUploaderContext();
   return (
-    <Modal isOpen={true} onClose={noOp} size={['md', 'md', 'lg']}>
+    <Modal isOpen={true} onClose={noOp} size={['lg', 'md', 'lg']}>
       <ModalOverlay />
       <ModalContent p='0' display={'flex'} flexDir='column'>
-        {imgUrl ? (
-          <>
-            <Cropper
-              previewUrl={imgUrl}
-              handleCroppedImage={handleCroppedImage}
-              clearFile={clearFile}
-              cropShape={cropShape}
-            />
-          </>
+        {preview ? (
+          <Cropper handleCroppedImage={handleCroppedImage} />
         ) : (
           <Box>
-            <Dropzone
-              getRootProps={getRootProps}
-              getInputProps={getInputProps}
-              isDragActive={isDragActive}
-            />
+            <Dropzone />
           </Box>
         )}
         <ErrorMessage errorMessage={error?.message} />

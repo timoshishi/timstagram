@@ -17,33 +17,25 @@ export interface ZoomProps {
   setZoom: (zoom: number) => void;
 }
 export const Zoom = ({ setZoom }: ZoomProps) => {
-  const [isPopoverOpen, { on, off }] = useBoolean(false);
   return (
     <Popover
       trigger='hover'
       placement='top-start'
       isLazy={true}
-      onOpen={on}
       closeDelay={300}
-      openDelay={100}
-      onClose={off}>
+      openDelay={100}>
       <PopoverTrigger>
-        <Box h={10} w={10}>
-          <ScaleFade initialScale={0.4} in={!isPopoverOpen}>
-            <IconButton
-              aria-label='zoom in'
-              bg='rgba(0,0,0,0)'
-              color='white'
-              as={FiZoomIn}
-              h='8'
-              w='8'
-              size='sm'
-              _hover={{
-                cursor: 'pointer',
-              }}
-            />
-          </ScaleFade>
-        </Box>
+        {/* <Box h={10} w={10}> */}
+        <IconButton
+          aria-label='zoom in'
+          bg='rgba(0,0,0,0)'
+          color='white'
+          icon={<FiZoomIn size='lg' />}
+          _hover={{
+            cursor: 'pointer',
+          }}
+        />
+        {/* </Box> */}
       </PopoverTrigger>
       <PopoverContent
         opacity='0'
