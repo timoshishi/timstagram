@@ -26,13 +26,25 @@
       "@components/*": ["./src/common/components/*"],
       "types/*": ["./src/types/*"],
       "@views/*": ["./src/views/*"],
-      "*": ["./*"],
+      // "*": [".*"],
+      // get modules from base dir
       "@api/*": ["src/api/*"],
       "@src/*": ["./src/*"]
     }
   },
   "exclude": ["node_modules", "**/types/*", "**/stories/**/*"],
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "types.d.ts"],
+<<<<<<< HEAD
+  "include": [
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    "types.d.ts",
+    "__tests__/**/*.ts",
+    "__tests__/**/*.tsx"
+  ],
+=======
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],
+>>>>>>> parent of 32e8918 (Cropper (#11))
   "ts-node": {
     "compilerOptions": {
       "module": "commonjs"

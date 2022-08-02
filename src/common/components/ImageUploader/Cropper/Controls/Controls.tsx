@@ -43,6 +43,7 @@ export const Controls = ({
           _hover={{
             cursor: 'pointer',
           }}
+          aria-label='rotate image'
         />
       </Box>
       {cropShape === 'rect' && (
