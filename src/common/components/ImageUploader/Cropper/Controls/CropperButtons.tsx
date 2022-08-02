@@ -1,4 +1,3 @@
-import React from 'react';
 import { Flex, Button } from '@chakra-ui/react';
 import { EmptyNoReturnFn } from '@common/utils';
 

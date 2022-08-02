@@ -1,10 +1,11 @@
 import { useRef, useState, useCallback } from 'react';
-import { useDimensions, Box, Flex, Button } from '@chakra-ui/react';
+import { useDimensions, Box, Flex, useBreakpointValue } from '@chakra-ui/react';
 import Cropper, { Area } from 'react-easy-crop';
 import { getCroppedImg } from './cropper.functions';
 import type { HandleCroppedImage } from '../imageUploader.types';
 import { Controls } from './Controls/Controls';
 import { useImageUploaderContext } from '../ImageUploaderContext';
+import { CropperButtons } from './Controls/CropperButtons';
 interface CropperProps {
   handleCroppedImage: HandleCroppedImage;
 }
@@ -62,6 +63,9 @@ export const EasyCropper = ({ handleCroppedImage }: CropperProps) => {
       setRotation(0);
     }
   };
+  const controlsPositionOffset = useBreakpointValue({
+    base: '1rem',
+  });
 
   const onClose = useCallback(() => {
     // setCroppedImage(null);
@@ -69,33 +73,14 @@ export const EasyCropper = ({ handleCroppedImage }: CropperProps) => {
   null;
   return (
     <Flex
-      minH={['100vh', '50%']}
+      // minH={['100vh', '50%']}
       maxH='100vh'
       ref={modalRef}
       flexDir='column'
       position='relative'
       bg='whiteAlpha.100'
-      justifyContent={['space-between']}>
-      <Flex
-        justifyContent={['space-between', 'space-between', 'flex-end']}
-        w='100%'
-        p='3'
-        alignSelf={'flex-end'}>
-        <Button
-          variant='outline'
-          colorScheme='telegram'
-          onClick={clearFile}
-          size={['sm', 'sm', 'sm']}>
-          Cancel
-        </Button>
-        <Button
-          variant='solid'
-          colorScheme='telegram'
-          size={['sm', 'sm', 'sm']}
-          onClick={getCroppedImage}>
-          Next
-        </Button>
-      </Flex>
+      justifyContent={['center']}>
+      <CropperButtons clearFile={clearFile} getCroppedImage={getCroppedImage} />
       <Box position='relative'>
         <Cropper
           image={preview ?? undefined}
@@ -108,7 +93,7 @@ export const EasyCropper = ({ handleCroppedImage }: CropperProps) => {
               width: '100%',
               // minHeight: '60vh',
               // height: 'auto',
-              minHeight: `${minHeight}px`,
+              // minHeight: `${minHeight}px`,
               backgroundColor: 'blackAlpha.100',
               position: 'relative',
             },
@@ -124,9 +109,10 @@ export const EasyCropper = ({ handleCroppedImage }: CropperProps) => {
           onRotationChange={setRotation}
           onCropComplete={onCropComplete}
         />
-        <Box position='absolute' bottom='0'>
+        <Box position='absolute' bottom='0' right='0' w='100%'>
           <Controls
             setZoom={setZoom}
+            zoom={zoom}
             setAspectRatio={setAspectRatio}
             handleRotate={handleRotate}
             cropShape={cropShape}

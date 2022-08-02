@@ -13,9 +13,17 @@ import { Dimensions } from './imageUploader.types';
 import { createImage, getRotatedImage } from './Cropper/cropper.functions';
 import { SetStateAction } from 'react';
 import { EmptyNoReturnFn, noOp } from '@common/utils';
+import { sizeValidator } from './imageUploader.functions';
+
 const ACCEPTED_FILE_TYPES = {
   'image/png': [],
   'image/jpeg': [],
+};
+
+const clearUrl = (url: string | null) => {
+  if (url) {
+    URL.revokeObjectURL(url);
+  }
 };
 
 export const readFile = (file: File) =>
@@ -53,7 +61,6 @@ export type UseImageUploaderReturn = {
   getRootProps: DropzoneState['getRootProps'];
   getInputProps: DropzoneState['getInputProps'];
   isDragActive: DropzoneState['isDragActive'];
-  clearPreviewOnLoad: EmptyNoReturnFn;
   preview: string | null;
   clearFile: EmptyNoReturnFn;
   originalDimensions: Dimensions;
@@ -91,7 +98,7 @@ export const useCreateUploaderContext = (): UseImageUploaderReturn => {
   } = useDropzone({
     maxFiles: 1,
     multiple: false,
-    // validator: sizeValidator,
+    validator: sizeValidator,
     accept: ACCEPTED_FILE_TYPES,
   });
 
@@ -104,6 +111,7 @@ export const useCreateUploaderContext = (): UseImageUploaderReturn => {
       const image = await createImage(imgUrl);
       const { width, height } = image;
       setOriginalAspectRatio(width / height);
+      setDimensions({ width, height });
       const rotation = ORIENTATION_TO_ANGLE[orientation] ?? 0;
       if (rotation) {
         imgUrl = await getRotatedImage(imgUrl, rotation);
@@ -112,6 +120,9 @@ export const useCreateUploaderContext = (): UseImageUploaderReturn => {
       setFile(file);
       return null;
     } catch (error) {
+      console.error(error);
+      setPreview(null);
+      setFile(null);
       setError({
         code: 'invalid-file',
         message: 'File is not a valid image',
@@ -121,23 +132,16 @@ export const useCreateUploaderContext = (): UseImageUploaderReturn => {
 
   useEffect(() => {
     return () => {
+      clearUrl(preview);
       setFile(null);
-      if (typeof preview === 'string') {
-        URL.revokeObjectURL(preview);
-      }
       setPreview(null);
       setError(null);
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const clearPreviewOnLoad = () => () => {
-    if (typeof preview === 'string') {
-      URL.revokeObjectURL(preview);
-    }
-  };
-
   const clearFile = () => {
+    clearUrl(preview);
     setFile(null);
     setPreview(null);
     setError(null);
@@ -148,9 +152,7 @@ export const useCreateUploaderContext = (): UseImageUploaderReturn => {
       setFile(null);
     }
     if (acceptedFiles.length > 0) {
-      handleFile(acceptedFiles[0]).catch((err) => {
-        console.log(err);
-      });
+      handleFile(acceptedFiles[0]).catch(console.error);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [acceptedFiles, fileRejections]);
@@ -159,7 +161,6 @@ export const useCreateUploaderContext = (): UseImageUploaderReturn => {
     getRootProps,
     getInputProps,
     isDragActive,
-    clearPreviewOnLoad,
     preview,
     isLoading,
     error,
@@ -178,7 +179,6 @@ export const ImageUploaderContext: Context<UseImageUploaderReturn> =
     getRootProps: () => ({}),
     getInputProps: () => ({}),
     isDragActive: false,
-    clearPreviewOnLoad: noOp,
     preview: null,
     isLoading: false,
     error: null,
@@ -193,9 +193,10 @@ export const ImageUploaderContext: Context<UseImageUploaderReturn> =
     cropShape: 'rect',
     setCropShape: noOp,
   } as UseImageUploaderReturn);
-
+ImageUploaderContext.displayName = 'ImageUploaderContext';
 //create a provider using this file
 export const useImageUploaderContext = () => useContext(ImageUploaderContext);
+
 export const ImageUploaderProvider = ({
   children,
   initialValue,

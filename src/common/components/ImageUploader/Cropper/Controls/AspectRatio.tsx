@@ -6,6 +6,7 @@ import {
   IconButton,
   MenuOptionGroup,
   MenuItemOption,
+  useBreakpointValue,
 } from '@chakra-ui/react';
 import { FaExpandArrowsAlt } from 'react-icons/fa';
 const ASPECT_RATIOS = [
@@ -24,12 +25,18 @@ export const AspectRatio = ({ setAspectRatio }: AspectRatioSelectProps) => {
       setAspectRatio(parseFloat(val));
     }
   };
+
+  const iconSize = useBreakpointValue({
+    base: '1.5rem',
+    md: '2rem',
+  });
+
   return (
-    <Menu size={['sm', 'md']} isLazy={true} placement='top' matchWidth={true}>
+    <Menu size={['sm']} isLazy={true} placement='top' matchWidth={true}>
       <MenuButton
         as={IconButton}
-        size='sm'
-        variant='outline'
+        p='0'
+        variant='ghost'
         _hover={{
           cursor: 'pointer',
         }}
@@ -37,7 +44,11 @@ export const AspectRatio = ({ setAspectRatio }: AspectRatioSelectProps) => {
           cursor: 'pointer',
           bg: 'rgba(0,0,0,0)',
         }}
-        icon={<FaExpandArrowsAlt fill='white' size='lg' />}
+        _focus={{
+          cursor: 'pointer',
+          bg: 'rgba(0,0,0,0)',
+        }}
+        icon={<FaExpandArrowsAlt fontSize={iconSize} fill='white' />}
       />
       <MenuList minW='14' pb='0.5' pt='2' mb='0.5'>
         <MenuOptionGroup defaultValue={'1:1'} onChange={handleSelect}>

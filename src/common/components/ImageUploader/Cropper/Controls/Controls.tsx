@@ -1,4 +1,3 @@
-import React from 'react';
 import { Box, Icon, Flex } from '@chakra-ui/react';
 import { Zoom } from './Zoom';
 import { AspectRatio } from './AspectRatio';
@@ -9,59 +8,48 @@ interface ControlsProps {
   handleRotate: () => void;
   setAspectRatio: (aspectRatio: number) => void;
   cropShape: 'rect' | 'round';
+  zoom: number;
 }
 
 export const Controls = ({
   setZoom,
+  zoom,
   handleRotate,
   setAspectRatio,
   cropShape,
-  ...props
 }: ControlsProps) => {
   return (
-    <Box
-      display='flex'
-      flexDir='column'
-      alignContent={['space-around']}
-      justifyContent={['flex-end']}>
-      <Flex
-        alignContent={'center'}
-        w='100%'
-        justifyContent={'space-around'}
-        px='4'
-        mt='4'
-        flexDir={['column', 'column', 'row-reverse']}
-        {...props}>
-        <Flex
-          gap={4}
-          alignContent='center'
-          justifyContent={['flex-end', 'flex-end', 'space-between']}>
-          <Box
-            p='2'
-            mt='1'
-            _hover={{
-              cursor: 'pointer',
-            }}>
-            <Icon
-              as={FiRotateCw}
-              onClick={handleRotate}
-              w={[6, 8]}
-              h={[6, 8]}
-              stroke='white'
-              fill='none'
-              strokeWidth='2'
-            />
-          </Box>
-          {cropShape === 'rect' && (
-            <Box p='2' pl='0' mt='1'>
-              <AspectRatio setAspectRatio={setAspectRatio} />
-            </Box>
-          )}
-        </Flex>
-        <Box p='2' mt='0'>
-          <Zoom setZoom={setZoom} />
+    <Flex
+      w='100%'
+      mb={[1, 5]}
+      gap={[4, 4]}
+      mr={[4, 4]}
+      h={['4rem']}
+      p={6}
+      alignItems='center'
+      justifyContent={['flex-end', 'flex-end']}>
+      <Box>
+        <Zoom setZoom={setZoom} zoom={zoom} />
+      </Box>
+      <Box>
+        <Icon
+          as={FiRotateCw}
+          onClick={handleRotate}
+          w={[6, 10]}
+          h={[6, 10]}
+          stroke='white'
+          fill='none'
+          strokeWidth='2'
+          _hover={{
+            cursor: 'pointer',
+          }}
+        />
+      </Box>
+      {cropShape === 'rect' && (
+        <Box mb={[4.5, 1.2]} w={[8, 10]} h={[8, 10]} pl={[0, 1]}>
+          <AspectRatio setAspectRatio={setAspectRatio} />
         </Box>
-      </Flex>
-    </Box>
+      )}
+    </Flex>
   );
 };
