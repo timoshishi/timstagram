@@ -5,7 +5,7 @@ import { LoginButtons } from './LoginButtons';
 import { NavbarLinks } from './NavbarLinks';
 import { useUser } from '@supabase/auth-helpers-react';
 import { useGlobalModalContext } from '@common/components/Modal/GlobalModal';
-import { AuthModalProps } from '@common/components/Modal/GlobalModal';
+import { AuthModalProps } from '@common/components/Auth/AuthModal';
 import { User } from '@supabase/supabase-js';
 export const Navbar = () => {
   const { user, isLoading } = useUser();

@@ -1,55 +1,55 @@
 import React from 'react';
-import { ComponentMeta } from '@storybook/react';
-import { Button } from '@chakra-ui/react';
+import { ComponentStory, ComponentMeta } from '@storybook/react';
 import {
-  AuthModalProps,
   GlobalModal,
   useGlobalModalContext,
+  ModalType,
 } from '../../common/components/Modal/GlobalModal';
+import { ViewType } from '../../types/auth.types';
+import { AuthModalProps } from '../../common/components/Auth/AuthModal';
+
+import { Button } from '@chakra-ui/button';
 // More on default export: https://storybook.js.org/docs/react/writing-stories/introduction#default-export
 export default {
   title: 'Components/Modal',
   component: GlobalModal,
   centered: true,
+  // More on argTypes: https://storybook.js.org/docs/react/api/argtypes
 } as ComponentMeta<typeof GlobalModal>;
 
-export const AuthModal = (...args) => {
-  const { showModal } = useGlobalModalContext<AuthModalProps>();
-
+// More on component templates: https://storybook.js.org/docs/react/writing-stories/introduction#using-arg
+const ModalComp = (args) => {
+  // const { handleModal, isOpen, setModalProps } = useModal();
+  const [modalType, modalArgs] = args.openModalParams;
+  const { showModal } = useGlobalModalContext<typeof modalArgs>();
   return (
-    <Button
-      onClick={() =>
-        showModal(
-          'AuthModal',
-          { viewType: args[0].viewType },
-          args[0].modalProps
-        )
-      }>
-      Open the modal
-    </Button>
+    <div>
+      <Button onClick={() => showModal(modalType, modalArgs)}>
+        Open Modal
+      </Button>
+    </div>
   );
 };
 
-AuthModal.argTypes = {
-  viewType: {
-    control: { type: 'radio' },
-    options: [
-      'sign_up',
-      'sign_in',
-      'forgotten_password',
-      'magic_link',
-      'update_password',
-    ],
-    default: 'sign_up',
-  },
-  modalProps: {
-    size: 'sm',
-  },
+const Template: ComponentStory<typeof GlobalModal> = (args) => {
+  return (
+    <GlobalModal>
+      <ModalComp {...args} />
+    </GlobalModal>
+  );
 };
-// More on args: https://storybook.js.org/docs/react/writing-stories/args
 
-// Primary.args = {
-//   onFileAccepted: (file) => {
-//     console.log(file, 'FILE');
-//   },
-// };
+type AuthModalParams = [ModalType, AuthModalProps];
+export const AuthModalStory = Template.bind({});
+const authModalParams: AuthModalParams = ['AuthModal', { viewType: 'sign_up' }];
+AuthModalStory.args = {
+  openModalParams: authModalParams,
+};
+
+export const ImageUploaderModal = Template.bind({});
+ImageUploaderModal.args = {
+  openModalParams: [
+    'ImageUploader',
+    { cropType: 'rect', title: "Let's upload an image" },
+  ],
+};
