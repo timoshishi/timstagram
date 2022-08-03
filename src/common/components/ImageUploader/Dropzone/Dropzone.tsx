@@ -1,6 +1,3 @@
-import { useDropzone } from 'react-dropzone';
-import { OnDrop, onDrop } from '../imageUploader.functions';
-import { useCallback } from 'react';
 import {
   Center,
   useColorModeValue,
@@ -11,38 +8,11 @@ import {
   useBreakpointValue,
 } from '@chakra-ui/react';
 import { MdCloudUpload } from 'react-icons/md';
+import { useImageUploaderContext } from '../ImageUploaderContext';
 
-const ACCEPTED_FILE_TYPES = {
-  'image/*': [],
-};
-
-interface DropzoneProps {
-  onDrop: OnDrop;
-}
-export const Dropzone = ({
-  isDragActive,
-  getRootProps,
-  getInputProps,
-}: {
-  isDragActive: boolean;
-  getRootProps: any;
-  getInputProps: any;
-}) => {
-  // const onDrop: OnDrop = useCallback((acceptedFiles) => {
-  //   acceptedFiles.forEach((file) => {
-  //     const reader = new FileReader();
-
-  //     reader.onabort = () => console.log('file reading was aborted');
-  //     reader.onerror = () => console.log('file reading has failed');
-  //     reader.onload = () => {
-  //       // Do whatever you want with the file contents
-  //       const binaryStr = reader.result;
-  //       console.log(binaryStr);
-  //     };
-  //     reader.readAsArrayBuffer(file);
-  //   });
-  // }, []);
-
+export const Dropzone = () => {
+  const { getRootProps, getInputProps, isDragActive } =
+    useImageUploaderContext();
   const baseText = useBreakpointValue({
     base: 'Tap here to select an image',
     md: 'Drag and drop or click here to select an image',
@@ -64,9 +34,13 @@ export const Dropzone = ({
   );
 
   return (
-    <Flex alignItems={'center'} justifyContent='center' flexDir='column'>
+    <Flex
+      alignItems={'center'}
+      justifyContent='center'
+      flexDir='column'
+      p={[2, 20]}>
       <Center
-        p={10}
+        p={[4, 10]}
         cursor='pointer'
         bg={isDragActive ? activeBg : 'transparent'}
         _hover={{ bg: activeBg }}

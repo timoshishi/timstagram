@@ -48,13 +48,7 @@ export const AspectRatio = ({ setAspectRatio }: AspectRatioSelectProps) => {
           cursor: 'pointer',
           bg: 'rgba(0,0,0,0)',
         }}
-        icon={
-          <FaExpandArrowsAlt
-            fontSize={iconSize}
-            fill='white'
-            aria-label='change aspect ratio'
-          />
-        }
+        icon={<FaExpandArrowsAlt fontSize={iconSize} fill='white' />}
       />
       <MenuList minW='14' pb='0.5' pt='2' mb='0.5'>
         <MenuOptionGroup defaultValue={'1:1'} onChange={handleSelect}>

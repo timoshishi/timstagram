@@ -33,7 +33,6 @@
     }
   },
   "exclude": ["node_modules", "**/types/*", "**/stories/**/*"],
-<<<<<<< HEAD
   "include": [
     "next-env.d.ts",
     "**/*.ts",
@@ -42,9 +41,6 @@
     "__tests__/**/*.ts",
     "__tests__/**/*.tsx"
   ],
-=======
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],
->>>>>>> parent of 32e8918 (Cropper (#11))
   "ts-node": {
     "compilerOptions": {
       "module": "commonjs"
