@@ -1,24 +1,7 @@
-// import { useCallback } from 'react';
 import { HandleCroppedImage } from './imageUploader.types';
-// import type { OnDrop } from './imageUploader.types';
+import type { Dimensions } from './imageUploader.types';
+import { MEGABYTE, MAX_MEGABYTES } from './imageUploadter.constants';
 
-// export const onDrop: OnDrop = useCallback((acceptedFiles) => {
-//   acceptedFiles.forEach((file) => {
-//     const reader = new FileReader();
-
-//     reader.onabort = () => console.log('file reading was aborted');
-//     reader.onerror = () => console.log('file reading has failed');
-//     reader.onload = () => {
-//       // Do whatever you want with the file contents
-//       const binaryStr = reader.result;
-//       console.log(binaryStr);
-//     };
-//     reader.readAsArrayBuffer(file);
-//   });
-// }, []);
-
-const MEGABYTE = 1000000;
-const MAX_MEGABYTES = 5;
 export function sizeValidator(file: File) {
   if (file.size > MEGABYTE * MAX_MEGABYTES) {
     return {
@@ -54,6 +37,7 @@ export function sizeValidator(file: File) {
 
   return null;
 }
+
 export const handleCroppedImage: HandleCroppedImage = ({
   croppedImage,
   croppedAreaPixels,
@@ -72,4 +56,37 @@ export const handleCroppedImage: HandleCroppedImage = ({
   } else {
     throw new Error('No file');
   }
+};
+
+export const clearUrl = (url: string | null) => {
+  if (url) {
+    URL.revokeObjectURL(url);
+  }
+};
+
+export const readFile = (file: File) =>
+  new Promise<string>((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = () => {
+      resolve(reader.result as string);
+    };
+    reader.onerror = (error) => {
+      reject(error);
+    };
+    reader.readAsDataURL(file);
+  });
+
+export const scaleImage = (
+  dimensions: Dimensions,
+  maxWidth: number,
+  maxHeight: number
+): Dimensions => {
+  const scaleFactor = Math.min(
+    maxWidth / dimensions.width,
+    maxHeight / dimensions.height
+  );
+  return {
+    width: dimensions.width * scaleFactor,
+    height: dimensions.height * scaleFactor,
+  };
 };

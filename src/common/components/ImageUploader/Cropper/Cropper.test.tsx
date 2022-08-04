@@ -4,7 +4,6 @@ import '@testing-library/jest-dom';
 import {
   ImageUploaderProvider,
   useCreateUploaderContext,
-  UseImageUploaderReturn,
 } from '../ImageUploaderContext';
 import { Cropper } from '@components/ImageUploader/Cropper';
 import userEvent from '@testing-library/user-event';
