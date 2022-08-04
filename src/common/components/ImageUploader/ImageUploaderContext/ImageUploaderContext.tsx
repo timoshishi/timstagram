@@ -1,4 +1,4 @@
-import { useDropzone, FileError, DropzoneState } from 'react-dropzone';
+import { useDropzone, FileError } from 'react-dropzone';
 import {
   useState,
   useEffect,
@@ -6,85 +6,40 @@ import {
   createContext,
   useContext,
   Context,
-  Dispatch,
 } from 'react';
 import { getOrientation } from 'get-orientation/browser.es5';
-import { Dimensions } from './imageUploader.types';
-import { createImage, getRotatedImage } from './Cropper/cropper.functions';
-import { SetStateAction } from 'react';
-import { EmptyNoReturnFn, noOp } from '@common/utils';
-import { sizeValidator } from './imageUploader.functions';
+import type { Dimensions } from '../imageUploader.types';
+import { createImage, getRotatedImage } from '../Cropper/cropper.functions';
+import { noOp } from '@common/utils';
+import { sizeValidator } from '../imageUploader.functions';
+import type {
+  UseImageUploaderReturn,
+  UseCreateUploaderContextProps,
+  OrientationKey,
+} from './imageUploader.types';
+import { readFile, scaleImage, clearUrl } from '../imageUploader.functions';
 
 const ACCEPTED_FILE_TYPES = {
   'image/png': [],
   'image/jpeg': [],
 };
 
-const clearUrl = (url: string | null) => {
-  if (url) {
-    URL.revokeObjectURL(url);
-  }
-};
-
-export const readFile = (file: File) =>
-  new Promise<string>((resolve, reject) => {
-    const reader = new FileReader();
-    reader.onload = () => {
-      resolve(reader.result as string);
-    };
-    reader.onerror = (error) => {
-      reject(error);
-    };
-    reader.readAsDataURL(file);
-  });
-
-export const scaleImage = (
-  dimensions: Dimensions,
-  maxWidth: number,
-  maxHeight: number
-): Dimensions => {
-  const scaleFactor = Math.min(
-    maxWidth / dimensions.width,
-    maxHeight / dimensions.height
-  );
-  return {
-    width: dimensions.width * scaleFactor,
-    height: dimensions.height * scaleFactor,
-  };
-};
-
-export type ScaleImage = typeof scaleImage;
-export type UseImageUploaderReturn = {
-  file: File | null;
-  error: FileError | null;
-  isLoading: boolean;
-  getRootProps: DropzoneState['getRootProps'];
-  getInputProps: DropzoneState['getInputProps'];
-  isDragActive: DropzoneState['isDragActive'];
-  preview: string | null;
-  clearFile: EmptyNoReturnFn;
-  originalDimensions: Dimensions;
-  originalAspectRatio: number;
-  scaleImage: ScaleImage;
-  cropShape: 'round' | 'rect';
-  setCropShape: Dispatch<SetStateAction<'round' | 'rect'>>;
-};
-
-const ORIENTATION_TO_ANGLE = {
+export const ORIENTATION_TO_ANGLE = {
   '3': 180,
   '6': 90,
   '8': -90,
 };
 
-type OrientationKey = keyof typeof ORIENTATION_TO_ANGLE;
-
-export const useCreateUploaderContext = (): UseImageUploaderReturn => {
+export const useCreateUploaderContext = ({
+  type,
+}: UseCreateUploaderContextProps = {}): UseImageUploaderReturn => {
   const [file, setFile] = useState<File | null>(null);
   const [cropShape, setCropShape] = useState<'round' | 'rect'>('rect');
   const [isLoading, setIsLoading] = useState(false);
   const [preview, setPreview] = useState<string | null>(null);
   const [error, setError] = useState<FileError | null>(null);
   const [originalAspectRatio, setOriginalAspectRatio] = useState(1);
+  const [currentStep, setCurrentStep] = useState(0);
   const [dimensions, setDimensions] = useState<Dimensions>({
     width: 0,
     height: 0,
@@ -101,6 +56,10 @@ export const useCreateUploaderContext = (): UseImageUploaderReturn => {
     validator: sizeValidator,
     accept: ACCEPTED_FILE_TYPES,
   });
+
+  const setStep = (step: number) => {
+    setCurrentStep(step);
+  };
 
   const handleFile = useCallback(async (file: File) => {
     try {
@@ -171,8 +130,11 @@ export const useCreateUploaderContext = (): UseImageUploaderReturn => {
     scaleImage,
     cropShape,
     setCropShape,
+    setStep,
+    currentStep,
   } as const;
 };
+
 //create a context using this file
 export const ImageUploaderContext: Context<UseImageUploaderReturn> =
   createContext<UseImageUploaderReturn>({
@@ -192,6 +154,8 @@ export const ImageUploaderContext: Context<UseImageUploaderReturn> =
     scaleImage: () => ({ width: 0, height: 0 }),
     cropShape: 'rect',
     setCropShape: noOp,
+    setStep: noOp,
+    currentStep: 0,
   } as UseImageUploaderReturn);
 ImageUploaderContext.displayName = 'ImageUploaderContext';
 //create a provider using this file

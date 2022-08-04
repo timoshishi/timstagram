@@ -1,1 +1,1 @@
-export { EasyCropper as Cropper } from './Cropper';
+export { EasyCropper as Cropper, CropperProps } from './Cropper';
