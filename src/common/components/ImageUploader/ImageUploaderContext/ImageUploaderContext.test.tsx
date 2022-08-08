@@ -1,13 +1,76 @@
-import { renderHook } from '@testing-library/react';
+import { renderHook, waitFor } from '@testing-library/react';
 import {
   useImageUploaderContext,
   useCreateUploaderContext,
+  ImageUploaderProvider,
 } from './ImageUploaderContext';
+import { UseImageUploaderReturn } from './imageUploader.types';
+import { ReactNode } from 'react';
+import { act } from 'react-dom/test-utils';
 
+const createWrapper = (override: any) => {};
 describe('ImageUploaderContext', () => {
-  it('Handles the isOpen properties of the CommentSlider to true if an options object with the value of type: post is passed in on initialization', async () => {
-    const { result } = renderHook(() => useCreateUploaderContext());
-    console.log(result.current);
-    expect(true).toBeTruthy();
+  let wrapper: any;
+  let rerender: any;
+  wrapper: ({ children }: { children: ReactNode }) => Element;
+  let result: { current: UseImageUploaderReturn };
+  beforeEach(() => {
+    const { result: ctx } = renderHook(() => useCreateUploaderContext());
+    wrapper = ({ children }: { children: ReactNode }) => (
+      <ImageUploaderProvider initialValue={ctx.current}>
+        {children}
+      </ImageUploaderProvider>
+    );
+    const res = renderHook(() => useCreateUploaderContext(), {
+      wrapper,
+    });
+    result = res.result;
+    rerender = res.rerender;
+  });
+  it('renders initial primitive values correctly', async () => {
+    const current = result.current;
+    expect(current.isDragActive).toBe(false);
+    expect(current.preview).toBeNull();
+    expect(current.error).toBeNull();
+    expect(current.file).toBeNull();
+    expect(current.originalDimensions).toEqual({ width: 0, height: 0 });
+    expect(current.originalAspectRatio).toBe(1);
+    expect(current.cropShape).toBe('rect');
+    expect(current.isCommentSliderOpen).toBe(false);
+  });
+  it('toggles the state of comment slider', async () => {
+    expect(result.current.isCommentSliderOpen).toBe(false);
+    await act(() => {
+      result.current.toggleCommentSlider();
+    });
+    expect(result.current.isCommentSliderOpen).toBe(true);
+    await act(() => {
+      result.current.toggleCommentSlider();
+    });
+
+    expect(result.current.isCommentSliderOpen).toBe(false);
+  });
+
+  //mock a file
+  const file = new File([], 'test.jpg', {
+    type: 'image/jpeg',
+    lastModified: Date.now(),
+  });
+  it('can clear a preview url with clearFile', async () => {
+    // const { current } = result;
+    result.current.preview = 'http://testurl.com';
+    expect(result.current.preview).toBe('http://testurl.com');
+    await act(() => {
+      result.current.clearFile();
+    });
+    rerender();
+    await waitFor(
+      () => {
+        expect(result.current.preview).toBeNull();
+      },
+      {
+        timeout: 1000,
+      }
+    );
   });
 });
