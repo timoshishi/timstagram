@@ -1,5 +1,5 @@
 import React from 'react';
-import { render, waitFor, renderHook, act } from '@src/test-utils';
+import { render, waitFor, renderHook, act } from '../../../../../test-utils';
 import '@testing-library/jest-dom';
 import {
   ImageUploaderProvider,
@@ -8,9 +8,10 @@ import {
 import { Cropper } from '@components/ImageUploader/Cropper';
 import userEvent from '@testing-library/user-event';
 import { handleCroppedImage } from '@components/ImageUploader/imageUploader.functions';
+import { action } from '@storybook/addon-actions';
 
 describe('Cropper', () => {
-  it('should render with an image  the control buttons and three svg buttons', () => {
+  it('should render with an image  the control buttons and three svg buttons', async () => {
     const {
       result: { current: initialValues },
     } = renderHook(() => useCreateUploaderContext(), {});
@@ -21,12 +22,14 @@ describe('Cropper', () => {
         <Cropper handleCroppedImage={handleCroppedImage} />
       </ImageUploaderProvider>
     );
-    expect(res.getByRole('img')).toBeInTheDocument();
-    expect(res.getByText('Cancel')).toBeInTheDocument();
-    expect(res.getByText('Next')).toBeInTheDocument();
-    expect(res.getByLabelText('zoom in')).toBeInTheDocument();
-    expect(res.getByLabelText('rotate image')).toBeInTheDocument();
-    expect(res.getByLabelText('change aspect ratio')).toBeInTheDocument();
+    await waitFor(() => {
+      expect(res.getByText('Next')).toBeInTheDocument();
+      expect(res.getByLabelText('zoom in')).toBeInTheDocument();
+      expect(res.getByLabelText('rotate image')).toBeInTheDocument();
+      expect(res.getByLabelText('change aspect ratio')).toBeInTheDocument();
+      expect(res.getByRole('img')).toBeInTheDocument();
+      expect(res.getByText('Cancel')).toBeInTheDocument();
+    });
   });
   it('hovering the zoom icon should show a thumb slider when hovered and disappear after unhovering', async () => {
     const {
@@ -41,11 +44,15 @@ describe('Cropper', () => {
     );
     expect(getByLabelText('zoom in')).toBeInTheDocument();
     expect(queryByLabelText('zoom slider')).toBeNull();
-    await user.hover(getByLabelText('zoom in'));
+    await act(() => {
+      user.hover(getByLabelText('zoom in'));
+    });
     await waitFor(() =>
       expect(queryByLabelText('zoom slider')).toBeInTheDocument()
     );
-    await user.unhover(getByLabelText('zoom in'));
+    await act(() => {
+      user.unhover(getByLabelText('zoom in'));
+    });
     await waitFor(() =>
       expect(getByLabelText('zoom slider')).toBeInTheDocument()
     );
@@ -66,12 +73,16 @@ describe('Cropper', () => {
     expect(aspectRatioButton).toBeInTheDocument();
 
     expect(queryByText('1:1')).toBeNull();
-    await act(async () => {});
-    await user.click(aspectRatioButton);
+    await await act(() => {
+      user.click(aspectRatioButton);
+    });
     await waitFor(() => expect(getByText('1:1')).toBeInTheDocument());
     expect(queryByText('16:9')).toBeInTheDocument();
     expect(getByText('4:3')).toBeInTheDocument();
-    await user.click(getByText('1:1'));
+    await act(() => {
+      user.click(getByText('1:1'));
+    });
+
     await waitFor(() => expect(queryByText('1:1')).not.toBeInTheDocument());
   });
 
@@ -92,7 +103,11 @@ describe('Cropper', () => {
     const clearFile = jest.spyOn(initialValues, 'clearFile');
 
     expect(previewImage).toBeInTheDocument();
-    await user.click(cancelButton);
-    expect(clearFile).toHaveBeenCalledTimes(1);
+    await act(() => {
+      user.click(cancelButton);
+    });
+    await waitFor(() => {
+      expect(clearFile).toHaveBeenCalledTimes(1);
+    });
   });
 });

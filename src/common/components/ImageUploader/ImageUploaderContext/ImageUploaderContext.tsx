@@ -18,6 +18,7 @@ import type {
   OrientationKey,
 } from './imageUploader.types';
 import { readFile, scaleImage, clearUrl } from '../imageUploader.functions';
+import { useBoolean } from '@chakra-ui/react';
 
 const ACCEPTED_FILE_TYPES = {
   'image/png': [],
@@ -39,7 +40,8 @@ export const useCreateUploaderContext = ({
   const [preview, setPreview] = useState<string | null>(null);
   const [error, setError] = useState<FileError | null>(null);
   const [originalAspectRatio, setOriginalAspectRatio] = useState(1);
-  const [currentStep, setCurrentStep] = useState(0);
+  const [isCommentSliderOpen, { toggle: toggleCommentSlider }] =
+    useBoolean(false);
   const [dimensions, setDimensions] = useState<Dimensions>({
     width: 0,
     height: 0,
@@ -56,10 +58,6 @@ export const useCreateUploaderContext = ({
     validator: sizeValidator,
     accept: ACCEPTED_FILE_TYPES,
   });
-
-  const setStep = (step: number) => {
-    setCurrentStep(step);
-  };
 
   const handleFile = useCallback(async (file: File) => {
     try {
@@ -130,8 +128,8 @@ export const useCreateUploaderContext = ({
     scaleImage,
     cropShape,
     setCropShape,
-    setStep,
-    currentStep,
+    isCommentSliderOpen,
+    toggleCommentSlider,
   } as const;
 };
 
@@ -156,6 +154,8 @@ export const ImageUploaderContext: Context<UseImageUploaderReturn> =
     setCropShape: noOp,
     setStep: noOp,
     currentStep: 0,
+    isCommentSliderOpen: false,
+    toggleCommentSlider: noOp,
   } as UseImageUploaderReturn);
 ImageUploaderContext.displayName = 'ImageUploaderContext';
 //create a provider using this file

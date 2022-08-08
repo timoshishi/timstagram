@@ -1,6 +1,6 @@
 import { HandleCroppedImage } from './imageUploader.types';
 import type { Dimensions } from './imageUploader.types';
-import { MEGABYTE, MAX_MEGABYTES } from './imageUploadter.constants';
+import { MEGABYTE, MAX_MEGABYTES } from './imageUploader.constants';
 
 export function sizeValidator(file: File) {
   if (file.size > MEGABYTE * MAX_MEGABYTES) {
@@ -16,7 +16,7 @@ export function sizeValidator(file: File) {
       message: 'File must be a PNG or JPG',
     };
   }
-  //check if the file is a valid image
+  //check if the file is a valid imagefq
   const img = new Image();
   img.src = URL.createObjectURL(file);
   img.onload = () => {
@@ -27,12 +27,6 @@ export function sizeValidator(file: File) {
       };
     }
     URL.revokeObjectURL(img.src);
-  };
-  img.onerror = () => {
-    return {
-      code: 'invalid-type',
-      message: 'File must be a PNG or JPG',
-    };
   };
 
   return null;
@@ -54,7 +48,7 @@ export const handleCroppedImage: HandleCroppedImage = ({
     };
     return imageData;
   } else {
-    throw new Error('No file');
+    return null;
   }
 };
 

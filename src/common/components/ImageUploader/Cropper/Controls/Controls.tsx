@@ -2,6 +2,7 @@ import { Box, Icon, Flex } from '@chakra-ui/react';
 import { Zoom } from './Zoom';
 import { AspectRatio } from './AspectRatio';
 import { FiRotateCw } from 'react-icons/fi';
+import { RefObject } from 'react';
 
 interface ControlsProps {
   setZoom: (zoom: number) => void;
@@ -9,6 +10,7 @@ interface ControlsProps {
   setAspectRatio: (aspectRatio: number) => void;
   cropShape: 'rect' | 'round';
   zoom: number;
+  cropperRef: RefObject<HTMLDivElement | null>;
 }
 
 export const Controls = ({
@@ -17,6 +19,7 @@ export const Controls = ({
   handleRotate,
   setAspectRatio,
   cropShape,
+  cropperRef,
 }: ControlsProps) => {
   return (
     <Flex

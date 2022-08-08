@@ -2,7 +2,7 @@ import React from 'react';
 import { ComponentStory, ComponentMeta } from '@storybook/react';
 import { Cropper } from '../../common/components/ImageUploader/Cropper';
 import { noOp } from '../../common/utils';
-import { Modal, ModalOverlay, ModalContent } from '@chakra-ui/react';
+import { Modal, ModalOverlay, ModalContent, Portal } from '@chakra-ui/react';
 import {
   ImageUploaderProvider,
   useCreateUploaderContext,

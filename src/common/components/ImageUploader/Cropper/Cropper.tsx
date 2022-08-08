@@ -27,6 +27,7 @@ export const EasyCropper = ({ handleCroppedImage }: CropperProps) => {
     y: 0,
   });
 
+  const cropperRef = useRef(null);
   const modalRef = useRef(null);
   const dimensions = useDimensions(modalRef, true);
   const onCropComplete = useCallback((_: Area, croppedAreaPixels: Area) => {
@@ -71,7 +72,7 @@ export const EasyCropper = ({ handleCroppedImage }: CropperProps) => {
   const onClose = useCallback(() => {
     // setCroppedImage(null);
   }, []);
-  null;
+
   return (
     <Flex
       // minH={['100vh', '50%']}
@@ -81,7 +82,10 @@ export const EasyCropper = ({ handleCroppedImage }: CropperProps) => {
       position='relative'
       bg='whiteAlpha.100'
       justifyContent={['center']}>
-      <CropperButtons clearFile={clearFile} getCroppedImage={getCroppedImage} />
+      <CropperButtons
+        getCroppedImage={getCroppedImage}
+        cropperRef={cropperRef}
+      />
       <Box position='relative'>
         <Cropper
           image={preview ?? undefined}
@@ -110,13 +114,14 @@ export const EasyCropper = ({ handleCroppedImage }: CropperProps) => {
           onRotationChange={setRotation}
           onCropComplete={onCropComplete}
         />
-        <Box position='absolute' bottom='0' right='0' w='100%'>
+        <Box position='absolute' bottom='0' right='0' w='100%' ref={cropperRef}>
           <Controls
             setZoom={setZoom}
             zoom={zoom}
             setAspectRatio={setAspectRatio}
             handleRotate={handleRotate}
             cropShape={cropShape}
+            cropperRef={cropperRef}
           />
         </Box>
       </Box>

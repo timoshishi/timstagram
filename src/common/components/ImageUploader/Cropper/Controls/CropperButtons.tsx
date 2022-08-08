@@ -1,14 +1,23 @@
-import { Flex, Button } from '@chakra-ui/react';
+import { Flex, Button, useBoolean } from '@chakra-ui/react';
 import { EmptyNoReturnFn } from '@common/utils';
+import {
+  useCreateUploaderContext,
+  useImageUploaderContext,
+} from '../../ImageUploaderContext';
+import { useImageUploader } from '../../useImageUploader';
+import { PostForm } from '../PostForm';
+import { RefObject } from 'react';
 
 interface CropperButtonsProps {
-  clearFile: EmptyNoReturnFn;
   getCroppedImage: EmptyNoReturnFn;
+  cropperRef: RefObject<HTMLDivElement | null>;
 }
 export const CropperButtons = ({
-  clearFile,
   getCroppedImage,
+  cropperRef,
 }: CropperButtonsProps) => {
+  const { clearFile } = useImageUploaderContext();
+
   return (
     <Flex
       justifyContent={['space-between', 'space-between', 'flex-end']}
@@ -18,17 +27,13 @@ export const CropperButtons = ({
       <Button
         variant='outline'
         colorScheme='telegram'
+        // onClick={clearFile}
         onClick={clearFile}
         size={['sm', 'sm', 'sm']}>
         Cancel
       </Button>
-      <Button
-        variant='solid'
-        colorScheme='telegram'
-        size={['sm', 'sm', 'sm']}
-        onClick={getCroppedImage}>
-        Next
-      </Button>
+      {/* <PostForm /> */}
+      <PostForm cropperRef={cropperRef} />
     </Flex>
   );
 };

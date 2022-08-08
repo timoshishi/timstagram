@@ -27,8 +27,8 @@ export type UseImageUploaderReturn = {
   scaleImage: ScaleImage;
   cropShape: 'round' | 'rect';
   setCropShape: Dispatch<SetStateAction<'round' | 'rect'>>;
-  currentStep: number;
-  setStep: (step: number) => void;
+  isCommentSliderOpen: boolean;
+  toggleCommentSlider: () => void;
 };
 
 export interface UseCreateUploaderContextProps {
