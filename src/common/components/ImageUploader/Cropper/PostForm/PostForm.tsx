@@ -35,7 +35,6 @@ export const PostForm = ({
         placement='right'
         isOpen={isOpen}
         onClose={onClose}
-        // zIndex={100}
         portalProps={{
           appendToParentPortal: false,
           containerRef: cropperRef,

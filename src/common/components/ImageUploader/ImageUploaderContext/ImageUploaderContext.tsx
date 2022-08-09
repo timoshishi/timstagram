@@ -71,6 +71,7 @@ export const useCreateUploaderContext = ({
       setDimensions({ width, height });
       const rotation = ORIENTATION_TO_ANGLE[orientation] ?? 0;
       if (rotation) {
+        //FIXME:  PERFORMANCE - CHANGE THIS TO FILEREADER readDataURL (currently URL.objectURL)
         imgUrl = await getRotatedImage(imgUrl, rotation);
       }
       setPreview(imgUrl);
@@ -78,6 +79,7 @@ export const useCreateUploaderContext = ({
       return null;
     } catch (error) {
       console.error(error);
+      clearUrl(preview);
       setPreview(null);
       setFile(null);
       setError({
@@ -110,6 +112,7 @@ export const useCreateUploaderContext = ({
     }
     if (acceptedFiles.length > 0) {
       handleFile(acceptedFiles[0]).catch(console.error);
+      setError(null);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [acceptedFiles, fileRejections]);

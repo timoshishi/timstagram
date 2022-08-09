@@ -8,7 +8,6 @@ import {
 import { Cropper } from '@components/ImageUploader/Cropper';
 import userEvent from '@testing-library/user-event';
 import { handleCroppedImage } from '@components/ImageUploader/imageUploader.functions';
-import { action } from '@storybook/addon-actions';
 
 describe('Cropper', () => {
   it('should render with an image  the control buttons and three svg buttons', async () => {
@@ -83,7 +82,7 @@ describe('Cropper', () => {
       user.click(getByText('1:1'));
     });
 
-    await waitFor(() => expect(queryByText('1:1')).not.toBeInTheDocument());
+    await waitFor(() => expect(getByText('1:1')));
   });
 
   it('should not have an image on the page if the cancel button is clicked', async () => {
