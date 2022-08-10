@@ -1,6 +1,8 @@
 import { UserProvider } from '@supabase/auth-helpers-react';
 import { GlobalModal } from '../src/common/components/Modal/GlobalModal';
 import { supabase } from '../src/lib/initSupabase';
+import { initialize, mswDecorator } from 'msw-storybook-addon';
+initialize();
 export const parameters = {
   actions: { argTypesRegex: '^on[A-Z].*' },
   layout: 'fullscreen',
@@ -20,4 +22,5 @@ export const decorators = [
       </GlobalModal>
     </UserProvider>
   ),
+  mswDecorator,
 ];
