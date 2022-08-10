@@ -23,4 +23,8 @@ module.exports = {
       },
     },
   },
+  env: (config) => ({
+    ...config,
+    NEXT_PUBLIC_API_URL: 'http://localhost:6006/api',
+  }),
 };
