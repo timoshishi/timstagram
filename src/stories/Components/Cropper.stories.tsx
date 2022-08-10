@@ -7,13 +7,13 @@ import {
   ImageUploaderProvider,
   useCreateUploaderContext,
 } from '../../common/components/ImageUploader/ImageUploaderContext';
-
+import { withPerformance } from 'storybook-addon-performance';
+import { rest } from 'msw';
 export default {
   title: 'Components/Cropper',
   component: Cropper,
+  decorators: [withPerformance],
 } as ComponentMeta<typeof Cropper>;
-const URL =
-  'https://img.huffingtonpost.com/asset/5ab4d4ac2000007d06eb2c56.jpeg?cache=sih0jwle4e&ops=1910_1000';
 
 const Template: ComponentStory<typeof Cropper> = (args) => {
   const initialValue = useCreateUploaderContext();
@@ -23,15 +23,15 @@ const Template: ComponentStory<typeof Cropper> = (args) => {
   };
   return (
     <ImageUploaderProvider initialValue={props}>
-      <Modal
-        isOpen={true}
-        onClose={noOp}
-        size={['md', 'lg', '3xl']}
-        initialFocusRef={undefined}
-        isCentered={true}>
+      <Modal isOpen={true} onClose={noOp} size={['md', 'lg', '3xl']} initialFocusRef={undefined} isCentered={true}>
         <ModalOverlay />
         <ModalContent p='0' display={'flex'} flexDir='column'>
-          <Cropper handleCroppedImage={console.log} />
+          <Cropper
+            handleCroppedImage={(e) => {
+              console.log(e);
+              return null;
+            }}
+          />
         </ModalContent>
       </Modal>
     </ImageUploaderProvider>
@@ -61,10 +61,37 @@ Primary.argTypes = {
       },
       type: 'radio',
     },
-    options: [
-      '/storybook/aspect-1-1.jpg',
-      '/storybook/aspect-4-3.jpg',
-      '/storybook/aspect-16-9.jpg',
-    ],
+    options: ['/storybook/aspect-1-1.jpg', '/storybook/aspect-4-3.jpg', '/storybook/aspect-16-9.jpg'],
   },
+};
+
+Primary.parameters = {
+  msw: [
+    rest.get('/api/auth/user', (req, res, ctx) => {
+      return res(
+        ctx.json({
+          user: {
+            id: '1',
+            username: 'Bobby Daniels',
+            avatarURL: '',
+          },
+        })
+      );
+    }),
+    rest.get('/api/user/:id', (req, res, ctx) => {
+      return res(
+        ctx.json({
+          id: '1',
+          username: 'Bennie.Lehner',
+          verifiedAt: '2021-11-21T02:50:43.534Z',
+          avatarURL: 'https://cloudflare-ipfs.com/ipfs/Qmd3W5DuhgHirLHGVixi6V76LhCkZUz6pnFt5AJBiyvHye/avatar/830.jpg',
+          createdAt: '2022-06-25T08:09:21.888Z',
+          updatedAt: '2021-10-06T01:52:18.215Z',
+          banned: true,
+          isBot: false,
+          email: 'Rafaela.Russel@hotmail.com',
+        })
+      );
+    }),
+  ],
 };

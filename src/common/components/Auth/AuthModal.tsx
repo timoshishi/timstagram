@@ -1,13 +1,6 @@
 import { Auth } from '@supabase/ui';
-import { supabase } from '../../../lib/initSupabase';
-import {
-  ModalContent,
-  Flex,
-  Text,
-  Box,
-  ModalCloseButton,
-  ModalOverlay,
-} from '@chakra-ui/react';
+import { supabaseClient } from '@supabase/auth-helpers-nextjs';
+import { ModalContent, Flex, Text, Box, ModalCloseButton, ModalOverlay } from '@chakra-ui/react';
 import { BrandLogo } from '@common/layout/app-layout/Navbar/BrandLogo';
 import { useGlobalModalContext } from '../Modal/GlobalModal';
 import { ViewType } from 'types/auth.types';
@@ -29,11 +22,9 @@ const AuthModal = () => {
         <Flex flexDirection='column' p={6}>
           <Box m={25}>
             <BrandLogo />
-            <Text fontSize='xl'>
-              Welcome to {process.env.NEXT_PUBLIC_APP_NAME}
-            </Text>
+            <Text fontSize='xl'>Welcome to {process.env.NEXT_PUBLIC_APP_NAME}</Text>
           </Box>
-          <Auth supabaseClient={supabase} view={viewType} />
+          <Auth supabaseClient={supabaseClient} view={viewType} />
         </Flex>
       </ModalContent>
     </>

@@ -1,25 +1,13 @@
-import { supabase } from 'src/lib/initSupabase';
-import {
-  Flex,
-  Avatar,
-  Button,
-  Menu,
-  MenuButton,
-  MenuList,
-  MenuItem,
-  MenuDivider,
-} from '@chakra-ui/react';
+// import { supabase } from 'src/lib/initSupabase';
+import { supabaseClient } from '@supabase/auth-helpers-nextjs';
+import { Flex, Avatar, Button, Menu, MenuButton, MenuList, MenuItem, MenuDivider } from '@chakra-ui/react';
 
 export const ProfileDropdown = () => {
   return (
     <>
       <Flex alignItems={'center'}>
         <Menu isLazy>
-          <MenuButton
-            as={Button}
-            rounded={'full'}
-            variant={'link'}
-            cursor={'pointer'}>
+          <MenuButton as={Button} rounded={'full'} variant={'link'} cursor={'pointer'}>
             <Avatar
               size={'sm'}
               src={
@@ -31,7 +19,7 @@ export const ProfileDropdown = () => {
             <MenuItem>Link 1</MenuItem>
             <MenuItem>Link 2</MenuItem>
             <MenuDivider />
-            <MenuItem onClick={() => supabase.auth.signOut()}>SignOut</MenuItem>
+            <MenuItem onClick={() => supabaseClient.auth.signOut()}>SignOut</MenuItem>
           </MenuList>
         </Menu>
       </Flex>

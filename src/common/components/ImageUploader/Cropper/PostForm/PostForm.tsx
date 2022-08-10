@@ -1,63 +1,55 @@
 import { EmptyNoReturnFn } from '@common/utils';
-import {
-  useBoolean,
-  Button,
-  Slide,
-  Text,
-  Box,
-  Drawer,
-  DrawerContent,
-  useDisclosure,
-} from '@chakra-ui/react';
-import { RefObject } from 'react';
+import { Button, Box, Flex, Textarea, Collapse } from '@chakra-ui/react';
+import { PostHeaderAvatar } from '@common/components/PostCard/PostHeader/PostHeaderAvatar';
+import useUser from '@common/hooks/useUser';
 
 interface PostFormProps {
-  togglePostForm: EmptyNoReturnFn;
-  isPostFormOpen: boolean;
+  isOpen: boolean;
+  onToggle: EmptyNoReturnFn;
 }
 
-export const PostForm = ({
-  cropperRef,
-}: {
-  cropperRef: RefObject<HTMLElement | null>;
-}) => {
-  const { isOpen, onClose, onOpen } = useDisclosure();
+export const PostForm = ({ isOpen, onToggle }: PostFormProps) => {
+  const { user } = useUser();
   return (
     <Box>
-      <Button
-        variant='solid'
-        colorScheme='telegram'
-        size={['sm', 'sm', 'sm']}
-        onClick={onOpen}>
-        Next
-      </Button>
-      <Drawer
-        placement='right'
-        isOpen={isOpen}
-        onClose={onClose}
-        portalProps={{
-          appendToParentPortal: false,
-          containerRef: cropperRef,
-        }}>
-        <DrawerContent>
-          <Box
-            p='40px'
+      <Collapse in={isOpen}>
+        <Box
+          p='6'
+          color='white'
+          w={['100%', '80%', '60%']}
+          maxH={'100%'}
+          bg='teal.500'
+          zIndex={100}
+          // width={'100%'}
+          rounded='md'
+          shadow='md'
+          position='absolute'
+          right='0'
+          top='3.5rem'
+        >
+          {user && <PostHeaderAvatar username={user.username} avatarURL={user.avatarURL} />}
+          <Textarea
+            placeholder='Add a caption, with some #hashtags to get noticed!'
+            size='lg'
+            resize='none'
+            minH='10rem'
+            bg='transparent'
             color='white'
+            _placeholder={{ color: 'white' }}
             mt='4'
-            bg='teal.500'
-            zIndex={100}
-            rounded='md'
-            shadow='md'
-            position='absolute'>
-            <Text fontSize='2'>
-              Lorem ipsum dolor sit amet, consectetur adipisicing elit. Vero
-              iure possimus tempora harum temporibus mollitia veritatis,
-              accusamus commodi explicabo necessitatibus placeat ad ipsam,
-              consequatur quidem ducimus vel magni. Nostrum, porro.
-            </Text>
-          </Box>
-        </DrawerContent>
-      </Drawer>
+          />
+          <Flex justifyContent={'flex-end'} w='100%' p='3' alignSelf={'flex-end'}>
+            <Button
+              variant='solid'
+              colorScheme='telegram'
+              size={['md', 'md', 'md']}
+              onClick={() => console.log('post the photo')}
+            >
+              Post
+            </Button>
+          </Flex>
+        </Box>
+      </Collapse>
     </Box>
   );
 };
