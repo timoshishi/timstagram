@@ -3,7 +3,7 @@ import { Flex, Avatar, Text } from '@chakra-ui/react';
 interface PostHeaderAvatarProps {
   username: string;
   avatarURL: string;
-  isFollowing: boolean;
+  isFollowing?: boolean;
 }
 
 export const PostHeaderAvatar = ({

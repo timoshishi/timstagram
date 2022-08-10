@@ -9,8 +9,7 @@ import { AuthModalProps } from '@common/components/Auth/AuthModal';
 import { User } from '@supabase/supabase-js';
 export const Navbar = () => {
   const { user, isLoading } = useUser();
-  const { showModal, isOpen, hideModal } =
-    useGlobalModalContext<AuthModalProps>();
+  const { showModal, isOpen, hideModal } = useGlobalModalContext<AuthModalProps>();
 
   if (isOpen && user) {
     hideModal();
@@ -25,34 +24,17 @@ export const Navbar = () => {
     return <div>isLoading...</div>;
   }
   return (
-    <Box
-      minW='100vw'
-      maxW='100vw'
-      position='fixed'
-      top={0}
-      left={0}
-      zIndex={1}
-      bg={colorMode}
-      as='nav'
-      id='navbar'>
+    <Box minW='100vw' maxW='100vw' position='fixed' top={0} left={0} zIndex={1} bg={colorMode} as='nav' id='navbar'>
       <Show above='lg'>
         <Box width={'50%'} />
       </Show>
       <Box bg={colorMode} px={4} minW='1/2' maxW='100%'>
-        <Flex
-          h={16}
-          alignItems='center'
-          justifyContent={['space-between', 'flex-end']}
-          minWidth='max-content'>
+        <Flex h={16} alignItems='center' justifyContent={['space-between', 'flex-end']} minWidth='max-content'>
           <Show above='xs'>
             <BrandLogo />
           </Show>
           <NavbarLinks />
-          {!!user && !isLoading ? (
-            <ProfileDropdown />
-          ) : (
-            <LoginButtons handleLogin={handleAuthModal} />
-          )}
+          {!!user && !isLoading ? <ProfileDropdown /> : <LoginButtons handleLogin={handleAuthModal} />}
         </Flex>
       </Box>
     </Box>

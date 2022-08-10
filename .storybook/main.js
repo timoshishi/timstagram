@@ -6,6 +6,7 @@ module.exports = {
     '@storybook/addon-interactions',
     '@chakra-ui/storybook-addon',
     'storybook-addon-next',
+    'storybook-addon-performance/register',
   ],
   framework: '@storybook/react',
   core: {
