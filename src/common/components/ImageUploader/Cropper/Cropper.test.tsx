@@ -1,10 +1,7 @@
 import React from 'react';
-import { render, waitFor, renderHook, act } from '../../../../../test-utils';
+import { render, waitFor, renderHook, act, screen } from '../../../../../test-utils';
 import '@testing-library/jest-dom';
-import {
-  ImageUploaderProvider,
-  useCreateUploaderContext,
-} from '../ImageUploaderContext';
+import { ImageUploaderProvider, useCreateUploaderContext } from '../ImageUploaderContext';
 import { Cropper } from '@components/ImageUploader/Cropper';
 import userEvent from '@testing-library/user-event';
 import { handleCroppedImage } from '@components/ImageUploader/imageUploader.functions';
@@ -16,18 +13,28 @@ describe('Cropper', () => {
     } = renderHook(() => useCreateUploaderContext(), {});
 
     initialValues.preview = '/storybook/aspect-16-9.jpg';
-    const res = render(
+    render(
       <ImageUploaderProvider initialValue={initialValues}>
         <Cropper handleCroppedImage={handleCroppedImage} />
       </ImageUploaderProvider>
     );
     await waitFor(() => {
-      expect(res.getByText('Next')).toBeInTheDocument();
-      expect(res.getByLabelText('zoom in')).toBeInTheDocument();
-      expect(res.getByLabelText('rotate image')).toBeInTheDocument();
-      expect(res.getByLabelText('change aspect ratio')).toBeInTheDocument();
-      expect(res.getByRole('img')).toBeInTheDocument();
-      expect(res.getByText('Cancel')).toBeInTheDocument();
+      expect(screen.getByText('Next')).toBeInTheDocument();
+    });
+    await waitFor(() => {
+      expect(screen.getByLabelText('zoom in')).toBeInTheDocument();
+    });
+    await waitFor(() => {
+      expect(screen.getByLabelText('rotate image')).toBeInTheDocument();
+    });
+    await waitFor(() => {
+      expect(screen.getByLabelText('change aspect ratio')).toBeInTheDocument();
+    });
+    await waitFor(() => {
+      expect(screen.getAllByRole('img').length).toBeTruthy();
+    });
+    await waitFor(() => {
+      expect(screen.getByText('Cancel')).toBeInTheDocument();
     });
   });
   it('hovering the zoom icon should show a thumb slider when hovered and disappear after unhovering', async () => {
@@ -36,25 +43,21 @@ describe('Cropper', () => {
     } = renderHook(() => useCreateUploaderContext(), {});
     const user = userEvent.setup();
     initialValues.preview = '/storybook/aspect-16-9.jpg';
-    const { queryByLabelText, getByLabelText } = render(
+    render(
       <ImageUploaderProvider initialValue={initialValues}>
         <Cropper handleCroppedImage={handleCroppedImage} />
       </ImageUploaderProvider>
     );
-    expect(getByLabelText('zoom in')).toBeInTheDocument();
-    expect(queryByLabelText('zoom slider')).toBeNull();
+    expect(screen.getByLabelText('zoom in')).toBeInTheDocument();
+    expect(screen.queryByLabelText('zoom slider')).toBeNull();
     await act(() => {
-      user.hover(getByLabelText('zoom in'));
+      user.hover(screen.getByLabelText('zoom in'));
     });
-    await waitFor(() =>
-      expect(queryByLabelText('zoom slider')).toBeInTheDocument()
-    );
+    expect(await screen.findByLabelText('zoom slider')).toBeInTheDocument();
     await act(() => {
-      user.unhover(getByLabelText('zoom in'));
+      user.unhover(screen.getByLabelText('zoom in'));
     });
-    await waitFor(() =>
-      expect(getByLabelText('zoom slider')).toBeInTheDocument()
-    );
+    expect(await screen.findByLabelText('zoom slider')).toBeInTheDocument();
   });
 
   it('should show a menu when clicking on the aspect ratio element that has 3 options', async () => {
@@ -63,50 +66,50 @@ describe('Cropper', () => {
     } = renderHook(() => useCreateUploaderContext(), {});
     const user = userEvent.setup();
     initialValues.preview = '/storybook/aspect-16-9.jpg';
-    const { getByLabelText, queryByText, getByText } = render(
+    render(
       <ImageUploaderProvider initialValue={initialValues}>
         <Cropper handleCroppedImage={handleCroppedImage} />
       </ImageUploaderProvider>
     );
-    const aspectRatioButton = getByLabelText('change aspect ratio');
+    const aspectRatioButton = screen.getByLabelText('change aspect ratio');
     expect(aspectRatioButton).toBeInTheDocument();
 
-    expect(queryByText('1:1')).toBeNull();
-    await await act(() => {
+    expect(screen.queryByText('1:1')).toBeNull();
+    await act(() => {
       user.click(aspectRatioButton);
     });
-    await waitFor(() => expect(getByText('1:1')).toBeInTheDocument());
-    expect(queryByText('16:9')).toBeInTheDocument();
-    expect(getByText('4:3')).toBeInTheDocument();
+    expect(await screen.findByText('1:1')).toBeInTheDocument();
+    expect(await screen.findByText('16:9')).toBeInTheDocument();
+    expect(await screen.findByText('4:3')).toBeInTheDocument();
     await act(() => {
-      user.click(getByText('1:1'));
+      user.click(screen.getByText('1:1'));
     });
 
-    await waitFor(() => expect(getByText('1:1')));
+    await waitFor(() => expect(screen.getByText('1:1')));
   });
 
-  it('should not have an image on the page if the cancel button is clicked', async () => {
-    const {
-      result: { current: initialValues },
-    } = renderHook(() => useCreateUploaderContext(), {});
-    const user = userEvent.setup();
-    initialValues.preview = '/storybook/aspect-16-9.jpg';
-    const { queryByRole, getByText } = render(
-      <ImageUploaderProvider initialValue={initialValues}>
-        <Cropper handleCroppedImage={handleCroppedImage} />
-      </ImageUploaderProvider>
-    );
+  // it('should not have an image on the page if the cancel button is clicked', async () => {
+  //   const {
+  //     result: { current: initialValues },
+  //   } = renderHook(() => useCreateUploaderContext(), {});
+  //   const user = userEvent.setup();
+  //   initialValues.preview = '/storybook/aspect-16-9.jpg';
+  //   const { queryByRole, getByText } = render(
+  //     <ImageUploaderProvider initialValue={initialValues}>
+  //       <Cropper handleCroppedImage={handleCroppedImage} />
+  //     </ImageUploaderProvider>
+  //   );
 
-    const cancelButton = getByText('Cancel');
-    const previewImage = queryByRole('img');
-    const clearFile = jest.spyOn(initialValues, 'clearFile');
+  //   const cancelButton = getByText('Cancel');
+  //   const previewImage = queryByRole('img');
+  //   const clearFile = jest.spyOn(initialValues, 'clearFile');
 
-    expect(previewImage).toBeInTheDocument();
-    await act(() => {
-      user.click(cancelButton);
-    });
-    await waitFor(() => {
-      expect(clearFile).toHaveBeenCalledTimes(1);
-    });
-  });
+  //   expect(previewImage).toBeInTheDocument();
+  //   await act(() => {
+  //     user.click(cancelButton);
+  //   });
+  //   await waitFor(() => {
+  //     expect(clearFile).toHaveBeenCalledTimes(1);
+  //   });
+  // });
 });

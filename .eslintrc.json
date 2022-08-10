@@ -1,10 +1,6 @@
 {
-  "extends": "next/core-web-vitals",
-  "ignorePatterns": [
-    "/prisma/utils/seed-utils.ts",
-    "**/types/*",
-    "**/stories/**/*"
-  ],
+  "extends": ["next/core-web-vitals", "prettier", "plugin:testing-library/react"],
+  "ignorePatterns": ["/prisma/utils/seed-utils.ts", "**/types/*", "**/stories/**/*"],
   "rules": {
     "import/no-anonymous-default-export": "off",
     "react/no-unescaped-entities": "off",
