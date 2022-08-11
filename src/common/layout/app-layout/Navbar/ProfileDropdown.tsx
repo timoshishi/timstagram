@@ -1,5 +1,6 @@
-// import { supabase } from 'src/lib/initSupabase';
-import { supabaseClient } from '@supabase/auth-helpers-nextjs';
+import { supabase } from 'src/lib/initSupabase';
+// import { supabaseClient } from '@supabase/auth-helpers-nextjs';
+
 import { Flex, Avatar, Button, Menu, MenuButton, MenuList, MenuItem, MenuDivider } from '@chakra-ui/react';
 
 export const ProfileDropdown = () => {
@@ -19,7 +20,7 @@ export const ProfileDropdown = () => {
             <MenuItem>Link 1</MenuItem>
             <MenuItem>Link 2</MenuItem>
             <MenuDivider />
-            <MenuItem onClick={() => supabaseClient.auth.signOut()}>SignOut</MenuItem>
+            <MenuItem onClick={() => supabase.auth.signOut()}>SignOut</MenuItem>
           </MenuList>
         </Menu>
       </Flex>

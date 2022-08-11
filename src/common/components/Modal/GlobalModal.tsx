@@ -1,7 +1,7 @@
 import React, { useState, createContext, useContext, Children } from 'react';
 import { AuthModal } from '../Auth';
 import { Portal, Modal as ChakraModal, ModalProps } from '@chakra-ui/react';
-import { ImageUploader } from '../ImageUploader';
+import { ImageUploader } from '@features/ImageUploader';
 
 export const MODAL_COMPONENTS = {
   AuthModal: AuthModal,
@@ -16,11 +16,7 @@ interface Store<P = {}> {
   modalProps: Partial<ModalProps>;
 }
 
-type ShowModal = <P>(
-  modalType: ModalType,
-  componentProps: P,
-  modalProps?: Partial<ModalProps>
-) => void;
+type ShowModal = <P>(modalType: ModalType, componentProps: P, modalProps?: Partial<ModalProps>) => void;
 
 type ContextType<P> = {
   showModal: ShowModal;
@@ -52,11 +48,7 @@ export const GlobalModal = ({ children }: { children: React.ReactNode }) => {
   const [store, setStore] = useState({} as Store<{}>);
   const { modalType, componentProps, modalProps }: Store = store;
   const [isOpen, setIsOpen] = useState(false);
-  function showModal<P>(
-    modalType: ModalType,
-    componentProps: P,
-    modalProps = {}
-  ) {
+  function showModal<P>(modalType: ModalType, componentProps: P, modalProps = {}) {
     setStore({
       modalType,
       componentProps,
@@ -82,11 +74,7 @@ export const GlobalModal = ({ children }: { children: React.ReactNode }) => {
     if (!!ModalComponent) {
       return (
         <Portal>
-          <ChakraModal
-            isOpen={isOpen}
-            onClose={hideModal}
-            id='global-modal'
-            {...modalProps}>
+          <ChakraModal isOpen={isOpen} onClose={hideModal} id='global-modal' {...modalProps}>
             <ModalComponent {...componentProps} />
           </ChakraModal>
         </Portal>
@@ -96,8 +84,7 @@ export const GlobalModal = ({ children }: { children: React.ReactNode }) => {
 
   GlobalModalContext.displayName = 'GlobalModalContext';
   return (
-    <GlobalModalContext.Provider
-      value={{ store, showModal, hideModal, isOpen }}>
+    <GlobalModalContext.Provider value={{ store, showModal, hideModal, isOpen }}>
       <>
         {renderComponent()}
         {children}

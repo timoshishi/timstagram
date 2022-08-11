@@ -1,12 +1,9 @@
-import { Flex, Button, useBoolean } from '@chakra-ui/react';
-import { EmptyNoReturnFn } from '@common/utils';
-import { useDisclosure } from '@chakra-ui/react';
-import { useCreateUploaderContext, useImageUploaderContext } from '../../ImageUploaderContext';
-import { useImageUploader } from '../../useImageUploader';
+import { Flex, Button, useDisclosure } from '@chakra-ui/react';
+import { useImageUploaderContext } from '../../../hooks/useImageUploaderContext';
 import { PostForm } from '../PostForm';
-import { RefObject } from 'react';
 
 interface CropperButtonsProps {}
+
 export const CropperButtons = ({}: CropperButtonsProps) => {
   const { clearFile } = useImageUploaderContext();
   const { isOpen, onToggle } = useDisclosure();

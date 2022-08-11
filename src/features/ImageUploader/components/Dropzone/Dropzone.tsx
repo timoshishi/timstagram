@@ -1,18 +1,9 @@
-import {
-  Center,
-  useColorModeValue,
-  Icon,
-  Flex,
-  VStack,
-  Text,
-  useBreakpointValue,
-} from '@chakra-ui/react';
+import { Center, useColorModeValue, Icon, Flex, VStack, Text, useBreakpointValue } from '@chakra-ui/react';
 import { MdCloudUpload } from 'react-icons/md';
-import { useImageUploaderContext } from '../ImageUploaderContext';
+import { useImageUploaderContext } from '../../hooks/useImageUploaderContext';
 
 export const Dropzone = () => {
-  const { getRootProps, getInputProps, isDragActive } =
-    useImageUploaderContext();
+  const { getRootProps, getInputProps, isDragActive } = useImageUploaderContext();
   const baseText = useBreakpointValue({
     base: 'Tap here to select an image',
     md: 'Drag and drop or click here to select an image',
@@ -28,17 +19,10 @@ export const Dropzone = () => {
   });
 
   const activeBg = useColorModeValue('gray.100', 'gray.600');
-  const borderColor = useColorModeValue(
-    isDragActive ? 'teal.300' : 'blue.300',
-    isDragActive ? 'teal.500' : 'blue.500'
-  );
+  const borderColor = useColorModeValue(isDragActive ? 'teal.300' : 'blue.300', isDragActive ? 'teal.500' : 'blue.500');
 
   return (
-    <Flex
-      alignItems={'center'}
-      justifyContent='center'
-      flexDir='column'
-      p={[2, 20]}>
+    <Flex alignItems={'center'} justifyContent='center' flexDir='column' p={[2, 20]}>
       <Center
         p={[4, 10]}
         cursor='pointer'
@@ -48,7 +32,8 @@ export const Dropzone = () => {
         borderRadius={8}
         border={border}
         borderColor={borderColor}
-        {...getRootProps()}>
+        {...getRootProps()}
+      >
         <VStack>
           <Icon as={MdCloudUpload} w={60} h={60} color='blue.500' />
           <input {...getInputProps()} />

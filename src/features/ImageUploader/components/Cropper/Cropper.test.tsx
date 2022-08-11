@@ -1,10 +1,9 @@
-import React from 'react';
 import { render, waitFor, renderHook, act, screen } from '../../../../../test-utils';
 import '@testing-library/jest-dom';
-import { ImageUploaderProvider, useCreateUploaderContext } from '../ImageUploaderContext';
-import { Cropper } from '@components/ImageUploader/Cropper';
+import { ImageUploaderProvider, useCreateUploaderContext } from '../../stores/ImageUploaderContext';
+import { Cropper } from '.';
 import userEvent from '@testing-library/user-event';
-import { handleCroppedImage } from '@components/ImageUploader/imageUploader.functions';
+import { handleCroppedImage } from '../../utils/image-uploader-functions';
 
 describe('Cropper', () => {
   it('should render with an image  the control buttons and three svg buttons', async () => {

@@ -4,7 +4,7 @@ import { Box } from '@chakra-ui/react';
 import {
   Zoom,
   ZoomProps,
-} from '../../common/components/ImageUploader/Cropper/Controls/Zoom';
+} from '../../features/components/ImageUploader/Cropper/Controls/Zoom';
 import { noOp } from '../../common/utils';
 
 // More on default export: https://storybook.js.org/docs/react/writing-stories/introduction#default-export

@@ -1,6 +1,6 @@
-import { HandleCroppedImage } from './imageUploader.types';
-import type { Dimensions } from './imageUploader.types';
-import { MEGABYTE, MAX_MEGABYTES } from './imageUploader.constants';
+import { HandleCroppedImage } from '../types/image-uploader.types';
+import type { Dimensions } from '../types/image-uploader.types';
+import { MEGABYTE, MAX_MEGABYTES } from './image-uploader.constants';
 
 export function sizeValidator(file: File) {
   if (file.size > MEGABYTE * MAX_MEGABYTES) {
@@ -32,11 +32,7 @@ export function sizeValidator(file: File) {
   return null;
 }
 
-export const handleCroppedImage: HandleCroppedImage = ({
-  croppedImage,
-  croppedAreaPixels,
-  aspectRatio,
-}) => {
+export const handleCroppedImage: HandleCroppedImage = ({ croppedImage, croppedAreaPixels, aspectRatio }) => {
   if (croppedImage) {
     const imageData = {
       croppedImage,
@@ -70,15 +66,8 @@ export const readFile = (file: File) =>
     reader.readAsDataURL(file);
   });
 
-export const scaleImage = (
-  dimensions: Dimensions,
-  maxWidth: number,
-  maxHeight: number
-): Dimensions => {
-  const scaleFactor = Math.min(
-    maxWidth / dimensions.width,
-    maxHeight / dimensions.height
-  );
+export const scaleImage = (dimensions: Dimensions, maxWidth: number, maxHeight: number): Dimensions => {
+  const scaleFactor = Math.min(maxWidth / dimensions.width, maxHeight / dimensions.height);
   return {
     width: dimensions.width * scaleFactor,
     height: dimensions.height * scaleFactor,

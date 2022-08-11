@@ -1,8 +1,6 @@
-import { renderHook, waitFor } from '@testing-library/react';
-import { useImageUploaderContext, useCreateUploaderContext, ImageUploaderProvider } from './ImageUploaderContext';
-import { UseImageUploaderReturn } from './imageUploader.types';
+import { renderHook } from '@testing-library/react';
+import { useCreateUploaderContext, ImageUploaderProvider } from './ImageUploaderContext';
 import { ReactNode } from 'react';
-import { act } from 'react-dom/test-utils';
 
 describe('ImageUploaderContext', () => {
   /* eslint-disable react/display-name */

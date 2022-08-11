@@ -1,10 +1,10 @@
 import { useRef, useState, useCallback } from 'react';
 import { useDimensions, Box, Flex, useBreakpointValue, Portal } from '@chakra-ui/react';
 import Cropper, { Area } from 'react-easy-crop';
-import { getCroppedImg } from './cropper.functions';
-import type { HandleCroppedImage } from '../imageUploader.types';
+import { getCroppedImg } from '../../utils/cropper-functions';
+import type { HandleCroppedImage } from '../../types/image-uploader.types';
 import { Controls } from './Controls/Controls';
-import { useImageUploaderContext } from '../ImageUploaderContext';
+import { useImageUploaderContext } from '../../hooks/useImageUploaderContext';
 import { CropperButtons } from './Controls/CropperButtons';
 
 export interface CropperProps {
@@ -53,6 +53,7 @@ export const EasyCropper = ({ handleCroppedImage }: CropperProps) => {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [preview, croppedAreaPixels, rotation, aspectRatio]);
+
   const handleRotate = () => {
     if (rotation < 360) {
       setRotation(rotation + 90);
