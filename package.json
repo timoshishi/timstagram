@@ -13,7 +13,8 @@
     "storybook": "start-storybook -p 6006 -s public",
     "build-storybook": "yarn build && build-storybook -s public",
     "test": "jest --watch",
-    "test:ci": "jest --ci"
+    "test:ci": "jest --ci",
+    "generate:feature": "node scripts/generate-feature.js $1"
   },
   "dependencies": {
     "@chakra-ui/icons": "^2.0.2",
