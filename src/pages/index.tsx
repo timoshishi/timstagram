@@ -33,17 +33,12 @@ const Feed: NextPageWithLayout = () => {
   const { user, error, isLoading } = useUser();
   // const { data, error: feedError }: SWRResponse<PostCardProps[], any> =
   //   useSWR(API);
-  const {
-    data,
-    error: feedError,
-    mutate,
-    size,
-    setSize,
-    isValidating,
-  } = useSWRInfinite(getKey, fetcher);
+  const { data, error: feedError, mutate, size, setSize, isValidating } = useSWRInfinite(getKey, fetcher);
   let postResponses: PostResponse[] = data ? [].concat(...data) : [];
   const isLoadingInitialData = !data && !error;
-
+  // fetcher('/publish').then((res) => {
+  // console.log(res);
+  // });
   // const isLoadingMore =
   // isLoadingInitialData ||
   // (size > 0 && data && typeof data[size - 1] === 'undefined');
@@ -53,12 +48,7 @@ const Feed: NextPageWithLayout = () => {
   // const isRefreshing = isValidating && data && data.length === size;
   return (
     <Box w='full' minH='100vh' mt='60px' maxW='100%'>
-      <HStack
-        w='100%'
-        alignItems='flex-start'
-        rowGap={12}
-        columnGap={4}
-        pt={50}>
+      <HStack w='100%' alignItems='flex-start' rowGap={12} columnGap={4} pt={50}>
         <VStack spacing={10} justifyContent='flex-start' flexGrow={1} h='100%'>
           {postResponses.map(({ data: posts, page }) =>
             posts.map((post, currentIdx) => (

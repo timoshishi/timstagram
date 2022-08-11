@@ -1,5 +1,7 @@
 import { ChakraProvider } from '@chakra-ui/react';
-import { supabase } from '../lib/initSupabase';
+// import { supabase } from '../lib/initSupabase';
+import { supabaseClient } from '@supabase/auth-helpers-nextjs';
+
 import '../style.css';
 import { StrictMode } from 'react';
 import { UserProvider } from '@supabase/auth-helpers-react';
@@ -11,7 +13,7 @@ export default function MyApp({ Component, pageProps }: AppPropsWithLayout) {
   const getLayout = Component.getLayout ?? ((page) => <AppLayout children={page} />);
   return (
     <StrictMode>
-      <UserProvider supabaseClient={supabase}>
+      <UserProvider supabaseClient={supabaseClient}>
         <ChakraProvider>
           <GlobalModal>{getLayout(<Component {...pageProps} />)}</GlobalModal>
         </ChakraProvider>

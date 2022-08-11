@@ -1,6 +1,8 @@
 import { UserProvider } from '@supabase/auth-helpers-react';
 import { GlobalModal } from '../src/common/components/Modal/GlobalModal';
-import { supabase } from '../src/lib/initSupabase';
+// import { supabase } from '../src/lib/initSupabase';
+import { supabaseClient } from '@supabase/auth-helpers-nextjs';
+
 import { initialize, mswDecorator } from 'msw-storybook-addon';
 initialize();
 export const parameters = {
@@ -16,7 +18,7 @@ export const parameters = {
 
 export const decorators = [
   (Story) => (
-    <UserProvider supabaseClient={supabase}>
+    <UserProvider supabaseClient={supabaseClient}>
       <GlobalModal>
         <Story />
       </GlobalModal>

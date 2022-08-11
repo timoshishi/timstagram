@@ -3,7 +3,8 @@ import { render, RenderOptions, RenderResult } from '@testing-library/react';
 import { UserProvider } from '@supabase/auth-helpers-react';
 import { ChakraProvider } from '@chakra-ui/react';
 import { GlobalModal } from '@common/components/Modal/GlobalModal';
-import { supabase } from '@src/lib/initSupabase';
+// import { supabase } from '@src/lib/initSupabase';
+import { supabaseClient } from '@supabase/auth-helpers-nextjs';
 
 const AllTheProviders: FC<{ children: React.ReactNode }> = ({ children }) => {
   Object.defineProperty(window, 'matchMedia', {
@@ -21,7 +22,7 @@ const AllTheProviders: FC<{ children: React.ReactNode }> = ({ children }) => {
   });
 
   return (
-    <UserProvider supabaseClient={supabase}>
+    <UserProvider supabaseClient={supabaseClient}>
       <ChakraProvider>
         <GlobalModal>{children}</GlobalModal>
       </ChakraProvider>
