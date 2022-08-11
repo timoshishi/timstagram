@@ -22,12 +22,7 @@ const Template: ComponentStory<typeof Cropper> = (args) => {
       <Modal isOpen={true} onClose={noOp} size={['md', 'lg', '3xl']} initialFocusRef={undefined} isCentered={true}>
         <ModalOverlay />
         <ModalContent p='0' display={'flex'} flexDir='column'>
-          <Cropper
-            handleCroppedImage={(e) => {
-              console.log(e);
-              return null;
-            }}
-          />
+          <Cropper />
         </ModalContent>
       </Modal>
     </ImageUploaderProvider>

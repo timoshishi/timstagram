@@ -46,8 +46,7 @@ model Follows {
 
 model Post {
   id            String       @id @default(cuid())
-  title         String
-  content       String?
+  caption       String?      @map("caption")
   published     Boolean      @default(true)
   userId        String       @map("user_id")
   userDeleted   Boolean      @default(false) @map("user_deleted")
@@ -95,6 +94,7 @@ model Media {
   size      Int
   width     Int
   height    Int
+  aspectRatio Float  @map("aspect_ratio")
   scraped   Boolean  @default(false)
   category  String?
   deleted   Boolean  @default(false)

@@ -1,15 +1,29 @@
 import { EmptyNoReturnFn } from '@common/utils';
+import { useState } from 'react';
 import { Button, Box, Flex, Textarea, Collapse } from '@chakra-ui/react';
 import { PostHeaderAvatar } from '@common/components/PostCard/PostHeader/PostHeaderAvatar';
+import { GetCroppedImage } from '@features/ImageUploader/types/image-uploader.types';
+import { createPost } from '@features/ImageUploader/api/createPost';
+import { createResponseComposition } from 'msw';
 // import useUser from '@common/hooks/useUser';
 
 interface PostFormProps {
   isOpen: boolean;
   onToggle: EmptyNoReturnFn;
-  getCroppedImage: EmptyNoReturnFn;
+  getCroppedImage: GetCroppedImage;
 }
 
 export const PostForm = ({ isOpen, onToggle, getCroppedImage }: PostFormProps) => {
+  const [caption, setCaption] = useState('');
+  const handleCaption = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    setCaption(e.target.value);
+  };
+
+  const submitPost = async () => {
+    const croppedImageData = await getCroppedImage();
+    if (!croppedImageData) return;
+    await createPost({ caption, ...croppedImageData });
+  };
   // const { user } = useUser();
   return (
     <Box>
@@ -30,6 +44,8 @@ export const PostForm = ({ isOpen, onToggle, getCroppedImage }: PostFormProps) =
         >
           {/* {user && <PostHeaderAvatar username={user.username} avatarUrl={user.avatarUrl} />} */}
           <Textarea
+            value={caption}
+            onChange={handleCaption}
             placeholder='Add a caption, with some #hashtags to get noticed!'
             size='lg'
             resize='none'
@@ -40,7 +56,7 @@ export const PostForm = ({ isOpen, onToggle, getCroppedImage }: PostFormProps) =
             mt='4'
           />
           <Flex justifyContent={'flex-end'} w='100%' p='3' alignSelf={'flex-end'}>
-            <Button variant='solid' colorScheme='telegram' size={['md', 'md', 'md']} onClick={getCroppedImage}>
+            <Button variant='solid' colorScheme='telegram' size={['md', 'md', 'md']} onClick={submitPost}>
               Post
             </Button>
           </Flex>

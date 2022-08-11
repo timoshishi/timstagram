@@ -58,6 +58,7 @@ export const useCreateUploaderContext = ({ type }: UseCreateUploaderContextProps
       }
       setPreview(imgUrl);
       setFile(file);
+      console.log(file);
       return null;
     } catch (error) {
       console.error(error);
@@ -88,6 +89,7 @@ export const useCreateUploaderContext = ({ type }: UseCreateUploaderContextProps
     setPreview(null);
     setError(null);
   };
+
   useEffect(() => {
     if (fileRejections.length > 0) {
       setError(fileRejections[0].errors[0]);

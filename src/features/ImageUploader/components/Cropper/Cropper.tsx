@@ -1,27 +1,25 @@
 import { useRef, useState, useCallback } from 'react';
 import { useDimensions, Box, Flex, useBreakpointValue, Portal } from '@chakra-ui/react';
 import Cropper, { Area } from 'react-easy-crop';
-import { getCroppedImg } from '../../utils/cropper-functions';
-import type { HandleCroppedImage } from '../../types/image-uploader.types';
+import { getImageFromPreview } from '../../utils/cropper-functions';
+import { handleCroppedImage } from '../../utils/image-uploader-functions';
 import { Controls } from './Controls/Controls';
 import { useImageUploaderContext } from '../../hooks/useImageUploaderContext';
 import { CropperButtons } from './Controls/CropperButtons';
+import { GetCroppedImage } from '@features/ImageUploader/types/image-uploader.types';
 
-export interface CropperProps {
-  handleCroppedImage: HandleCroppedImage;
-}
+export interface CropperProps {}
 
-export const EasyCropper = ({ handleCroppedImage }: CropperProps) => {
-  const { preview, clearFile, originalDimensions, cropShape } = useImageUploaderContext();
-
+export const EasyCropper = ({}: CropperProps) => {
+  const { preview, clearFile, originalDimensions, cropShape, file } = useImageUploaderContext();
   const [crop, setCrop] = useState({ x: 0, y: 0 });
   const [rotation, setRotation] = useState(0);
   const [aspectRatio, setAspectRatio] = useState(1);
   const [zoom, setZoom] = useState(1);
 
   const [croppedAreaPixels, setCroppedAreaPixels] = useState({
-    width: 0,
-    height: 0,
+    width: originalDimensions.width,
+    height: originalDimensions.height,
     x: 0,
     y: 0,
   });
@@ -29,6 +27,7 @@ export const EasyCropper = ({ handleCroppedImage }: CropperProps) => {
   const cropperRef = useRef(null);
   const modalRef = useRef(null);
   const dimensions = useDimensions(modalRef, true);
+
   const onCropComplete = useCallback((_: Area, croppedAreaPixels: Area) => {
     setCroppedAreaPixels(croppedAreaPixels);
   }, []);
@@ -43,16 +42,21 @@ export const EasyCropper = ({ handleCroppedImage }: CropperProps) => {
     minHeight = newHeight;
   }
 
-  const getCroppedImage = useCallback(async () => {
+  const getCroppedImage: GetCroppedImage = useCallback(async () => {
     try {
-      const croppedImage = await getCroppedImg(preview!, croppedAreaPixels, rotation);
-      handleCroppedImage({ croppedImage, croppedAreaPixels, aspectRatio });
-      // setCroppedImage(croppedImage);
+      const croppedImage = await getImageFromPreview({ imageSrc: preview!, pixelCrop: croppedAreaPixels, rotation });
+      return await handleCroppedImage({
+        croppedImage,
+        croppedAreaPixels,
+        aspectRatio,
+        originalImageName: file!.name,
+      });
     } catch (e) {
       console.error(e);
+      return null;
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [preview, croppedAreaPixels, rotation, aspectRatio]);
+  }, [preview, croppedAreaPixels, rotation, aspectRatio, file]);
 
   const handleRotate = () => {
     if (rotation < 360) {
@@ -64,10 +68,6 @@ export const EasyCropper = ({ handleCroppedImage }: CropperProps) => {
   const controlsPositionOffset = useBreakpointValue({
     base: '1rem',
   });
-
-  const onClose = useCallback(() => {
-    // setCroppedImage(null);
-  }, []);
 
   return (
     <Flex

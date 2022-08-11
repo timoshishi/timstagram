@@ -1,10 +1,7 @@
 import React from 'react';
 import { ComponentStory, ComponentMeta } from '@storybook/react';
 import { Box } from '@chakra-ui/react';
-import {
-  Zoom,
-  ZoomProps,
-} from '../../features/components/ImageUploader/Cropper/Controls/Zoom';
+import { Zoom, ZoomProps } from '../../features/ImageUploader/components/Cropper/Controls/Zoom';
 import { noOp } from '../../common/utils';
 
 // More on default export: https://storybook.js.org/docs/react/writing-stories/introduction#default-export
@@ -28,6 +25,6 @@ const Template: ComponentStory<typeof Zoom> = (args) => (
 
 export const Primary = Template.bind({});
 // More on args: https://storybook.js.org/docs/react/writing-stories/args
-const props: ZoomProps = { setZoom: noOp };
+const props: ZoomProps = { setZoom: noOp, zoom: 1 };
 
 Primary.args = props;
