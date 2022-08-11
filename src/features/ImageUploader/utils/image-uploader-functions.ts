@@ -42,6 +42,7 @@ export const handleCroppedImage: HandleCroppedImage = ({ croppedImage, croppedAr
       },
       aspectRatio: aspectRatio,
     };
+    console.log('imageData', imageData);
     return imageData;
   } else {
     return null;

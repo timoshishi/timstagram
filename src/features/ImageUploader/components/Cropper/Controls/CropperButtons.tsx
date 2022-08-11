@@ -2,9 +2,11 @@ import { Flex, Button, useDisclosure } from '@chakra-ui/react';
 import { useImageUploaderContext } from '../../../hooks/useImageUploaderContext';
 import { PostForm } from '../PostForm';
 
-interface CropperButtonsProps {}
+interface CropperButtonsProps {
+  getCroppedImage: () => void;
+}
 
-export const CropperButtons = ({}: CropperButtonsProps) => {
+export const CropperButtons = ({ getCroppedImage }: CropperButtonsProps) => {
   const { clearFile } = useImageUploaderContext();
   const { isOpen, onToggle } = useDisclosure();
 
@@ -22,7 +24,7 @@ export const CropperButtons = ({}: CropperButtonsProps) => {
       <Button variant='solid' colorScheme='telegram' size={['sm', 'sm', 'sm']} onClick={onToggle}>
         {isOpen ? 'Back' : 'Next'}
       </Button>
-      <PostForm isOpen={isOpen} onToggle={onToggle} />
+      <PostForm isOpen={isOpen} onToggle={onToggle} getCroppedImage={getCroppedImage} />
     </Flex>
   );
 };

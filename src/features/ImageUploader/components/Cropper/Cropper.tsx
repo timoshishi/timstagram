@@ -78,7 +78,7 @@ export const EasyCropper = ({ handleCroppedImage }: CropperProps) => {
       bg='whiteAlpha.100'
       justifyContent={['center']}
     >
-      <CropperButtons />
+      <CropperButtons getCroppedImage={getCroppedImage} />
       <Box position='relative'>
         <Cropper
           image={preview ?? undefined}

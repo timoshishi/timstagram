@@ -12,20 +12,10 @@ interface PostHeaderProps {
   isFollowing: boolean;
 }
 
-export const PostHeader = ({
-  poster,
-  repostsCount,
-  viewsCount,
-  createdAt,
-  isFollowing,
-}: PostHeaderProps) => (
+export const PostHeader = ({ poster, repostsCount, viewsCount, createdAt, isFollowing }: PostHeaderProps) => (
   <Flex py={3} px={5} direction='column'>
     <Flex alignContent='center' justifyContent='space-between'>
-      <PostHeaderAvatar
-        username={poster.username}
-        avatarURL={poster.avatarURL}
-        isFollowing={isFollowing}
-      />
+      <PostHeaderAvatar username={poster.username} avatarUrl={poster.avatarUrl} isFollowing={isFollowing} />
       <PostDetail repostsCount={repostsCount} viewsCount={viewsCount} />
     </Flex>
     <Text fontSize='sm' color='gray.500' ml={1} mt={2}>

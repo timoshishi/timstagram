@@ -6,9 +6,10 @@ import { PostHeaderAvatar } from '@common/components/PostCard/PostHeader/PostHea
 interface PostFormProps {
   isOpen: boolean;
   onToggle: EmptyNoReturnFn;
+  getCroppedImage: EmptyNoReturnFn;
 }
 
-export const PostForm = ({ isOpen, onToggle }: PostFormProps) => {
+export const PostForm = ({ isOpen, onToggle, getCroppedImage }: PostFormProps) => {
   // const { user } = useUser();
   return (
     <Box>
@@ -27,7 +28,7 @@ export const PostForm = ({ isOpen, onToggle }: PostFormProps) => {
           right='0'
           top='3.5rem'
         >
-          {/* {user && <PostHeaderAvatar username={user.username} avatarURL={user.avatarURL} />} */}
+          {/* {user && <PostHeaderAvatar username={user.username} avatarUrl={user.avatarUrl} />} */}
           <Textarea
             placeholder='Add a caption, with some #hashtags to get noticed!'
             size='lg'
@@ -39,12 +40,7 @@ export const PostForm = ({ isOpen, onToggle }: PostFormProps) => {
             mt='4'
           />
           <Flex justifyContent={'flex-end'} w='100%' p='3' alignSelf={'flex-end'}>
-            <Button
-              variant='solid'
-              colorScheme='telegram'
-              size={['md', 'md', 'md']}
-              onClick={() => console.log('post the photo')}
-            >
+            <Button variant='solid' colorScheme='telegram' size={['md', 'md', 'md']} onClick={getCroppedImage}>
               Post
             </Button>
           </Flex>

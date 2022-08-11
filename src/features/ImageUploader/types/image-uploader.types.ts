@@ -45,3 +45,5 @@ type OrientationKey = keyof typeof ORIENTATION_TO_ANGLE;
 interface UseCreateUploaderContextProps {
   type?: 'post' | 'avatar';
 }
+
+type GetCroppedImage = (image: string, pixelCrop: Area, rotation: number) => Promise<Blob>;

@@ -5,7 +5,7 @@ import { randomInt } from 'crypto';
 import { ImageLoaderProps } from 'next/image';
 
 interface PostImageProps {
-  imageURL: string;
+  imageUrl: string;
   tags: string[];
   size: number;
   setSize: (size: number) => void;
@@ -15,18 +15,10 @@ interface PostImageProps {
 }
 // create randomIntInRange function
 
-export const PostImage = ({
-  imageURL,
-  tags,
-  size,
-  setSize,
-  refreshIdx,
-  currentIdx,
-  page,
-}: PostImageProps) => {
+export const PostImage = ({ imageUrl, tags, size, setSize, refreshIdx, currentIdx, page }: PostImageProps) => {
   return (
     <Image
-      src={imageURL}
+      src={imageUrl}
       alt={tags.join(' ')}
       width={800}
       height={600}

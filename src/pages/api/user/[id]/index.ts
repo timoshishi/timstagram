@@ -6,7 +6,7 @@ export interface PrelimUser {
   username: string;
   createdAt: string;
   updatedAt: string;
-  avatarURL: string;
+  avatarUrl: string;
   banned: boolean;
   isBot: boolean;
   email: string;
@@ -19,7 +19,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     id: userId,
     username: faker.internet.userName(),
     verifiedAt: faker.date.past(),
-    avatarURL: faker.internet.avatar(),
+    avatarUrl: faker.internet.avatar(),
     createdAt: faker.date.past(),
     updatedAt: faker.date.past(),
     banned: faker.datatype.boolean(),
