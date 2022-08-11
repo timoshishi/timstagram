@@ -1,10 +1,6 @@
 import React from 'react';
 import { ComponentStory, ComponentMeta } from '@storybook/react';
-import { ImageUploader } from '../../common/components/ImageUploader/ImageUploader';
-import {
-  ImageUploaderProvider,
-  useCreateUploaderContext,
-} from '../../common/components/ImageUploader/ImageUploaderContext';
+import { ImageUploader, ImageUploaderProvider, useCreateUploaderContext } from '../../features/ImageUploader';
 import { rest } from 'msw';
 
 // More on default export: https://storybook.js.org/docs/react/writing-stories/introduction#default-export

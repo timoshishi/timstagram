@@ -1,5 +1,5 @@
 import { Area as EasyCropArea } from 'react-easy-crop';
-import { ORIENTATION_TO_ANGLE } from './ImageUploaderContext';
+import { ORIENTATION_TO_ANGLE } from '../stores/ImageUploaderContext';
 export type Area = EasyCropArea;
 
 export type OnDrop = (files: File[]) => void;

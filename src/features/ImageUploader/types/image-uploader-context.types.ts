@@ -1,17 +1,13 @@
-import type { Dimensions } from '../imageUploader.types';
+import type { Dimensions } from './image-uploader.types';
 import { SetStateAction } from 'react';
 import { EmptyNoReturnFn } from '@common/utils';
 import { FileError, DropzoneState } from 'react-dropzone';
 import { Dispatch } from 'react';
-import { ORIENTATION_TO_ANGLE } from './ImageUploaderContext';
+import { ORIENTATION_TO_ANGLE } from '../stores/ImageUploaderContext';
 
 export type OrientationKey = keyof typeof ORIENTATION_TO_ANGLE;
 
-export type ScaleImage = (
-  dimensions: Dimensions,
-  maxWidth: number,
-  maxHeight: number
-) => Dimensions;
+export type ScaleImage = (dimensions: Dimensions, maxWidth: number, maxHeight: number) => Dimensions;
 
 export type UseImageUploaderReturn = {
   file: File | null;

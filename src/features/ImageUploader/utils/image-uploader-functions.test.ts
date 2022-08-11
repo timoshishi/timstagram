@@ -1,11 +1,6 @@
-import {
-  scaleImage,
-  sizeValidator,
-  readFile,
-  handleCroppedImage,
-} from './imageUploader.functions';
-import { MAX_MEGABYTES, MEGABYTE } from './imageUploader.constants';
-import { Dimensions } from './imageUploader.types';
+import { scaleImage, sizeValidator, readFile, handleCroppedImage } from './image-uploader-functions';
+import { MAX_MEGABYTES, MEGABYTE } from './image-uploader.constants';
+import { Dimensions } from '../types/image-uploader.types';
 
 /*
 export class Component {
@@ -57,14 +52,10 @@ describe('main', () => {
 
 describe('sizeValidator', () => {
   it('returns an error that the file is too large if it is above max_megabytes', () => {
-    const file = new File(
-      ['*2'.repeat(MAX_MEGABYTES * MEGABYTE)],
-      'image-mock.jpeg',
-      {
-        lastModified: Date.now(),
-        type: 'image/png',
-      }
-    );
+    const file = new File(['*2'.repeat(MAX_MEGABYTES * MEGABYTE)], 'image-mock.jpeg', {
+      lastModified: Date.now(),
+      type: 'image/png',
+    });
     const result = sizeValidator(file);
     let message = {
       code: 'too-large',

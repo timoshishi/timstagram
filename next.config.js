@@ -9,7 +9,7 @@ const nextConfig = {
     domains: ['picsum.photos'],
   },
   eslint: {
-    ignoreBuildErrors: true,
+    ignoreDuringBuilds: true,
     dirs: ['src'],
   },
   typescript: {

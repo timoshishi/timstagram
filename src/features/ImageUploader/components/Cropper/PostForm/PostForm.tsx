@@ -1,7 +1,7 @@
 import { EmptyNoReturnFn } from '@common/utils';
 import { Button, Box, Flex, Textarea, Collapse } from '@chakra-ui/react';
 import { PostHeaderAvatar } from '@common/components/PostCard/PostHeader/PostHeaderAvatar';
-import useUser from '@common/hooks/useUser';
+// import useUser from '@common/hooks/useUser';
 
 interface PostFormProps {
   isOpen: boolean;
@@ -9,7 +9,7 @@ interface PostFormProps {
 }
 
 export const PostForm = ({ isOpen, onToggle }: PostFormProps) => {
-  const { user } = useUser();
+  // const { user } = useUser();
   return (
     <Box>
       <Collapse in={isOpen}>
@@ -27,7 +27,7 @@ export const PostForm = ({ isOpen, onToggle }: PostFormProps) => {
           right='0'
           top='3.5rem'
         >
-          {user && <PostHeaderAvatar username={user.username} avatarURL={user.avatarURL} />}
+          {/* {user && <PostHeaderAvatar username={user.username} avatarURL={user.avatarURL} />} */}
           <Textarea
             placeholder='Add a caption, with some #hashtags to get noticed!'
             size='lg'

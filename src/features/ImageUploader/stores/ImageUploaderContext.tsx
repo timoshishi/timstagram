@@ -1,12 +1,16 @@
 import { useDropzone, FileError } from 'react-dropzone';
 import { useState, useEffect, useCallback, createContext, useContext, Context } from 'react';
 import { getOrientation } from 'get-orientation/browser.es5';
-import type { Dimensions } from '../imageUploader.types';
-import { createImage, getRotatedImage } from '../Cropper/cropper.functions';
+import type { Dimensions } from '../types/image-uploader.types';
+import { createImage, getRotatedImage } from '../utils/cropper-functions';
 import { noOp } from '@common/utils';
-import { sizeValidator } from '../imageUploader.functions';
-import type { UseImageUploaderReturn, UseCreateUploaderContextProps, OrientationKey } from './imageUploader.types';
-import { readFile, scaleImage, clearUrl } from '../imageUploader.functions';
+import { sizeValidator } from '../utils/image-uploader-functions';
+import type {
+  UseImageUploaderReturn,
+  UseCreateUploaderContextProps,
+  OrientationKey,
+} from '../types/image-uploader-context.types';
+import { readFile, scaleImage, clearUrl } from '../utils/image-uploader-functions';
 import { useBoolean } from '@chakra-ui/react';
 
 const ACCEPTED_FILE_TYPES = {
@@ -140,7 +144,6 @@ export const ImageUploaderContext: Context<UseImageUploaderReturn> = createConte
 } as UseImageUploaderReturn);
 ImageUploaderContext.displayName = 'ImageUploaderContext';
 //create a provider using this file
-export const useImageUploaderContext = () => useContext(ImageUploaderContext);
 
 export const ImageUploaderProvider = ({
   children,
