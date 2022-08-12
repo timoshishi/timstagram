@@ -1,19 +1,17 @@
 import { ModalProps } from '@chakra-ui/react';
 import { GlobalContext, UpdateStore, useGlobalModalContext, Store } from '@common/components/Modal/GlobalModal';
-import { ProfileModalProps } from '../components/ProfileModal';
+import { ProfileModalProps } from '../components/ProfileModal/ProfileModal';
 import { useCallback } from 'react';
+import { useImageUploaderContext } from '@features/ImageUploader';
 
-export type UseProfileModalReturn = {
-  hideModal: () => void;
-  showProfileModal: (props: ProfileModalProps, modalProps?: Partial<ModalProps>) => void;
-  updateStore: UpdateStore<ProfileModalProps>;
-  getComponentProps: () => Store<ProfileModalProps>[`componentProps`];
+export type UseProfileModalReturn = Omit<GlobalContext<ProfileModalProps>, 'showModal'> & {
+  showProfileModal: (componentProps: ProfileModalProps, modalProps?: Partial<ModalProps>) => void;
 };
 
 export const useProfileModal = (): UseProfileModalReturn => {
-  const { showModal, hideModal, updateStore, getComponentProps }: GlobalContext<ProfileModalProps> =
+  const { showModal, ...profileModalContext }: GlobalContext<ProfileModalProps> =
     useGlobalModalContext<ProfileModalProps>();
-
+  const imageUploaderCtx = useImageUploaderContext();
   const showProfileModal = useCallback<UseProfileModalReturn['showProfileModal']>(
     (props, modalProps = {}) =>
       showModal(
@@ -28,8 +26,7 @@ export const useProfileModal = (): UseProfileModalReturn => {
 
   return {
     showProfileModal,
-    hideModal,
-    updateStore,
-    getComponentProps,
+    ...profileModalContext,
+    ...imageUploaderCtx,
   } as const;
 };

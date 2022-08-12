@@ -1,13 +1,13 @@
 import React from 'react';
 import { ComponentStory, ComponentMeta } from '@storybook/react';
 import { GlobalModal, useGlobalModalContext, ModalType } from '../../common/components/Modal/GlobalModal';
-import { ProfileModalProps, ProfileModal } from '../../features/Modal/components/ProfileModal';
+import { ProfileModalProps, ProfileModal } from '../../features/Modal/components/ProfileModal/ProfileModal';
 import { useProfileModal } from '../../features/Modal/hooks/useProfileModal';
 import type { ShowModalParams } from '../../common/components/Modal/GlobalModal';
 import { Button } from '@chakra-ui/button';
 // More on default export: https://storybook.js.org/docs/react/writing-stories/introduction#default-export
 export default {
-  title: 'ProfileModal',
+  title: 'Modals/ProfileModal',
   component: ProfileModal,
   centered: true,
   // More on argTypes: https://storybook.js.org/docs/react/api/argtypes
@@ -21,7 +21,7 @@ const ModalComp = (args) => {
     <div>
       <Button
         onClick={() => {
-          showProfileModal(modalArgs);
+          showProfileModal(modalArgs, modalParams);
         }}
       >
         Open Modal
@@ -48,9 +48,6 @@ const firstLoginParams = [
     },
   },
   {
-    size: 'xl',
-    preserveScrollBarGap: false,
-    scrollBehavior: 'inside',
     closeOnOverlayClick: false,
     closeOnEsc: false,
   },

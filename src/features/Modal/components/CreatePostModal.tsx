@@ -4,7 +4,7 @@ import { useCreatePostModal } from '../hooks/useCreatePostModal';
 
 export interface CreatePostModalProps {}
 
-export const CreatePostModal = ({}: CreatePostModalProps) => {
+export const CreatePostModal = () => {
   const initialValue = useCreateUploaderContext();
   return (
     <ImageUploaderProvider initialValue={initialValue}>

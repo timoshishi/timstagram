@@ -6,7 +6,7 @@ import { noOp } from '@common/utils';
 
 export const ImageUploader = () => {
   const { error, preview } = useImageUploaderContext();
-  // const uploaderRef = useRef<HTMLDivElement | null>(null);
+
   return (
     <Portal>
       <Modal isOpen={true} onClose={noOp} size={['md', 'lg', '3xl']} initialFocusRef={undefined} isCentered={true}>

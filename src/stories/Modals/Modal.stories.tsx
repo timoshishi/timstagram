@@ -3,12 +3,12 @@ import { ComponentStory, ComponentMeta } from '@storybook/react';
 import { GlobalModal, useGlobalModalContext, ModalType } from '../../common/components/Modal/GlobalModal';
 import { ViewType } from '../../types/auth.types';
 import { AuthModalProps } from '../../common/components/Auth/AuthModal';
-import { ProfileModalProps } from '../../features/Modal/components/ProfileModal';
+import { ProfileModalProps } from '../../features/Modal/components/ProfileModal/ProfileModal';
 
 import { Button } from '@chakra-ui/button';
 // More on default export: https://storybook.js.org/docs/react/writing-stories/introduction#default-export
 export default {
-  title: 'Components/Modal',
+  title: 'Modals/Modal',
   component: GlobalModal,
   centered: true,
   // More on argTypes: https://storybook.js.org/docs/react/api/argtypes

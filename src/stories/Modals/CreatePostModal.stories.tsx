@@ -7,7 +7,7 @@ import { Button } from '@chakra-ui/button';
 import { useCreatePostModal } from '../../features/Modal/hooks/useCreatePostModal';
 // More on default export: https://storybook.js.org/docs/react/writing-stories/introduction#default-export
 export default {
-  title: 'CreatePostModal',
+  title: 'Modals/CreatePostModal',
   component: CreatePostModal,
   centered: true,
   // More on argTypes: https://storybook.js.org/docs/react/api/argtypes
@@ -21,7 +21,7 @@ const ModalComp = () => {
     <div>
       <Button
         onClick={() => {
-          showPostModal();
+          showPostModal({});
         }}
       >
         Open Modal

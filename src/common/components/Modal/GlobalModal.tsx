@@ -31,7 +31,8 @@ export type GlobalContext<P> = {
   isOpen: boolean;
   store: Store<P>;
   updateStore: UpdateStore;
-  getComponentProps: () => Store<P>['componentProps'];
+  componentProps: Store<P>['componentProps'];
+  modalProps: Store<P>['modalProps'];
 };
 
 type InitialContext = GlobalContext<any>;
@@ -46,7 +47,8 @@ const initalState: InitialContext = {
     modalProps: {},
   },
   updateStore: () => {},
-  getComponentProps: () => ({}),
+  componentProps: {},
+  modalProps: {},
 };
 
 const GlobalModalContext = createContext(initalState);
@@ -105,7 +107,9 @@ export const GlobalModal = ({ children }: { children: React.ReactNode }) => {
   };
 
   return (
-    <GlobalModalContext.Provider value={{ store, showModal, hideModal, isOpen, updateStore, getComponentProps }}>
+    <GlobalModalContext.Provider
+      value={{ store, showModal, hideModal, isOpen, updateStore, componentProps, modalProps }}
+    >
       <>
         {renderComponent()}
         {children}
