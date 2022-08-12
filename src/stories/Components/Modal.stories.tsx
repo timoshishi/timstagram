@@ -1,12 +1,9 @@
 import React from 'react';
 import { ComponentStory, ComponentMeta } from '@storybook/react';
-import {
-  GlobalModal,
-  useGlobalModalContext,
-  ModalType,
-} from '../../common/components/Modal/GlobalModal';
+import { GlobalModal, useGlobalModalContext, ModalType } from '../../common/components/Modal/GlobalModal';
 import { ViewType } from '../../types/auth.types';
 import { AuthModalProps } from '../../common/components/Auth/AuthModal';
+import { ProfileModalProps } from '../../features/Modal/components/ProfileModal';
 
 import { Button } from '@chakra-ui/button';
 // More on default export: https://storybook.js.org/docs/react/writing-stories/introduction#default-export
@@ -24,9 +21,7 @@ const ModalComp = (args) => {
   const { showModal } = useGlobalModalContext<typeof modalArgs>();
   return (
     <div>
-      <Button onClick={() => showModal(modalType, modalArgs)}>
-        Open Modal
-      </Button>
+      <Button onClick={() => showModal(modalType, modalArgs)}>Open Modal</Button>
     </div>
   );
 };
@@ -48,8 +43,21 @@ AuthModalStory.args = {
 
 export const ImageUploaderModal = Template.bind({});
 ImageUploaderModal.args = {
-  openModalParams: [
-    'ImageUploader',
-    { cropType: 'rect', title: "Let's upload an image" },
-  ],
+  openModalParams: ['ImageUploader', { cropType: 'rect', title: "Let's upload an image" }],
+};
+
+export const ProfileModal = Template.bind({});
+const profileModalParams: [ModalType, ProfileModalProps] = [
+  'ProfileModal',
+  {
+    initialProfileData: {
+      userId: '123',
+      email: 'yelllll@mar.com',
+      description: 'I am a description',
+    },
+  },
+];
+
+ProfileModal.args = {
+  openModalParams: profileModalParams,
 };

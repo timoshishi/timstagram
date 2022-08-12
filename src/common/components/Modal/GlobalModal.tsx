@@ -2,10 +2,12 @@ import React, { useState, createContext, useContext, Children } from 'react';
 import { AuthModal } from '../Auth';
 import { Portal, Modal as ChakraModal, ModalProps } from '@chakra-ui/react';
 import { ImageUploader } from '@features/ImageUploader';
+import { ProfileModal } from '@features/Modal/components/ProfileModal';
 
 export const MODAL_COMPONENTS = {
   AuthModal: AuthModal,
   ImageUploader: ImageUploader,
+  ProfileModal: ProfileModal,
 };
 
 export type ModalType = keyof typeof MODAL_COMPONENTS;
@@ -16,7 +18,8 @@ interface Store<P = {}> {
   modalProps: Partial<ModalProps>;
 }
 
-type ShowModal = <P>(modalType: ModalType, componentProps: P, modalProps?: Partial<ModalProps>) => void;
+export type ShowModal = <P>(modalType: ModalType, componentProps: P, modalProps?: Partial<ModalProps>) => void;
+export type ShowModalParams<P> = [ModalType, P, Partial<ModalProps> | undefined];
 
 type ContextType<P> = {
   showModal: ShowModal;
@@ -39,6 +42,7 @@ const initalState: InitialContext = {
 };
 
 const GlobalModalContext = createContext(initalState);
+GlobalModalContext.displayName = 'GlobalModalContext';
 
 export function useGlobalModalContext<P>(): ContextType<P> {
   return useContext<ContextType<P>>(GlobalModalContext);
@@ -82,7 +86,6 @@ export const GlobalModal = ({ children }: { children: React.ReactNode }) => {
     }
   };
 
-  GlobalModalContext.displayName = 'GlobalModalContext';
   return (
     <GlobalModalContext.Provider value={{ store, showModal, hideModal, isOpen }}>
       <>

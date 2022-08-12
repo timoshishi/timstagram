@@ -5,7 +5,7 @@ import { withApiAuth, supabaseServerClient, getUser } from '@supabase/auth-helpe
 import { imageHash } from 'image-hash';
 import { Multer } from 'multer';
 //promisify the imageHash function
-
+// auth.api.getUserByCookie()
 // PUT /api/publish/:id
 // POST TO PUBLISH A POST
 import {
@@ -77,7 +77,7 @@ class DocumentsHandler {
       // const hash = await imageHashAsync(croppedImage);
       // console.log(hash.length);
 
-      return res.json(await getSession({ req }));
+      return res.json(authedUser);
     } catch (error) {
       console.error(error);
       // return res.status(500).json(error);

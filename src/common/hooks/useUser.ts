@@ -10,7 +10,6 @@ export default (): {
 } => {
   const { user, error, isLoading } = useUser();
   const { data, error: swrError } = useSWR(user?.id ? `/user/${user.id}` : null, fetcher);
-  console.log('DATA', data);
   return {
     user: user && data ? data : null,
     error: error || swrError,

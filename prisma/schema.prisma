@@ -10,8 +10,8 @@ datasource db {
 }
 
 
-model User {
-  id         String     @id @default(cuid())
+model Profile {
+  id         String     @id
   username   String     @unique
   verifiedAt DateTime?  @map("email_verified")
   avatarUrl  String?    @map("avatar_url")
@@ -29,7 +29,7 @@ model User {
   posts      Post[]
 
   @@index([username])
-  @@map("user")
+  @@map("profile")
 }
 
 model Follows {
@@ -37,8 +37,8 @@ model Follows {
   folowerAvatarUrl   String? @map("follower_avatar_url")
   followingId        String  @map("following_id")
   followingAvatarUrl String? @map("following_avatar_url")
-  follower           User    @relation("follower", fields: [followerId], references: [id])
-  following          User    @relation("following", fields: [followingId], references: [id])
+  follower           Profile    @relation("follower", fields: [followerId], references: [id])
+  following          Profile    @relation("following", fields: [followingId], references: [id])
 
   @@id([followerId, followingId])
   @@map("follows")
@@ -46,9 +46,9 @@ model Follows {
 
 model Post {
   id            String       @id @default(cuid())
-  caption       String?      @map("caption")
+  postBody      String?      @map("post_body")
   published     Boolean      @default(true)
-  userId        String       @map("user_id")
+  profileId        String       @map("user_id")
   userDeleted   Boolean      @default(false) @map("user_deleted")
   flagged       Boolean      @default(false)
   deleted       Boolean      @default(false)
@@ -64,7 +64,7 @@ model Post {
   userAvatarUrl String       @map("user_avatar_url")
   username      String
   media         Media        @relation(fields: [mediaId], references: [id])
-  user          User         @relation(fields: [userId], references: [id])
+  profile          Profile         @relation(fields: [profileId], references: [id])
   comments      Comment[]
   postFlags     PostFlag[]
   postLikes     PostLike[]
@@ -76,11 +76,11 @@ model Post {
 model Comment {
   id        String   @id @default(cuid())
   content   String
-  userId    String   @map("user_id")
+  profileId    String   @map("user_id")
   postId    String   @map("post_id")
   createdAt DateTime @default(now()) @map("created_at")
   post      Post     @relation(fields: [postId], references: [id], onDelete: Cascade)
-  user      User     @relation(fields: [userId], references: [id])
+  profile      Profile     @relation(fields: [profileId], references: [id])
 
   @@map("comments")
 }
@@ -99,11 +99,11 @@ model Media {
   category  String?
   deleted   Boolean  @default(false)
   createdAt DateTime @default(now()) @map("created_at")
-  userId    String   @map("user_id")
+  profileId    String   @map("user_id")
   hash      String
   metadata  Json?
   source    String
-  user      User     @relation(fields: [userId], references: [id])
+  profile      Profile     @relation(fields: [profileId], references: [id])
   posts     Post[]
   tags      Tag[]
 
@@ -112,26 +112,26 @@ model Media {
 
 model PostFlag {
   postId    String
-  userId    String
+  profileId    String
   reason    FlagReason
   content   String?
   createdAt DateTime   @default(now()) @map("created_at")
   post      Post       @relation(fields: [postId], references: [id])
-  user      User       @relation(fields: [userId], references: [id])
+  profile      Profile       @relation(fields: [profileId], references: [id])
 
-  @@id([postId, userId])
+  @@id([postId, profileId])
   @@map("post_flags")
 }
 
 model PostLike {
   postId    String   @map("post_id")
-  userId    String   @map("user_id")
+  profileId    String   @map("user_id")
   createdAt DateTime @default(now()) @map("created_at")
   doesLike  Boolean  @default(true)
   post      Post     @relation(fields: [postId], references: [id], onDelete: Cascade)
-  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  profile      Profile     @relation(fields: [profileId], references: [id], onDelete: Cascade)
 
-  @@id([postId, userId])
+  @@id([postId, profileId])
   @@map("post_likes")
 }
 

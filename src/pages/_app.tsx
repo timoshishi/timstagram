@@ -11,6 +11,7 @@ import { GlobalModal } from '@common/components/Modal/GlobalModal';
 
 export default function MyApp({ Component, pageProps }: AppPropsWithLayout) {
   const getLayout = Component.getLayout ?? ((page) => <AppLayout children={page} />);
+
   return (
     <StrictMode>
       <UserProvider supabaseClient={supabaseClient}>

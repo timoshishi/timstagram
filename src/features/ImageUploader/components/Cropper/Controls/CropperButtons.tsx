@@ -1,9 +1,10 @@
 import { Flex, Button, useDisclosure } from '@chakra-ui/react';
+import { GetCroppedImage } from '@features/ImageUploader/types/image-uploader.types';
 import { useImageUploaderContext } from '../../../hooks/useImageUploaderContext';
 import { PostForm } from '../PostForm';
 
 interface CropperButtonsProps {
-  getCroppedImage: () => void;
+  getCroppedImage: GetCroppedImage;
 }
 
 export const CropperButtons = ({ getCroppedImage }: CropperButtonsProps) => {
