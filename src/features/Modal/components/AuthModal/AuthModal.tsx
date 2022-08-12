@@ -1,16 +1,14 @@
 import { Auth } from '@supabase/ui';
-// import { supabase } from '@src/lib/initSupabase';
-// import Auth from './SignupForm';
 import { supabaseClient } from '@supabase/auth-helpers-nextjs';
 
 import { ModalContent, Flex, Text, Box, ModalCloseButton, ModalOverlay } from '@chakra-ui/react';
 import { BrandLogo } from '@common/components/BrandLogo';
-import { useGlobalModalContext } from '../Modal/GlobalModal';
+import { useGlobalModalContext } from '../GlobalModal';
 import { ViewType } from 'types/auth.types';
 export interface AuthModalProps {
   viewType: ViewType;
 }
-const AuthModal = () => {
+export const AuthModal = () => {
   const {
     store: {
       componentProps: { viewType },
@@ -33,5 +31,3 @@ const AuthModal = () => {
     </>
   );
 };
-
-export default AuthModal;

@@ -1,8 +1,8 @@
 import React from 'react';
 import { ComponentStory, ComponentMeta } from '@storybook/react';
-import { GlobalModal, useGlobalModalContext, ModalType } from '../../common/components/Modal/GlobalModal';
+import { GlobalModal, useGlobalModalContext, ModalType } from '../../features/Modal/components/GlobalModal';
 import { ViewType } from '../../types/auth.types';
-import { AuthModalProps } from '../../common/components/Auth/AuthModal';
+import { AuthModalProps } from '../../features/Modal/components/AuthModal/AuthModal';
 import { ProfileModalProps } from '../../features/Modal/components/ProfileModal/ProfileModal';
 
 import { Button } from '@chakra-ui/button';

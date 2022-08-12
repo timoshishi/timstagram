@@ -1,5 +1,5 @@
 import { UserProvider } from '@supabase/auth-helpers-react';
-import { GlobalModal } from '../src/common/components/Modal/GlobalModal';
+import { GlobalModal } from '../src/features/Modal';
 // import { supabase } from '../src/lib/initSupabase';
 import { supabaseClient } from '@supabase/auth-helpers-nextjs';
 

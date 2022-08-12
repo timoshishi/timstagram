@@ -4,8 +4,8 @@ import { ProfileDropdown } from './ProfileDropdown';
 import { LoginButtons } from './LoginButtons';
 import { NavbarLinks } from './NavbarLinks';
 import { useUser } from '@supabase/auth-helpers-react';
-import { useGlobalModalContext } from '@common/components/Modal/GlobalModal';
-import { AuthModalProps } from '@common/components/Auth/AuthModal';
+import { useGlobalModalContext } from '@features/Modal/components/GlobalModal';
+import { AuthModalProps } from '@features/Modal/components/AuthModal/AuthModal';
 import { supabaseClient } from '@supabase/auth-helpers-nextjs';
 
 export const Navbar = () => {

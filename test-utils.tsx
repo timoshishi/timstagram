@@ -2,7 +2,7 @@ import React, { FC, ReactElement } from 'react';
 import { render, RenderOptions, RenderResult } from '@testing-library/react';
 import { UserProvider } from '@supabase/auth-helpers-react';
 import { ChakraProvider } from '@chakra-ui/react';
-import { GlobalModal } from '@common/components/Modal/GlobalModal';
+import { GlobalModal } from '@features/Modal';
 // import { supabase } from '@src/lib/initSupabase';
 import { supabaseClient } from '@supabase/auth-helpers-nextjs';
 

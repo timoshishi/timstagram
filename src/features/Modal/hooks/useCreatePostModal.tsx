@@ -1,9 +1,9 @@
-import { useGlobalModalContext } from '@common/components/Modal/GlobalModal';
+import { useGlobalModalContext } from '../components/GlobalModal';
 import { ContextType } from 'react';
 import { CreatePostModalProps } from '../components/CreatePostModal';
 
 export const useCreatePostModal = () => {
-  const { showModal, hideModal, updateStore, getComponentProps } = useGlobalModalContext<CreatePostModalProps>();
+  const { showModal, hideModal, updateStore } = useGlobalModalContext<CreatePostModalProps>();
 
   const showPostModal = (props: CreatePostModalProps = {}) =>
     showModal(
@@ -20,6 +20,5 @@ export const useCreatePostModal = () => {
     showPostModal,
     hideModal,
     updateStore,
-    getComponentProps,
   } as const;
 };

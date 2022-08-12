@@ -1,5 +1,5 @@
 import { ModalProps } from '@chakra-ui/react';
-import { GlobalContext, UpdateStore, useGlobalModalContext, Store } from '@common/components/Modal/GlobalModal';
+import { GlobalContext, useGlobalModalContext } from '../components/GlobalModal';
 import { ProfileModalProps } from '../components/ProfileModal/ProfileModal';
 import { useCallback } from 'react';
 import { useImageUploaderContext } from '@features/ImageUploader';

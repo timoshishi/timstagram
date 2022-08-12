@@ -1,8 +1,8 @@
 import React, { useState, createContext, useContext, Children, useCallback } from 'react';
-import { AuthModal } from '../Auth';
+import { AuthModal } from './AuthModal';
 import { Portal, Modal as ChakraModal, ModalProps } from '@chakra-ui/react';
 import { ImageUploader } from '@features/ImageUploader';
-import { ProfileModal, CreatePostModal } from '@features/Modal';
+import { ProfileModal, CreatePostModal } from '.';
 import { EmptyNoReturnFn } from '@common/utils';
 
 export const MODAL_COMPONENTS = {
