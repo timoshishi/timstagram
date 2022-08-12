@@ -1,34 +1,40 @@
-import React, { useState, createContext, useContext, Children } from 'react';
+import React, { useState, createContext, useContext, Children, useCallback } from 'react';
 import { AuthModal } from '../Auth';
 import { Portal, Modal as ChakraModal, ModalProps } from '@chakra-ui/react';
 import { ImageUploader } from '@features/ImageUploader';
-import { ProfileModal } from '@features/Modal/components/ProfileModal';
+import { ProfileModal, CreatePostModal } from '@features/Modal';
+import { EmptyNoReturnFn } from '@common/utils';
 
 export const MODAL_COMPONENTS = {
   AuthModal: AuthModal,
   ImageUploader: ImageUploader,
   ProfileModal: ProfileModal,
+  CreatePostModal: CreatePostModal,
 };
 
 export type ModalType = keyof typeof MODAL_COMPONENTS;
 export type ModalComponent = typeof MODAL_COMPONENTS[ModalType];
-interface Store<P = {}> {
+export interface Store<P = {}> {
   modalType: ModalType | null;
   componentProps: P;
   modalProps: Partial<ModalProps>;
 }
 
+export type UpdateStore<P = {}> = (store: Store<P>) => void;
+
 export type ShowModal = <P>(modalType: ModalType, componentProps: P, modalProps?: Partial<ModalProps>) => void;
 export type ShowModalParams<P> = [ModalType, P, Partial<ModalProps> | undefined];
 
-type ContextType<P> = {
+export type GlobalContext<P> = {
   showModal: ShowModal;
-  hideModal: () => void;
+  hideModal: EmptyNoReturnFn;
   isOpen: boolean;
   store: Store<P>;
+  updateStore: UpdateStore;
+  getComponentProps: () => Store<P>['componentProps'];
 };
 
-type InitialContext = ContextType<any>;
+type InitialContext = GlobalContext<any>;
 
 const initalState: InitialContext = {
   showModal: () => {},
@@ -39,27 +45,39 @@ const initalState: InitialContext = {
     componentProps: {},
     modalProps: {},
   },
+  updateStore: () => {},
+  getComponentProps: () => ({}),
 };
 
 const GlobalModalContext = createContext(initalState);
 GlobalModalContext.displayName = 'GlobalModalContext';
 
-export function useGlobalModalContext<P>(): ContextType<P> {
-  return useContext<ContextType<P>>(GlobalModalContext);
+export function useGlobalModalContext<P>(): GlobalContext<P> {
+  return useContext<GlobalContext<P>>(GlobalModalContext);
 }
 
 export const GlobalModal = ({ children }: { children: React.ReactNode }) => {
   const [store, setStore] = useState({} as Store<{}>);
   const { modalType, componentProps, modalProps }: Store = store;
   const [isOpen, setIsOpen] = useState(false);
-  function showModal<P>(modalType: ModalType, componentProps: P, modalProps = {}) {
+
+  const showModal: ShowModal = useCallback((modalType, componentProps, modalProps = {}) => {
     setStore({
       modalType,
       componentProps,
       modalProps,
     });
     setIsOpen(true);
-  }
+  }, []);
+
+  const updateStore = useCallback((newStore: Partial<Store>) => {
+    setStore((prevStore) => ({
+      ...prevStore,
+      ...newStore,
+    }));
+  }, []);
+
+  const getComponentProps = useCallback<() => Store['componentProps']>(() => store.componentProps, [store]);
 
   const hideModal = () => {
     setIsOpen(false);
@@ -87,7 +105,7 @@ export const GlobalModal = ({ children }: { children: React.ReactNode }) => {
   };
 
   return (
-    <GlobalModalContext.Provider value={{ store, showModal, hideModal, isOpen }}>
+    <GlobalModalContext.Provider value={{ store, showModal, hideModal, isOpen, updateStore, getComponentProps }}>
       <>
         {renderComponent()}
         {children}

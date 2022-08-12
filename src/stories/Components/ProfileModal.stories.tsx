@@ -2,6 +2,7 @@ import React from 'react';
 import { ComponentStory, ComponentMeta } from '@storybook/react';
 import { GlobalModal, useGlobalModalContext, ModalType } from '../../common/components/Modal/GlobalModal';
 import { ProfileModalProps, ProfileModal } from '../../features/Modal/components/ProfileModal';
+import { useProfileModal } from '../../features/Modal/hooks/useProfileModal';
 import type { ShowModalParams } from '../../common/components/Modal/GlobalModal';
 import { Button } from '@chakra-ui/button';
 // More on default export: https://storybook.js.org/docs/react/writing-stories/introduction#default-export
@@ -14,14 +15,13 @@ export default {
 
 // More on component templates: https://storybook.js.org/docs/react/writing-stories/introduction#using-arg
 const ModalComp = (args) => {
-  const [modalType, modalArgs, modalParams] = args.openModalParams;
-  const { showModal } = useGlobalModalContext<typeof modalArgs>();
-
+  const [_, modalArgs, modalParams = {}] = args.openModalParams;
+  const { showProfileModal } = useProfileModal();
   return (
     <div>
       <Button
         onClick={() => {
-          showModal<typeof modalArgs>(modalType, modalArgs, modalParams);
+          showProfileModal(modalArgs);
         }}
       >
         Open Modal
@@ -39,7 +39,7 @@ const Template: ComponentStory<typeof GlobalModal> = (args) => {
 };
 
 export const FirstLogin = Template.bind({});
-const firstLoginParams: ShowModalParams<ProfileModalProps> = [
+const firstLoginParams = [
   'ProfileModal',
   {
     initialProfileData: {
@@ -61,7 +61,7 @@ FirstLogin.args = {
 };
 
 export const ExistingUser = Template.bind({});
-const existingUserParams: [ModalType, ProfileModalProps] = [
+const existingUserParams = [
   'ProfileModal',
   {
     initialProfileData: {

@@ -1,8 +1,7 @@
-import { ModalContent, Box, ModalOverlay, Modal, Portal } from '@chakra-ui/react';
+import { ModalContent, ModalOverlay, Modal, Portal } from '@chakra-ui/react';
 import { useImageUploaderContext } from '../hooks/useImageUploaderContext';
 import { Dropzone } from './Dropzone';
 import { Cropper } from './Cropper';
-import { ErrorMessage } from '../../../common/components/ErrorMessage';
 import { noOp } from '@common/utils';
 
 export const ImageUploader = () => {
@@ -14,7 +13,6 @@ export const ImageUploader = () => {
         <ModalOverlay />
         <ModalContent p='0' display={'flex'} flexDir='column'>
           {preview ? <Cropper /> : <Dropzone />}
-          <ErrorMessage errorMessage={error?.message} />
         </ModalContent>
       </Modal>
     </Portal>

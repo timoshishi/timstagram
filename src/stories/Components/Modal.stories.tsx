@@ -45,6 +45,8 @@ export const ImageUploaderModal = Template.bind({});
 ImageUploaderModal.args = {
   openModalParams: ['ImageUploader', { cropType: 'rect', title: "Let's upload an image" }],
 };
+export const CreatePostModal = Template.bind({});
+CreatePostModal.args = {};
 
 export const ProfileModal = Template.bind({});
 const profileModalParams: [ModalType, ProfileModalProps] = [
