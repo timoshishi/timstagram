@@ -6,7 +6,7 @@ import { handleCroppedImage } from '../../utils/image-uploader-functions';
 import { Controls } from './Controls/Controls';
 import { useImageUploaderContext } from '../../hooks/useImageUploaderContext';
 import { CropperButtons } from './Controls/CropperButtons';
-import { GetCroppedImage } from '@features/ImageUploader/types/image-uploader.types';
+import { GetCroppedImage } from '../../types/image-uploader.types';
 
 export interface CropperProps {}
 

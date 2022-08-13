@@ -4,19 +4,18 @@ import { ProfileDropdown } from './ProfileDropdown';
 import { LoginButtons } from './LoginButtons';
 import { NavbarLinks } from './NavbarLinks';
 import { useUser } from '@supabase/auth-helpers-react';
-import { useGlobalModalContext } from '@features/Modal/components/GlobalModal';
-import { AuthModalProps } from '@features/Modal/components/AuthModal/AuthModal';
-import { supabaseClient } from '@supabase/auth-helpers-nextjs';
+import { useAuthModal } from '@features/Modal';
+import { ViewType } from 'types/auth.types';
 
 export const Navbar = () => {
   const { user, isLoading } = useUser();
-  const { showModal, isOpen, hideModal } = useGlobalModalContext<AuthModalProps>();
+  const { showAuthModal, isOpen, hideModal } = useAuthModal();
 
   if (isOpen && user) {
     hideModal();
   }
-  const handleAuthModal = (viewType: AuthModalProps['viewType']) => {
-    showModal('AuthModal', { viewType }, { size: ['md', 'lg'] });
+  const handleAuthModal = (viewType: ViewType) => {
+    showAuthModal( { viewType });
   };
 
   const colorMode = useColorModeValue('gray.100', 'gray.900');

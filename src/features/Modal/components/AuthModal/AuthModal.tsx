@@ -1,19 +1,17 @@
 import { Auth } from '@supabase/ui';
 import { supabaseClient } from '@supabase/auth-helpers-nextjs';
-
 import { ModalContent, Flex, Text, Box, ModalCloseButton, ModalOverlay } from '@chakra-ui/react';
 import { BrandLogo } from '@common/components/BrandLogo';
-import { useGlobalModalContext } from '../GlobalModal';
 import { ViewType } from 'types/auth.types';
+import { useAuthModal } from '@features/Modal';
+
 export interface AuthModalProps {
   viewType: ViewType;
 }
 export const AuthModal = () => {
   const {
-    store: {
-      componentProps: { viewType },
-    },
-  } = useGlobalModalContext<AuthModalProps>();
+    componentProps: { viewType },
+  } = useAuthModal();
 
   return (
     <>

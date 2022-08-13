@@ -1,9 +1,8 @@
 import React from 'react';
 import { ComponentStory, ComponentMeta } from '@storybook/react';
-import { GlobalModal, useGlobalModalContext, ModalType } from '../../features/Modal/components/GlobalModal';
+import { GlobalModal } from '../../features/Modal';
 import { ProfileModalProps, ProfileModal } from '../../features/Modal/components/ProfileModal/ProfileModal';
 import { useProfileModal } from '../../features/Modal/hooks/useProfileModal';
-import type { ShowModalParams } from '../../features/Modal/components/GlobalModal';
 import { Button } from '@chakra-ui/button';
 // More on default export: https://storybook.js.org/docs/react/writing-stories/introduction#default-export
 export default {

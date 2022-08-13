@@ -1,5 +1,6 @@
 import { ModalProps } from '@chakra-ui/react';
-import { GlobalContext, useGlobalModalContext } from '../components/GlobalModal';
+import { useGlobalModalContext } from './useGlobalModal';
+import type { GlobalContext } from '../types/global-modal.types';
 import { ProfileModalProps } from '../components/ProfileModal/ProfileModal';
 import { useCallback } from 'react';
 import { useImageUploaderContext } from '@features/ImageUploader';
@@ -12,6 +13,7 @@ export const useProfileModal = (): UseProfileModalReturn => {
   const { showModal, ...profileModalContext }: GlobalContext<ProfileModalProps> =
     useGlobalModalContext<ProfileModalProps>();
   const imageUploaderCtx = useImageUploaderContext();
+
   const showProfileModal = useCallback<UseProfileModalReturn['showProfileModal']>(
     (props, modalProps = {}) =>
       showModal(
@@ -21,6 +23,7 @@ export const useProfileModal = (): UseProfileModalReturn => {
           ...modalProps,
         }
       ),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     []
   );
 

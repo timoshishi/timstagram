@@ -13,7 +13,6 @@ import {
   IconLock,
 } from '@supabase/ui';
 import * as SocialIcons from './Icons';
-// @ts-ignore
 import AuthStyles from './Auth.module.css';
 
 const VIEWS: ViewsMap = {
@@ -285,6 +284,7 @@ function EmailAuth({
     return () => {
       isMounted.current = false;
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [authView]);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
