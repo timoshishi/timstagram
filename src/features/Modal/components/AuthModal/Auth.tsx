@@ -5,22 +5,22 @@ import { Space } from '@supabase/ui';
 import AuthStyles from './Auth.module.css';
 import { useAuthModal } from '@features/Modal/hooks';
 import { useUser } from '@common/hooks/useUser';
+import { AuthHeader } from './AuthHeader';
+import type { SignUpActionType } from './AuthHeader';
+interface ViewsMap {
+  [key: string]: ViewType;
+}
 
-const VIEWS: ViewsMap = {
+export type ViewType = 'sign_in' | 'sign_up' | 'forgotten_password' | 'magic_link' | 'update_password';
+
+export type RedirectTo = undefined | string;
+export const VIEWS: ViewsMap = {
   SIGN_IN: 'sign_in',
   SIGN_UP: 'sign_up',
   FORGOTTEN_PASSWORD: 'forgotten_password',
   MAGIC_LINK: 'magic_link',
   UPDATE_PASSWORD: 'update_password',
 };
-
-interface ViewsMap {
-  [key: string]: ViewType;
-}
-
-type ViewType = 'sign_in' | 'sign_up' | 'forgotten_password' | 'magic_link' | 'update_password';
-
-type RedirectTo = undefined | string;
 
 export interface Props {
   supabaseClient: SupabaseClient;
@@ -36,6 +36,7 @@ export interface Props {
   redirectTo?: RedirectTo;
   onlyThirdPartyProviders?: boolean;
   magicLink?: boolean;
+  signUpActionType?: SignUpActionType | undefined;
 }
 
 function Auth({
@@ -50,6 +51,7 @@ function Auth({
   redirectTo,
   onlyThirdPartyProviders = false,
   magicLink = false,
+  signUpActionType,
 }: Props): JSX.Element | null {
   const [authView, setAuthView] = useState(view);
   const [defaultEmail, setDefaultEmail] = useState('');
@@ -64,6 +66,7 @@ function Auth({
 
   const Container = (props: any) => (
     <div className={containerClasses.join(' ')} style={style}>
+      <AuthHeader viewType={authView} signUpActionType={signUpActionType} />
       <Space size={8} direction={'vertical'}>
         <SocialAuth
           supabaseClient={supabaseClient}

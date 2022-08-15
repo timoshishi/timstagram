@@ -1,16 +1,18 @@
 import Auth from './Auth';
 import { supabase } from '@src/lib/initSupabase';
-import { ModalContent, Flex, Text, Box, ModalCloseButton, ModalOverlay } from '@chakra-ui/react';
+import { ModalContent, Flex, Text, ModalCloseButton, ModalOverlay } from '@chakra-ui/react';
 import { BrandLogo } from '@common/components/BrandLogo';
-import { ViewType } from 'types/auth.types';
 import { useAuthModal } from '@features/Modal';
+import { SignUpActionType } from './AuthHeader';
+import { ViewType } from './Auth';
 
 export interface AuthModalProps {
   viewType: ViewType;
+  signUpActionType?: SignUpActionType;
 }
 export const AuthModal = () => {
   const {
-    componentProps: { viewType },
+    componentProps: { viewType, signUpActionType },
   } = useAuthModal();
 
   return (
@@ -19,11 +21,7 @@ export const AuthModal = () => {
       <ModalContent p={4}>
         <ModalCloseButton />
         <Flex flexDirection='column' p={6}>
-          <Box m={25}>
-            <BrandLogo />
-            <Text fontSize='xl'>Welcome to {process.env.NEXT_PUBLIC_APP_NAME}</Text>
-          </Box>
-          <Auth supabaseClient={supabase} view={viewType} redirectTo='/feed' />
+          <Auth supabaseClient={supabase} view={viewType} redirectTo='/feed' signUpActionType={signUpActionType} />
         </Flex>
       </ModalContent>
     </>

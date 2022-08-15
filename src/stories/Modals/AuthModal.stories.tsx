@@ -6,6 +6,9 @@ import { Button } from '@chakra-ui/button';
 import { userEvent, waitFor, within, screen } from '@storybook/testing-library';
 import { expect } from '@storybook/jest';
 // More on default export: https://storybook.js.org/docs/react/writing-stories/introduction#default-export
+import { SIGN_UP_TEXTS } from '../../features/Modal/constants/modal';
+import { VIEWS } from '../../features/Modal/components/AuthModal/Auth';
+import { rest } from 'msw';
 export default {
   title: 'Modals/AuthModal',
   component: AuthModal,
@@ -15,23 +18,30 @@ export default {
     viewType: {
       control: {
         type: 'select',
-        options: ['sign_in', 'sign_up', 'forgot_password', 'change_password'],
-        defaultValue: 'sign_up',
+        options: [...Object.values(VIEWS)],
+        defaultValue: '',
       },
     },
-    onSubmit: { action: true },
+    signUpActionType: {
+      control: {
+        type: 'select',
+        options: [...Object.keys(SIGN_UP_TEXTS)],
+        defaultValue: '',
+      },
+    },
+    handleSubmit: { action: true },
   },
 } as ComponentMeta<typeof GlobalModal>;
 
 // More on component templates: https://storybook.js.org/docs/react/writing-stories/introduction#using-arg
 const ModalComp = (args) => {
   const { showAuthModal } = useAuthModal();
-
+  console.log(args.signUpActionType);
   return (
     <div>
       <Button
         onClick={() => {
-          showAuthModal({ viewType: 'sign_up' });
+          showAuthModal({ viewType: args.viewType, signUpActionType: args.signUpActionType });
         }}
       >
         Open Modal
@@ -48,29 +58,70 @@ const Template: ComponentStory<typeof GlobalModal> = (args) => {
   );
 };
 
-export const ValidValues = Template.bind({});
-ValidValues.play = async ({ args, canvasElement }) => {
+export const Primary = Template.bind({});
+export const SignUp = Template.bind({});
+SignUp.args = {
+  viewType: 'sign_up',
+  signUpActionType: '',
+};
+SignUp.play = async ({ args, canvasElement }) => {
   const canvas = within(canvasElement);
   await userEvent.click(screen.getByRole('button', { name: /open modal/i }));
   await waitFor(() => expect(screen.getByTestId('email')).toBeInTheDocument());
-  await userEvent.type(screen.getByTestId('email'), 'timfrrst@gmail.com');
+  await userEvent.type(screen.getByTestId('email'), 'tim@test.com');
   await userEvent.type(screen.getByTestId('password'), 'password');
   await userEvent.type(screen.getByTestId('username'), 'susaa');
+  await waitFor(() => expect(screen.getByTestId('email')).toHaveValue('tim@test.com'));
   await userEvent.click(screen.getByRole('button', { name: /Sign up/ }));
-
-  // await waitFor(() => expect(args.onSubmit).toHaveBeenCalled());
 };
 
-export const Primary = Template.bind({});
+const SIGNUP_URL = 'https://kwgfmfvqwtlfbskfksiv.supabase.co/auth/v1/signup';
+const SIGN_UP_RESPONSE = {
+  id: '1fece489-59d8-47f5-88c1-c1e61c745716',
+  aud: 'authenticated',
+  role: 'authenticated',
+  email: 'timfrrst@gmail.coma',
+  phone: '',
+  confirmation_sent_at: '2022-08-15T14:30:08.494362463Z',
+  app_metadata: { provider: 'email', providers: ['email'] },
+  user_metadata: {},
+  identities: [
+    {
+      id: '1fece489-59d8-47f5-88c1-c1e61c745716',
+      user_id: '1fece489-59d8-47f5-88c1-c1e61c745716',
+      identity_data: { sub: '1fece489-59d8-47f5-88c1-c1e61c745716' },
+      provider: 'email',
+      last_sign_in_at: '2022-08-15T14:30:08.492196291Z',
+      created_at: '2022-08-15T14:30:08.49225Z',
+      updated_at: '2022-08-15T14:30:08.492254Z',
+    },
+  ],
+  created_at: '2022-08-15T14:30:08.489699Z',
+  updated_at: '2022-08-15T14:30:08.995585Z',
+};
 
-/*
-Default.parameters = {
+SignUp.parameters = {
   msw: {
     handlers: [
-      rest.get('/tasks', (req, res, ctx) => {
-        return res(ctx.json(mockTasks));
+      rest.post(SIGNUP_URL, (req, res, ctx) => {
+        return res(ctx.delay(600), ctx.json(SIGN_UP_RESPONSE));
       }),
+      rest.post('/api/profile', (req, res, ctx) => {
+        // delay
+        return res(ctx.delay(500), ctx.json(SIGN_UP_RESPONSE));
+      }),
+      // rest.get('/api/auth/user', (req, res, ctx) => {
+      //   return res(
+      //     ctx.delay(200),
+      //     ctx.json({
+      //       user: {
+      //         id: '1',
+      //         username: 'Bobby Daniels',
+      //         avatarUrl: '',
+      //       },
+      //     })
+      //   );
+      // }),
     ],
   },
 };
-*/

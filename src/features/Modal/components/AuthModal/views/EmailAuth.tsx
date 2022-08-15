@@ -56,9 +56,9 @@ function EmailAuth({
   const isMounted = useRef<boolean>(true);
   // const [email, setEmail] = useState(defaultEmail);
   // const [password, setPassword] = useState(defaultPassword);
-  const [email, setEmail] = useState('timfrrst@gmail.com');
-  const [password, setPassword] = useState('password');
-  const [username, setUsername] = useState('bobo');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [username, setUsername] = useState('');
   const [rememberMe, setRememberMe] = useState(false);
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
