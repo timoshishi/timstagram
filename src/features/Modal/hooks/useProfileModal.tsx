@@ -3,7 +3,6 @@ import { useGlobalModalContext } from './useGlobalModal';
 import type { GlobalContext } from '../types/global-modal.types';
 import { ProfileModalProps } from '../components/ProfileModal/ProfileModal';
 import { useCallback } from 'react';
-import { useImageUploaderContext } from '@features/ImageUploader';
 
 export type UseProfileModalReturn = Omit<GlobalContext<ProfileModalProps>, 'showModal'> & {
   showProfileModal: (componentProps: ProfileModalProps, modalProps?: Partial<ModalProps>) => void;
@@ -12,7 +11,6 @@ export type UseProfileModalReturn = Omit<GlobalContext<ProfileModalProps>, 'show
 export const useProfileModal = (): UseProfileModalReturn => {
   const { showModal, isOpen, componentProps, ...profileModalContext }: GlobalContext<ProfileModalProps> =
     useGlobalModalContext<ProfileModalProps>();
-  const imageUploaderCtx = useImageUploaderContext();
 
   const showProfileModal = useCallback<UseProfileModalReturn['showProfileModal']>(
     (props, modalProps = {}) =>
@@ -31,6 +29,5 @@ export const useProfileModal = (): UseProfileModalReturn => {
     isOpen,
     componentProps,
     ...profileModalContext,
-    ...imageUploaderCtx,
   } as const;
 };

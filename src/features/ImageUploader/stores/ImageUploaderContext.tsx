@@ -25,14 +25,24 @@ export const ImageUploaderContext: Context<UseImageUploaderReturn | null> =
 ImageUploaderContext.displayName = 'ImageUploaderContext';
 //create a provider using this file
 
-export const ImageUploaderProvider = ({ children }: { children: React.ReactNode }) => {
+interface ImageUploaderProviderProps {
+  shape?: 'rect' | 'round';
+  hasAdditionalStep?: boolean;
+  children: React.ReactNode;
+}
+
+export const ImageUploaderProvider = ({
+  children,
+  shape = 'rect',
+  hasAdditionalStep = false,
+}: ImageUploaderProviderProps) => {
   const [file, setFile] = useState<File | null>(null);
   const [cropShape, setCropShape] = useState<'round' | 'rect'>('rect');
-  const [isLoading, setIsLoading] = useState(false);
+
   const [preview, setPreview] = useState<string | null>(null);
   const [error, setError] = useState<FileError | null>(null);
   const [originalAspectRatio, setOriginalAspectRatio] = useState(1);
-  const [isCommentSliderOpen, { toggle: toggleCommentSlider }] = useBoolean(false);
+  const [isUploaderLoading, { toggle: toggleUploaderLoading }] = useBoolean(false);
   const [croppedImage, setCroppedImage] = useState<GetCroppedImageReturn | null>(null);
   const [dimensions, setDimensions] = useState<Dimensions>({
     width: 0,
@@ -115,7 +125,6 @@ export const ImageUploaderProvider = ({ children }: { children: React.ReactNode 
         getInputProps,
         isDragActive,
         preview,
-        isLoading,
         error,
         file,
         originalDimensions: dimensions,
@@ -124,12 +133,12 @@ export const ImageUploaderProvider = ({ children }: { children: React.ReactNode 
         scaleImage,
         cropShape,
         setCropShape,
-        isCommentSliderOpen,
-        toggleCommentSlider,
+        isUploaderLoading,
+        toggleUploaderLoading,
         setCroppedImage,
         croppedImage,
-        hasAdditionalStep: true,
-        type: 'post',
+        hasAdditionalStep,
+        shape,
       }}
     >
       {children}

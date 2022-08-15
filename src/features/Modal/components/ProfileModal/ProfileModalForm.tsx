@@ -10,7 +10,6 @@ import {
   Text,
   Flex,
   ModalCloseButton,
-  useDisclosure,
 } from '@chakra-ui/react';
 import { BrandLogo } from '@src/common/components/BrandLogo';
 import { PostHeaderAvatar } from '@common/components/PostHeaderAvatar';
@@ -88,7 +87,6 @@ export const ProfileModalForm = ({
                 </Button>
               </Flex>
             </FormControl>
-
             <Button type='submit' my='2'>
               Submit
             </Button>

@@ -1,21 +1,20 @@
-import {
-  ModalContent,
-  ModalOverlay,
-  Modal,
-  Portal,
-  ModalCloseButton,
-  Box,
-  Textarea,
-  Flex,
-  Button,
-} from '@chakra-ui/react';
 import { useImageUploaderContext } from '../hooks/useImageUploaderContext';
 import { Dropzone } from './Dropzone';
 import { Cropper } from './Cropper';
-import { noOp } from '@common/utils';
+import { Box, Center, Spinner, Flex } from '@chakra-ui/react';
 
 export const ImageUploader = () => {
-  const { error, preview } = useImageUploaderContext();
-
+  const { preview, isUploaderLoading } = useImageUploaderContext();
+  if (isUploaderLoading) {
+    return (
+      <Box h='60' w='100%'>
+        <Flex alignItems='center' justifyContent='center' h='100%' w='100%'>
+          <Center>
+            <Spinner thickness='4px' speed='0.65s' emptyColor='gray.200' color='blue.500' size='xl' />
+          </Center>
+        </Flex>
+      </Box>
+    );
+  }
   return <>{preview ? <Cropper /> : <Dropzone />}</>;
 };

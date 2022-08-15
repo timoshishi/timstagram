@@ -11,7 +11,7 @@ import { GetCroppedImage } from '../../types/image-uploader.types';
 export interface CropperProps {}
 
 export const EasyCropper = ({}: CropperProps) => {
-  const { preview, clearFile, originalDimensions, cropShape, file, setCroppedImage } = useImageUploaderContext();
+  const { preview, originalDimensions, cropShape, file, setCroppedImage, shape } = useImageUploaderContext();
   const [crop, setCrop] = useState({ x: 0, y: 0 });
   const [rotation, setRotation] = useState(0);
   const [aspectRatio, setAspectRatio] = useState(1);
@@ -38,7 +38,6 @@ export const EasyCropper = ({}: CropperProps) => {
     const { width: originalWidth, height: originalHeight } = originalDimensions;
     const aspectRatio = originalWidth / originalHeight;
     const newHeight = width / aspectRatio;
-    // minHeight = Math.min(newHeight, height);
     minHeight = newHeight;
   }
 
@@ -90,9 +89,6 @@ export const EasyCropper = ({}: CropperProps) => {
           style={{
             containerStyle: {
               width: '100%',
-              // minHeight: '60vh',
-              // height: 'auto',
-              // minHeight: `${minHeight}px`,
               backgroundColor: 'blackAlpha.100',
               position: 'relative',
             },
@@ -102,7 +98,7 @@ export const EasyCropper = ({}: CropperProps) => {
             },
           }}
           objectFit='auto-cover'
-          cropShape={cropShape}
+          cropShape={shape || cropShape}
           aspect={aspectRatio}
           onCropChange={setCrop}
           onRotationChange={setRotation}

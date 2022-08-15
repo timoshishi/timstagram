@@ -12,7 +12,6 @@ export type ScaleImage = (dimensions: Dimensions, maxWidth: number, maxHeight: n
 export type UseImageUploaderReturn = {
   file: File | null;
   error: FileError | null;
-  isLoading: boolean;
   getRootProps: DropzoneState['getRootProps'];
   getInputProps: DropzoneState['getInputProps'];
   isDragActive: DropzoneState['isDragActive'];
@@ -23,15 +22,15 @@ export type UseImageUploaderReturn = {
   scaleImage: ScaleImage;
   cropShape: 'round' | 'rect';
   setCropShape: Dispatch<SetStateAction<'round' | 'rect'>>;
-  isCommentSliderOpen: boolean;
-  toggleCommentSlider: () => void;
+  isUploaderLoading: boolean;
+  toggleUploaderLoading: () => void;
   croppedImage: GetCroppedImageReturn | null;
   setCroppedImage: Dispatch<SetStateAction<GetCroppedImageReturn | null>>;
   hasAdditionalStep: boolean;
-  type: 'post' | 'avatar';
+  shape: 'rect' | 'round';
 };
 
 export interface UseCreateUploaderContextProps {
-  type?: 'post' | 'avatar';
+  shape?: 'rect' | 'round';
   hasAdditionalStep?: boolean;
 }

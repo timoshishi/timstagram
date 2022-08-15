@@ -9,7 +9,7 @@ export interface PostDTO {
 
 export const createPost = async (data: PostDTO) => {
   try {
-    console.log('creatingposet', data);
+    console.log('creatingpost', data);
     const formData = new FormData();
     formData.append('caption', data.caption);
     formData.append('files', data.croppedImage);
