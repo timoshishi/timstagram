@@ -10,7 +10,7 @@ export type UseProfileModalReturn = Omit<GlobalContext<ProfileModalProps>, 'show
 };
 
 export const useProfileModal = (): UseProfileModalReturn => {
-  const { showModal, ...profileModalContext }: GlobalContext<ProfileModalProps> =
+  const { showModal, isOpen, componentProps, ...profileModalContext }: GlobalContext<ProfileModalProps> =
     useGlobalModalContext<ProfileModalProps>();
   const imageUploaderCtx = useImageUploaderContext();
 
@@ -24,11 +24,12 @@ export const useProfileModal = (): UseProfileModalReturn => {
         }
       ),
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    []
+    [showModal]
   );
-
   return {
     showProfileModal,
+    isOpen,
+    componentProps,
     ...profileModalContext,
     ...imageUploaderCtx,
   } as const;

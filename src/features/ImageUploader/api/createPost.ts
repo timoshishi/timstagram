@@ -18,7 +18,7 @@ export const createPost = async (data: PostDTO) => {
     formData.append('caption', data.caption);
     formData.append('files', data.croppedImage);
     formData.append('imageData', JSON.stringify(data.imageData));
-    console.log(formData.get('imageData'));
+    console.info(formData.get('imageData'));
   } catch (error) {
     console.error(error);
   }

@@ -94,7 +94,7 @@ export const getImageFromPreview: GetImageFromPreview = async ({
           type: 'image/png',
         });
         resolve(file);
-        // console.log({ doneFile });
+        // console.info({ doneFile });
         // resolve(URL.createObjectURL(blob));
       } else {
         reject(new Error('Canvas is empty'));

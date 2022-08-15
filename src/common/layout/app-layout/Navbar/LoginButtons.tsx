@@ -1,7 +1,17 @@
 import { Stack, Button, Show, useDisclosure } from '@chakra-ui/react';
 import { ViewType } from 'types/auth.types';
+import { useAuthModal } from '@features/Modal';
+import { useUser } from '@common/hooks/useUser';
+export const LoginButtons = () => {
+  const { showAuthModal, hideModal } = useAuthModal();
+  const { user } = useUser();
+  if (user) {
+    hideModal();
+  }
+  const handleLogin = (viewType: ViewType) => {
+    showAuthModal({ viewType });
+  };
 
-export const LoginButtons = ({ handleLogin }: { handleLogin: (viewType: ViewType) => void }) => {
   return (
     <>
       <Stack flex={{ base: 1, md: 0 }} justify={'flex-end'} direction={'row'} spacing={6}>

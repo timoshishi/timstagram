@@ -22,11 +22,9 @@ export const GlobalModalComponent = ({
 
   if (!!ModalComponent) {
     return (
-      <Portal>
-        <ChakraModal isOpen={isOpen} onClose={hideModal} id='global-modal' {...modalProps}>
-          <ModalComponent {...componentProps} />
-        </ChakraModal>
-      </Portal>
+      <ChakraModal isOpen={isOpen} onClose={hideModal} id='global-modal' {...modalProps}>
+        <ModalComponent {...componentProps} />
+      </ChakraModal>
     );
   }
   return null;

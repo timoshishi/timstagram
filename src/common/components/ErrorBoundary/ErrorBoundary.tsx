@@ -14,12 +14,12 @@ class Boundary extends Component<ErrorBoundaryProps, { hasError: boolean }> {
   }
   static getDerivedStateFromError(error: Error) {
     // Update state so the next render will show the fallback UI
-    console.log(error, 'ErrorBoundary getDerivedStateFromError');
+    console.error(error, 'ErrorBoundary getDerivedStateFromError');
     return { hasError: true };
   }
   componentDidCatch(error: Error, errorInfo: unknown) {
     // You can use your own error logging service here
-    console.log({ error, errorInfo });
+    console.error({ error, errorInfo });
   }
   render() {
     // Check if the error is thrown
@@ -33,7 +33,8 @@ class Boundary extends Component<ErrorBoundaryProps, { hasError: boolean }> {
             onClick={() => {
               this.props.router.reload();
               this.setState({ hasError: false });
-            }}>
+            }}
+          >
             Try again?
           </button>
         </div>

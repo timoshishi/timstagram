@@ -32,7 +32,6 @@ export const ProfileModal = () => {
     const fullFormData = new FormData(e.target as HTMLFormElement);
 
     const dataParsed = Object.fromEntries(fullFormData.entries());
-    console.log(dataParsed);
     e.preventDefault();
   };
   const deleteUser = async () => {

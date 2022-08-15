@@ -58,7 +58,7 @@ export const useCreateUploaderContext = ({ type }: UseCreateUploaderContextProps
       }
       setPreview(imgUrl);
       setFile(file);
-      console.log(file);
+      console.info(file);
       return null;
     } catch (error) {
       console.error(error);

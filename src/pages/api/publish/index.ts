@@ -20,11 +20,11 @@ import {
   Res,
   ValidationPipe,
 } from '@storyofams/next-api-decorators';
+
 import multer from 'multer';
 import { PostDTO } from '@features/ImageUploader/api/createPost';
 import { MAX_MEGABYTES, MEGABYTE } from '@features/ImageUploader/utils/image-uploader.constants';
 import { IsString } from 'class-validator';
-import axios from 'axios';
 
 const imageHashAsync = async (image: any): Promise<string> => {
   return new Promise((resolve, reject) => {
@@ -70,12 +70,10 @@ class DocumentsHandler {
     @UploadedFile() croppedImage: any
   ) {
     try {
-      // console.log('croppedImage', croppedImage);
       const authedUser = await getUser({ req, res });
 
       // const imageData: ImageData = JSON.parse(body.imageData);
       // const hash = await imageHashAsync(croppedImage);
-      // console.log(hash.length);
 
       return res.json(authedUser);
     } catch (error) {

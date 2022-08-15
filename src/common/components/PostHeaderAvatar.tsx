@@ -8,7 +8,7 @@ interface PostHeaderAvatarProps {
 
 export const PostHeaderAvatar = ({ username, avatarUrl, isFollowing }: PostHeaderAvatarProps) => {
   return (
-    <Flex alignItems='center' _hover={{ cursor: 'pointer' }} onClick={() => console.log('go to user')}>
+    <Flex alignItems='center' _hover={{ cursor: 'pointer' }} onClick={() => console.info('go to user')}>
       <Avatar name={username} src={avatarUrl} size='sm' />
       <Flex direction='column' justifyContent={'space-between'} ml={2} mt={isFollowing ? '1' : '0'}>
         <Text fontSize='md' fontWeight='bold'>

@@ -1,11 +1,9 @@
 import { EmptyNoReturnFn } from '@common/utils';
 import { useState } from 'react';
 import { Button, Box, Flex, Textarea, Collapse } from '@chakra-ui/react';
-import { PostHeaderAvatar } from '@common/components/PostCard/PostHeader/PostHeaderAvatar';
+import { PostHeaderAvatar } from '@common/components/PostHeaderAvatar';
 import { GetCroppedImage } from '@features/ImageUploader/types/image-uploader.types';
 import { createPost } from '@features/ImageUploader/api/createPost';
-import { createResponseComposition } from 'msw';
-// import useUser from '@common/hooks/useUser';
 
 interface PostFormProps {
   isOpen: boolean;
@@ -24,7 +22,7 @@ export const PostForm = ({ isOpen, onToggle, getCroppedImage }: PostFormProps) =
     if (!croppedImageData) return;
     await createPost({ caption, ...croppedImageData });
   };
-  // const { user } = useUser();
+
   return (
     <Box>
       <Collapse in={isOpen}>

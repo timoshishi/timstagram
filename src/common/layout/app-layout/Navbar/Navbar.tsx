@@ -3,20 +3,10 @@ import { BrandLogo } from '../../../components/BrandLogo';
 import { ProfileDropdown } from './ProfileDropdown';
 import { LoginButtons } from './LoginButtons';
 import { NavbarLinks } from './NavbarLinks';
-import { useUser } from '@supabase/auth-helpers-react';
-import { useAuthModal } from '@features/Modal';
-import { ViewType } from 'types/auth.types';
+import { useUser } from '@common/hooks/useUser';
 
 export const Navbar = () => {
   const { user, isLoading } = useUser();
-  const { showAuthModal, isOpen, hideModal } = useAuthModal();
-
-  if (isOpen && user) {
-    hideModal();
-  }
-  const handleAuthModal = (viewType: ViewType) => {
-    showAuthModal( { viewType });
-  };
 
   const colorMode = useColorModeValue('gray.100', 'gray.900');
   if (isLoading) {
@@ -33,7 +23,7 @@ export const Navbar = () => {
             <BrandLogo />
           </Show>
           <NavbarLinks />
-          {!!user && !isLoading ? <ProfileDropdown /> : <LoginButtons handleLogin={handleAuthModal} />}
+          {user && !isLoading ? <ProfileDropdown user={user} /> : <LoginButtons />}
         </Flex>
       </Box>
     </Box>

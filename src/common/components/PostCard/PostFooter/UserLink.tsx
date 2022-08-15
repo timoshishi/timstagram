@@ -11,7 +11,8 @@ export const UserLink = ({ username }: UserLinkProps) => (
     as='h4'
     lineHeight='tight'
     alignSelf={'flex-end'}
-    onClick={() => console.log('go to user page')}>
+    onClick={() => console.info('go to user page')}
+  >
     @{username}
   </Link>
 );

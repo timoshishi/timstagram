@@ -12,7 +12,7 @@ import {
   ModalCloseButton,
 } from '@chakra-ui/react';
 import { BrandLogo } from '@src/common/components/BrandLogo';
-import { PostHeaderAvatar } from '@common/components/PostCard/PostHeader/PostHeaderAvatar';
+import { PostHeaderAvatar } from '@common/components/PostHeaderAvatar';
 import { ProfileModalProps } from './ProfileModal';
 
 interface ProfileModalFormProps {
