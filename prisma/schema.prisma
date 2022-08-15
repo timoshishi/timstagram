@@ -17,6 +17,7 @@ model Profile {
   id        String     @id @db.Uuid()
   username  String?    @unique
   avatarUrl String?    @map("avatar_url")
+  bio       String?    @map("bio")
   createdAt DateTime   @default(now()) @map("created_at")
   updatedAt DateTime?  @updatedAt @map("updated_at")
   banned    Boolean    @default(false)
@@ -126,7 +127,7 @@ model PostFlag {
 }
 
 model PostLike {
-  postId    String   @map("post_id") 
+  postId    String   @map("post_id")
   userId    String   @map("user_id") @db.Uuid()
   createdAt DateTime @default(now()) @map("created_at")
   doesLike  Boolean  @default(true)
@@ -138,7 +139,7 @@ model PostLike {
 }
 
 model TagOnPosts {
-  postId String @map("post_id") 
+  postId String @map("post_id")
   tagId  String @map("tag_id") @db.Uuid()
   post   Post   @relation(fields: [postId], references: [id], onDelete: Cascade)
   tag    Tag    @relation(fields: [tagId], references: [id], onDelete: Cascade)
