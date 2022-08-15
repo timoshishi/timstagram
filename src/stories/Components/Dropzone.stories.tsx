@@ -18,7 +18,7 @@ export default {
 export const Primary = (args) => {
   const { getRootProps, getInputProps, isDragActive, preview, error, file, dimensions, aspectRatio, clearFile } =
     useImageUploaderContext();
-  console.log(file);
+  console.info(file);
   return (
     <Modal isOpen={true} onClose={noOp} size='full'>
       <Dropzone getRootProps={getRootProps} getInputProps={getInputProps} isDragActive={isDragActive} />
