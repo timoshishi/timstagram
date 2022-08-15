@@ -28,7 +28,7 @@ export class ProfileAPI {
    */
   async addUsernameMetadata({ id, username }: CreateProfileParams): Promise<SupabaseAuthResponse> {
     const meta = await supabaseService.auth.api.updateUserById(id, {
-      user_metadata: { username, avatarUrl: '' },
+      user_metadata: { username, avatarUrl: '', bio: '' },
     });
     return meta;
   }

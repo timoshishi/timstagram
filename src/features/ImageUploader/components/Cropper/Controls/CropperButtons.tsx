@@ -8,7 +8,7 @@ interface CropperButtonsProps {
 }
 
 export const CropperButtons = ({ getCroppedImage }: CropperButtonsProps) => {
-  const { clearFile } = useImageUploaderContext();
+  const { clearFile, hasAdditionalStep } = useImageUploaderContext();
   const { isOpen, onToggle } = useDisclosure();
 
   return (
@@ -22,10 +22,9 @@ export const CropperButtons = ({ getCroppedImage }: CropperButtonsProps) => {
       >
         Cancel
       </Button>
-      <Button variant='solid' colorScheme='telegram' size={['sm', 'sm', 'sm']} onClick={onToggle}>
-        {isOpen ? 'Back' : 'Next'}
+      <Button variant='solid' colorScheme='telegram' size={['sm', 'sm', 'sm']} onClick={getCroppedImage}>
+        {hasAdditionalStep ? 'Next' : 'Submit'}
       </Button>
-      <PostForm isOpen={isOpen} onToggle={onToggle} getCroppedImage={getCroppedImage} />
     </Flex>
   );
 };

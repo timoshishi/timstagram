@@ -1,27 +1,31 @@
 import { supabaseClient } from '@supabase/auth-helpers-nextjs';
-import { ModalContent, ModalOverlay } from '@chakra-ui/react';
+import { ModalContent, ModalOverlay, Text, useDisclosure, Box, Button } from '@chakra-ui/react';
 import { useProfileModal } from '../../hooks/useProfileModal';
 import { ProfileModalForm } from './ProfileModalForm';
+import { SupaUser } from 'types/index';
+import { ImageUploader } from '@features/ImageUploader';
 
 export interface ProfileModalProps {
-  initialProfileData: {
-    username?: string;
-    description?: string;
-    avatarUrl?: string;
-    userId: string;
-    email: string;
-  };
+  initialProfileData: SupaUser['user_metadata'];
 }
 
 export const ProfileModal = () => {
   const {
     componentProps: { initialProfileData },
   } = useProfileModal();
-
-  const profile = Object.assign(
+  const {
+    isOpen: isFormStepOpen,
+    onClose,
+    onToggle,
+    getDisclosureProps,
+    getButtonProps,
+  } = useDisclosure({
+    defaultIsOpen: true,
+  });
+  const profile: SupaUser['user_metadata'] = Object.assign(
     {
       username: '',
-      description: '',
+      bio: '',
       avatarUrl: '',
     },
     initialProfileData
@@ -35,12 +39,13 @@ export const ProfileModal = () => {
     e.preventDefault();
   };
   const deleteUser = async () => {
-    const { data, error } = await supabaseClient.from('profiles').delete().match({ userId: initialProfileData.userId });
-    const { data: data2, error: error2 } = await supabaseClient
-      .from('auth.users')
-      .delete()
-      .match({ id: initialProfileData.userId });
+    // const { data, error } = await supabaseClient.from('profiles').delete().match({ userId: initialProfileData.userId });
+    // const { data: data2, error: error2 } = await supabaseClient
+    //   .from('auth.users')
+    //   .delete()
+    //   .match({ id: initialProfileData.userId });
   };
+  console.log(isFormStepOpen);
   return (
     <>
       <ModalOverlay />
@@ -50,7 +55,20 @@ export const ProfileModal = () => {
           initialProfileData={initialProfileData}
           handleSubmit={handleSubmit}
           deleteUser={deleteUser}
+          getButtonProps={getButtonProps}
+          getDisclosureProps={getDisclosureProps}
         />
+        {!isFormStepOpen && (
+          <>
+            <Button {...getButtonProps()} onClick={onToggle} h='40px' w='40px'>
+              Back
+            </Button>
+
+            <Box>
+              <ImageUploader />
+            </Box>
+          </>
+        )}
       </ModalContent>
     </>
   );

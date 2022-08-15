@@ -1,6 +1,6 @@
 import React from 'react';
 import { ComponentStory, ComponentMeta } from '@storybook/react';
-import { ImageUploader, ImageUploaderProvider, useCreateUploaderContext } from '../../features/ImageUploader';
+import { ImageUploader, ImageUploaderProvider } from '../../features/ImageUploader';
 import { rest } from 'msw';
 
 // More on default export: https://storybook.js.org/docs/react/writing-stories/introduction#default-export
@@ -14,13 +14,12 @@ export default {
 
 // More on component templates: https://storybook.js.org/docs/react/writing-stories/introduction#using-args
 const Template: ComponentStory<typeof ImageUploader> = (args: unknown) => {
-  const initialValue = useCreateUploaderContext();
   const props = {
     ...initialValue,
     ...args,
   };
   return (
-    <ImageUploaderProvider initialValue={props}>
+    <ImageUploaderProvider>
       <ImageUploader />
     </ImageUploaderProvider>
   );

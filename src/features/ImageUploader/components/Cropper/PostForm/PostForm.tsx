@@ -2,30 +2,29 @@ import { EmptyNoReturnFn } from '@common/utils';
 import { useState } from 'react';
 import { Button, Box, Flex, Textarea, Collapse } from '@chakra-ui/react';
 import { PostHeaderAvatar } from '@common/components/PostHeaderAvatar';
-import { GetCroppedImage } from '@features/ImageUploader/types/image-uploader.types';
+import { GetCroppedImage, GetCroppedImageReturn } from '@features/ImageUploader/types/image-uploader.types';
 import { createPost } from '@features/ImageUploader/api/createPost';
+import { HandleSubmitPost, useCreatePostModal } from '@features/Modal/hooks/useCreatePostModal';
+import { useImageUploaderContext } from '@features/ImageUploader/hooks/useImageUploaderContext';
 
 interface PostFormProps {
-  isOpen: boolean;
-  onToggle: EmptyNoReturnFn;
-  getCroppedImage: GetCroppedImage;
+  // isOpen: boolean;
+  // handleSubmit: HandleSubmitPost;
+  // handleCancel: EmptyNoReturnFn;
 }
 
-export const PostForm = ({ isOpen, onToggle, getCroppedImage }: PostFormProps) => {
+export const PostForm = ({}: PostFormProps) => {
+  const { croppedImage: croppedImageData, clearFile } = useImageUploaderContext();
+  const {
+    componentProps: { handleSubmit },
+  } = useCreatePostModal();
   const [caption, setCaption] = useState('');
   const handleCaption = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setCaption(e.target.value);
   };
-
-  const submitPost = async () => {
-    const croppedImageData = await getCroppedImage();
-    if (!croppedImageData) return;
-    await createPost({ caption, ...croppedImageData });
-  };
-
   return (
     <Box>
-      <Collapse in={isOpen}>
+      <Collapse in={!!croppedImageData}>
         <Box
           p='6'
           color='white'
@@ -54,7 +53,17 @@ export const PostForm = ({ isOpen, onToggle, getCroppedImage }: PostFormProps) =
             mt='4'
           />
           <Flex justifyContent={'flex-end'} w='100%' p='3' alignSelf={'flex-end'}>
-            <Button variant='solid' colorScheme='telegram' size={['md', 'md', 'md']} onClick={submitPost}>
+            <Button variant='outline' colorScheme='telegram' size={['md', 'md', 'md']} onClick={clearFile}>
+              Cancel
+            </Button>
+            <Button
+              variant='solid'
+              colorScheme='telegram'
+              size={['md', 'md', 'md']}
+              onClick={() => {
+                handleSubmit({ caption, croppedImageData });
+              }}
+            >
               Post
             </Button>
           </Flex>

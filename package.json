@@ -1,10 +1,10 @@
 {
   "name": "witter",
   "version": "1.0.0",
-  "description": "",
+  "description": "witter base project",
   "keywords": [],
   "license": "MIT",
-  "author": "",
+  "author": "timoshishi",
   "scripts": {
     "dev": "next",
     "build": "next build",

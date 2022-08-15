@@ -11,7 +11,7 @@ import { GetCroppedImage } from '../../types/image-uploader.types';
 export interface CropperProps {}
 
 export const EasyCropper = ({}: CropperProps) => {
-  const { preview, clearFile, originalDimensions, cropShape, file } = useImageUploaderContext();
+  const { preview, clearFile, originalDimensions, cropShape, file, setCroppedImage } = useImageUploaderContext();
   const [crop, setCrop] = useState({ x: 0, y: 0 });
   const [rotation, setRotation] = useState(0);
   const [aspectRatio, setAspectRatio] = useState(1);
@@ -45,15 +45,16 @@ export const EasyCropper = ({}: CropperProps) => {
   const getCroppedImage: GetCroppedImage = useCallback(async () => {
     try {
       const croppedImage = await getImageFromPreview({ imageSrc: preview!, pixelCrop: croppedAreaPixels, rotation });
-      return await handleCroppedImage({
+      const croppedImageData = await handleCroppedImage({
         croppedImage,
         croppedAreaPixels,
         aspectRatio,
         originalImageName: file!.name,
       });
+      console.log('getCroppedImage');
+      setCroppedImage(croppedImageData);
     } catch (e) {
       console.error(e);
-      return null;
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [preview, croppedAreaPixels, rotation, aspectRatio, file]);

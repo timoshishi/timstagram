@@ -4,6 +4,8 @@ import { GlobalModal } from '../../features/Modal';
 import { ProfileModalProps, ProfileModal } from '../../features/Modal/components/ProfileModal/ProfileModal';
 import { useProfileModal } from '../../features/Modal/hooks/useProfileModal';
 import { Button } from '@chakra-ui/button';
+import { userEvent, waitFor, within, screen } from '@storybook/testing-library';
+import { expect } from '@storybook/jest';
 // More on default export: https://storybook.js.org/docs/react/writing-stories/introduction#default-export
 export default {
   title: 'Modals/ProfileModal',
@@ -61,15 +63,24 @@ const existingUserParams = [
   'ProfileModal',
   {
     initialProfileData: {
-      userId: '123',
-      email: 'yelllll@mar.com',
-      description: 'I am a description that is super long winded',
-      username: 'SuperChicken',
-      avatarUrl: 'https://gravatar.com/avatar/7d5f4fc9a1ca8add1bc220c41d1c1b5a?s=400&d=robohash&r=x',
+      avatarUrl: '',
+      username: 'bobo',
+      bio: '',
     },
   },
 ];
 
 ExistingUser.args = {
   openModalParams: existingUserParams,
+};
+
+ExistingUser.play = async ({ args, canvasElement }) => {
+  // const canvas = within(canvasElement);
+  await userEvent.click(screen.getByRole('button', { name: /open modal/i }));
+  // await waitFor(() => expect(screen.getByTestId('email')).toBeInTheDocument());
+  // await userEvent.type(screen.getByTestId('email'), 'tim@test.com');
+  // await userEvent.type(screen.getByTestId('password'), 'password');
+  // await userEvent.type(screen.getByTestId('username'), 'susaa');
+  // await waitFor(() => expect(screen.getByTestId('email')).toHaveValue('tim@test.com'));
+  // await userEvent.click(screen.getByRole('button', { name: /Sign up/ }));
 };

@@ -10,6 +10,7 @@ import {
   Text,
   Flex,
   ModalCloseButton,
+  useDisclosure,
 } from '@chakra-ui/react';
 import { BrandLogo } from '@src/common/components/BrandLogo';
 import { PostHeaderAvatar } from '@common/components/PostHeaderAvatar';
@@ -20,13 +21,21 @@ interface ProfileModalFormProps {
   profile: Required<ProfileModalFormProps['initialProfileData']>;
   handleSubmit: (e: React.FormEvent<HTMLFormElement>) => void;
   deleteUser: () => void;
+  getButtonProps: () => any;
+  getDisclosureProps: () => any;
 }
-export const ProfileModalForm = ({ initialProfileData, profile, handleSubmit }: ProfileModalFormProps) => {
+export const ProfileModalForm = ({
+  initialProfileData,
+  profile,
+  handleSubmit,
+  getButtonProps,
+  getDisclosureProps,
+}: ProfileModalFormProps) => {
   return (
-    <Box>
+    <Box {...getDisclosureProps()}>
       {initialProfileData.username && <ModalCloseButton />}
       <Flex flexDirection='column' gap='4'>
-        <Flex alignItems='center'>
+        <Flex alignItems='center' dir='column'>
           <BrandLogo />
           {!initialProfileData.username && (
             <Text fontSize='xl' as='h2'>
@@ -62,18 +71,24 @@ export const ProfileModalForm = ({ initialProfileData, profile, handleSubmit }: 
               </FormHelperText>
             </FormControl>
             <FormControl>
-              <FormLabel htmlFor='description'>About Me</FormLabel>
-              <Textarea name='description' id='description' defaultValue={profile.description} maxLength={140} />
-              <FormHelperText>Let others know a little more about #you</FormHelperText>
+              <FormLabel htmlFor='bio'>About Me</FormLabel>
+              <Textarea name='bio' id='bio' defaultValue={profile.bio} maxLength={140} />
+              <FormHelperText>Let others know a little more about @{profile.username}</FormHelperText>
             </FormControl>
             <FormControl>
               <Flex alignItems='center' gap='4'>
                 <Avatar name={profile.username} src={profile.avatarUrl} size='sm' />
-                <Button colorScheme={profile.avatarUrl ? 'whatsapp' : 'twitter'} variant='outline' size='sm'>
+                <Button
+                  colorScheme={profile.avatarUrl ? 'whatsapp' : 'twitter'}
+                  variant='outline'
+                  size='sm'
+                  {...getButtonProps()}
+                >
                   {profile.avatarUrl ? 'Update your avatar' : 'Add an avatar'}
                 </Button>
               </Flex>
             </FormControl>
+
             <Button type='submit' my='2'>
               Submit
             </Button>

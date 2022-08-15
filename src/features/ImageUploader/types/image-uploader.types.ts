@@ -1,6 +1,6 @@
 import { Area as EasyCropArea } from 'react-easy-crop';
-import { PostDTO } from '../api/createPost';
 import { ORIENTATION_TO_ANGLE } from '../stores/ImageUploaderContext';
+
 export type Area = EasyCropArea;
 
 export type OnDrop = (files: File[]) => void;
@@ -41,9 +41,18 @@ export type HandleCroppedImage = (params: {
   croppedAreaPixels: Area;
   aspectRatio: number;
   originalImageName: string;
-}) => Omit<PostDTO, 'caption'> | null;
+}) => GetCroppedImageReturn | null;
+export interface ImageData {
+  originalImageName: string;
+  aspectRatio: number;
+  dimensions: Dimensions;
+}
+export interface GetCroppedImageReturn {
+  croppedImage: File;
+  imageData: ImageData;
+}
 
-export type GetCroppedImage = () => Promise<Omit<PostDTO, 'caption'> | null>;
+export type GetCroppedImage = () => Promise<void>;
 
 type OrientationKey = keyof typeof ORIENTATION_TO_ANGLE;
 interface UseCreateUploaderContextProps {

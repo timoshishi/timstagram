@@ -18,7 +18,7 @@ const Template: ComponentStory<typeof Cropper> = (args) => {
     ...args,
   };
   return (
-    <ImageUploaderProvider initialValue={props}>
+    <ImageUploaderProvider>
       <Modal isOpen={true} onClose={noOp} size={['md', 'lg', '3xl']} initialFocusRef={undefined} isCentered={true}>
         <ModalOverlay />
         <ModalContent p='0' display={'flex'} flexDir='column'>

@@ -1,18 +1,22 @@
-import { ImageUploader, ImageUploaderProvider, useCreateUploaderContext } from '@features/ImageUploader';
-import { ModalOverlay, ModalContent } from '@chakra-ui/react';
+import { ImageUploader, ImageUploaderProvider } from '@features/ImageUploader';
+import { ModalOverlay, ModalContent, Box, Textarea, Flex, Button } from '@chakra-ui/react';
+import { useCreatePostModal } from '@features/Modal/hooks';
+import { PostForm } from '@features/ImageUploader/components/Cropper/PostForm';
+import { HandleSubmitPost } from '@features/Modal/hooks/useCreatePostModal';
+import { useEffect } from 'react';
 
-export interface CreatePostModalProps {}
+export interface CreatePostModalProps {
+  handleSubmit: HandleSubmitPost;
+}
 
 export const CreatePostModal = () => {
-  const initialValue = useCreateUploaderContext();
   return (
-    <ImageUploaderProvider initialValue={initialValue}>
-      <>
-        <ModalOverlay />
-        <ModalContent p='0' display={'flex'} flexDir='column'>
-          <ImageUploader />
-        </ModalContent>
-      </>
+    <ImageUploaderProvider>
+      <ModalOverlay />
+      <ModalContent p='0' display={'flex'} flexDir='column'>
+        <PostForm />
+        <ImageUploader />
+      </ModalContent>
     </ImageUploaderProvider>
   );
 };

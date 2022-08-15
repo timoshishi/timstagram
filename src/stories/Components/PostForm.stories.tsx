@@ -3,10 +3,7 @@ import { ComponentStory, ComponentMeta } from '@storybook/react';
 import { CropperButtons } from '../../features/ImageUploader/components/Cropper/Controls/CropperButtons';
 import { noOp } from '../../common/utils';
 import { Modal, ModalOverlay, ModalContent, Portal } from '@chakra-ui/react';
-import {
-  ImageUploaderProvider,
-  useCreateUploaderContext,
-} from '../../features/ImageUploader/stores/ImageUploaderContext';
+import { ImageUploaderProvider } from '../../features/ImageUploader/stores/ImageUploaderContext';
 
 export default {
   title: 'Components/CropperButtons',
@@ -15,13 +12,12 @@ export default {
 const URL = 'https://img.huffingtonpost.com/asset/5ab4d4ac2000007d06eb2c56.jpeg?cache=sih0jwle4e&ops=1910_1000';
 
 const Template: ComponentStory<typeof CropperButtons> = (args) => {
-  const initialValue = useCreateUploaderContext();
   const props = {
     ...initialValue,
     ...args,
   };
   return (
-    <ImageUploaderProvider initialValue={props}>
+    <ImageUploaderProvider>
       <Modal isOpen={true} onClose={noOp} size={['md', 'lg', '3xl']} initialFocusRef={undefined} isCentered={true}>
         <ModalOverlay />
         <ModalContent p='0' display={'flex'} flexDir='column' h='60vh'>

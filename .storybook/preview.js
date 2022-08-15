@@ -5,10 +5,10 @@ import { supabaseClient } from '@supabase/auth-helpers-nextjs';
 import { AppLayout } from '../src/common/layout/app-layout';
 import { initialize, mswDecorator } from 'msw-storybook-addon';
 import { Navbar } from '../src/common/layout/app-layout/Navbar';
-// if (typeof global.process === 'undefined') {
-//   const { worker } = require('../src/mocks/browser');
-//   worker.start();
-// }
+if (typeof global.process === 'undefined') {
+  const { worker } = require('../src/mocks/browser');
+  worker.start();
+}
 initialize();
 
 import { INITIAL_VIEWPORTS, MINIMAL_VIEWPORTS } from '@storybook/addon-viewport';

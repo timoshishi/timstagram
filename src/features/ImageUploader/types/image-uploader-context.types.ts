@@ -1,4 +1,4 @@
-import type { Dimensions } from './image-uploader.types';
+import type { Dimensions, GetCroppedImageReturn } from './image-uploader.types';
 import { SetStateAction } from 'react';
 import { EmptyNoReturnFn } from '@common/utils';
 import { FileError, DropzoneState } from 'react-dropzone';
@@ -25,8 +25,13 @@ export type UseImageUploaderReturn = {
   setCropShape: Dispatch<SetStateAction<'round' | 'rect'>>;
   isCommentSliderOpen: boolean;
   toggleCommentSlider: () => void;
+  croppedImage: GetCroppedImageReturn | null;
+  setCroppedImage: Dispatch<SetStateAction<GetCroppedImageReturn | null>>;
+  hasAdditionalStep: boolean;
+  type: 'post' | 'avatar';
 };
 
 export interface UseCreateUploaderContextProps {
   type?: 'post' | 'avatar';
+  hasAdditionalStep?: boolean;
 }

@@ -12,7 +12,7 @@ export const ProfileDropdown = ({ user }: ProfileDropdownProps) => {
       <Flex alignItems={'center'}>
         <Menu isLazy>
           <MenuButton as={Button} rounded={'full'} variant={'link'} cursor={'pointer'}>
-            <Avatar size={'sm'} src={user.user_metadata.avatar_url} name={user.user_metadata.username} />
+            <Avatar size={'sm'} src={user.user_metadata.avatarUrl} name={user.user_metadata.username} />
           </MenuButton>
           <MenuList>
             <MenuItem>Link 1</MenuItem>
