@@ -25,6 +25,8 @@ import multer from 'multer';
 import { PostDTO } from '@features/ImageUploader/api/createPost';
 import { MAX_MEGABYTES, MEGABYTE } from '@features/ImageUploader/utils/image-uploader.constants';
 import { IsString } from 'class-validator';
+import { getAltText, getImageProperties } from '@api/handleImageUpload';
+import { randomUUID } from 'crypto';
 
 const imageHashAsync = async (image: any): Promise<string> => {
   return new Promise((resolve, reject) => {
@@ -58,6 +60,8 @@ class ImageDTO {
   @IsString()
   imageData: string;
 }
+const FAKE_UUID = 'b41d9577-8bb8-46f0-b4a1-8409d8319955';
+const FAKE_USERNAME = 'FAKE_USERNAME';
 
 class DocumentsHandler {
   @Post()
@@ -69,20 +73,29 @@ class DocumentsHandler {
     @Body(ValidationPipe) body: ImageDTO,
     @UploadedFile() croppedImage: any
   ) {
-    try {
-      const authedUser = await getUser({ req, res });
+    const authedUser = await getUser({ req, res });
+    const altText = getAltText({ caption: body.caption, username: authedUser.user?.username || FAKE_USERNAME });
 
-      // const imageData: ImageData = JSON.parse(body.imageData);
-      // const hash = await imageHashAsync(croppedImage);
+    const imageProperties = await getImageProperties({
+      image: croppedImage,
+      userId: authedUser.user?.id || randomUUID(),
+      imageJSON: body.imageData,
+      altText,
+      username: authedUser.user?.username || FAKE_USERNAME,
+      isAvatar: req?.query?.type === 'avatar',
+    });
 
-      return res.json(authedUser);
-    } catch (error) {
-      console.error(error);
-      // return res.status(500).json(error);
-    }
+    return imageProperties;
+    const imageData: ImageData = JSON.parse(body.imageData);
+    const hash = await imageHashAsync(croppedImage);
+    console.log(croppedImage);
+    return res.json({ hash, imageData });
+    // console.error(error);
+    // return res.status(500).json(error);
   }
 }
-export default withApiAuth(createHandler(DocumentsHandler));
+// export default withApiAuth(createHandler(DocumentsHandler));
+export default createHandler(DocumentsHandler);
 
 export const config = {
   api: {

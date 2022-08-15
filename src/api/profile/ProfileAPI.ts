@@ -32,4 +32,5 @@ export class ProfileAPI {
     });
     return meta;
   }
+  async updateUserAvatar() {}
 }
