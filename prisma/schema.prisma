@@ -97,6 +97,7 @@ model Media {
   size        Int
   width       Int
   height      Int
+  kind        String?
   aspectRatio Float    @map("aspect_ratio")
   scraped     Boolean  @default(false)
   category    String?

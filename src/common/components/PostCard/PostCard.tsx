@@ -56,7 +56,7 @@ export const PostCard = ({
             createdAt={createdAt}
             isFollowing={isFollowing}
           />
-          <Box minW='100%' h='auto' position='relative'>
+          <Box minW='100%' h='100%' position='relative'>
             <PostImage
               imageUrl={imageUrl}
               tags={tags}

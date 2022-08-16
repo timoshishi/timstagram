@@ -1,14 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
-import { getSession } from 'next-auth/react';
-import { withApiAuth, supabaseServerClient, getUser } from '@supabase/auth-helpers-nextjs';
-import { imageHash } from 'image-hash';
-import { Multer } from 'multer';
-
+import { getUser } from '@supabase/auth-helpers-nextjs';
 import { imageService } from '@api/createSignedUrl';
-//promisify the imageHash function
-// auth.api.getUserByCookie()
-// PUT /api/publish/:id
-// POST TO PUBLISH A POST
 import {
   Body,
   createHandler,
@@ -16,24 +8,19 @@ import {
   Post,
   UploadedFile,
   UseMiddleware,
-  BadRequestException,
   Req,
   Res,
   ValidationPipe,
-  Param,
+  Catch,
 } from '@storyofams/next-api-decorators';
-
-import multer from 'multer';
 import { IsString } from 'class-validator';
 import { getAltText, getImageProperties, resizeAvatarImage } from '@api/handleImageUpload';
 import { randomUUID } from 'crypto';
 import { uploadMiddleware } from '@api/handleImageUpload';
-import { NextConfigComplete } from 'next/dist/server/config-shared';
-import { NextServerOptions } from 'next/dist/server/next';
 import { PutObjectCommandOutput } from '@aws-sdk/client-s3';
 import { supabaseService } from '@src/lib/initServerSupabase';
 import prisma from '@src/lib/prisma';
-
+import { errorHandler } from '@common/api/api-decorators';
 class ImageDTO {
   @IsString()
   caption: string;
@@ -43,7 +30,7 @@ class ImageDTO {
 }
 const FAKE_UUID = 'b41d9577-8bb8-46f0-b4a1-8409d8319955';
 const FAKE_USERNAME = 'FAKE_USERNAME';
-
+@Catch(errorHandler)
 class ImageHandler {
   @Post()
   @HttpCode(201)
@@ -70,6 +57,13 @@ class ImageHandler {
       filename: imageProperties.filename,
     });
     // if (result.$metadata.httpStatusCode === 200) {
+    const media = await prisma.media.create({
+      data: {
+        ...imageProperties,
+        kind: 'avatar',
+      },
+    });
+    console.log({ media });
     const updatedUser = await supabaseService.auth.api.updateUserById(authedUser.user.id, {
       user_metadata: {
         ...authedUser.user.user_metadata,
@@ -84,9 +78,6 @@ class ImageHandler {
         avatarUrl: imageProperties.url,
       },
     });
-    // }
-    // console.log(imageProperties.width);
-    // const url = await imageService.createSignedUrl({ file: croppedImage.buffer, fileName: imageProperties.filename! });
     return { url: imageProperties.url, prismaUser, meta: updatedUser?.user?.user_metadata };
   }
 }
@@ -98,5 +89,3 @@ export const config = {
     bodyParser: false,
   },
 };
-
-// export default withApiAuth(handler);

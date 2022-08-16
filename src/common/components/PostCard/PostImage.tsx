@@ -1,8 +1,7 @@
 /* eslint-disable */
 import React from 'react';
 import Image from 'next/image';
-import { randomInt } from 'crypto';
-import { ImageLoaderProps } from 'next/image';
+import { DEFAULT_IMAGE_PLACEHOLDER } from '@common/constants/index';
 
 interface PostImageProps {
   imageUrl: string;
@@ -12,10 +11,19 @@ interface PostImageProps {
   refreshIdx: number;
   currentIdx: number;
   page: number;
+  placeholder?: string;
 }
-// create randomIntInRange function
 
-export const PostImage = ({ imageUrl, tags, size, setSize, refreshIdx, currentIdx, page }: PostImageProps) => {
+export const PostImage = ({
+  imageUrl,
+  tags,
+  size,
+  setSize,
+  refreshIdx,
+  currentIdx,
+  page,
+  placeholder,
+}: PostImageProps) => {
   return (
     <Image
       src={imageUrl}
@@ -24,6 +32,8 @@ export const PostImage = ({ imageUrl, tags, size, setSize, refreshIdx, currentId
       height={600}
       loading={currentIdx < 7 ? 'eager' : 'lazy'}
       layout='responsive' // this should be commented out when not using storybooks
+      blurDataURL={placeholder || DEFAULT_IMAGE_PLACEHOLDER}
+      placeholder='blur'
       onError={() => {
         if (currentIdx === refreshIdx && page === size) {
           setSize(size + 1);
