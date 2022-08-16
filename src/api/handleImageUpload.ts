@@ -11,7 +11,7 @@ import { ImageData } from '@features/ImageUploader/types/image-uploader.types';
 import { randomUUID } from 'crypto';
 import { run } from './createSignedUrl';
 import { fileURLToPath } from 'url';
-const AVATAR_IMAGE_SIZE = 75;
+const AVATAR_IMAGE_SIZE = 150;
 
 type ImageProperties = {
   id: string;

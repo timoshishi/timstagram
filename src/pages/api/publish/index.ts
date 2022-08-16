@@ -62,11 +62,9 @@ class ImageHandler {
       isAvatar: req?.query?.type === 'avatar',
     });
     const buffer = (req.query.type = 'avatar' ? await resizeAvatarImage(croppedImage.buffer) : croppedImage.buffer);
-    console.log(imageProperties.width);
     const url = await imageService.createSignedUrl({ file: buffer, fileName: imageProperties.filename! });
 
     res.json({ url });
-    console.log('STILL RUNNING');
   }
 }
 // export default withApiAuth(createHandler(DocumentsHandler));

@@ -28,7 +28,7 @@ export const ProfileDropdown = ({ user }: ProfileDropdownProps) => {
                 });
               }}
             >
-              Link 1
+              Update Profile
             </MenuItem>
             <MenuItem>Link 2</MenuItem>
             <MenuDivider />

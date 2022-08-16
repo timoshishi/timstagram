@@ -6,12 +6,14 @@ import { ImageUploader } from '@features/ImageUploader';
 import { useImageUploaderContext } from '@features/ImageUploader';
 import { useCallback, useEffect } from 'react';
 import { handleAvatarSubmit } from '@features/Modal/api/profile-api';
+import { useUser } from '@common/hooks/useUser';
 
 export interface ProfileModalProps {
   initialProfileData: SupaUser['user_metadata'];
 }
 
 export const ProfileModal = () => {
+  const { user } = useUser();
   const {
     componentProps: { initialProfileData },
   } = useProfileModal();
@@ -65,6 +67,7 @@ export const ProfileModal = () => {
         <ProfileModalForm
           profile={profile}
           initialProfileData={initialProfileData}
+          avatarUrl={user?.user_metadata?.avatarUrl || ''}
           handleSubmit={handleSubmit}
           deleteUser={deleteUser}
           getButtonProps={getButtonProps}

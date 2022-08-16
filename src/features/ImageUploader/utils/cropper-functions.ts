@@ -33,6 +33,7 @@ type GetImageFromPreviewParams = {
     horizontal: boolean;
     vertical: boolean;
   };
+  shape: 'rect' | 'round';
 };
 
 type GetImageFromPreview = (params: GetImageFromPreviewParams) => Promise<File>;
@@ -45,6 +46,7 @@ export const getImageFromPreview: GetImageFromPreview = async ({
   pixelCrop,
   rotation = 0,
   flip = { horizontal: false, vertical: false },
+  shape = 'rect',
 }) => {
   const image: HTMLImageElement = await createImage(imageSrc);
   const canvas = document.createElement('canvas');
@@ -79,10 +81,21 @@ export const getImageFromPreview: GetImageFromPreview = async ({
   // set canvas width to final desired crop size - this will clear existing context
   canvas.width = pixelCrop.width;
   canvas.height = pixelCrop.height;
+  const halfSize = pixelCrop.width / 2;
 
   // paste generated rotate image at the top left corner
   ctx.putImageData(data, 0, 0);
-
+  if (shape === 'round') {
+    let { width, height } = image;
+    ctx.globalCompositeOperation = 'destination-in';
+    ctx.arc(halfSize, halfSize, halfSize, 0, 2 * Math.PI);
+    ctx.imageSmoothingEnabled = true;
+    ctx.drawImage(canvas, 0, 0, width, height);
+    ctx.globalCompositeOperation = 'destination-in';
+    ctx.beginPath();
+    ctx.arc(halfSize, halfSize, Math.min(width, height) / 2, 0, 2 * Math.PI, true);
+    ctx.fill();
+  }
   // As Base64 string
   // return canvas.toDataURL('image/jpeg');
 

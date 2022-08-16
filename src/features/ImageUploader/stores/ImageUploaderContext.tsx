@@ -86,9 +86,6 @@ export const ImageUploaderProvider = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   useEffect(() => {
-    console.log('in useEffect', croppedImage);
-  }, [croppedImage]);
-  useEffect(() => {
     return () => {
       clearUrl(preview);
       setFile(null);

@@ -43,14 +43,18 @@ export const EasyCropper = ({}: CropperProps) => {
 
   const getCroppedImage: GetCroppedImage = useCallback(async () => {
     try {
-      const croppedImage = await getImageFromPreview({ imageSrc: preview!, pixelCrop: croppedAreaPixels, rotation });
+      const croppedImage = await getImageFromPreview({
+        imageSrc: preview!,
+        pixelCrop: croppedAreaPixels,
+        rotation,
+        shape,
+      });
       const croppedImageData = await handleCroppedImage({
         croppedImage,
         croppedAreaPixels,
         aspectRatio,
         originalImageName: file!.name,
       });
-      console.log('getCroppedImage');
       setCroppedImage(croppedImageData);
     } catch (e) {
       console.error(e);
@@ -111,7 +115,7 @@ export const EasyCropper = ({}: CropperProps) => {
             setAspectRatio={setAspectRatio}
             handleRotate={handleRotate}
             cropShape={cropShape}
-            cropperRef={cropperRef}
+            shape={shape}
           />
         </Box>
       </Box>

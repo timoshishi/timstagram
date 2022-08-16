@@ -3,6 +3,7 @@ import { getSession } from 'next-auth/react';
 import { withApiAuth, supabaseServerClient, getUser } from '@supabase/auth-helpers-nextjs';
 import { imageHash } from 'image-hash';
 import { Multer } from 'multer';
+
 import { imageService } from '@api/createSignedUrl';
 //promisify the imageHash function
 // auth.api.getUserByCookie()
@@ -29,6 +30,9 @@ import { randomUUID } from 'crypto';
 import { uploadMiddleware } from '@api/handleImageUpload';
 import { NextConfigComplete } from 'next/dist/server/config-shared';
 import { NextServerOptions } from 'next/dist/server/next';
+import { PutObjectCommandOutput } from '@aws-sdk/client-s3';
+import { supabaseService } from '@src/lib/initServerSupabase';
+import prisma from '@src/lib/prisma';
 
 class ImageDTO {
   @IsString()
@@ -60,12 +64,30 @@ class ImageHandler {
       username: authedUser.user?.username || FAKE_USERNAME,
       isAvatar: req?.query?.type === 'avatar',
     });
-    const buffer = (req.query.type = 'avatar' ? await resizeAvatarImage(croppedImage.buffer) : croppedImage.buffer);
-    console.log(imageProperties.width);
-    const url = await imageService.createSignedUrl({ file: croppedImage.buffer, fileName: imageProperties.filename! });
-
-    res.json({ url });
-    console.log('STILL RUNNING');
+    const buffer = await resizeAvatarImage(croppedImage.buffer);
+    const result: PutObjectCommandOutput = await imageService.uploadFileToS3({
+      file: buffer,
+      filename: imageProperties.filename,
+    });
+    // if (result.$metadata.httpStatusCode === 200) {
+    const updatedUser = await supabaseService.auth.api.updateUserById(authedUser.user.id, {
+      user_metadata: {
+        ...authedUser.user.user_metadata,
+        avatarUrl: imageProperties.url,
+      },
+    });
+    const prismaUser = await prisma.profile.update({
+      where: {
+        id: authedUser.user.id,
+      },
+      data: {
+        avatarUrl: imageProperties.url,
+      },
+    });
+    // }
+    // console.log(imageProperties.width);
+    // const url = await imageService.createSignedUrl({ file: croppedImage.buffer, fileName: imageProperties.filename! });
+    return { url: imageProperties.url, prismaUser, meta: updatedUser?.user?.user_metadata };
   }
 }
 // export default withApiAuth(createHandler(DocumentsHandler));

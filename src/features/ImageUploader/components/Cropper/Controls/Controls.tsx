@@ -10,17 +10,10 @@ interface ControlsProps {
   setAspectRatio: (aspectRatio: number) => void;
   cropShape: 'rect' | 'round';
   zoom: number;
-  cropperRef: RefObject<HTMLDivElement | null>;
+  shape: 'rect' | 'round';
 }
 
-export const Controls = ({
-  setZoom,
-  zoom,
-  handleRotate,
-  setAspectRatio,
-  cropShape,
-  cropperRef,
-}: ControlsProps) => {
+export const Controls = ({ setZoom, zoom, handleRotate, setAspectRatio, cropShape, shape }: ControlsProps) => {
   return (
     <Flex
       w='100%'
@@ -30,7 +23,8 @@ export const Controls = ({
       h={['4rem']}
       p={6}
       alignItems='center'
-      justifyContent={['flex-end', 'flex-end']}>
+      justifyContent={['flex-end', 'flex-end']}
+    >
       <Box>
         <Zoom setZoom={setZoom} zoom={zoom} />
       </Box>
@@ -49,7 +43,7 @@ export const Controls = ({
           aria-label='rotate image'
         />
       </Box>
-      {cropShape === 'rect' && (
+      {shape === 'rect' && (
         <Box mb={[4.5, 1.2]} w={[8, 10]} h={[8, 10]} pl={[0, 1]}>
           <AspectRatio setAspectRatio={setAspectRatio} />
         </Box>

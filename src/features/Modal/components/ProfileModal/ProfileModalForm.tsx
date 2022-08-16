@@ -22,6 +22,7 @@ interface ProfileModalFormProps {
   deleteUser: () => void;
   getButtonProps: () => any;
   getDisclosureProps: () => any;
+  avatarUrl: string;
 }
 export const ProfileModalForm = ({
   initialProfileData,
@@ -29,6 +30,7 @@ export const ProfileModalForm = ({
   handleSubmit,
   getButtonProps,
   getDisclosureProps,
+  avatarUrl,
 }: ProfileModalFormProps) => {
   return (
     <Box {...getDisclosureProps()}>
@@ -44,7 +46,7 @@ export const ProfileModalForm = ({
         </Flex>
         <Flex justifyContent='center'>
           {initialProfileData.username && (
-            <PostHeaderAvatar username={initialProfileData.username} avatarUrl={initialProfileData.avatarUrl || ''} />
+            <PostHeaderAvatar username={initialProfileData.username} avatarUrl={avatarUrl} />
           )}
         </Flex>
         <form onSubmit={handleSubmit}>
@@ -76,14 +78,14 @@ export const ProfileModalForm = ({
             </FormControl>
             <FormControl>
               <Flex alignItems='center' gap='4'>
-                <Avatar name={profile.username} src={profile.avatarUrl} size='sm' />
+                <Avatar name={profile.username} src={avatarUrl} size='sm' />
                 <Button
-                  colorScheme={profile.avatarUrl ? 'whatsapp' : 'twitter'}
+                  colorScheme={avatarUrl ? 'whatsapp' : 'twitter'}
                   variant='outline'
                   size='sm'
                   {...getButtonProps()}
                 >
-                  {profile.avatarUrl ? 'Update your avatar' : 'Add an avatar'}
+                  {avatarUrl ? 'Update your avatar' : 'Add an avatar'}
                 </Button>
               </Flex>
             </FormControl>

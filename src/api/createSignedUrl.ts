@@ -26,6 +26,16 @@ class ImageService {
     return signedUrl;
   }
 
+  async uploadFileToS3({ file, filename }: { file: Buffer; filename: string }) {
+    const command = new PutObjectCommand({
+      Bucket: process.env.PHOTO_BUCKET,
+      Key: filename,
+      Body: file,
+      // ContentType: file.mimetype,
+    });
+    return s3Client.send(command);
+  }
+
   public async deleteFile(fileName: string) {
     try {
       const command = new DeleteObjectCommand({
