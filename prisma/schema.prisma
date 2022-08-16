@@ -93,6 +93,7 @@ model Media {
   bucket      String
   type        String
   alt         String?
+  filename    String
   size        Int
   width       Int
   height      Int

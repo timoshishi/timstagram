@@ -15,10 +15,25 @@ export const insertInitialProfileData = async ({ id, username }: CreateProfilePa
 };
 
 export const handleAvatarSubmit = async (imageData: GetCroppedImageReturn) => {
-  console.log('submitting avatar', imageData);
-  const formData = new FormData();
-  formData.append('files', imageData.croppedImage);
-  formData.append('imageData', JSON.stringify(imageData.imageData));
-  await axios.post('/profile/avatar', formData);
-  console.info(formData.get('imageData'));
+  try {
+    console.log('submitting avatar', imageData);
+    const formData = new FormData();
+    formData.append('croppedImage', imageData.croppedImage);
+    formData.append('imageData', JSON.stringify(imageData.imageData));
+
+    console.info('IMAGEDATA', formData.get('imageData'));
+    const { data: url } = await axios.post('/avatar', formData, {
+      headers: { 'Content-Type': 'multipart/form-data' },
+    });
+    //chanve file to buffer
+    console.log('url', url);
+    const amz = await fetch(url.url, {
+      method: 'PUT',
+      body: await imageData.croppedImage.arrayBuffer(),
+      headers: { 'Content-Type': 'image/*' },
+    });
+    console.log('amz', amz);
+  } catch (error) {
+    console.error('GR', error);
+  }
 };

@@ -1,33 +1,35 @@
-import type { NextApiRequest, NextApiResponse } from 'next';
 import sharp from 'sharp';
-import { withApiAuth, supabaseServerClient, getUser } from '@supabase/auth-helpers-nextjs';
 import { imageHash } from 'image-hash';
 import { Multer } from 'multer';
-import { nanoid } from 'nanoid';
-import {
-  Body,
-  createHandler,
-  HttpCode,
-  Post,
-  UploadedFile,
-  UseMiddleware,
-  BadRequestException,
-  Req,
-  Res,
-  ValidationPipe,
-} from '@storyofams/next-api-decorators';
+import { BadRequestException } from '@storyofams/next-api-decorators';
 import { Media } from '@prisma/client';
 const { getPlaiceholder } = require('plaiceholder');
 
 import multer from 'multer';
-import { PostDTO } from '@features/ImageUploader/api/createPost';
 import { MAX_MEGABYTES, MEGABYTE } from '@features/ImageUploader/utils/image-uploader.constants';
-import { IsString } from 'class-validator';
 import { ImageData } from '@features/ImageUploader/types/image-uploader.types';
 import { randomUUID } from 'crypto';
-import { access } from 'fs';
+import { run } from './createSignedUrl';
+import { fileURLToPath } from 'url';
+const AVATAR_IMAGE_SIZE = 75;
 
-export const AVATAR_IMAGE_SIZE = 75;
+type ImageProperties = {
+  id: string;
+  width: number;
+  height: number;
+  aspectRatio: number;
+  filename: string;
+  url: string;
+  alt: string;
+  bucket: string;
+  type: string;
+  size: number;
+  userId: string;
+  hash: string;
+  placeholder: string;
+  source: string;
+  metadata: string;
+};
 
 export const getImageHash = async (image: any): Promise<string> => {
   return new Promise((resolve, reject) => {
@@ -41,7 +43,7 @@ export const getImageHash = async (image: any): Promise<string> => {
   });
 };
 
-export const imageMiddleware = multer({
+export const uploadMiddleware = multer({
   limits: {
     fileSize: MAX_MEGABYTES * MEGABYTE,
   },
@@ -72,7 +74,8 @@ export const getImageProperties = async ({
   username: string;
   altText: string;
   isAvatar: boolean;
-}): Promise<Partial<Media>> => {
+}): Promise<ImageProperties> => {
+  run();
   const id = randomUUID();
   const imageData: ImageData = JSON.parse(imageJSON);
   const hash = await getImageHash(image);
@@ -82,18 +85,21 @@ export const getImageProperties = async ({
   const source = process.env.NEXT_PUBLIC_APP_NAME + '/' + userId + '/' + imageData.originalImageName;
   const metadata = await sharp(image.buffer).metadata();
   const { width, height, size } = metadata;
+
+  const { width: imageWidth, height: imageHeight } = imageData.dimensions;
   const url = `https://${process.env.PHOTO_BUCKET}.s3.amazonaws.com/${id}.${ext}`;
   const placeholder = await createPlaceholder(image);
 
   return {
     id,
     url,
+    filename: id + '.' + ext,
     alt: altText,
-    bucket: process.env.PHOTO_BUCKET,
+    bucket: process.env.PHOTO_BUCKET!,
     type,
-    size,
-    width: isAvatar ? AVATAR_IMAGE_SIZE : width,
-    height: isAvatar ? AVATAR_IMAGE_SIZE : height,
+    size: size || image.buffer.byteLength,
+    width: isAvatar ? AVATAR_IMAGE_SIZE : width || imageWidth,
+    height: isAvatar ? AVATAR_IMAGE_SIZE : height || imageHeight,
     aspectRatio,
     userId,
     hash,
