@@ -53,11 +53,6 @@ export const ProfileModal = () => {
     initialProfileData
   );
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    const fullFormData = new FormData(e.target as HTMLFormElement);
-    const dataParsed = Object.fromEntries(fullFormData.entries());
-  };
   const deleteUser = async () => {};
 
   return (
@@ -68,7 +63,6 @@ export const ProfileModal = () => {
           profile={profile}
           initialProfileData={initialProfileData}
           avatarUrl={user?.user_metadata?.avatarUrl || ''}
-          handleSubmit={handleSubmit}
           deleteUser={deleteUser}
           getButtonProps={getButtonProps}
           getDisclosureProps={getDisclosureProps}

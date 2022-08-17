@@ -35,7 +35,7 @@ export function errorHandler(error: unknown, req: NextApiRequest, res: NextApiRe
     const { stack, ...rest } = error;
     res.status(error.statusCode).json(rest);
   } else {
-    res.status(500).json({ statusCode: 500, message: 'Internal Server Error' });
+    res.status(500).json({ statusCode: 500, message: error });
   }
 }
 

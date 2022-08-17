@@ -10,17 +10,10 @@ class ProfileHandler {
   @Get()
   @HttpCode(200)
   public async getCurrent(@Body() body: any) {
-    return body.userData;
-  }
-  @Put()
-  @HttpCode(202)
-  public async update(@Body(ValidationPipe) body: CreateProfileDTO) {
-    // return profileClient.createProfile(body);
-  }
-  @Post()
-  @HttpCode(201)
-  public async create(@Body(ValidationPipe) body: CreateProfileDTO) {
-    return profileClient.addUsernameMetadata(body);
+    return 'money magic';
   }
 }
 export default createHandler(ProfileHandler);
+
+// next-connect
+// https://www.npmjs.com/package/next-connect

@@ -1,9 +1,7 @@
 import axios from '@src/lib/axios';
 import { GetCroppedImageReturn } from '@features/ImageUploader/types/image-uploader.types';
-import { supabaseClient, logger } from '@supabase/auth-helpers-nextjs';
 import { supabase } from '@src/lib/initSupabase';
-import { useUser } from '@supabase/auth-helpers-react';
-import { SupabaseClientOptions } from '@supabase/supabase-js';
+
 export type CreateProfileParams = {
   id: string;
   username: string;
@@ -22,15 +20,13 @@ export const handleAvatarSubmit = async (imageData: GetCroppedImageReturn) => {
     const formData = new FormData();
     formData.append('croppedImage', imageData.croppedImage);
     formData.append('imageData', JSON.stringify(imageData.imageData));
-
-    console.info('IMAGEDATA', formData.get('imageData'));
-    const { data: url } = await axios.post('/avatar', formData, {
+    await axios.post('/avatar', formData, {
       headers: { 'Content-Type': 'multipart/form-data' },
     });
     //chanve file to buffer
-    const user = await supabase.auth.refreshSession();
-    const sess = await supabase.auth.session();
-
+    await supabase.auth.refreshSession();
+    await supabase.auth.session();
+    // TODO: Post POST route - signed url can't be used if i'm altering the image on the server.
     // const amz = await fetch(url.url, {
     //   method: 'PUT',
     //   body: await imageData.croppedImage.arrayBuffer(),
@@ -40,3 +36,24 @@ export const handleAvatarSubmit = async (imageData: GetCroppedImageReturn) => {
     console.error('GR', error);
   }
 };
+export const updateProfile = async (e: React.FormEvent<HTMLFormElement>) => {
+  e.preventDefault();
+  try {
+    const fullFormData = new FormData(e.target as HTMLFormElement);
+    const { bio } = Object.fromEntries(fullFormData.entries());
+    console.log(fullFormData, bio);
+    const { data } = await axios.put('/profile', { bio });
+    console.log(data);
+    await supabase.auth.update({
+      data: { bio },
+    });
+    await supabase.auth.refreshSession();
+    await supabase.auth.session();
+    return data;
+  } catch (error) {
+    console.error(error);
+  }
+};
+const deleteUser = async () => {};
+
+// export const updateProfile = async ({ bio }: { bio: string }) => {};

@@ -3,6 +3,7 @@ import { supabase } from 'src/lib/initSupabase';
 import { Flex, Avatar, Button, Menu, MenuButton, MenuList, MenuItem, MenuDivider } from '@chakra-ui/react';
 import { SupaUser } from 'types/index';
 import { useProfileModal } from '@features/Modal';
+import { FiUser } from 'react-icons/fi';
 interface ProfileDropdownProps {
   user: SupaUser;
 }
@@ -27,6 +28,7 @@ export const ProfileDropdown = ({ user }: ProfileDropdownProps) => {
                   },
                 });
               }}
+              icon={<FiUser size={16} />}
             >
               Update Profile
             </MenuItem>

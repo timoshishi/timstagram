@@ -14,11 +14,11 @@ import {
 import { BrandLogo } from '@src/common/components/BrandLogo';
 import { PostHeaderAvatar } from '@common/components/PostHeaderAvatar';
 import { ProfileModalProps } from './ProfileModal';
+import { updateProfile } from '@features/Modal/api/profile-api';
 
 interface ProfileModalFormProps {
   initialProfileData: ProfileModalProps['initialProfileData'];
   profile: Required<ProfileModalFormProps['initialProfileData']>;
-  handleSubmit: (e: React.FormEvent<HTMLFormElement>) => void;
   deleteUser: () => void;
   getButtonProps: () => any;
   getDisclosureProps: () => any;
@@ -27,7 +27,6 @@ interface ProfileModalFormProps {
 export const ProfileModalForm = ({
   initialProfileData,
   profile,
-  handleSubmit,
   getButtonProps,
   getDisclosureProps,
   avatarUrl,
@@ -49,7 +48,7 @@ export const ProfileModalForm = ({
             <PostHeaderAvatar username={initialProfileData.username} avatarUrl={avatarUrl} />
           )}
         </Flex>
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={updateProfile}>
           <Flex flexDirection='column' gap='4'>
             <FormControl isRequired={!initialProfileData.username}>
               {!initialProfileData.username && <FormLabel htmlFor='username'>Choose your username</FormLabel>}
