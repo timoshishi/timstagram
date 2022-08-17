@@ -20,7 +20,7 @@ export const handleAvatarSubmit = async (imageData: GetCroppedImageReturn) => {
     const formData = new FormData();
     formData.append('croppedImage', imageData.croppedImage);
     formData.append('imageData', JSON.stringify(imageData.imageData));
-    await axios.post('/avatar', formData, {
+    await axios.post('/profile/avatar', formData, {
       headers: { 'Content-Type': 'multipart/form-data' },
     });
     //chanve file to buffer

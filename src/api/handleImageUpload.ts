@@ -8,7 +8,8 @@ import { MAX_MEGABYTES, MEGABYTE } from '@features/ImageUploader/utils/image-upl
 import { ImageData } from '@features/ImageUploader/types/image-uploader.types';
 import { randomUUID } from 'crypto';
 export const AVATAR_IMAGE_SIZE = 150;
-
+import { NextApiRequest, NextApiResponse } from 'next';
+import { ExpressionType } from '@aws-sdk/client-s3';
 type ImageProperties = {
   id: string;
   width: number;
@@ -43,7 +44,7 @@ export const uploadMiddleware = multer({
   limits: {
     fileSize: MAX_MEGABYTES * MEGABYTE,
   },
-  fileFilter: (req, file, cb) => {
+  fileFilter: (req, file: Express.Multer.File, cb) => {
     if (file.mimetype.startsWith('image/')) {
       cb(null, true);
     } else {

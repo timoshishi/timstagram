@@ -25,7 +25,10 @@ class ImageService {
     });
     return signedUrl;
   }
-
+  /*
+    const url = await imageService.createSignedUrl({ file: buffer, fileName: imageProperties.filename! });
+    res.json({ url });
+  */
   async uploadFileToS3({ file, filename }: { file: Buffer; filename: string }) {
     const command = new PutObjectCommand({
       Bucket: process.env.PHOTO_BUCKET,
