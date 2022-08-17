@@ -64,38 +64,41 @@ export class ProfileAPI {
       altText: `${user.user_metadata.username}'s avatar`,
       username: user.user_metadata.username,
     });
+    try {
+      const buffer = await resizeAvatarImage(croppedImage.buffer, AVATAR_IMAGE_SIZE, AVATAR_IMAGE_SIZE);
 
-    const buffer = await resizeAvatarImage(croppedImage.buffer, AVATAR_IMAGE_SIZE, AVATAR_IMAGE_SIZE);
+      await imageService.uploadFileToS3({
+        file: buffer,
+        filename: imageProperties.filename,
+      });
+      await prisma.media.create({
+        data: {
+          ...imageProperties,
+          width: AVATAR_IMAGE_SIZE,
+          height: AVATAR_IMAGE_SIZE,
+          kind: 'avatar',
+          size: buffer.byteLength,
+        },
+      });
 
-    await imageService.uploadFileToS3({
-      file: buffer,
-      filename: imageProperties.filename,
-    });
-    await prisma.media.create({
-      data: {
-        ...imageProperties,
-        width: AVATAR_IMAGE_SIZE,
-        height: AVATAR_IMAGE_SIZE,
-        kind: 'avatar',
-        size: buffer.byteLength,
-      },
-    });
+      await supabaseService.auth.api.updateUserById(user.id, {
+        user_metadata: {
+          ...user.user_metadata,
+          avatarUrl: imageProperties.url,
+        },
+      });
 
-    await supabaseService.auth.api.updateUserById(user.id, {
-      user_metadata: {
-        ...user.user_metadata,
-        avatarUrl: imageProperties.url,
-      },
-    });
-
-    await prisma.profile.update({
-      where: {
-        id: user.id,
-      },
-      data: {
-        avatarUrl: imageProperties.url,
-      },
-    });
-    return { data: null, status: 201, error: null };
+      await prisma.profile.update({
+        where: {
+          id: user.id,
+        },
+        data: {
+          avatarUrl: imageProperties.url,
+        },
+      });
+      return { data: imageProperties.url, status: 201, error: null };
+    } catch (error) {
+      return { data: null, status: 500, error };
+    }
   }
 }

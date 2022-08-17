@@ -18,13 +18,11 @@ Then run `yarn storybook` to open the storybook.
 
 Dates - use dateFormatter from utils which is just dayjs extended with relative times
 
-Known console errors/warnings that can be safely ignored:
+### Code generation
 
-- `Popper: Invalid reference or popper argument provided. They must be either a DOM element or virtual element.`
-- Chakra UIs implementation of the tooltip that renders the zoom slider in the image uploader component.
-- You are loading @emotion/react when it is already loaded. Running multiple instances may cause problems. This can
-  happen if multiple versions are used, or if multiple builds of the same version are used.`
-- This should be Storybook specific
+- `yarn generate:feature <FeatureName>` - creates a new feature folder and files
+- `yarn generate:api <route-name>` - creates a new api route and files
+- `yarn prisma generate dev` - generates the prisma schema
 
 # Fullstack Authentication Example with Next.js and NextAuth.js
 
