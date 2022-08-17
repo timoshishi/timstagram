@@ -32,17 +32,22 @@ export function sizeValidator(file: File) {
   return null;
 }
 
-export const handleCroppedImage: HandleCroppedImage = ({ croppedImage, croppedAreaPixels, aspectRatio }) => {
+export const handleCroppedImage: HandleCroppedImage = ({
+  croppedImage,
+  croppedAreaPixels,
+  aspectRatio,
+  originalImageName,
+}) => {
   if (croppedImage) {
     const imageData = {
-      croppedImage,
       dimensions: {
         width: croppedAreaPixels.width,
         height: croppedAreaPixels.height,
       },
-      aspectRatio: aspectRatio,
+      aspectRatio,
+      originalImageName,
     };
-    return imageData;
+    return { croppedImage, imageData };
   } else {
     return null;
   }

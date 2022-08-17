@@ -3,7 +3,6 @@ import '@testing-library/jest-dom';
 import { ImageUploaderProvider, useCreateUploaderContext } from '../../stores/ImageUploaderContext';
 import { Cropper } from '.';
 import userEvent from '@testing-library/user-event';
-import { handleCroppedImage } from '../../utils/image-uploader-functions';
 
 describe('Cropper', () => {
   it('should render with an image  the control buttons and three svg buttons', async () => {
@@ -14,7 +13,7 @@ describe('Cropper', () => {
     initialValues.preview = '/storybook/aspect-16-9.jpg';
     render(
       <ImageUploaderProvider initialValue={initialValues}>
-        <Cropper handleCroppedImage={handleCroppedImage} />
+        <Cropper />
       </ImageUploaderProvider>
     );
     await waitFor(() => {
@@ -44,7 +43,7 @@ describe('Cropper', () => {
     initialValues.preview = '/storybook/aspect-16-9.jpg';
     render(
       <ImageUploaderProvider initialValue={initialValues}>
-        <Cropper handleCroppedImage={handleCroppedImage} />
+        <Cropper />
       </ImageUploaderProvider>
     );
     expect(screen.getByLabelText('zoom in')).toBeInTheDocument();
@@ -67,7 +66,7 @@ describe('Cropper', () => {
     initialValues.preview = '/storybook/aspect-16-9.jpg';
     render(
       <ImageUploaderProvider initialValue={initialValues}>
-        <Cropper handleCroppedImage={handleCroppedImage} />
+        <Cropper />
       </ImageUploaderProvider>
     );
     const aspectRatioButton = screen.getByLabelText('change aspect ratio');
@@ -95,7 +94,7 @@ describe('Cropper', () => {
   //   initialValues.preview = '/storybook/aspect-16-9.jpg';
   //   const { queryByRole, getByText } = render(
   //     <ImageUploaderProvider initialValue={initialValues}>
-  //       <Cropper handleCroppedImage={handleCroppedImage} />
+  //       <Cropper  />
   //     </ImageUploaderProvider>
   //   );
 

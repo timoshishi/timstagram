@@ -1,7 +1,7 @@
 export interface Poster {
   username: string;
   userDescription?: string;
-  avatarURL: string;
+  avatarUrl: string;
   followerCount: number;
   followingCount: number;
 }
@@ -14,7 +14,7 @@ export interface Post {
   isFollowing: boolean;
   repostsCount: number;
   likesCount: number;
-  imageURL: string;
+  imageUrl: string;
   poster: Poster;
   description: string;
   tags: string[];

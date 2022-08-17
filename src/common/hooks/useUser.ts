@@ -1,19 +1,10 @@
-import { User, useUser } from '@supabase/auth-helpers-react';
-import useSWR from 'swr';
-import { fetcher } from 'src/lib/axios';
-import { PrelimUser } from '@pages/api/user/[id]';
+import { useUser as useSupabaseUser } from '@supabase/auth-helpers-react';
+import type { UserState } from '@supabase/auth-helpers-shared';
+import { SupaUser } from 'types/index';
 
-export default (): {
-  user: (User & PrelimUser) | null;
-  isLoading: boolean;
-  error: unknown | null;
-} => {
-  const { user, error, isLoading } = useUser();
-  const { data, error: swrError } = useSWR(user?.id ? `/user/${user.id}` : null, fetcher);
-  console.log('DATA', data);
-  return {
-    user: user && data ? data : null,
-    error: error || swrError,
-    isLoading: isLoading || (!data && !error && !swrError),
-  };
-};
+interface SupaUserState extends UserState {
+  user: SupaUser | null;
+}
+type UseUser = () => SupaUserState;
+
+export const useUser = useSupabaseUser as UseUser;

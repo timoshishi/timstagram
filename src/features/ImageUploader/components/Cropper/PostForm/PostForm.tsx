@@ -1,18 +1,30 @@
 import { EmptyNoReturnFn } from '@common/utils';
+import { useState } from 'react';
 import { Button, Box, Flex, Textarea, Collapse } from '@chakra-ui/react';
-import { PostHeaderAvatar } from '@common/components/PostCard/PostHeader/PostHeaderAvatar';
-// import useUser from '@common/hooks/useUser';
+import { PostHeaderAvatar } from '@common/components/PostHeaderAvatar';
+import { GetCroppedImage, GetCroppedImageReturn } from '@features/ImageUploader/types/image-uploader.types';
+import { createPost } from '@features/ImageUploader/api/createPost';
+import { HandleSubmitPost, useCreatePostModal } from '@features/Modal/hooks/useCreatePostModal';
+import { useImageUploaderContext } from '@features/ImageUploader/hooks/useImageUploaderContext';
 
 interface PostFormProps {
-  isOpen: boolean;
-  onToggle: EmptyNoReturnFn;
+  // isOpen: boolean;
+  // handleSubmit: HandleSubmitPost;
+  // handleCancel: EmptyNoReturnFn;
 }
 
-export const PostForm = ({ isOpen, onToggle }: PostFormProps) => {
-  // const { user } = useUser();
+export const PostForm = ({}: PostFormProps) => {
+  const { croppedImage: croppedImageData, clearFile } = useImageUploaderContext();
+  const {
+    componentProps: { handleSubmit },
+  } = useCreatePostModal();
+  const [caption, setCaption] = useState('');
+  const handleCaption = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    setCaption(e.target.value);
+  };
   return (
     <Box>
-      <Collapse in={isOpen}>
+      <Collapse in={!!croppedImageData}>
         <Box
           p='6'
           color='white'
@@ -27,8 +39,10 @@ export const PostForm = ({ isOpen, onToggle }: PostFormProps) => {
           right='0'
           top='3.5rem'
         >
-          {/* {user && <PostHeaderAvatar username={user.username} avatarURL={user.avatarURL} />} */}
+          {/* {user && <PostHeaderAvatar username={user.username} avatarUrl={user.avatarUrl} />} */}
           <Textarea
+            value={caption}
+            onChange={handleCaption}
             placeholder='Add a caption, with some #hashtags to get noticed!'
             size='lg'
             resize='none'
@@ -39,11 +53,16 @@ export const PostForm = ({ isOpen, onToggle }: PostFormProps) => {
             mt='4'
           />
           <Flex justifyContent={'flex-end'} w='100%' p='3' alignSelf={'flex-end'}>
+            <Button variant='outline' colorScheme='telegram' size={['md', 'md', 'md']} onClick={clearFile}>
+              Cancel
+            </Button>
             <Button
               variant='solid'
               colorScheme='telegram'
               size={['md', 'md', 'md']}
-              onClick={() => console.log('post the photo')}
+              onClick={() => {
+                handleSubmit({ caption, croppedImageData });
+              }}
             >
               Post
             </Button>

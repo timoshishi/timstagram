@@ -1,24 +1,20 @@
-import { ModalContent, Box, ModalOverlay, Modal, Portal } from '@chakra-ui/react';
-import { useRef } from 'react';
 import { useImageUploaderContext } from '../hooks/useImageUploaderContext';
 import { Dropzone } from './Dropzone';
 import { Cropper } from './Cropper';
-import { ErrorMessage } from '../../../common/components/ErrorMessage';
-import { handleCroppedImage } from '../utils/image-uploader-functions';
-import { noOp } from '@common/utils';
+import { Box, Center, Spinner, Flex } from '@chakra-ui/react';
 
 export const ImageUploader = () => {
-  const { error, preview } = useImageUploaderContext();
-  // const uploaderRef = useRef<HTMLDivElement | null>(null);
-  return (
-    <Portal>
-      <Modal isOpen={true} onClose={noOp} size={['md', 'lg', '3xl']} initialFocusRef={undefined} isCentered={true}>
-        <ModalOverlay />
-        <ModalContent p='0' display={'flex'} flexDir='column'>
-          {preview ? <Cropper handleCroppedImage={handleCroppedImage} /> : <Dropzone />}
-          <ErrorMessage errorMessage={error?.message} />
-        </ModalContent>
-      </Modal>
-    </Portal>
-  );
+  const { preview, isUploaderLoading } = useImageUploaderContext();
+  if (isUploaderLoading) {
+    return (
+      <Box h='60' w='100%'>
+        <Flex alignItems='center' justifyContent='center' h='100%' w='100%'>
+          <Center>
+            <Spinner thickness='4px' speed='0.65s' emptyColor='gray.200' color='blue.500' size='xl' />
+          </Center>
+        </Flex>
+      </Box>
+    );
+  }
+  return <>{preview ? <Cropper /> : <Dropzone />}</>;
 };

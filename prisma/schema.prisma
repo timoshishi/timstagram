@@ -1,55 +1,56 @@
 generator client {
   provider = "prisma-client-js"
 }
+
 generator erd {
   provider = "prisma-erd-generator"
 }
+
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
 
-
-model User {
-  id         String     @id @default(cuid())
-  username   String     @unique
-  verifiedAt DateTime?  @map("email_verified")
-  avatarUrl  String?    @map("avatar_url")
-  createdAt  DateTime   @default(now()) @map("created_at")
-  updatedAt  DateTime   @updatedAt @map("updated_at")
-  banned     Boolean    @default(false)
-  isBot      Boolean    @default(false) @map("is_bot")
-  email      String
-  comments   Comment[]
-  following  Follows[]  @relation("follower")
-  followers  Follows[]  @relation("following")
-  media      Media[]
-  postFlags  PostFlag[]
-  likes      PostLike[]
-  posts      Post[]
+// profile created with postgres function after user creation
+// username inserted in signup modal
+model Profile {
+  id        String     @id @db.Uuid()
+  username  String?    @unique
+  avatarUrl String?    @default("") @map("avatar_url")
+  bio       String?    @default("") @map("bio")
+  createdAt DateTime   @default(now()) @map("created_at")
+  updatedAt DateTime?  @updatedAt @map("updated_at")
+  banned    Boolean    @default(false)
+  isBot     Boolean    @default(false) @map("is_bot")
+  comments  Comment[]
+  following Follows[]  @relation("follower")
+  followers Follows[]  @relation("following")
+  media     Media[]
+  postFlags PostFlag[]
+  likes     PostLike[]
+  posts     Post[]
 
   @@index([username])
-  @@map("user")
+  @@map("profile")
 }
 
 model Follows {
-  followerId         String  @map("follower_id")
+  followerId         String  @map("follower_id") @db.Uuid()
   folowerAvatarUrl   String? @map("follower_avatar_url")
-  followingId        String  @map("following_id")
+  followingId        String  @map("following_id") @db.Uuid()
   followingAvatarUrl String? @map("following_avatar_url")
-  follower           User    @relation("follower", fields: [followerId], references: [id])
-  following          User    @relation("following", fields: [followingId], references: [id])
+  follower           Profile @relation("follower", fields: [followerId], references: [id])
+  following          Profile @relation("following", fields: [followingId], references: [id])
 
   @@id([followerId, followingId])
   @@map("follows")
 }
 
 model Post {
-  id            String       @id @default(cuid())
-  title         String
-  content       String?
+  id            String       @id
+  postBody      String?      @map("post_body")
   published     Boolean      @default(true)
-  userId        String       @map("user_id")
+  userId        String       @map("user_id") @db.Uuid()
   userDeleted   Boolean      @default(false) @map("user_deleted")
   flagged       Boolean      @default(false)
   deleted       Boolean      @default(false)
@@ -58,14 +59,14 @@ model Post {
   likes         Int          @default(0)
   mediaType     String?      @map("media_type")
   mediaUrl      String?      @unique @map("media_url")
-  mediaId       String       @map("media_id")
+  mediaId       String       @map("media_id") @db.Uuid()
   createdAt     DateTime     @default(now()) @map("created_at")
   isBotPost     Boolean      @default(false) @map("is_bot_post")
   isShared      Boolean      @default(false) @map("is_shared")
   userAvatarUrl String       @map("user_avatar_url")
   username      String
   media         Media        @relation(fields: [mediaId], references: [id])
-  user          User         @relation(fields: [userId], references: [id])
+  profile       Profile      @relation(fields: [userId], references: [id])
   comments      Comment[]
   postFlags     PostFlag[]
   postLikes     PostLike[]
@@ -75,49 +76,53 @@ model Post {
 }
 
 model Comment {
-  id        String   @id @default(cuid())
+  id        String   @id @default(uuid()) @db.Uuid()
   content   String
-  userId    String   @map("user_id")
+  userId    String   @map("user_id") @db.Uuid()
   postId    String   @map("post_id")
   createdAt DateTime @default(now()) @map("created_at")
   post      Post     @relation(fields: [postId], references: [id], onDelete: Cascade)
-  user      User     @relation(fields: [userId], references: [id])
+  profile   Profile  @relation(fields: [userId], references: [id])
 
   @@map("comments")
 }
 
 model Media {
-  id        String   @id
-  url       String   @unique
-  bucket    String
-  type      String
-  alt       String?
-  size      Int
-  width     Int
-  height    Int
-  scraped   Boolean  @default(false)
-  category  String?
-  deleted   Boolean  @default(false)
-  createdAt DateTime @default(now()) @map("created_at")
-  userId    String   @map("user_id")
-  hash      String
-  metadata  Json?
-  source    String
-  user      User     @relation(fields: [userId], references: [id])
-  posts     Post[]
-  tags      Tag[]
+  id          String   @id @default(uuid()) @db.Uuid()
+  url         String   @unique
+  bucket      String
+  type        String
+  alt         String?
+  filename    String
+  size        Int
+  width       Int
+  height      Int
+  kind        String?
+  aspectRatio Float    @map("aspect_ratio")
+  scraped     Boolean  @default(false)
+  category    String?
+  deleted     Boolean  @default(false)
+  createdAt   DateTime @default(now()) @map("created_at")
+  userId      String   @map("user_id") @db.Uuid()
+  hash        String?
+  placeholder String?
+  metadata    Json?
+  source      String
+  profile     Profile  @relation(fields: [userId], references: [id])
+  posts       Post[]
+  tags        Tag[]
 
   @@map("media")
 }
 
 model PostFlag {
-  postId    String
-  userId    String
+  postId    String     @map("post_id")
+  userId    String     @map("user_id") @db.Uuid()
   reason    FlagReason
   content   String?
   createdAt DateTime   @default(now()) @map("created_at")
   post      Post       @relation(fields: [postId], references: [id])
-  user      User       @relation(fields: [userId], references: [id])
+  profile   Profile    @relation(fields: [userId], references: [id])
 
   @@id([postId, userId])
   @@map("post_flags")
@@ -125,11 +130,11 @@ model PostFlag {
 
 model PostLike {
   postId    String   @map("post_id")
-  userId    String   @map("user_id")
+  userId    String   @map("user_id") @db.Uuid()
   createdAt DateTime @default(now()) @map("created_at")
-  doesLike  Boolean  @default(true)
+  doesLike  Boolean  @default(true) @map("does_like")
   post      Post     @relation(fields: [postId], references: [id], onDelete: Cascade)
-  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  profile   Profile  @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@id([postId, userId])
   @@map("post_likes")
@@ -137,7 +142,7 @@ model PostLike {
 
 model TagOnPosts {
   postId String @map("post_id")
-  tagId  String @map("tag_id")
+  tagId  String @map("tag_id") @db.Uuid()
   post   Post   @relation(fields: [postId], references: [id], onDelete: Cascade)
   tag    Tag    @relation(fields: [tagId], references: [id], onDelete: Cascade)
 
@@ -146,9 +151,9 @@ model TagOnPosts {
 }
 
 model Tag {
-  id      String       @id @default(cuid())
+  id      String       @id @default(uuid()) @db.Uuid()
   name    String       @unique
-  mediaId String?      @map("media_id")
+  mediaId String?      @map("media_id") @db.Uuid()
   media   Media?       @relation(fields: [mediaId], references: [id])
   posts   TagOnPosts[]
 

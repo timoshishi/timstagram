@@ -11,9 +11,10 @@ export const Tags = ({ tags, postId }: TagsProps) => (
         mr='2'
         mb='1'
         fontSize='sm'
-        onClick={() => console.log('go to tag')}
+        onClick={() => console.info('go to tag')}
         key={`${postId}-${i}-#${tag}`}
-        color='teal.500'>
+        color='teal.500'
+      >
         {' '}
         #{tag}
       </Link>

@@ -1,11 +1,4 @@
-import {
-  Flex,
-  Box,
-  Text,
-  Icon,
-  chakra,
-  useColorModeValue,
-} from '@chakra-ui/react';
+import { Flex, Box, Text, Icon, chakra, useColorModeValue } from '@chakra-ui/react';
 import { FaRegCommentAlt, FaShare } from 'react-icons/fa';
 import { FiHeart } from 'react-icons/fi';
 interface ActionIconsProps {
@@ -18,20 +11,13 @@ export const ActionIcons = ({ hasLiked, likesCount }: ActionIconsProps) => {
   return (
     <Flex direction='column'>
       <Flex columnGap={4}>
-        <chakra.button
-          onClick={() => console.log('share post')}
-          display={'flex'}
-          color='blue.600'>
+        <chakra.button onClick={() => console.info('share post')} display={'flex'} color='blue.600'>
           <Icon as={FaShare} h={7} w={7} alignSelf={'center'} />
         </chakra.button>
-        <chakra.button
-          onClick={() => console.log('comment on post')}
-          display={'flex'}>
+        <chakra.button onClick={() => console.info('comment on post')} display={'flex'}>
           <Icon as={FaRegCommentAlt} h={7} w={7} alignSelf={'center'} />
         </chakra.button>
-        <chakra.button
-          onClick={() => console.log('like post')}
-          display={'flex'}>
+        <chakra.button onClick={() => console.info('like post')} display={'flex'}>
           <Icon
             as={FiHeart}
             h={7}
@@ -44,10 +30,7 @@ export const ActionIcons = ({ hasLiked, likesCount }: ActionIconsProps) => {
         </chakra.button>
       </Flex>
       {likesCount ? (
-        <Box
-          color={colorMode}
-          textAlign='end'
-          onClick={() => console.log('open post modal')}>
+        <Box color={colorMode} textAlign='end' onClick={() => console.info('open post modal')}>
           <Text fontSize='md' color='purple.500'>
             {`${likesCount} like${likesCount !== 1 ? 's' : ''}`}
           </Text>

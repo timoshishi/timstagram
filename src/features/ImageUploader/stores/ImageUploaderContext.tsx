@@ -1,15 +1,10 @@
 import { useDropzone, FileError } from 'react-dropzone';
 import { useState, useEffect, useCallback, createContext, useContext, Context } from 'react';
 import { getOrientation } from 'get-orientation/browser.es5';
-import type { Dimensions } from '../types/image-uploader.types';
+import type { Dimensions, GetCroppedImageReturn } from '../types/image-uploader.types';
 import { createImage, getRotatedImage } from '../utils/cropper-functions';
-import { noOp } from '@common/utils';
 import { sizeValidator } from '../utils/image-uploader-functions';
-import type {
-  UseImageUploaderReturn,
-  UseCreateUploaderContextProps,
-  OrientationKey,
-} from '../types/image-uploader-context.types';
+import type { UseImageUploaderReturn, OrientationKey } from '../types/image-uploader-context.types';
 import { readFile, scaleImage, clearUrl } from '../utils/image-uploader-functions';
 import { useBoolean } from '@chakra-ui/react';
 
@@ -24,14 +19,31 @@ export const ORIENTATION_TO_ANGLE = {
   '8': -90,
 };
 
-export const useCreateUploaderContext = ({ type }: UseCreateUploaderContextProps = {}): UseImageUploaderReturn => {
+//create a context using this file
+export const ImageUploaderContext: Context<UseImageUploaderReturn | null> =
+  createContext<UseImageUploaderReturn | null>(null);
+ImageUploaderContext.displayName = 'ImageUploaderContext';
+//create a provider using this file
+
+interface ImageUploaderProviderProps {
+  shape?: 'rect' | 'round';
+  hasAdditionalStep?: boolean;
+  children: React.ReactNode;
+}
+
+export const ImageUploaderProvider = ({
+  children,
+  shape = 'rect',
+  hasAdditionalStep = false,
+}: ImageUploaderProviderProps) => {
   const [file, setFile] = useState<File | null>(null);
   const [cropShape, setCropShape] = useState<'round' | 'rect'>('rect');
-  const [isLoading, setIsLoading] = useState(false);
+
   const [preview, setPreview] = useState<string | null>(null);
   const [error, setError] = useState<FileError | null>(null);
   const [originalAspectRatio, setOriginalAspectRatio] = useState(1);
-  const [isCommentSliderOpen, { toggle: toggleCommentSlider }] = useBoolean(false);
+  const [isUploaderLoading, { toggle: toggleUploaderLoading }] = useBoolean(false);
+  const [croppedImage, setCroppedImage] = useState<GetCroppedImageReturn | null>(null);
   const [dimensions, setDimensions] = useState<Dimensions>({
     width: 0,
     height: 0,
@@ -52,12 +64,14 @@ export const useCreateUploaderContext = ({ type }: UseCreateUploaderContextProps
       setOriginalAspectRatio(width / height);
       setDimensions({ width, height });
       const rotation = ORIENTATION_TO_ANGLE[orientation] ?? 0;
+
       if (rotation) {
         //FIXME:  PERFORMANCE - CHANGE THIS TO FILEREADER readDataURL (currently URL.objectURL)
         imgUrl = await getRotatedImage(imgUrl, rotation);
       }
       setPreview(imgUrl);
       setFile(file);
+      console.info(file);
       return null;
     } catch (error) {
       console.error(error);
@@ -71,7 +85,6 @@ export const useCreateUploaderContext = ({ type }: UseCreateUploaderContextProps
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-
   useEffect(() => {
     return () => {
       clearUrl(preview);
@@ -87,7 +100,9 @@ export const useCreateUploaderContext = ({ type }: UseCreateUploaderContextProps
     setFile(null);
     setPreview(null);
     setError(null);
+    setCroppedImage(null);
   };
+
   useEffect(() => {
     if (fileRejections.length > 0) {
       setError(fileRejections[0].errors[0]);
@@ -100,57 +115,30 @@ export const useCreateUploaderContext = ({ type }: UseCreateUploaderContextProps
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [acceptedFiles, fileRejections]);
 
-  return {
-    getRootProps,
-    getInputProps,
-    isDragActive,
-    preview,
-    isLoading,
-    error,
-    file,
-    originalDimensions: dimensions,
-    originalAspectRatio,
-    clearFile,
-    scaleImage,
-    cropShape,
-    setCropShape,
-    isCommentSliderOpen,
-    toggleCommentSlider,
-  } as const;
-};
-
-//create a context using this file
-export const ImageUploaderContext: Context<UseImageUploaderReturn> = createContext<UseImageUploaderReturn>({
-  getRootProps: () => ({}),
-  getInputProps: () => ({}),
-  isDragActive: false,
-  preview: null,
-  isLoading: false,
-  error: null,
-  file: null,
-  originalDimensions: {
-    width: 0,
-    height: 0,
-  },
-  originalAspectRatio: 1,
-  clearFile: noOp,
-  scaleImage: () => ({ width: 0, height: 0 }),
-  cropShape: 'rect',
-  setCropShape: noOp,
-  setStep: noOp,
-  currentStep: 0,
-  isCommentSliderOpen: false,
-  toggleCommentSlider: noOp,
-} as UseImageUploaderReturn);
-ImageUploaderContext.displayName = 'ImageUploaderContext';
-//create a provider using this file
-
-export const ImageUploaderProvider = ({
-  children,
-  initialValue,
-}: {
-  children: React.ReactNode;
-  initialValue: UseImageUploaderReturn;
-}) => {
-  return <ImageUploaderContext.Provider value={initialValue}>{children}</ImageUploaderContext.Provider>;
+  return (
+    <ImageUploaderContext.Provider
+      value={{
+        getRootProps,
+        getInputProps,
+        isDragActive,
+        preview,
+        error,
+        file,
+        originalDimensions: dimensions,
+        originalAspectRatio,
+        clearFile,
+        scaleImage,
+        cropShape,
+        setCropShape,
+        isUploaderLoading,
+        toggleUploaderLoading,
+        setCroppedImage,
+        croppedImage,
+        hasAdditionalStep,
+        shape,
+      }}
+    >
+      {children}
+    </ImageUploaderContext.Provider>
+  );
 };

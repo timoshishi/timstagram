@@ -1,23 +1,12 @@
 import { Box, Flex, Show, useColorModeValue } from '@chakra-ui/react';
-import { BrandLogo } from './BrandLogo';
+import { BrandLogo } from '../../../components/BrandLogo';
 import { ProfileDropdown } from './ProfileDropdown';
 import { LoginButtons } from './LoginButtons';
 import { NavbarLinks } from './NavbarLinks';
-import { useUser } from '@supabase/auth-helpers-react';
-import { useGlobalModalContext } from '@common/components/Modal/GlobalModal';
-import { AuthModalProps } from '@common/components/Auth/AuthModal';
-import { User } from '@supabase/supabase-js';
+import { useUser } from '@common/hooks/useUser';
+
 export const Navbar = () => {
   const { user, isLoading } = useUser();
-  const { showModal, isOpen, hideModal } = useGlobalModalContext<AuthModalProps>();
-
-  if (isOpen && user) {
-    hideModal();
-    console.log('OPEN', isOpen, user);
-  }
-  const handleAuthModal = (viewType: AuthModalProps['viewType']) => {
-    showModal('AuthModal', { viewType }, { size: ['md', 'lg'] });
-  };
 
   const colorMode = useColorModeValue('gray.100', 'gray.900');
   if (isLoading) {
@@ -34,7 +23,7 @@ export const Navbar = () => {
             <BrandLogo />
           </Show>
           <NavbarLinks />
-          {!!user && !isLoading ? <ProfileDropdown /> : <LoginButtons handleLogin={handleAuthModal} />}
+          {user && !isLoading ? <ProfileDropdown user={user} /> : <LoginButtons />}
         </Flex>
       </Box>
     </Box>

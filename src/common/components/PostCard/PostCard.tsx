@@ -25,7 +25,7 @@ export const PostCard = ({
     isFollowing,
     repostsCount,
     likesCount,
-    imageURL,
+    imageUrl,
     poster,
     tags,
   },
@@ -46,7 +46,8 @@ export const PostCard = ({
         borderRightWidth={[0, 1]}
         rounded='lg'
         shadow={['none', 'sm']}
-        position='relative'>
+        position='relative'
+      >
         <Box w='100%' h='70%' display='block'>
           <PostHeader
             poster={poster}
@@ -55,9 +56,9 @@ export const PostCard = ({
             createdAt={createdAt}
             isFollowing={isFollowing}
           />
-          <Box minW='100%' h='auto' position='relative'>
+          <Box minW='100%' h='100%' position='relative'>
             <PostImage
-              imageURL={imageURL}
+              imageUrl={imageUrl}
               tags={tags}
               setSize={setSize}
               size={size}

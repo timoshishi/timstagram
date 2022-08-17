@@ -1,27 +1,25 @@
 import { useRef, useState, useCallback } from 'react';
 import { useDimensions, Box, Flex, useBreakpointValue, Portal } from '@chakra-ui/react';
 import Cropper, { Area } from 'react-easy-crop';
-import { getCroppedImg } from '../../utils/cropper-functions';
-import type { HandleCroppedImage } from '../../types/image-uploader.types';
+import { getImageFromPreview } from '../../utils/cropper-functions';
+import { handleCroppedImage } from '../../utils/image-uploader-functions';
 import { Controls } from './Controls/Controls';
 import { useImageUploaderContext } from '../../hooks/useImageUploaderContext';
 import { CropperButtons } from './Controls/CropperButtons';
+import { GetCroppedImage } from '../../types/image-uploader.types';
 
-export interface CropperProps {
-  handleCroppedImage: HandleCroppedImage;
-}
+export interface CropperProps {}
 
-export const EasyCropper = ({ handleCroppedImage }: CropperProps) => {
-  const { preview, clearFile, originalDimensions, cropShape } = useImageUploaderContext();
-
+export const EasyCropper = ({}: CropperProps) => {
+  const { preview, originalDimensions, cropShape, file, setCroppedImage, shape } = useImageUploaderContext();
   const [crop, setCrop] = useState({ x: 0, y: 0 });
   const [rotation, setRotation] = useState(0);
   const [aspectRatio, setAspectRatio] = useState(1);
   const [zoom, setZoom] = useState(1);
 
   const [croppedAreaPixels, setCroppedAreaPixels] = useState({
-    width: 0,
-    height: 0,
+    width: originalDimensions.width,
+    height: originalDimensions.height,
     x: 0,
     y: 0,
   });
@@ -29,6 +27,7 @@ export const EasyCropper = ({ handleCroppedImage }: CropperProps) => {
   const cropperRef = useRef(null);
   const modalRef = useRef(null);
   const dimensions = useDimensions(modalRef, true);
+
   const onCropComplete = useCallback((_: Area, croppedAreaPixels: Area) => {
     setCroppedAreaPixels(croppedAreaPixels);
   }, []);
@@ -39,20 +38,29 @@ export const EasyCropper = ({ handleCroppedImage }: CropperProps) => {
     const { width: originalWidth, height: originalHeight } = originalDimensions;
     const aspectRatio = originalWidth / originalHeight;
     const newHeight = width / aspectRatio;
-    // minHeight = Math.min(newHeight, height);
     minHeight = newHeight;
   }
 
-  const getCroppedImage = useCallback(async () => {
+  const getCroppedImage: GetCroppedImage = useCallback(async () => {
     try {
-      const croppedImage = await getCroppedImg(preview!, croppedAreaPixels, rotation);
-      handleCroppedImage({ croppedImage, croppedAreaPixels, aspectRatio });
-      // setCroppedImage(croppedImage);
+      const croppedImage = await getImageFromPreview({
+        imageSrc: preview!,
+        pixelCrop: croppedAreaPixels,
+        rotation,
+        shape,
+      });
+      const croppedImageData = await handleCroppedImage({
+        croppedImage,
+        croppedAreaPixels,
+        aspectRatio,
+        originalImageName: file!.name,
+      });
+      setCroppedImage(croppedImageData);
     } catch (e) {
       console.error(e);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [preview, croppedAreaPixels, rotation, aspectRatio]);
+  }, [preview, croppedAreaPixels, rotation, aspectRatio, file]);
 
   const handleRotate = () => {
     if (rotation < 360) {
@@ -65,10 +73,6 @@ export const EasyCropper = ({ handleCroppedImage }: CropperProps) => {
     base: '1rem',
   });
 
-  const onClose = useCallback(() => {
-    // setCroppedImage(null);
-  }, []);
-
   return (
     <Flex
       // minH={['100vh', '50%']}
@@ -78,7 +82,7 @@ export const EasyCropper = ({ handleCroppedImage }: CropperProps) => {
       bg='whiteAlpha.100'
       justifyContent={['center']}
     >
-      <CropperButtons />
+      <CropperButtons getCroppedImage={getCroppedImage} />
       <Box position='relative'>
         <Cropper
           image={preview ?? undefined}
@@ -89,9 +93,6 @@ export const EasyCropper = ({ handleCroppedImage }: CropperProps) => {
           style={{
             containerStyle: {
               width: '100%',
-              // minHeight: '60vh',
-              // height: 'auto',
-              // minHeight: `${minHeight}px`,
               backgroundColor: 'blackAlpha.100',
               position: 'relative',
             },
@@ -101,7 +102,7 @@ export const EasyCropper = ({ handleCroppedImage }: CropperProps) => {
             },
           }}
           objectFit='auto-cover'
-          cropShape={cropShape}
+          cropShape={shape || cropShape}
           aspect={aspectRatio}
           onCropChange={setCrop}
           onRotationChange={setRotation}
@@ -114,7 +115,7 @@ export const EasyCropper = ({ handleCroppedImage }: CropperProps) => {
             setAspectRatio={setAspectRatio}
             handleRotate={handleRotate}
             cropShape={cropShape}
-            cropperRef={cropperRef}
+            shape={shape}
           />
         </Box>
       </Box>

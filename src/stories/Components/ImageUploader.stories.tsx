@@ -1,6 +1,6 @@
 import React from 'react';
 import { ComponentStory, ComponentMeta } from '@storybook/react';
-import { ImageUploader, ImageUploaderProvider, useCreateUploaderContext } from '../../features/ImageUploader';
+import { ImageUploader, ImageUploaderProvider } from '../../features/ImageUploader';
 import { rest } from 'msw';
 
 // More on default export: https://storybook.js.org/docs/react/writing-stories/introduction#default-export
@@ -14,13 +14,12 @@ export default {
 
 // More on component templates: https://storybook.js.org/docs/react/writing-stories/introduction#using-args
 const Template: ComponentStory<typeof ImageUploader> = (args: unknown) => {
-  const initialValue = useCreateUploaderContext();
   const props = {
     ...initialValue,
     ...args,
   };
   return (
-    <ImageUploaderProvider initialValue={props}>
+    <ImageUploaderProvider>
       <ImageUploader />
     </ImageUploaderProvider>
   );
@@ -66,7 +65,7 @@ Primary.parameters = {
           user: {
             id: '1',
             username: 'Bobby Daniels',
-            avatarURL: '',
+            avatarUrl: '',
           },
         })
       );
@@ -77,7 +76,7 @@ Primary.parameters = {
           id: '1',
           username: 'Bennie.Lehner',
           verifiedAt: '2021-11-21T02:50:43.534Z',
-          avatarURL: 'https://cloudflare-ipfs.com/ipfs/Qmd3W5DuhgHirLHGVixi6V76LhCkZUz6pnFt5AJBiyvHye/avatar/830.jpg',
+          avatarUrl: 'https://cloudflare-ipfs.com/ipfs/Qmd3W5DuhgHirLHGVixi6V76LhCkZUz6pnFt5AJBiyvHye/avatar/830.jpg',
           createdAt: '2022-06-25T08:09:21.888Z',
           updatedAt: '2021-10-06T01:52:18.215Z',
           banned: true,

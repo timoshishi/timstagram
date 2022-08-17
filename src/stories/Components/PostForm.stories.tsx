@@ -1,37 +1,31 @@
 import React from 'react';
 import { ComponentStory, ComponentMeta } from '@storybook/react';
-import { CropperButtons } from '../../common/components/ImageUploader/Cropper/Controls/CropperButtons';
+import { CropperButtons } from '../../features/ImageUploader/components/Cropper/Controls/CropperButtons';
 import { noOp } from '../../common/utils';
 import { Modal, ModalOverlay, ModalContent, Portal } from '@chakra-ui/react';
-import {
-  ImageUploaderProvider,
-  useCreateUploaderContext,
-} from '../../common/components/ImageUploader/ImageUploaderContext';
+import { ImageUploaderProvider } from '../../features/ImageUploader/stores/ImageUploaderContext';
 
 export default {
   title: 'Components/CropperButtons',
   component: CropperButtons,
 } as ComponentMeta<typeof CropperButtons>;
-const URL =
-  'https://img.huffingtonpost.com/asset/5ab4d4ac2000007d06eb2c56.jpeg?cache=sih0jwle4e&ops=1910_1000';
+const URL = 'https://img.huffingtonpost.com/asset/5ab4d4ac2000007d06eb2c56.jpeg?cache=sih0jwle4e&ops=1910_1000';
 
 const Template: ComponentStory<typeof CropperButtons> = (args) => {
-  const initialValue = useCreateUploaderContext();
   const props = {
     ...initialValue,
     ...args,
   };
   return (
-    <ImageUploaderProvider initialValue={props}>
-      <Modal
-        isOpen={true}
-        onClose={noOp}
-        size={['md', 'lg', '3xl']}
-        initialFocusRef={undefined}
-        isCentered={true}>
+    <ImageUploaderProvider>
+      <Modal isOpen={true} onClose={noOp} size={['md', 'lg', '3xl']} initialFocusRef={undefined} isCentered={true}>
         <ModalOverlay />
         <ModalContent p='0' display={'flex'} flexDir='column' h='60vh'>
-          <CropperButtons />
+          <CropperButtons
+            getCroppedImage={() => {
+              return {};
+            }}
+          />
         </ModalContent>
       </Modal>
     </ImageUploaderProvider>
@@ -61,10 +55,6 @@ Primary.argTypes = {
       },
       type: 'radio',
     },
-    options: [
-      '/storybook/aspect-1-1.jpg',
-      '/storybook/aspect-4-3.jpg',
-      '/storybook/aspect-16-9.jpg',
-    ],
+    options: ['/storybook/aspect-1-1.jpg', '/storybook/aspect-4-3.jpg', '/storybook/aspect-16-9.jpg'],
   },
 };
