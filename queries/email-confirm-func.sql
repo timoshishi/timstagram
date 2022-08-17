@@ -20,3 +20,4 @@ CREATE TRIGGER on_auth_email_confirmed
   AFTER UPDATE OF confirmed_at ON auth.users
   FOR EACH ROW 
   EXECUTE PROCEDURE public.handle_confirmed_user();
+  
