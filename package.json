@@ -38,6 +38,7 @@
     "cors": "^2.8.5",
     "dayjs": "^1.11.5",
     "dompurify": "^2.3.10",
+    "express-validator": "^6.14.2",
     "framer-motion": "^6",
     "get-orientation": "^1.1.2",
     "gm": "^1.23.1",

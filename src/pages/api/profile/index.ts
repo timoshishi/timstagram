@@ -4,8 +4,9 @@ import cors from 'cors';
 import { ProfileAPI } from '@api/profile/ProfileAPI';
 import prisma from '@src/lib/prisma';
 import { NextRequestWithUser } from '@api/types';
-import { appendUserToRequest, authenticateHandler } from '@api/router';
+import { appendUserToRequest, authenticateHandler, validate } from '@api/router';
 const profileClient = new ProfileAPI(prisma);
+import { updateProfileValidator } from '@api/profile/profile-validation';
 
 const router = createRouter<NextRequestWithUser & { file: Express.Multer.File }, NextApiResponse>();
 
@@ -18,15 +19,12 @@ export default router
     const end = Date.now();
     console.log(`${req.method} ${req.url} ${res.statusCode} ${end - start}ms`);
   })
+  .put(authenticateHandler, validate(updateProfileValidator), async (req, res) => {
+    await profileClient.updateProfile({ ...req.body, userId: req.user!.id! });
+    return res.status(202).end();
+  })
   .get(async (req, res) => {
     return res.status(200).json({ user: req.user });
-  })
-  .put(async (req, res) => {
-    if (!req.user) {
-      throw new Error('User is not logged in');
-    }
-    await profileClient.updateProfile({ ...req.body, userId: req.user.id });
-    return res.status(202).end();
   })
   .post(async (req, res) => {
     const { id, username } = req.body;

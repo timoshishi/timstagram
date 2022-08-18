@@ -64,6 +64,10 @@ function EmailAuth({
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState('');
 
+  const handleEmail = (val: string): void => {
+    setEmail(val.toLowerCase().trim());
+  };
+
   function handleError(error: ApiError): void {
     console.error(error);
     if (error.status === 500) {
@@ -204,7 +208,7 @@ function EmailAuth({
             defaultValue={email}
             // required
             icon={<IconMail size={21} stroke={'#666666'} />}
-            onChange={(e: React.ChangeEvent<HTMLInputElement>) => setEmail(e.target.value)}
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleEmail(e.target.value)}
           />
           <Input
             label='Password'
