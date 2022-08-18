@@ -2,13 +2,14 @@
 import type { NextApiResponse } from 'next';
 import { createRouter, expressWrapper } from 'next-connect';
 import cors from 'cors';
-import { uploadMiddleware } from '@api/handleImageUpload';
+import { uploadMiddleware } from '@src/api/handleImageUpload';
 import bodyParser from 'body-parser';
-import { ProfileAPI } from '@api/profile/ProfileAPI';
+import { ProfileController } from '@api/controllers/profile/ProfileController';
 import prisma from '@src/lib/prisma';
-import { NextRequestWithUser } from '@api/types';
-import { appendUserToRequest, authenticateHandler } from '@api/router';
-const profileClient = new ProfileAPI(prisma);
+import supabaseServer from '@src/lib/initSupabaseServer';
+import { NextRequestWithUser } from '@src/api/types';
+import { appendUserToRequest, authenticateHandler } from '@src/api/router';
+const profileClient = new ProfileController(prisma, supabaseServer);
 
 // Default Req and Res are IncomingMessage and ServerResponse
 // pass in NextApiRequest and NextApiResponse in order to have stronger typing
@@ -21,14 +22,14 @@ export default router
   .use(expressWrapper(cors())) // express middleware are supported if you wrap it with expressWrapper
   .use(async (req, res, next) => {
     const start = Date.now();
-    // await next in async middlewares
+    // await next in async middleware
     await next();
     const end = Date.now();
     console.log(`Request took ${end - start}ms`);
   })
   .post(
     expressWrapper(<any>uploadMiddleware), // this is an instance of multer middleware added to a single route - express middleware needs expressWrapper (<any> is)
-    authenticateHandler, // custom middleware to authenticate a single route, to authentical all routes use withApiAuth from @next/auth-helpers-nextjs
+    authenticateHandler, // custom middleware to authenticate a single route, to authenticate all routes use withApiAuth from @next/auth-helpers-nextjs
     async (req, res) => {
       if (!req.user) {
         throw new Error('User is not logged in');
@@ -50,7 +51,7 @@ export default router
   .put(
     // chain middleware and handler
     (req, res, next) => {
-      // don't await next in sync middlewares
+      // don't await next in sync middleware
       next();
     },
     async (req, res) => {
@@ -66,7 +67,7 @@ router
     });
   })
   .handler({
-    // error and nommatch handling
+    // error and noMatch handling
     onError: (err, req, res) => {
       console.error(err);
       res.status(500).json({ res: 'Something broke!', err: err });

@@ -2,7 +2,7 @@
 
 import { User } from '@supabase/supabase-js';
 import { NextApiRequest, NextApiResponse } from 'next';
-import { supabaseService } from '@src/lib/initServerSupabase';
+import supabaseService from '@src/lib/initSupabaseServer';
 
 /**
  * @description - deletes the user with an email using supabaseClient DANGEROUS

@@ -3,7 +3,7 @@ import { useUser } from '@common/hooks/useUser';
 import { NextPageWithLayout } from 'types/page.types';
 import { SWRConfig } from 'swr';
 import useSWRInfinite, { SWRInfiniteResponse } from 'swr/infinite';
-import getFeed from '@api/getFeed';
+import getFeed from '@src/api/getFeed';
 import { PostCard } from '@common/components/PostCard';
 import { fetcher } from 'src/lib/axios';
 import { PostResponse } from 'types/post.types';

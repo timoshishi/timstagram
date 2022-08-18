@@ -1,15 +1,15 @@
-import { NextRequestWithUser } from '../types';
-import { NextApiRequest, NextApiResponse } from 'next';
-import { Handler, NextFunction } from 'express';
+import { NextRequestWithRequiredUser, NextRequestWithUser } from '../types';
+import { NextApiResponse } from 'next';
+import { NextFunction } from 'express';
 import { getUser } from '@supabase/auth-helpers-nextjs';
-import { HandlerOptions } from 'next-connect';
-import { HandleRequestOptions } from 'msw';
+import { ValidationChain, validationResult } from 'express-validator';
 
 export const appendUserToRequest = async (req: NextRequestWithUser, res: NextApiResponse, next: NextFunction) => {
   const { user, accessToken, error } = await getUser({ req, res });
   req.user = user;
   await next();
 };
+export type NextUserMiddleware = (req: NextRequestWithUser, res: NextApiResponse, next: NextFunction) => void;
 
 export const authenticateHandler = async (req: NextRequestWithUser, res: NextApiResponse, next: NextFunction) => {
   if (!req.user) {
@@ -18,4 +18,33 @@ export const authenticateHandler = async (req: NextRequestWithUser, res: NextApi
     });
   }
   return next();
+};
+
+export type NextRequiredUserMiddleware = (
+  req: NextRequestWithRequiredUser,
+  res: NextApiResponse,
+  next: NextFunction
+) => void;
+
+export const checkUser: NextUserMiddleware = (req, res, next) => {
+  if (req.user === null) {
+    return res.status(401).json({
+      error: 'not authenticated',
+    });
+  }
+  return next();
+};
+
+export const validate = (validations: ValidationChain[]) => {
+  return async (req: NextRequestWithUser, res: NextApiResponse, next: NextFunction) => {
+    await Promise.all(validations.map((validation) => validation.run(req)));
+
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      const errorArray = errors.array();
+      console.error({ errorArray }, req.url, req.method);
+      return res.status(400).end();
+    }
+    next();
+  };
 };

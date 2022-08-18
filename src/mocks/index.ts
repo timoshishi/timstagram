@@ -3,7 +3,7 @@ export const supaUser = {
     id: '489418a5-c47f-4287-b4b6-d472d1e7c37e',
     aud: 'authenticated',
     role: 'authenticated',
-    email: 'timfrrst@gmail.com',
+    email: 'test@test.com',
     email_confirmed_at: null,
     phone: '',
     confirmed_at: null,
@@ -14,7 +14,8 @@ export const supaUser = {
     },
     user_metadata: {
       avatarUrl: '',
-      username: 'bobo',
+      username: 'test',
+      bio: '',
     },
     identities: [],
     created_at: null,

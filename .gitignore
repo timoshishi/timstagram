@@ -5,4 +5,5 @@ node_modules/
 .env.local
 .env.development
 
-coverage/lcov-report/
+coverage/lcov-report/**/*.html
+coverage/lcov-report/index.html

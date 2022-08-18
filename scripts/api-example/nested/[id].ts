@@ -2,8 +2,8 @@
 import type { NextApiResponse } from 'next';
 import { createRouter, expressWrapper } from 'next-connect';
 import cors from 'cors';
-import { NextRequestWithUser } from '@api/types';
-import { appendUserToRequest } from '@api/router';
+import { NextRequestWithUser } from '@src/api/types';
+import { appendUserToRequest } from '@src/api/router';
 
 const router = createRouter<NextRequestWithUser & { file: Express.Multer.File }, NextApiResponse>();
 

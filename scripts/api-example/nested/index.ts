@@ -2,8 +2,8 @@
 import type { NextApiResponse } from 'next';
 import { createRouter, expressWrapper } from 'next-connect';
 import cors from 'cors';
-import { NextRequestWithUser } from '@api/types';
-import { appendUserToRequest, authenticateHandler } from '@api/router';
+import { NextRequestWithUser } from '@src/api/types';
+import { appendUserToRequest, authenticateHandler } from '@src/api/router';
 
 // Default Req and Res are IncomingMessage and ServerResponse
 // pass in NextApiRequest and NextApiResponse in order to have stronger typing

@@ -1,13 +1,15 @@
 import type { NextApiResponse } from 'next';
 import { createRouter, expressWrapper } from 'next-connect';
 import cors from 'cors';
-import { ProfileAPI } from '@api/profile/ProfileAPI';
+import { ProfileController } from '@api/controllers/profile/ProfileController';
 import prisma from '@src/lib/prisma';
-import { NextRequestWithUser } from '@api/types';
-import { appendUserToRequest, authenticateHandler } from '@api/router';
-const profileClient = new ProfileAPI(prisma);
+import { NextRequestWithUser } from '@src/api/types';
+import { appendUserToRequest, authenticateHandler, validate } from '@src/api/router';
+import { updateProfileValidator } from '@api/controllers/profile/profile-validation';
+import supabaseService from '@src/lib/initSupabaseServer';
 
-const router = createRouter<NextRequestWithUser & { file: Express.Multer.File }, NextApiResponse>();
+const profileController = new ProfileController(prisma, supabaseService);
+const router = createRouter<NextRequestWithUser, NextApiResponse>();
 
 export default router
   .use(appendUserToRequest)
@@ -18,21 +20,14 @@ export default router
     const end = Date.now();
     console.log(`${req.method} ${req.url} ${res.statusCode} ${end - start}ms`);
   })
+  .put(authenticateHandler, validate(updateProfileValidator), async (req, res) => {
+    await profileController.updateProfile({ ...req.body, userId: req.user!.id! });
+    return res.status(202).end();
+  })
   .get(async (req, res) => {
     return res.status(200).json({ user: req.user });
   })
-  .put(async (req, res) => {
-    if (!req.user) {
-      throw new Error('User is not logged in');
-    }
-    await profileClient.updateProfile({ ...req.body, userId: req.user.id });
-    return res.status(202).end();
-  })
-  .post(async (req, res) => {
-    const { id, username } = req.body;
-    const user = await profileClient.addMetadata({ id, username });
-    return res.status(201).json({ user });
-  })
+  .post(authenticateHandler, profileController.addMetadata)
   .all((_, res) => {
     res.status(405).json({
       error: 'Method not allowed',
