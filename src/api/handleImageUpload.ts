@@ -2,15 +2,13 @@ import sharp from 'sharp';
 import { imageHash } from 'image-hash';
 import { BadRequestException } from '@storyofams/next-api-decorators';
 const { getPlaiceholder } = require('plaiceholder');
-
 import multer from 'multer';
 import { MAX_MEGABYTES, MEGABYTE } from '@features/ImageUploader/utils/image-uploader.constants';
 import { ImageData } from '@features/ImageUploader/types/image-uploader.types';
 import { randomUUID } from 'crypto';
 export const AVATAR_IMAGE_SIZE = 150;
-import { NextApiRequest, NextApiResponse } from 'next';
-import { ExpressionType } from '@aws-sdk/client-s3';
-type ImageProperties = {
+
+export type ImageProperties = {
   id: string;
   width: number;
   height: number;
@@ -78,11 +76,10 @@ export const getImageProperties = async ({
   const source = process.env.NEXT_PUBLIC_APP_NAME + '/' + userId + '/' + imageData.originalImageName;
   const metadata = await sharp(image.buffer).metadata();
   const { width, height, size } = metadata;
-
   const { width: imageWidth, height: imageHeight } = imageData.dimensions;
   const url = `https://${process.env.PHOTO_BUCKET}.s3.amazonaws.com/${id}.${ext}`;
   const placeholder = await createPlaceholder(image);
-
+  const aspect = width && height ? width / height : aspectRatio;
   return {
     id,
     url,
@@ -93,7 +90,7 @@ export const getImageProperties = async ({
     size: size || image.buffer.byteLength,
     width: width || imageWidth,
     height: height || imageHeight,
-    aspectRatio,
+    aspectRatio: aspect,
     userId,
     hash,
     placeholder,
@@ -106,13 +103,7 @@ export const resizeAvatarImage = async (image: Buffer, width = 75, height = 75):
   return sharp(image).resize(width, height).png().toBuffer();
 };
 
-export const getAltText = ({ caption, username }: { caption?: string; username: string }): string => {
-  if (caption) {
-    const hashtags = caption.match(/^#[a-zA-Z0-9]{3,}( {1,}|)$/g);
-
-    if (hashtags !== null) {
-      return hashtags.join(' ');
-    }
-  }
-  return `${username}'s avatar`;
+export const getAltText = ({ caption }: { caption: string }): string => {
+  const hashtags = caption.split(' ').filter((word) => word.startsWith('#'));
+  return hashtags.length ? hashtags.join(' ') : caption;
 };

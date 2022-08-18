@@ -23,30 +23,30 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">3.66% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>0/832</span>
+                <span class='fraction'>50/1363</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">3.82% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>0/223</span>
+                <span class='fraction'>12/314</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">3.7% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>0/159</span>
+                <span class='fraction'>15/405</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">3.51% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>0/749</span>
+                <span class='fraction'>42/1196</span>
             </div>
         
             
@@ -54,6 +54,12 @@
         <p class="quiet">
             Press <em>n</em> or <em>j</em> to go to the next uncovered block, <em>b</em>, <em>p</em> or <em>k</em> for the previous block.
         </p>
+        <template id="filterTemplate">
+            <div class="quiet">
+                Filter:
+                <input oninput="onInput()" type="search" id="fileSearch">
+            </div>
+        </template>
     </div>
     <div class='status-line low'></div>
     <div class="pad1">
@@ -73,33 +79,63 @@
 </tr>
 </thead>
 <tbody><tr>
-	<td class="file low" data-value="common/api"><a href="common/api/index.html">common/api</a></td>
-	<td data-value="0" class="pic low">
-	<div class="chart"><div class="cover-fill" style="width: 0%"></div><div class="cover-empty" style="width: 100%"></div></div>
+	<td class="file medium" data-value="api"><a href="api/index.html">api</a></td>
+	<td data-value="58.66" class="pic medium">
+	<div class="chart"><div class="cover-fill" style="width: 58%"></div><div class="cover-empty" style="width: 42%"></div></div>
 	</td>
-	<td data-value="0" class="pct low">0%</td>
-	<td data-value="6" class="abs low">0/6</td>
-	<td data-value="0" class="pct low">0%</td>
-	<td data-value="2" class="abs low">0/2</td>
-	<td data-value="0" class="pct low">0%</td>
-	<td data-value="1" class="abs low">0/1</td>
-	<td data-value="0" class="pct low">0%</td>
-	<td data-value="6" class="abs low">0/6</td>
+	<td data-value="58.66" class="pct medium">58.66%</td>
+	<td data-value="75" class="abs medium">44/75</td>
+	<td data-value="60" class="pct medium">60%</td>
+	<td data-value="20" class="abs medium">12/20</td>
+	<td data-value="52" class="pct medium">52%</td>
+	<td data-value="25" class="abs medium">13/25</td>
+	<td data-value="58.46" class="pct medium">58.46%</td>
+	<td data-value="65" class="abs medium">38/65</td>
 	</tr>
 
 <tr>
-	<td class="file low" data-value="common/components/Auth"><a href="common/components/Auth/index.html">common/components/Auth</a></td>
+	<td class="file low" data-value="api/profile"><a href="api/profile/index.html">api/profile</a></td>
 	<td data-value="0" class="pic low">
 	<div class="chart"><div class="cover-fill" style="width: 0%"></div><div class="cover-empty" style="width: 100%"></div></div>
 	</td>
 	<td data-value="0" class="pct low">0%</td>
-	<td data-value="11" class="abs low">0/11</td>
+	<td data-value="24" class="abs low">0/24</td>
 	<td data-value="100" class="pct high">100%</td>
 	<td data-value="0" class="abs high">0/0</td>
 	<td data-value="0" class="pct low">0%</td>
-	<td data-value="1" class="abs low">0/1</td>
+	<td data-value="7" class="abs low">0/7</td>
 	<td data-value="0" class="pct low">0%</td>
-	<td data-value="11" class="abs low">0/11</td>
+	<td data-value="23" class="abs low">0/23</td>
+	</tr>
+
+<tr>
+	<td class="file low" data-value="api/router"><a href="api/router/index.html">api/router</a></td>
+	<td data-value="0" class="pic low">
+	<div class="chart"><div class="cover-fill" style="width: 0%"></div><div class="cover-empty" style="width: 100%"></div></div>
+	</td>
+	<td data-value="0" class="pct low">0%</td>
+	<td data-value="23" class="abs low">0/23</td>
+	<td data-value="0" class="pct low">0%</td>
+	<td data-value="2" class="abs low">0/2</td>
+	<td data-value="0" class="pct low">0%</td>
+	<td data-value="8" class="abs low">0/8</td>
+	<td data-value="0" class="pct low">0%</td>
+	<td data-value="19" class="abs low">0/19</td>
+	</tr>
+
+<tr>
+	<td class="file low" data-value="common/components"><a href="common/components/index.html">common/components</a></td>
+	<td data-value="0" class="pic low">
+	<div class="chart"><div class="cover-fill" style="width: 0%"></div><div class="cover-empty" style="width: 100%"></div></div>
+	</td>
+	<td data-value="0" class="pct low">0%</td>
+	<td data-value="10" class="abs low">0/10</td>
+	<td data-value="0" class="pct low">0%</td>
+	<td data-value="4" class="abs low">0/4</td>
+	<td data-value="0" class="pct low">0%</td>
+	<td data-value="5" class="abs low">0/5</td>
+	<td data-value="0" class="pct low">0%</td>
+	<td data-value="8" class="abs low">0/8</td>
 	</tr>
 
 <tr>
@@ -110,9 +146,9 @@
 	<td data-value="0" class="pct low">0%</td>
 	<td data-value="16" class="abs low">0/16</td>
 	<td data-value="0" class="pct low">0%</td>
-	<td data-value="2" class="abs low">0/2</td>
+	<td data-value="1" class="abs low">0/1</td>
 	<td data-value="0" class="pct low">0%</td>
-	<td data-value="5" class="abs low">0/5</td>
+	<td data-value="7" class="abs low">0/7</td>
 	<td data-value="0" class="pct low">0%</td>
 	<td data-value="14" class="abs low">0/14</td>
 	</tr>
@@ -127,114 +163,9 @@
 	<td data-value="0" class="pct low">0%</td>
 	<td data-value="2" class="abs low">0/2</td>
 	<td data-value="0" class="pct low">0%</td>
-	<td data-value="1" class="abs low">0/1</td>
+	<td data-value="3" class="abs low">0/3</td>
 	<td data-value="0" class="pct low">0%</td>
 	<td data-value="4" class="abs low">0/4</td>
-	</tr>
-
-<tr>
-	<td class="file low" data-value="common/components/ImageUploader"><a href="common/components/ImageUploader/index.html">common/components/ImageUploader</a></td>
-	<td data-value="0" class="pic low">
-	<div class="chart"><div class="cover-fill" style="width: 0%"></div><div class="cover-empty" style="width: 100%"></div></div>
-	</td>
-	<td data-value="0" class="pct low">0%</td>
-	<td data-value="149" class="abs low">0/149</td>
-	<td data-value="0" class="pct low">0%</td>
-	<td data-value="40" class="abs low">0/40</td>
-	<td data-value="0" class="pct low">0%</td>
-	<td data-value="30" class="abs low">0/30</td>
-	<td data-value="0" class="pct low">0%</td>
-	<td data-value="134" class="abs low">0/134</td>
-	</tr>
-
-<tr>
-	<td class="file low" data-value="common/components/ImageUploader/Cropper"><a href="common/components/ImageUploader/Cropper/index.html">common/components/ImageUploader/Cropper</a></td>
-	<td data-value="0" class="pic low">
-	<div class="chart"><div class="cover-fill" style="width: 0%"></div><div class="cover-empty" style="width: 100%"></div></div>
-	</td>
-	<td data-value="0" class="pct low">0%</td>
-	<td data-value="100" class="abs low">0/100</td>
-	<td data-value="0" class="pct low">0%</td>
-	<td data-value="27" class="abs low">0/27</td>
-	<td data-value="0" class="pct low">0%</td>
-	<td data-value="17" class="abs low">0/17</td>
-	<td data-value="0" class="pct low">0%</td>
-	<td data-value="94" class="abs low">0/94</td>
-	</tr>
-
-<tr>
-	<td class="file low" data-value="common/components/ImageUploader/Cropper/Controls"><a href="common/components/ImageUploader/Cropper/Controls/index.html">common/components/ImageUploader/Cropper/Controls</a></td>
-	<td data-value="0" class="pic low">
-	<div class="chart"><div class="cover-fill" style="width: 0%"></div><div class="cover-empty" style="width: 100%"></div></div>
-	</td>
-	<td data-value="0" class="pct low">0%</td>
-	<td data-value="31" class="abs low">0/31</td>
-	<td data-value="0" class="pct low">0%</td>
-	<td data-value="4" class="abs low">0/4</td>
-	<td data-value="0" class="pct low">0%</td>
-	<td data-value="6" class="abs low">0/6</td>
-	<td data-value="0" class="pct low">0%</td>
-	<td data-value="27" class="abs low">0/27</td>
-	</tr>
-
-<tr>
-	<td class="file low" data-value="common/components/ImageUploader/Cropper/PostForm"><a href="common/components/ImageUploader/Cropper/PostForm/index.html">common/components/ImageUploader/Cropper/PostForm</a></td>
-	<td data-value="0" class="pic low">
-	<div class="chart"><div class="cover-fill" style="width: 0%"></div><div class="cover-empty" style="width: 100%"></div></div>
-	</td>
-	<td data-value="0" class="pct low">0%</td>
-	<td data-value="7" class="abs low">0/7</td>
-	<td data-value="100" class="pct high">100%</td>
-	<td data-value="0" class="abs high">0/0</td>
-	<td data-value="0" class="pct low">0%</td>
-	<td data-value="1" class="abs low">0/1</td>
-	<td data-value="0" class="pct low">0%</td>
-	<td data-value="5" class="abs low">0/5</td>
-	</tr>
-
-<tr>
-	<td class="file low" data-value="common/components/ImageUploader/Dropzone"><a href="common/components/ImageUploader/Dropzone/index.html">common/components/ImageUploader/Dropzone</a></td>
-	<td data-value="0" class="pic low">
-	<div class="chart"><div class="cover-fill" style="width: 0%"></div><div class="cover-empty" style="width: 100%"></div></div>
-	</td>
-	<td data-value="0" class="pct low">0%</td>
-	<td data-value="14" class="abs low">0/14</td>
-	<td data-value="0" class="pct low">0%</td>
-	<td data-value="8" class="abs low">0/8</td>
-	<td data-value="0" class="pct low">0%</td>
-	<td data-value="1" class="abs low">0/1</td>
-	<td data-value="0" class="pct low">0%</td>
-	<td data-value="12" class="abs low">0/12</td>
-	</tr>
-
-<tr>
-	<td class="file low" data-value="common/components/ImageUploader/ImageUploaderContext"><a href="common/components/ImageUploader/ImageUploaderContext/index.html">common/components/ImageUploader/ImageUploaderContext</a></td>
-	<td data-value="0" class="pic low">
-	<div class="chart"><div class="cover-fill" style="width: 0%"></div><div class="cover-empty" style="width: 100%"></div></div>
-	</td>
-	<td data-value="0" class="pct low">0%</td>
-	<td data-value="81" class="abs low">0/81</td>
-	<td data-value="0" class="pct low">0%</td>
-	<td data-value="17" class="abs low">0/17</td>
-	<td data-value="0" class="pct low">0%</td>
-	<td data-value="13" class="abs low">0/13</td>
-	<td data-value="0" class="pct low">0%</td>
-	<td data-value="74" class="abs low">0/74</td>
-	</tr>
-
-<tr>
-	<td class="file low" data-value="common/components/Modal"><a href="common/components/Modal/index.html">common/components/Modal</a></td>
-	<td data-value="0" class="pic low">
-	<div class="chart"><div class="cover-fill" style="width: 0%"></div><div class="cover-empty" style="width: 100%"></div></div>
-	</td>
-	<td data-value="0" class="pct low">0%</td>
-	<td data-value="28" class="abs low">0/28</td>
-	<td data-value="0" class="pct low">0%</td>
-	<td data-value="5" class="abs low">0/5</td>
-	<td data-value="0" class="pct low">0%</td>
-	<td data-value="7" class="abs low">0/7</td>
-	<td data-value="0" class="pct low">0%</td>
-	<td data-value="26" class="abs low">0/26</td>
 	</tr>
 
 <tr>
@@ -243,13 +174,13 @@
 	<div class="chart"><div class="cover-fill" style="width: 0%"></div><div class="cover-empty" style="width: 100%"></div></div>
 	</td>
 	<td data-value="0" class="pct low">0%</td>
-	<td data-value="19" class="abs low">0/19</td>
+	<td data-value="21" class="abs low">0/21</td>
 	<td data-value="0" class="pct low">0%</td>
 	<td data-value="10" class="abs low">0/10</td>
 	<td data-value="0" class="pct low">0%</td>
-	<td data-value="4" class="abs low">0/4</td>
+	<td data-value="8" class="abs low">0/8</td>
 	<td data-value="0" class="pct low">0%</td>
-	<td data-value="16" class="abs low">0/16</td>
+	<td data-value="17" class="abs low">0/17</td>
 	</tr>
 
 <tr>
@@ -260,9 +191,9 @@
 	<td data-value="0" class="pct low">0%</td>
 	<td data-value="46" class="abs low">0/46</td>
 	<td data-value="0" class="pct low">0%</td>
-	<td data-value="18" class="abs low">0/18</td>
+	<td data-value="17" class="abs low">0/17</td>
 	<td data-value="0" class="pct low">0%</td>
-	<td data-value="14" class="abs low">0/14</td>
+	<td data-value="20" class="abs low">0/20</td>
 	<td data-value="0" class="pct low">0%</td>
 	<td data-value="40" class="abs low">0/40</td>
 	</tr>
@@ -273,13 +204,28 @@
 	<div class="chart"><div class="cover-fill" style="width: 0%"></div><div class="cover-empty" style="width: 100%"></div></div>
 	</td>
 	<td data-value="0" class="pct low">0%</td>
-	<td data-value="19" class="abs low">0/19</td>
-	<td data-value="0" class="pct low">0%</td>
-	<td data-value="8" class="abs low">0/8</td>
+	<td data-value="14" class="abs low">0/14</td>
 	<td data-value="0" class="pct low">0%</td>
 	<td data-value="4" class="abs low">0/4</td>
 	<td data-value="0" class="pct low">0%</td>
-	<td data-value="15" class="abs low">0/15</td>
+	<td data-value="5" class="abs low">0/5</td>
+	<td data-value="0" class="pct low">0%</td>
+	<td data-value="11" class="abs low">0/11</td>
+	</tr>
+
+<tr>
+	<td class="file low" data-value="common/constants"><a href="common/constants/index.html">common/constants</a></td>
+	<td data-value="0" class="pic low">
+	<div class="chart"><div class="cover-fill" style="width: 0%"></div><div class="cover-empty" style="width: 100%"></div></div>
+	</td>
+	<td data-value="0" class="pct low">0%</td>
+	<td data-value="2" class="abs low">0/2</td>
+	<td data-value="100" class="pct high">100%</td>
+	<td data-value="0" class="abs high">0/0</td>
+	<td data-value="0" class="pct low">0%</td>
+	<td data-value="1" class="abs low">0/1</td>
+	<td data-value="0" class="pct low">0%</td>
+	<td data-value="2" class="abs low">0/2</td>
 	</tr>
 
 <tr>
@@ -288,13 +234,13 @@
 	<div class="chart"><div class="cover-fill" style="width: 0%"></div><div class="cover-empty" style="width: 100%"></div></div>
 	</td>
 	<td data-value="0" class="pct low">0%</td>
-	<td data-value="7" class="abs low">0/7</td>
-	<td data-value="0" class="pct low">0%</td>
-	<td data-value="12" class="abs low">0/12</td>
+	<td data-value="3" class="abs low">0/3</td>
+	<td data-value="100" class="pct high">100%</td>
+	<td data-value="0" class="abs high">0/0</td>
 	<td data-value="0" class="pct low">0%</td>
 	<td data-value="1" class="abs low">0/1</td>
 	<td data-value="0" class="pct low">0%</td>
-	<td data-value="7" class="abs low">0/7</td>
+	<td data-value="2" class="abs low">0/2</td>
 	</tr>
 
 <tr>
@@ -307,7 +253,7 @@
 	<td data-value="100" class="pct high">100%</td>
 	<td data-value="0" class="abs high">0/0</td>
 	<td data-value="0" class="pct low">0%</td>
-	<td data-value="2" class="abs low">0/2</td>
+	<td data-value="6" class="abs low">0/6</td>
 	<td data-value="0" class="pct low">0%</td>
 	<td data-value="7" class="abs low">0/7</td>
 	</tr>
@@ -322,7 +268,7 @@
 	<td data-value="100" class="pct high">100%</td>
 	<td data-value="0" class="abs high">0/0</td>
 	<td data-value="0" class="pct low">0%</td>
-	<td data-value="2" class="abs low">0/2</td>
+	<td data-value="4" class="abs low">0/4</td>
 	<td data-value="0" class="pct low">0%</td>
 	<td data-value="7" class="abs low">0/7</td>
 	</tr>
@@ -335,11 +281,11 @@
 	<td data-value="0" class="pct low">0%</td>
 	<td data-value="56" class="abs low">0/56</td>
 	<td data-value="0" class="pct low">0%</td>
-	<td data-value="16" class="abs low">0/16</td>
-	<td data-value="0" class="pct low">0%</td>
 	<td data-value="12" class="abs low">0/12</td>
 	<td data-value="0" class="pct low">0%</td>
-	<td data-value="48" class="abs low">0/48</td>
+	<td data-value="19" class="abs low">0/19</td>
+	<td data-value="0" class="pct low">0%</td>
+	<td data-value="49" class="abs low">0/49</td>
 	</tr>
 
 <tr>
@@ -352,24 +298,9 @@
 	<td data-value="0" class="pct low">0%</td>
 	<td data-value="4" class="abs low">0/4</td>
 	<td data-value="0" class="pct low">0%</td>
-	<td data-value="5" class="abs low">0/5</td>
+	<td data-value="6" class="abs low">0/6</td>
 	<td data-value="0" class="pct low">0%</td>
 	<td data-value="17" class="abs low">0/17</td>
-	</tr>
-
-<tr>
-	<td class="file low" data-value="common/layout/feed-layout"><a href="common/layout/feed-layout/index.html">common/layout/feed-layout</a></td>
-	<td data-value="0" class="pic low">
-	<div class="chart"><div class="cover-fill" style="width: 0%"></div><div class="cover-empty" style="width: 100%"></div></div>
-	</td>
-	<td data-value="0" class="pct low">0%</td>
-	<td data-value="8" class="abs low">0/8</td>
-	<td data-value="100" class="pct high">100%</td>
-	<td data-value="0" class="abs high">0/0</td>
-	<td data-value="0" class="pct low">0%</td>
-	<td data-value="2" class="abs low">0/2</td>
-	<td data-value="0" class="pct low">0%</td>
-	<td data-value="6" class="abs low">0/6</td>
 	</tr>
 
 <tr>
@@ -378,11 +309,11 @@
 	<div class="chart"><div class="cover-fill" style="width: 0%"></div><div class="cover-empty" style="width: 100%"></div></div>
 	</td>
 	<td data-value="0" class="pct low">0%</td>
-	<td data-value="4" class="abs low">0/4</td>
+	<td data-value="5" class="abs low">0/5</td>
 	<td data-value="100" class="pct high">100%</td>
 	<td data-value="0" class="abs high">0/0</td>
-	<td data-value="100" class="pct high">100%</td>
-	<td data-value="0" class="abs high">0/0</td>
+	<td data-value="0" class="pct low">0%</td>
+	<td data-value="1" class="abs low">0/1</td>
 	<td data-value="0" class="pct low">0%</td>
 	<td data-value="4" class="abs low">0/4</td>
 	</tr>
@@ -393,13 +324,313 @@
 	<div class="chart"><div class="cover-fill" style="width: 0%"></div><div class="cover-empty" style="width: 100%"></div></div>
 	</td>
 	<td data-value="0" class="pct low">0%</td>
-	<td data-value="17" class="abs low">0/17</td>
+	<td data-value="18" class="abs low">0/18</td>
 	<td data-value="100" class="pct high">100%</td>
 	<td data-value="0" class="abs high">0/0</td>
 	<td data-value="0" class="pct low">0%</td>
-	<td data-value="4" class="abs low">0/4</td>
+	<td data-value="10" class="abs low">0/10</td>
 	<td data-value="0" class="pct low">0%</td>
 	<td data-value="13" class="abs low">0/13</td>
+	</tr>
+
+<tr>
+	<td class="file low" data-value="features/ImageUploader"><a href="features/ImageUploader/index.html">features/ImageUploader</a></td>
+	<td data-value="0" class="pic low">
+	<div class="chart"><div class="cover-fill" style="width: 0%"></div><div class="cover-empty" style="width: 100%"></div></div>
+	</td>
+	<td data-value="0" class="pct low">0%</td>
+	<td data-value="10" class="abs low">0/10</td>
+	<td data-value="100" class="pct high">100%</td>
+	<td data-value="0" class="abs high">0/0</td>
+	<td data-value="0" class="pct low">0%</td>
+	<td data-value="5" class="abs low">0/5</td>
+	<td data-value="0" class="pct low">0%</td>
+	<td data-value="5" class="abs low">0/5</td>
+	</tr>
+
+<tr>
+	<td class="file low" data-value="features/ImageUploader/api"><a href="features/ImageUploader/api/index.html">features/ImageUploader/api</a></td>
+	<td data-value="0" class="pic low">
+	<div class="chart"><div class="cover-fill" style="width: 0%"></div><div class="cover-empty" style="width: 100%"></div></div>
+	</td>
+	<td data-value="0" class="pct low">0%</td>
+	<td data-value="9" class="abs low">0/9</td>
+	<td data-value="100" class="pct high">100%</td>
+	<td data-value="0" class="abs high">0/0</td>
+	<td data-value="0" class="pct low">0%</td>
+	<td data-value="2" class="abs low">0/2</td>
+	<td data-value="0" class="pct low">0%</td>
+	<td data-value="8" class="abs low">0/8</td>
+	</tr>
+
+<tr>
+	<td class="file low" data-value="features/ImageUploader/components"><a href="features/ImageUploader/components/index.html">features/ImageUploader/components</a></td>
+	<td data-value="0" class="pic low">
+	<div class="chart"><div class="cover-fill" style="width: 0%"></div><div class="cover-empty" style="width: 100%"></div></div>
+	</td>
+	<td data-value="0" class="pct low">0%</td>
+	<td data-value="10" class="abs low">0/10</td>
+	<td data-value="0" class="pct low">0%</td>
+	<td data-value="3" class="abs low">0/3</td>
+	<td data-value="0" class="pct low">0%</td>
+	<td data-value="2" class="abs low">0/2</td>
+	<td data-value="0" class="pct low">0%</td>
+	<td data-value="9" class="abs low">0/9</td>
+	</tr>
+
+<tr>
+	<td class="file low" data-value="features/ImageUploader/components/Cropper"><a href="features/ImageUploader/components/Cropper/index.html">features/ImageUploader/components/Cropper</a></td>
+	<td data-value="0" class="pic low">
+	<div class="chart"><div class="cover-fill" style="width: 0%"></div><div class="cover-empty" style="width: 100%"></div></div>
+	</td>
+	<td data-value="0" class="pct low">0%</td>
+	<td data-value="42" class="abs low">0/42</td>
+	<td data-value="0" class="pct low">0%</td>
+	<td data-value="7" class="abs low">0/7</td>
+	<td data-value="0" class="pct low">0%</td>
+	<td data-value="6" class="abs low">0/6</td>
+	<td data-value="0" class="pct low">0%</td>
+	<td data-value="40" class="abs low">0/40</td>
+	</tr>
+
+<tr>
+	<td class="file low" data-value="features/ImageUploader/components/Cropper/Controls"><a href="features/ImageUploader/components/Cropper/Controls/index.html">features/ImageUploader/components/Cropper/Controls</a></td>
+	<td data-value="0" class="pic low">
+	<div class="chart"><div class="cover-fill" style="width: 0%"></div><div class="cover-empty" style="width: 100%"></div></div>
+	</td>
+	<td data-value="0" class="pct low">0%</td>
+	<td data-value="31" class="abs low">0/31</td>
+	<td data-value="0" class="pct low">0%</td>
+	<td data-value="5" class="abs low">0/5</td>
+	<td data-value="0" class="pct low">0%</td>
+	<td data-value="10" class="abs low">0/10</td>
+	<td data-value="0" class="pct low">0%</td>
+	<td data-value="27" class="abs low">0/27</td>
+	</tr>
+
+<tr>
+	<td class="file low" data-value="features/ImageUploader/components/Cropper/PostForm"><a href="features/ImageUploader/components/Cropper/PostForm/index.html">features/ImageUploader/components/Cropper/PostForm</a></td>
+	<td data-value="0" class="pic low">
+	<div class="chart"><div class="cover-fill" style="width: 0%"></div><div class="cover-empty" style="width: 100%"></div></div>
+	</td>
+	<td data-value="0" class="pct low">0%</td>
+	<td data-value="15" class="abs low">0/15</td>
+	<td data-value="100" class="pct high">100%</td>
+	<td data-value="0" class="abs high">0/0</td>
+	<td data-value="0" class="pct low">0%</td>
+	<td data-value="5" class="abs low">0/5</td>
+	<td data-value="0" class="pct low">0%</td>
+	<td data-value="13" class="abs low">0/13</td>
+	</tr>
+
+<tr>
+	<td class="file low" data-value="features/ImageUploader/components/Dropzone"><a href="features/ImageUploader/components/Dropzone/index.html">features/ImageUploader/components/Dropzone</a></td>
+	<td data-value="0" class="pic low">
+	<div class="chart"><div class="cover-fill" style="width: 0%"></div><div class="cover-empty" style="width: 100%"></div></div>
+	</td>
+	<td data-value="0" class="pct low">0%</td>
+	<td data-value="14" class="abs low">0/14</td>
+	<td data-value="0" class="pct low">0%</td>
+	<td data-value="8" class="abs low">0/8</td>
+	<td data-value="0" class="pct low">0%</td>
+	<td data-value="3" class="abs low">0/3</td>
+	<td data-value="0" class="pct low">0%</td>
+	<td data-value="12" class="abs low">0/12</td>
+	</tr>
+
+<tr>
+	<td class="file low" data-value="features/ImageUploader/hooks"><a href="features/ImageUploader/hooks/index.html">features/ImageUploader/hooks</a></td>
+	<td data-value="0" class="pic low">
+	<div class="chart"><div class="cover-fill" style="width: 0%"></div><div class="cover-empty" style="width: 100%"></div></div>
+	</td>
+	<td data-value="0" class="pct low">0%</td>
+	<td data-value="8" class="abs low">0/8</td>
+	<td data-value="0" class="pct low">0%</td>
+	<td data-value="1" class="abs low">0/1</td>
+	<td data-value="0" class="pct low">0%</td>
+	<td data-value="2" class="abs low">0/2</td>
+	<td data-value="0" class="pct low">0%</td>
+	<td data-value="7" class="abs low">0/7</td>
+	</tr>
+
+<tr>
+	<td class="file low" data-value="features/ImageUploader/stores"><a href="features/ImageUploader/stores/index.html">features/ImageUploader/stores</a></td>
+	<td data-value="0" class="pic low">
+	<div class="chart"><div class="cover-fill" style="width: 0%"></div><div class="cover-empty" style="width: 100%"></div></div>
+	</td>
+	<td data-value="0" class="pct low">0%</td>
+	<td data-value="64" class="abs low">0/64</td>
+	<td data-value="0" class="pct low">0%</td>
+	<td data-value="7" class="abs low">0/7</td>
+	<td data-value="0" class="pct low">0%</td>
+	<td data-value="9" class="abs low">0/9</td>
+	<td data-value="0" class="pct low">0%</td>
+	<td data-value="62" class="abs low">0/62</td>
+	</tr>
+
+<tr>
+	<td class="file low" data-value="features/ImageUploader/utils"><a href="features/ImageUploader/utils/index.html">features/ImageUploader/utils</a></td>
+	<td data-value="5.26" class="pic low">
+	<div class="chart"><div class="cover-fill" style="width: 5%"></div><div class="cover-empty" style="width: 95%"></div></div>
+	</td>
+	<td data-value="5.26" class="pct low">5.26%</td>
+	<td data-value="114" class="abs low">6/114</td>
+	<td data-value="0" class="pct low">0%</td>
+	<td data-value="31" class="abs low">0/31</td>
+	<td data-value="5.71" class="pct low">5.71%</td>
+	<td data-value="35" class="abs low">2/35</td>
+	<td data-value="3.92" class="pct low">3.92%</td>
+	<td data-value="102" class="abs low">4/102</td>
+	</tr>
+
+<tr>
+	<td class="file low" data-value="features/Modal"><a href="features/Modal/index.html">features/Modal</a></td>
+	<td data-value="0" class="pic low">
+	<div class="chart"><div class="cover-fill" style="width: 0%"></div><div class="cover-empty" style="width: 100%"></div></div>
+	</td>
+	<td data-value="0" class="pct low">0%</td>
+	<td data-value="10" class="abs low">0/10</td>
+	<td data-value="100" class="pct high">100%</td>
+	<td data-value="0" class="abs high">0/0</td>
+	<td data-value="0" class="pct low">0%</td>
+	<td data-value="7" class="abs low">0/7</td>
+	<td data-value="0" class="pct low">0%</td>
+	<td data-value="3" class="abs low">0/3</td>
+	</tr>
+
+<tr>
+	<td class="file low" data-value="features/Modal/api"><a href="features/Modal/api/index.html">features/Modal/api</a></td>
+	<td data-value="0" class="pic low">
+	<div class="chart"><div class="cover-fill" style="width: 0%"></div><div class="cover-empty" style="width: 100%"></div></div>
+	</td>
+	<td data-value="0" class="pct low">0%</td>
+	<td data-value="38" class="abs low">0/38</td>
+	<td data-value="0" class="pct low">0%</td>
+	<td data-value="4" class="abs low">0/4</td>
+	<td data-value="0" class="pct low">0%</td>
+	<td data-value="11" class="abs low">0/11</td>
+	<td data-value="0" class="pct low">0%</td>
+	<td data-value="35" class="abs low">0/35</td>
+	</tr>
+
+<tr>
+	<td class="file low" data-value="features/Modal/components"><a href="features/Modal/components/index.html">features/Modal/components</a></td>
+	<td data-value="0" class="pic low">
+	<div class="chart"><div class="cover-fill" style="width: 0%"></div><div class="cover-empty" style="width: 100%"></div></div>
+	</td>
+	<td data-value="0" class="pct low">0%</td>
+	<td data-value="16" class="abs low">0/16</td>
+	<td data-value="0" class="pct low">0%</td>
+	<td data-value="2" class="abs low">0/2</td>
+	<td data-value="0" class="pct low">0%</td>
+	<td data-value="5" class="abs low">0/5</td>
+	<td data-value="0" class="pct low">0%</td>
+	<td data-value="12" class="abs low">0/12</td>
+	</tr>
+
+<tr>
+	<td class="file low" data-value="features/Modal/components/AuthModal"><a href="features/Modal/components/AuthModal/index.html">features/Modal/components/AuthModal</a></td>
+	<td data-value="0" class="pic low">
+	<div class="chart"><div class="cover-fill" style="width: 0%"></div><div class="cover-empty" style="width: 100%"></div></div>
+	</td>
+	<td data-value="0" class="pct low">0%</td>
+	<td data-value="86" class="abs low">0/86</td>
+	<td data-value="0" class="pct low">0%</td>
+	<td data-value="23" class="abs low">0/23</td>
+	<td data-value="0" class="pct low">0%</td>
+	<td data-value="32" class="abs low">0/32</td>
+	<td data-value="0" class="pct low">0%</td>
+	<td data-value="69" class="abs low">0/69</td>
+	</tr>
+
+<tr>
+	<td class="file low" data-value="features/Modal/components/AuthModal/views"><a href="features/Modal/components/AuthModal/views/index.html">features/Modal/components/AuthModal/views</a></td>
+	<td data-value="0" class="pic low">
+	<div class="chart"><div class="cover-fill" style="width: 0%"></div><div class="cover-empty" style="width: 100%"></div></div>
+	</td>
+	<td data-value="0" class="pct low">0%</td>
+	<td data-value="182" class="abs low">0/182</td>
+	<td data-value="0" class="pct low">0%</td>
+	<td data-value="69" class="abs low">0/69</td>
+	<td data-value="0" class="pct low">0%</td>
+	<td data-value="41" class="abs low">0/41</td>
+	<td data-value="0" class="pct low">0%</td>
+	<td data-value="169" class="abs low">0/169</td>
+	</tr>
+
+<tr>
+	<td class="file low" data-value="features/Modal/components/CreatePostModal"><a href="features/Modal/components/CreatePostModal/index.html">features/Modal/components/CreatePostModal</a></td>
+	<td data-value="0" class="pic low">
+	<div class="chart"><div class="cover-fill" style="width: 0%"></div><div class="cover-empty" style="width: 100%"></div></div>
+	</td>
+	<td data-value="0" class="pct low">0%</td>
+	<td data-value="6" class="abs low">0/6</td>
+	<td data-value="100" class="pct high">100%</td>
+	<td data-value="0" class="abs high">0/0</td>
+	<td data-value="0" class="pct low">0%</td>
+	<td data-value="2" class="abs low">0/2</td>
+	<td data-value="0" class="pct low">0%</td>
+	<td data-value="5" class="abs low">0/5</td>
+	</tr>
+
+<tr>
+	<td class="file low" data-value="features/Modal/components/ProfileModal"><a href="features/Modal/components/ProfileModal/index.html">features/Modal/components/ProfileModal</a></td>
+	<td data-value="0" class="pic low">
+	<div class="chart"><div class="cover-fill" style="width: 0%"></div><div class="cover-empty" style="width: 100%"></div></div>
+	</td>
+	<td data-value="0" class="pct low">0%</td>
+	<td data-value="39" class="abs low">0/39</td>
+	<td data-value="0" class="pct low">0%</td>
+	<td data-value="23" class="abs low">0/23</td>
+	<td data-value="0" class="pct low">0%</td>
+	<td data-value="9" class="abs low">0/9</td>
+	<td data-value="0" class="pct low">0%</td>
+	<td data-value="36" class="abs low">0/36</td>
+	</tr>
+
+<tr>
+	<td class="file low" data-value="features/Modal/constants"><a href="features/Modal/constants/index.html">features/Modal/constants</a></td>
+	<td data-value="0" class="pic low">
+	<div class="chart"><div class="cover-fill" style="width: 0%"></div><div class="cover-empty" style="width: 100%"></div></div>
+	</td>
+	<td data-value="0" class="pct low">0%</td>
+	<td data-value="6" class="abs low">0/6</td>
+	<td data-value="100" class="pct high">100%</td>
+	<td data-value="0" class="abs high">0/0</td>
+	<td data-value="0" class="pct low">0%</td>
+	<td data-value="2" class="abs low">0/2</td>
+	<td data-value="0" class="pct low">0%</td>
+	<td data-value="4" class="abs low">0/4</td>
+	</tr>
+
+<tr>
+	<td class="file low" data-value="features/Modal/hooks"><a href="features/Modal/hooks/index.html">features/Modal/hooks</a></td>
+	<td data-value="0" class="pic low">
+	<div class="chart"><div class="cover-fill" style="width: 0%"></div><div class="cover-empty" style="width: 100%"></div></div>
+	</td>
+	<td data-value="0" class="pct low">0%</td>
+	<td data-value="40" class="abs low">0/40</td>
+	<td data-value="0" class="pct low">0%</td>
+	<td data-value="3" class="abs low">0/3</td>
+	<td data-value="0" class="pct low">0%</td>
+	<td data-value="14" class="abs low">0/14</td>
+	<td data-value="0" class="pct low">0%</td>
+	<td data-value="32" class="abs low">0/32</td>
+	</tr>
+
+<tr>
+	<td class="file low" data-value="features/Modal/stores"><a href="features/Modal/stores/index.html">features/Modal/stores</a></td>
+	<td data-value="0" class="pic low">
+	<div class="chart"><div class="cover-fill" style="width: 0%"></div><div class="cover-empty" style="width: 100%"></div></div>
+	</td>
+	<td data-value="0" class="pct low">0%</td>
+	<td data-value="23" class="abs low">0/23</td>
+	<td data-value="0" class="pct low">0%</td>
+	<td data-value="1" class="abs low">0/1</td>
+	<td data-value="0" class="pct low">0%</td>
+	<td data-value="10" class="abs low">0/10</td>
+	<td data-value="0" class="pct low">0%</td>
+	<td data-value="21" class="abs low">0/21</td>
 	</tr>
 
 <tr>
@@ -408,13 +639,43 @@
 	<div class="chart"><div class="cover-fill" style="width: 0%"></div><div class="cover-empty" style="width: 100%"></div></div>
 	</td>
 	<td data-value="0" class="pct low">0%</td>
-	<td data-value="17" class="abs low">0/17</td>
+	<td data-value="29" class="abs low">0/29</td>
 	<td data-value="0" class="pct low">0%</td>
-	<td data-value="4" class="abs low">0/4</td>
+	<td data-value="3" class="abs low">0/3</td>
+	<td data-value="0" class="pct low">0%</td>
+	<td data-value="9" class="abs low">0/9</td>
+	<td data-value="0" class="pct low">0%</td>
+	<td data-value="23" class="abs low">0/23</td>
+	</tr>
+
+<tr>
+	<td class="file low" data-value="mocks"><a href="mocks/index.html">mocks</a></td>
+	<td data-value="0" class="pic low">
+	<div class="chart"><div class="cover-fill" style="width: 0%"></div><div class="cover-empty" style="width: 100%"></div></div>
+	</td>
+	<td data-value="0" class="pct low">0%</td>
+	<td data-value="6" class="abs low">0/6</td>
+	<td data-value="100" class="pct high">100%</td>
+	<td data-value="0" class="abs high">0/0</td>
 	<td data-value="0" class="pct low">0%</td>
 	<td data-value="2" class="abs low">0/2</td>
 	<td data-value="0" class="pct low">0%</td>
-	<td data-value="15" class="abs low">0/15</td>
+	<td data-value="4" class="abs low">0/4</td>
+	</tr>
+
+<tr>
+	<td class="file low" data-value="mocks/api"><a href="mocks/api/index.html">mocks/api</a></td>
+	<td data-value="0" class="pic low">
+	<div class="chart"><div class="cover-fill" style="width: 0%"></div><div class="cover-empty" style="width: 100%"></div></div>
+	</td>
+	<td data-value="0" class="pct low">0%</td>
+	<td data-value="4" class="abs low">0/4</td>
+	<td data-value="100" class="pct high">100%</td>
+	<td data-value="0" class="abs high">0/0</td>
+	<td data-value="0" class="pct low">0%</td>
+	<td data-value="2" class="abs low">0/2</td>
+	<td data-value="0" class="pct low">0%</td>
+	<td data-value="3" class="abs low">0/3</td>
 	</tr>
 
 <tr>
@@ -423,11 +684,11 @@
 	<div class="chart"><div class="cover-fill" style="width: 0%"></div><div class="cover-empty" style="width: 100%"></div></div>
 	</td>
 	<td data-value="0" class="pct low">0%</td>
-	<td data-value="50" class="abs low">0/50</td>
+	<td data-value="51" class="abs low">0/51</td>
 	<td data-value="0" class="pct low">0%</td>
-	<td data-value="12" class="abs low">0/12</td>
+	<td data-value="10" class="abs low">0/10</td>
 	<td data-value="0" class="pct low">0%</td>
-	<td data-value="11" class="abs low">0/11</td>
+	<td data-value="16" class="abs low">0/16</td>
 	<td data-value="0" class="pct low">0%</td>
 	<td data-value="47" class="abs low">0/47</td>
 	</tr>
@@ -438,13 +699,13 @@
 	<div class="chart"><div class="cover-fill" style="width: 0%"></div><div class="cover-empty" style="width: 100%"></div></div>
 	</td>
 	<td data-value="0" class="pct low">0%</td>
-	<td data-value="12" class="abs low">0/12</td>
+	<td data-value="9" class="abs low">0/9</td>
+	<td data-value="0" class="pct low">0%</td>
+	<td data-value="1" class="abs low">0/1</td>
 	<td data-value="0" class="pct low">0%</td>
 	<td data-value="2" class="abs low">0/2</td>
 	<td data-value="0" class="pct low">0%</td>
-	<td data-value="2" class="abs low">0/2</td>
-	<td data-value="0" class="pct low">0%</td>
-	<td data-value="11" class="abs low">0/11</td>
+	<td data-value="7" class="abs low">0/7</td>
 	</tr>
 
 <tr>
@@ -453,13 +714,13 @@
 	<div class="chart"><div class="cover-fill" style="width: 0%"></div><div class="cover-empty" style="width: 100%"></div></div>
 	</td>
 	<td data-value="0" class="pct low">0%</td>
-	<td data-value="4" class="abs low">0/4</td>
+	<td data-value="3" class="abs low">0/3</td>
 	<td data-value="100" class="pct high">100%</td>
 	<td data-value="0" class="abs high">0/0</td>
 	<td data-value="0" class="pct low">0%</td>
 	<td data-value="1" class="abs low">0/1</td>
 	<td data-value="0" class="pct low">0%</td>
-	<td data-value="4" class="abs low">0/4</td>
+	<td data-value="2" class="abs low">0/2</td>
 	</tr>
 
 <tr>
@@ -493,18 +754,33 @@
 	</tr>
 
 <tr>
-	<td class="file low" data-value="pages/api/publish"><a href="pages/api/publish/index.html">pages/api/publish</a></td>
+	<td class="file low" data-value="pages/api/profile"><a href="pages/api/profile/index.html">pages/api/profile</a></td>
 	<td data-value="0" class="pic low">
 	<div class="chart"><div class="cover-fill" style="width: 0%"></div><div class="cover-empty" style="width: 100%"></div></div>
 	</td>
 	<td data-value="0" class="pct low">0%</td>
-	<td data-value="7" class="abs low">0/7</td>
+	<td data-value="24" class="abs low">0/24</td>
+	<td data-value="100" class="pct high">100%</td>
+	<td data-value="0" class="abs high">0/0</td>
 	<td data-value="0" class="pct low">0%</td>
-	<td data-value="2" class="abs low">0/2</td>
+	<td data-value="8" class="abs low">0/8</td>
+	<td data-value="0" class="pct low">0%</td>
+	<td data-value="23" class="abs low">0/23</td>
+	</tr>
+
+<tr>
+	<td class="file low" data-value="pages/api/profile/avatar"><a href="pages/api/profile/avatar/index.html">pages/api/profile/avatar</a></td>
+	<td data-value="0" class="pic low">
+	<div class="chart"><div class="cover-fill" style="width: 0%"></div><div class="cover-empty" style="width: 100%"></div></div>
+	</td>
+	<td data-value="0" class="pct low">0%</td>
+	<td data-value="20" class="abs low">0/20</td>
 	<td data-value="0" class="pct low">0%</td>
 	<td data-value="1" class="abs low">0/1</td>
 	<td data-value="0" class="pct low">0%</td>
-	<td data-value="7" class="abs low">0/7</td>
+	<td data-value="6" class="abs low">0/6</td>
+	<td data-value="0" class="pct low">0%</td>
+	<td data-value="18" class="abs low">0/18</td>
 	</tr>
 
 <tr>
@@ -523,18 +799,33 @@
 	</tr>
 
 <tr>
+	<td class="file low" data-value="pages/api/user"><a href="pages/api/user/index.html">pages/api/user</a></td>
+	<td data-value="0" class="pic low">
+	<div class="chart"><div class="cover-fill" style="width: 0%"></div><div class="cover-empty" style="width: 100%"></div></div>
+	</td>
+	<td data-value="0" class="pct low">0%</td>
+	<td data-value="21" class="abs low">0/21</td>
+	<td data-value="0" class="pct low">0%</td>
+	<td data-value="8" class="abs low">0/8</td>
+	<td data-value="0" class="pct low">0%</td>
+	<td data-value="2" class="abs low">0/2</td>
+	<td data-value="0" class="pct low">0%</td>
+	<td data-value="21" class="abs low">0/21</td>
+	</tr>
+
+<tr>
 	<td class="file low" data-value="pages/api/user/[id]"><a href="pages/api/user/[id]/index.html">pages/api/user/[id]</a></td>
 	<td data-value="0" class="pic low">
 	<div class="chart"><div class="cover-fill" style="width: 0%"></div><div class="cover-empty" style="width: 100%"></div></div>
 	</td>
 	<td data-value="0" class="pct low">0%</td>
-	<td data-value="25" class="abs low">0/25</td>
+	<td data-value="22" class="abs low">0/22</td>
 	<td data-value="0" class="pct low">0%</td>
 	<td data-value="10" class="abs low">0/10</td>
 	<td data-value="0" class="pct low">0%</td>
 	<td data-value="3" class="abs low">0/3</td>
 	<td data-value="0" class="pct low">0%</td>
-	<td data-value="25" class="abs low">0/25</td>
+	<td data-value="22" class="abs low">0/22</td>
 	</tr>
 
 </tbody>
@@ -544,10 +835,9 @@
             </div><!-- /wrapper -->
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
-                <a href="https://istanbul.js.org/" target="_blank">istanbul</a>
-                at Mon Aug 08 2022 15:28:01 GMT-0500 (Central Daylight Time)
+                <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
+                at 2022-08-18T04:21:51.323Z
             </div>
-        </div>
         <script src="prettify.js"></script>
         <script>
             window.onload = function () {
