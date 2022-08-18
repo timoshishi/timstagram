@@ -30,27 +30,51 @@ export class ProfileController {
     });
   }
 
-  async updateProfile({ bio, userId }: { bio: string; userId: string }): Promise<Profile | null> {
-    return this.prisma.profile.update({
-      where: {
-        id: userId,
-      },
-      data: {
-        bio,
-      },
-    });
+  async updateProfile(req: NextRequestWithUser, res: NextApiResponse): Promise<void> {
+    try {
+      const { bio } = req.body;
+      const { id } = req.user!;
+      if (!bio) {
+        return res.status(400).json({ error: 'Bad request' });
+      }
+      const profile = await this.prisma.profile.update({
+        where: {
+          id,
+        },
+        data: {
+          bio,
+        },
+        select: {
+          bio: true,
+          avatarUrl: true,
+          username: true,
+        },
+      });
+
+      return res.status(200).json({ profile });
+    } catch (error) {
+      return res.status(500).json({ error: 'Something went wrong' });
+    }
   }
   /**
    * @description - adds the username to the user's metadata.
    * This is inserted into the profile table when the user is confirmed with a postgres trigger
    */
   async addMetadata(req: NextRequestWithUser, res: NextApiResponse): Promise<void> {
-    const { username } = req.body;
-    const { id } = req.user!;
-    const { user } = await this.supabaseService.auth.api.updateUserById(id, {
-      user_metadata: { username, avatarUrl: '', bio: '' },
-    });
-    return res.status(201).json(user);
+    try {
+      const { username } = req.body;
+      const { id } = req.user!;
+      const { user } = await this.supabaseService.auth.api.updateUserById(id, {
+        user_metadata: { username, avatarUrl: '', bio: '' },
+      });
+      if (!user) {
+        throw new Error('not authenticated');
+      }
+      return res.status(201).json({ user, error: null, loading: false });
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ error: 'Something went wrong' });
+    }
   }
 
   async updateUserAvatar({

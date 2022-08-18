@@ -20,13 +20,10 @@ export default router
     const end = Date.now();
     console.log(`${req.method} ${req.url} ${res.statusCode} ${end - start}ms`);
   })
-  .put(authenticateHandler, validate(updateProfileValidator), async (req, res) => {
-    await profileController.updateProfile({ ...req.body, userId: req.user!.id! });
-    return res.status(202).end();
-  })
   .get(async (req, res) => {
     return res.status(200).json({ user: req.user });
   })
+  .put(authenticateHandler, validate(updateProfileValidator), profileController.updateProfile)
   .post(authenticateHandler, profileController.addMetadata)
   .all((_, res) => {
     res.status(405).json({
