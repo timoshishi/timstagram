@@ -1,7 +1,6 @@
 const nextJest = require('next/jest');
 
 const createJestConfig = nextJest({
-  // Provide the path to your Next.js app to load next.config.js and .env files in your test environment
   dir: '.',
   coverageThreshold: {
     '<rootdir>/src/': {
@@ -17,16 +16,11 @@ const createJestConfig = nextJest({
     '!**/test-utils',
     '!**/stories/**',
   ],
-  // transformIgnorePatterns: ['<rootDir>/node_modules/(?!@supabase)'],
 });
 
 const customJestConfig = {
-  setupFilesAfterEnv: ['<rootDir>/jest.setup.js'],
-  // transformIgnorePatterns: ['<rootDir>/node_modules/(?!@supabase)'],
-  // transformIgnorePatterns: ['<rootDir>/node_modules/(?!)'],
-
-  // preset: 'ts-jest/presets/js-with-ts',
-  // testEnvironment: 'jsdom',
+  setupFilesAfterEnv: ['<rootDir>/jest.setup.js', '<rootDir>/src/mocks/singleton.ts'],
+  resolver: `<rootDir>/resolver.js`,
   moduleNameMapper: {
     '^@common/(.*)$': '<rootDir>/src/common/$1',
     '^@components/(.*)$': '<rootDir>/src/common/components/$1',
@@ -50,6 +44,5 @@ const customJestConfig = {
 const asyncConfig = createJestConfig(customJestConfig);
 module.exports = async () => {
   const config = await asyncConfig();
-  config.transformIgnorePatterns = ['<rootDir>/node_modules/(?!@supabase)'];
   return config;
 };

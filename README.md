@@ -1,3 +1,10 @@
+### Jest resolver
+
+- using a custom resolver due to the fact that jest-environment-jsdom is not supporting esm modules and the UUID package
+  causes all tests that have dependencies on the module to fail
+- [fix](https://github.com/cloudflare/miniflare/issues/271#issuecomment-1151058127 //
+  https://github.com/microsoft/accessibility-insights-web/pull/5421#issuecomment-1109168149)
+
 ### Creating Database types
 
 - For now, since supabase cli is not in this project, it must be done by
