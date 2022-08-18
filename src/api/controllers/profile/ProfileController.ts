@@ -30,13 +30,14 @@ export class ProfileController {
     });
   }
 
-  async updateProfile(req: NextRequestWithUser, res: NextApiResponse): Promise<void> {
+  updateProfile = async (req: NextRequestWithUser, res: NextApiResponse): Promise<void> => {
     try {
       const { bio } = req.body;
       const { id } = req.user!;
       if (!bio) {
         return res.status(400).json({ error: 'Bad request' });
       }
+
       const profile = await this.prisma.profile.update({
         where: {
           id,
@@ -50,17 +51,19 @@ export class ProfileController {
           username: true,
         },
       });
+      console.log({ profile });
 
       return res.status(200).json({ profile });
     } catch (error) {
+      console.error(error);
       return res.status(500).json({ error: 'Something went wrong' });
     }
-  }
+  };
   /**
    * @description - adds the username to the user's metadata.
    * This is inserted into the profile table when the user is confirmed with a postgres trigger
    */
-  async addMetadata(req: NextRequestWithUser, res: NextApiResponse): Promise<void> {
+  addMetadata = async (req: NextRequestWithUser, res: NextApiResponse): Promise<void> => {
     try {
       const { username } = req.body;
       const { id } = req.user!;
@@ -75,7 +78,7 @@ export class ProfileController {
       console.error(error);
       res.status(500).json({ error: 'Something went wrong' });
     }
-  }
+  };
 
   async updateUserAvatar({
     user,

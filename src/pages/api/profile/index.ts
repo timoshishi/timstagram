@@ -2,13 +2,13 @@ import type { NextApiResponse } from 'next';
 import { createRouter, expressWrapper } from 'next-connect';
 import cors from 'cors';
 import { ProfileController } from '@api/controllers/profile/ProfileController';
-import prisma from '@src/lib/prisma';
 import { NextRequestWithUser } from '@src/api/types';
 import { appendUserToRequest, authenticateHandler, validate } from '@src/api/router';
 import { updateProfileValidator } from '@api/controllers/profile/profile-validation';
+import prisma from '@src/lib/prisma';
 import supabaseService from '@src/lib/initSupabaseServer';
-
 const profileController = new ProfileController(prisma, supabaseService);
+
 const router = createRouter<NextRequestWithUser, NextApiResponse>();
 
 export default router
@@ -23,7 +23,11 @@ export default router
   .get(async (req, res) => {
     return res.status(200).json({ user: req.user });
   })
-  .put(authenticateHandler, validate(updateProfileValidator), profileController.updateProfile)
+  .put(
+    // authenticateHandler,
+    validate(updateProfileValidator),
+    profileController.updateProfile
+  )
   .post(authenticateHandler, profileController.addMetadata)
   .all((_, res) => {
     res.status(405).json({
