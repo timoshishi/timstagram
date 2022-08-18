@@ -2,13 +2,14 @@
 import type { NextApiResponse } from 'next';
 import { createRouter, expressWrapper } from 'next-connect';
 import cors from 'cors';
-import { uploadMiddleware } from '@api/handleImageUpload';
+import { uploadMiddleware } from '@src/api/handleImageUpload';
 import bodyParser from 'body-parser';
-import { ProfileAPI } from '@api/profile/ProfileAPI';
+import { ProfileController } from '@api/controllers/profile/ProfileController';
 import prisma from '@src/lib/prisma';
-import { NextRequestWithUser } from '@api/types';
-import { appendUserToRequest, authenticateHandler } from '@api/router';
-const profileClient = new ProfileAPI(prisma);
+import supabaseServer from '@src/lib/initSupabaseServer';
+import { NextRequestWithUser } from '@src/api/types';
+import { appendUserToRequest, authenticateHandler } from '@src/api/router';
+const profileClient = new ProfileController(prisma, supabaseServer);
 
 // Default Req and Res are IncomingMessage and ServerResponse
 // pass in NextApiRequest and NextApiResponse in order to have stronger typing

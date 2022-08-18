@@ -36,7 +36,7 @@ export const validate = (validations: ValidationChain[]) => {
     await Promise.all(validations.map((validation) => validation.run(req)));
 
     const errors = validationResult(req);
-    if (errors.isEmpty()) {
+    if (!errors.isEmpty()) {
       const errorArray = errors.array();
       console.error({ errorArray }, req.url, req.method);
       return res.status(400).end();

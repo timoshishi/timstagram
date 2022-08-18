@@ -2,13 +2,13 @@
 import type { NextApiResponse } from 'next';
 import { createRouter, expressWrapper } from 'next-connect';
 import cors from 'cors';
-import { uploadMiddleware } from '@api/handleImageUpload';
-import bodyParser from 'body-parser';
-import { ProfileAPI } from '@api/profile/ProfileAPI';
+import { uploadMiddleware } from '@src/api/handleImageUpload';
+import { ProfileController } from '@api/controllers/profile/ProfileController';
 import prisma from '@src/lib/prisma';
-import { NextRequestWithUser } from '@api/types';
-import { appendUserToRequest, authenticateHandler } from '@api/router';
-const profileClient = new ProfileAPI(prisma);
+import { NextRequestWithUser } from '@src/api/types';
+import { appendUserToRequest, authenticateHandler } from '@src/api/router';
+import supabaseService from '@src/lib/initSupabaseServer';
+const profileController = new ProfileController(prisma, supabaseService);
 
 const router = createRouter<NextRequestWithUser & { file: Express.Multer.File }, NextApiResponse>();
 
@@ -19,7 +19,7 @@ export default router
     if (!req.user) {
       throw new Error('User is not logged in');
     }
-    const response = await profileClient.updateUserAvatar({
+    const response = await profileController.updateUserAvatar({
       croppedImage: req.file,
       imageData: JSON.parse(req.body.imageData),
       user: req.user,

@@ -1,13 +1,14 @@
 import type { NextApiResponse } from 'next';
 import { createRouter, expressWrapper } from 'next-connect';
 import cors from 'cors';
-import { ProfileAPI } from '@api/profile/ProfileAPI';
+import { ProfileController } from '@api/controllers/profile/ProfileController';
 import prisma from '@src/lib/prisma';
-import { NextRequestWithUser } from '@api/types';
-import { appendUserToRequest, authenticateHandler, validate } from '@api/router';
-const profileClient = new ProfileAPI(prisma);
-import { updateProfileValidator } from '@api/profile/profile-validation';
+import { NextRequestWithUser } from '@src/api/types';
+import { appendUserToRequest, authenticateHandler, validate } from '@src/api/router';
+import { updateProfileValidator } from '@api/controllers/profile/profile-validation';
+import supabaseService from '@src/lib/initSupabaseServer';
 
+const profileController = new ProfileController(prisma, supabaseService);
 const router = createRouter<NextRequestWithUser & { file: Express.Multer.File }, NextApiResponse>();
 
 export default router
@@ -20,7 +21,7 @@ export default router
     console.log(`${req.method} ${req.url} ${res.statusCode} ${end - start}ms`);
   })
   .put(authenticateHandler, validate(updateProfileValidator), async (req, res) => {
-    await profileClient.updateProfile({ ...req.body, userId: req.user!.id! });
+    await profileController.updateProfile({ ...req.body, userId: req.user!.id! });
     return res.status(202).end();
   })
   .get(async (req, res) => {
@@ -28,7 +29,7 @@ export default router
   })
   .post(async (req, res) => {
     const { id, username } = req.body;
-    const user = await profileClient.addMetadata({ id, username });
+    const user = await profileController.addMetadata({ id, username });
     return res.status(201).json({ user });
   })
   .all((_, res) => {

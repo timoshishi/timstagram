@@ -1,4 +1,4 @@
-import getFeed from '@api/getFeed';
+import getFeed from '@src/api/getFeed';
 import type { NextApiRequest, NextApiResponse } from 'next';
 import type { PostResponse } from 'types/post.types';
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
