@@ -9,7 +9,7 @@ import { updateProfileValidator } from '@api/controllers/profile/profile-validat
 import supabaseService from '@src/lib/initSupabaseServer';
 
 const profileController = new ProfileController(prisma, supabaseService);
-const router = createRouter<NextRequestWithUser & { file: Express.Multer.File }, NextApiResponse>();
+const router = createRouter<NextRequestWithUser, NextApiResponse>();
 
 export default router
   .use(appendUserToRequest)
@@ -27,11 +27,7 @@ export default router
   .get(async (req, res) => {
     return res.status(200).json({ user: req.user });
   })
-  .post(async (req, res) => {
-    const { id, username } = req.body;
-    const user = await profileController.addMetadata({ id, username });
-    return res.status(201).json({ user });
-  })
+  .post(authenticateHandler, profileController.addMetadata)
   .all((_, res) => {
     res.status(405).json({
       error: 'Method not allowed',

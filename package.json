@@ -100,6 +100,7 @@
     "jest-mock-extended": "2.0.4",
     "msw": "^0.44.2",
     "msw-storybook-addon": "^1.6.3",
+    "node-mocks-http": "^1.11.0",
     "prisma": "^4",
     "storybook-addon-next": "^1.6.7",
     "storybook-addon-performance": "^0.16.1",

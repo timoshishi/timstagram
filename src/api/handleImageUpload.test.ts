@@ -8,16 +8,14 @@ import {
 } from './handleImageUpload';
 import { promises } from 'fs';
 import path from 'path';
-import { imageConfigDefault } from 'next/dist/shared/lib/image-config';
-const UUIDReg = /^[0-9a-fA-F]{8}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{12}$/gi;
-//get a file from disk and read it
+import { UUIDReg } from '@common/utils/regexp';
+const fixturesDir = path.join(__dirname, '../../__mocks__/fixtures');
+const oneAspect = path.join(fixturesDir, 'aspect-1-1.jpg');
+const fourThreeAspect = path.join(fixturesDir, 'aspect-4-3.jpg');
+
 export const getImageFileNode = async (filePath: string): Promise<[Buffer, File]> => {
-  const dirContents = await promises.readdir(__dirname);
-  const file = dirContents.find((file) => file.includes(filePath));
-  //read the file
-  const fileBuffer = await promises.readFile(path.join(__dirname, file as string));
-  //return the file and the buffer
-  return [fileBuffer, new File([fileBuffer], file as string, { type: 'image/png' })];
+  const fileBuffer = await promises.readFile(filePath);
+  return [fileBuffer, new File([fileBuffer], 'file' as string, { type: 'image/png' })];
 };
 
 describe('getImageProperties', () => {
@@ -38,8 +36,9 @@ describe('getImageProperties', () => {
       path: 'memory',
     } as Express.Multer.File;
   });
+
   it('returns the image data properties correctly', async () => {
-    const [buffer, file] = await getImageFileNode('aspect-1-1.jpg');
+    const [buffer, file] = await getImageFileNode(oneAspect);
     image.buffer = buffer;
     image.size = file.size;
 
@@ -75,8 +74,9 @@ describe('getImageProperties', () => {
     expect(img.size).toBe(image.size);
     expect(img.width).not.toBe(500);
   });
+
   it('returns the correct data if the client sent in incorrect data', async () => {
-    const [buffer, file] = await getImageFileNode('aspect-1-1.jpg');
+    const [buffer, file] = await getImageFileNode(oneAspect);
     image.buffer = buffer;
     image.size = file.size;
 
@@ -123,25 +123,27 @@ describe('getImageHash', () => {
       path: 'memory',
     } as Express.Multer.File;
   });
+
   it('returns the same hash if the same image is passed in twice', async () => {
-    const [buffer] = await getImageFileNode('aspect-1-1.jpg');
+    const [buffer] = await getImageFileNode(oneAspect);
     image.buffer = buffer;
     const hash1 = await getImageHash(image);
-    const [buffer2] = await getImageFileNode('aspect-1-1.jpg');
+    const [buffer2] = await getImageFileNode(oneAspect);
     image.buffer = buffer2;
     const hash2 = await getImageHash(image);
     expect(hash1).toEqual(hash2);
   });
 
   it('returns a different hash if the image is different', async () => {
-    const [buffer] = await getImageFileNode('aspect-1-1.jpg');
+    const [buffer] = await getImageFileNode(oneAspect);
     image.buffer = buffer;
     const hash1 = await getImageHash(image);
-    const [buffer2] = await getImageFileNode('aspect-4-3.jpg');
+    const [buffer2] = await getImageFileNode(fourThreeAspect);
     image.buffer = buffer2;
     const hash2 = await getImageHash(image);
     expect(hash1).not.toEqual(hash2);
   });
+
   it('throws an error if the image is not an image', async () => {
     const buffer = new Buffer('test');
     image.buffer = buffer;
@@ -165,8 +167,9 @@ describe('createPlaceholder', () => {
       path: 'memory',
     } as Express.Multer.File;
   });
+
   it('returns a base64 image string', async () => {
-    const [buffer] = await getImageFileNode('aspect-1-1.jpg');
+    const [buffer] = await getImageFileNode(oneAspect);
     image.buffer = buffer;
     const placeholder = await createPlaceholder(image);
     expect(placeholder.startsWith('data:image/jpeg;base64,')).toBe(true);
@@ -187,11 +190,12 @@ describe('resizeAvatarImage', () => {
       destination: 'memory',
       path: 'memory',
     } as Express.Multer.File;
-  }),
-    it('takes a buffer and returns a buffer', async () => {
-      const [buffer] = await getImageFileNode('aspect-1-1.jpg');
-      image.buffer = buffer;
-      const resized = await resizeAvatarImage(buffer);
-      expect(resized instanceof Buffer).toBe(true);
-    });
+  });
+
+  it('takes a buffer and returns a buffer', async () => {
+    const [buffer] = await getImageFileNode(oneAspect);
+    image.buffer = buffer;
+    const resized = await resizeAvatarImage(buffer);
+    expect(resized instanceof Buffer).toBe(true);
+  });
 });

@@ -6,6 +6,9 @@ import { getImageProperties, resizeAvatarImage } from '@src/api/handleImageUploa
 import prisma from '@src/lib/prisma';
 import { SupaUser } from 'types/index';
 import { ImageData } from '@features/ImageUploader/types/image-uploader.types';
+import { NextRequestWithUser } from '@api/types';
+import { NextApiResponse } from 'next';
+
 const AVATAR_IMAGE_SIZE = 150;
 export interface SupabaseAuthResponse {
   user: User | null;
@@ -41,11 +44,13 @@ export class ProfileController {
    * @description - adds the username to the user's metadata.
    * This is inserted into the profile table when the user is confirmed with a postgres trigger
    */
-  async addMetadata({ username, id }: { username: string; id: string }): Promise<SupabaseAuthResponse> {
-    const meta = await this.supabaseService.auth.api.updateUserById(id, {
+  async addMetadata(req: NextRequestWithUser, res: NextApiResponse): Promise<void> {
+    const { username } = req.body;
+    const { id } = req.user!;
+    const { user } = await this.supabaseService.auth.api.updateUserById(id, {
       user_metadata: { username, avatarUrl: '', bio: '' },
     });
-    return meta;
+    return res.status(201).json(user);
   }
 
   async updateUserAvatar({

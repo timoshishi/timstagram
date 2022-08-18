@@ -2,9 +2,11 @@ import { prismaMock, supabaseServiceMock } from '../../../mocks/singleton';
 import { ProfileController } from './ProfileController';
 let profileClient: ProfileController;
 import { Profile } from '@prisma/client';
-import { User } from '@supabase/supabase-js';
 import { supaUser } from '../../../mocks';
 import { SupaUser } from 'types/index';
+import { RequestMethod, createMocks } from 'node-mocks-http';
+import { NextRequestWithUser } from '@api/types';
+import { NextApiResponse } from 'next';
 
 beforeEach(() => {
   profileClient = new ProfileController(prismaMock, supabaseServiceMock);
@@ -30,24 +32,33 @@ describe('getProfile', () => {
 });
 
 describe('addMetadata', () => {
-  it('should add metadata to a user', async () => {
-    const user = supaUser as unknown as SupaUser;
+  function mockRequestResponse(method: RequestMethod = 'GET') {
+    const { req, res } = createMocks({
+      method,
+    });
+    req.headers = {
+      // 'Content-Type': 'application/json',
+    };
+    // req.query = { gatewayID: `${gatewayID}` };
+    return { req, res } as unknown as { req: NextRequestWithUser; res: NextApiResponse };
+  }
 
+  it('should add metadata to a user', async () => {
+    const { req, res } = mockRequestResponse();
+    const user = supaUser as unknown as SupaUser;
+    req.user = user;
+    req.body = {
+      username: 'test',
+    };
     supabaseServiceMock.auth.api.updateUserById.mockResolvedValue({
       user,
       error: null,
       data: null,
     });
 
-    await expect(profileClient.addMetadata({ username: 'test', id: user.id })).resolves.toEqual({
-      user,
-      data: null,
-      error: null,
-    });
-    await expect(profileClient.addMetadata({ username: 'test', id: user.id })).resolves.toEqual({
-      user: user,
-      data: null,
-      error: null,
-    });
+    await profileClient.addMetadata(req, res);
+    expect(res.statusCode).toBe(201);
+    const data = res._getJSONData();
+    expect(data).toEqual(user);
   });
 });
