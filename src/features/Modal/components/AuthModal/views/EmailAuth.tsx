@@ -54,8 +54,6 @@ function EmailAuth({
   hideModal: () => void;
 }) {
   const isMounted = useRef<boolean>(true);
-  // const [email, setEmail] = useState(defaultEmail);
-  // const [password, setPassword] = useState(defaultPassword);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [username, setUsername] = useState('');

@@ -7,6 +7,7 @@ import { useImageUploaderContext } from '@features/ImageUploader';
 import { useCallback, useEffect } from 'react';
 import { handleAvatarSubmit } from '@features/Modal/api/profile-api';
 import { useUser } from '@common/hooks/useUser';
+import { ChevronLeftIcon } from '@chakra-ui/icons';
 
 export interface ProfileModalProps {
   initialProfileData: SupaUser['user_metadata'];
@@ -69,10 +70,16 @@ export const ProfileModal = () => {
         />
         {!isFormStepOpen && (
           <>
-            <Button {...getButtonProps()} onClick={onToggle} h='40px' w='40px'>
+            <Button
+              {...getButtonProps()}
+              onClick={onToggle}
+              h='10px'
+              w='40px'
+              variant='flushed'
+              leftIcon={<ChevronLeftIcon />}
+            >
               Back
             </Button>
-
             <Box>
               <ImageUploader />
             </Box>

@@ -36,14 +36,9 @@ export const handleAvatarSubmit = async (imageData: GetCroppedImageReturn) => {
     console.error('GR', error);
   }
 };
-export const updateProfile = async (e: React.FormEvent<HTMLFormElement>) => {
-  e.preventDefault();
+export const updateProfile = async ({ bio }: { bio: string }) => {
   try {
-    const fullFormData = new FormData(e.target as HTMLFormElement);
-    const { bio } = Object.fromEntries(fullFormData.entries());
-    console.log(fullFormData, bio);
     const { data } = await axios.put('/profile', { bio });
-    console.log(data);
     await supabase.auth.update({
       data: { bio },
     });
