@@ -49,4 +49,12 @@ export const updateProfile = async ({ bio }: { bio: string }) => {
     console.error(error);
   }
 };
-const deleteUser = async () => {};
+
+export const deleteUser = async () => {
+  try {
+    await axios.delete('/profile');
+    await supabase.auth.signOut();
+  } catch (error) {
+    console.error(error);
+  }
+};

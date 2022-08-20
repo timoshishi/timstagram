@@ -28,6 +28,7 @@ export const ProfileModal = () => {
   });
 
   const { croppedImage, clearFile, toggleUploaderLoading } = useImageUploaderContext();
+
   const onAvatarSubmit = useCallback(async () => {
     toggleUploaderLoading();
     try {
