@@ -1,13 +1,14 @@
-import { PrismaClient } from '@prisma/client';
+import { PrismaClient, Media } from '@prisma/client';
 import { Profile } from '@prisma/client';
 import { User, ApiError, SupabaseClient } from '@supabase/supabase-js';
 import { imageService } from '@src/api/createSignedUrl';
 import { getImageProperties, resizeAvatarImage } from '@src/api/handleImageUpload';
 import prisma from '@src/lib/prisma';
-import { SupaUser } from 'types/index';
-import { ImageData } from '@features/ImageUploader/types/image-uploader.types';
 import { NextRequestWithUser } from '@api/types';
-import { NextApiResponse } from 'next';
+import { NextApiRequest, NextApiResponse } from 'next';
+import { NextRequestWithUserFile } from '@pages/api/profile/avatar';
+
+type Handler = (req: NextApiRequest, res: NextApiResponse) => Promise<void>;
 
 const AVATAR_IMAGE_SIZE = 150;
 export interface SupabaseAuthResponse {
@@ -51,9 +52,8 @@ export class ProfileController {
           username: true,
         },
       });
-      console.log({ profile });
 
-      return res.status(200).json({ profile });
+      return res.status(204).json({ profile });
     } catch (error) {
       console.error(error);
       return res.status(500).json({ error: 'Something went wrong' });
@@ -65,14 +65,15 @@ export class ProfileController {
    */
   addMetadata = async (req: NextRequestWithUser, res: NextApiResponse): Promise<void> => {
     try {
+      if (!req.user) {
+        throw new Error('not authenticated');
+      }
       const { username } = req.body;
       const { id } = req.user!;
       const { user } = await this.supabaseService.auth.api.updateUserById(id, {
         user_metadata: { username, avatarUrl: '', bio: '' },
       });
-      if (!user) {
-        throw new Error('not authenticated');
-      }
+
       return res.status(201).json({ user, error: null, loading: false });
     } catch (error) {
       console.error(error);
@@ -80,30 +81,30 @@ export class ProfileController {
     }
   };
 
-  async updateUserAvatar({
-    user,
-    croppedImage,
-    imageData,
-  }: {
-    user: SupaUser;
-    croppedImage: Express.Multer.File;
-    imageData: ImageData;
-  }) {
-    const imageProperties = await getImageProperties({
-      image: croppedImage,
-      userId: user.id,
-      imageData,
-      altText: `${user.user_metadata.username}'s avatar`,
-      username: user.user_metadata.username,
-    });
+  updateUserAvatar = async (req: NextRequestWithUserFile, res: NextApiResponse): Promise<void> => {
+    if (!req.user) {
+      throw new Error('User is not logged in');
+    }
+    const { file: croppedImage, body, user } = req;
+    const imageData = JSON.parse(body.imageData);
+
     try {
+      const imageProperties = await getImageProperties({
+        image: croppedImage,
+        userId: user.id,
+        imageData,
+        altText: `${user.user_metadata.username}'s avatar`,
+        username: user.user_metadata.username,
+      });
+
       const buffer = await resizeAvatarImage(croppedImage.buffer, AVATAR_IMAGE_SIZE, AVATAR_IMAGE_SIZE);
 
       await imageService.uploadFileToS3({
         file: buffer,
         filename: imageProperties.filename,
       });
-      await prisma.media.create({
+
+      await this.prisma.media.create({
         data: {
           ...imageProperties,
           width: AVATAR_IMAGE_SIZE,
@@ -120,7 +121,7 @@ export class ProfileController {
         },
       });
 
-      await prisma.profile.update({
+      await this.prisma.profile.update({
         where: {
           id: user.id,
         },
@@ -128,9 +129,10 @@ export class ProfileController {
           avatarUrl: imageProperties.url,
         },
       });
-      return { data: imageProperties.url, status: 201, error: null };
+      return res.status(204).json({ url: imageProperties.url });
     } catch (error) {
-      return { data: null, status: 500, error };
+      console.error(error);
+      res.status(500).json({ error: 'Something went wrong' });
     }
-  }
+  };
 }

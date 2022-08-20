@@ -26,6 +26,10 @@ export type ImageProperties = {
   metadata: string;
 };
 
+export const constructUploadUrl = ({ id, ext }: { id: string; ext: string }): string => {
+  return `https://${process.env.PHOTO_BUCKET}.s3.amazonaws.com/${id}.${ext}`;
+};
+
 export const getImageHash = async (image: any): Promise<string> => {
   return new Promise((resolve, reject) => {
     imageHash({ data: image.buffer }, 16, false, (error: Error, data: string) => {
@@ -77,7 +81,8 @@ export const getImageProperties = async ({
   const metadata = await sharp(image.buffer).metadata();
   const { width, height, size } = metadata;
   const { width: imageWidth, height: imageHeight } = imageData.dimensions;
-  const url = `https://${process.env.PHOTO_BUCKET}.s3.amazonaws.com/${id}.${ext}`;
+  const url = constructUploadUrl({ id, ext });
+
   const placeholder = await createPlaceholder(image);
   const aspect = width && height ? width / height : aspectRatio;
   return {
