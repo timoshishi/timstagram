@@ -1,89 +1,18 @@
 import { rest } from 'msw';
+import { supaUserResponse } from '../supaUser';
+const accessToken =
+  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiJhdXRoZW50aWNhdGVkIiwiZXhwIjoxNjYxMDMzMjU1LCJzdWIiOiI2ZDA2NmY5NS1lM2Y0LTQwYWYtYmY1OS01MzY0MmViNDBhODkiLCJlbWFpbCI6InRpbWZycnN0QGdtYWlsLmNvbSIsInBob25lIjoiIiwiYXBwX21ldGFkYXRhIjp7InByb3ZpZGVyIjoiZW1haWwiLCJwcm92aWRlcnMiOlsiZW1haWwiXX0sInVzZXJfbWV0YWRhdGEiOnsiYXZhdGFyVXJsIjoiaHR0cHM6Ly93aXR0ZXItZGV2LnMzLmFtYXpvbmF3cy5jb20vMGU3MzlmNTQtY2FiYS00MGUwLWJhNjgtMTNjNjNlNmIzZTEyLnBuZyIsImJpbyI6ImhlcmUncyB0aGUgbmV3IHByb2ZpbGVcbiIsInVzZXJuYW1lIjoieWVyYmFidWVuYSJ9LCJyb2xlIjoiYXV0aGVudGljYXRlZCJ9.nulJ5WuX9kKe66_Ug4bT1fdTiHbRq2fKwX6d5XBAGwo';
+const refreshToken = 'fDpyOaBm9UoUd9-JiALkBA';
 
 export const useUserHandlers = [
   rest.get('/api/auth/user', (req, res, ctx) => {
     return res(
-      ctx.json({
-        user: {
-          id: '489418a5-c47f-4287-b4b6-d472d1e7c37e',
-          aud: 'authenticated',
-          role: 'authenticated',
-          email: 'timfrrst@gmail.com',
-          email_confirmed_at: null,
-          phone: '',
-          confirmed_at: null,
-          last_sign_in_at: null,
-          app_metadata: {
-            provider: 'email',
-            providers: ['email'],
-          },
-          user_metadata: {
-            avatarUrl: '',
-            username: 'bobo',
-          },
-          identities: [],
-          created_at: null,
-          updated_at: null,
-          'supabase-auth-helpers-note':
-            'This user payload is retrieved from the cached JWT and might be stale. If you need up to date user data, please call the `getUser` method in a server-side context!',
-          exp: 1660565622,
-          sub: '489418a5-c47f-4287-b4b6-d472d1e7c37e',
-        },
-      })
+      ctx.json(supaUserResponse),
+      ctx.cookie('sb-access-token', accessToken),
+      ctx.cookie('sb-refresh-token', refreshToken)
     );
   }),
-  // rest.get('/api/user/:id', (req, res, ctx) => {
-  //   return res(
-  //     ctx.json({
-  //       id: '489418a5-c47f-4287-b4b6-d472d1e7c37e',
-  //       aud: 'authenticated',
-  //       role: 'authenticated',
-  //       email: 'timfrrst@gmail.com',
-  //       email_confirmed_at: null,
-  //       phone: '',
-  //       confirmed_at: null,
-  //       last_sign_in_at: null,
-  //       app_metadata: {
-  //         provider: 'email',
-  //         providers: ['email'],
-  //       },
-  //       user_metadata: {
-  //         avatarUrl: '',
-  //         username: 'bobo',
-  //       },
-  //       identities: [],
-  //       created_at: null,
-  //       updated_at: null,
-  //       'supabase-auth-helpers-note':
-  //         'This user payload is retrieved from the cached JWT and might be stale. If you need up to date user data, please call the `getUser` method in a server-side context!',
-  //       exp: 1660565622,
-  //       sub: '489418a5-c47f-4287-b4b6-d472d1e7c37e',
-  //     })
-  //   );
-  // }),
+  rest.post('/api/auth/callback', (req, res, ctx) => {
+    return res(ctx.cookie('sb-access-token', accessToken), ctx.cookie('sb-refresh-token', refreshToken));
+  }),
 ];
-/*
-        id: '489418a5-c47f-4287-b4b6-d472d1e7c37e',
-        aud: 'authenticated',
-        role: 'authenticated',
-        email: 'timfrrst@gmail.com',
-        email_confirmed_at: null,
-        phone: '',
-        confirmed_at: null,
-        last_sign_in_at: null,
-        app_metadata: {
-          provider: 'email',
-          providers: ['email'],
-        },
-        user_metadata: {
-          avatarUrl: '',
-          username: 'bobo',
-        },
-        identities: [],
-        created_at: null,
-        updated_at: null,
-        'supabase-auth-helpers-note':
-          'This user payload is retrieved from the cached JWT and might be stale. If you need up to date user data, please call the `getUser` method in a server-side context!',
-        exp: 1660565622,
-        sub: '489418a5-c47f-4287-b4b6-d472d1e7c37e',
-        */

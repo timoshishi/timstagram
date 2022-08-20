@@ -7,7 +7,7 @@ module.exports = {
     '@chakra-ui/storybook-addon',
     'storybook-addon-next',
     'storybook-addon-performance/register',
-    '@storybook/jest'
+    '@storybook/jest',
   ],
   framework: '@storybook/react',
   core: {
@@ -15,6 +15,9 @@ module.exports = {
   },
   features: {
     emotionAlias: false,
+    postcss: false,
+    storyStoreV7: true,
+    buildStoriesJson: true,
   },
   typescript: {
     reactDocgen: 'react-docgen-typescript',

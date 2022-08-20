@@ -18,16 +18,16 @@ export default {
     viewType: {
       control: {
         type: 'select',
-        options: [...Object.values(VIEWS)],
         defaultValue: '',
       },
+      options: [...Object.values(VIEWS)],
     },
     signUpActionType: {
       control: {
         type: 'select',
-        options: [...Object.keys(SIGN_UP_TEXTS)],
         defaultValue: '',
       },
+      options: [...Object.keys(SIGN_UP_TEXTS)],
     },
     handleSubmit: { action: true },
   },
