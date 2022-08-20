@@ -2237,7 +2237,21 @@
   dependencies:
     "@chakra-ui/utils" "2.0.6"
 
-"@chakra-ui/icons@2.0.6", "@chakra-ui/icons@^2.0.2":
+"@chakra-ui/icon@3.0.8":
+  version "3.0.8"
+  resolved "https://registry.yarnpkg.com/@chakra-ui/icon/-/icon-3.0.8.tgz#728476d657f1fc80c2ee0f39859703a0f3314b68"
+  integrity sha512-avd6mthBoG9R8cLLAROi/FItgk7wHy1YpeAXOrGdK/U/ECVWZev64RmI1UduKuVOLlSZldXWzFJmLdw6dAMG7A==
+  dependencies:
+    "@chakra-ui/utils" "2.0.8"
+
+"@chakra-ui/icons@2.0.8":
+  version "2.0.8"
+  resolved "https://registry.yarnpkg.com/@chakra-ui/icons/-/icons-2.0.8.tgz#38659b322165566806a8e7a9f1e0d38fa15128f1"
+  integrity sha512-otX85/laLd9rC26EsaRK/QufXxclfK/JGw3vdxh+sEULFgwuC56tUzmXTwIt8GcDIx/LvZBkDgkXN0sn6Cqmog==
+  dependencies:
+    "@chakra-ui/icon" "3.0.8"
+
+"@chakra-ui/icons@^2.0.2":
   version "2.0.6"
   resolved "https://registry.yarnpkg.com/@chakra-ui/icons/-/icons-2.0.6.tgz#de60b0345d4a09037c275eb9e638e5ccf1496489"
   integrity sha512-5NWrRhWvVSjGJIS4aJGJ6z2PVb/XDIpGMCqsS0aLhrVOkIHp1fv8hvXylTiR/nShRgZU9td/XyCBXJKHoE4BAA==
@@ -2507,12 +2521,12 @@
     "@chakra-ui/utils" "2.0.6"
     "@chakra-ui/visually-hidden" "2.0.6"
 
-"@chakra-ui/storybook-addon@^4.0.1":
-  version "4.0.6"
-  resolved "https://registry.yarnpkg.com/@chakra-ui/storybook-addon/-/storybook-addon-4.0.6.tgz#ed1a84315d5ba0ac85c647f895ef73b5a0c778e0"
-  integrity sha512-L2qb/xChTbF1tk5v0Sf/tC7sazxj/vWPkheUvAFRdPhhPjBJDgBAmIZijAEVzg/EstwiN5ei7NPoyVVVGVgwfQ==
+"@chakra-ui/storybook-addon@^4.0.8":
+  version "4.0.8"
+  resolved "https://registry.yarnpkg.com/@chakra-ui/storybook-addon/-/storybook-addon-4.0.8.tgz#e606635457e7179b726334b34f203fa284053500"
+  integrity sha512-f9RbkvJ2dEp9wrzu/uNJv6Xrv7KKhrJboikN9Hqp9Z3EMbtn5FOBL0Q3INtpR6NiSYoAJvv5y7vkhh6sNzXZjg==
   dependencies:
-    "@chakra-ui/icons" "2.0.6"
+    "@chakra-ui/icons" "2.0.8"
     webpack-merge "^5.0.0"
 
 "@chakra-ui/styled-system@2.2.5":
@@ -2633,6 +2647,16 @@
   version "2.0.6"
   resolved "https://registry.yarnpkg.com/@chakra-ui/utils/-/utils-2.0.6.tgz#3a966647d5adc18852d6efb985bc01b3f6fbd955"
   integrity sha512-ZjrHZo9GXZeAU1uvn/ZLU37avUz/3wsoqulRDSL//Kc/RrcmP1Ru6pmQ746qN3An+O29RFTQ4lj8M0R2T+I2uA==
+  dependencies:
+    "@types/lodash.mergewith" "4.6.6"
+    css-box-model "1.2.1"
+    framesync "5.3.0"
+    lodash.mergewith "4.6.2"
+
+"@chakra-ui/utils@2.0.8":
+  version "2.0.8"
+  resolved "https://registry.yarnpkg.com/@chakra-ui/utils/-/utils-2.0.8.tgz#b75e1cd22479eaa64410bd42849e638138971b20"
+  integrity sha512-5xSzOYSYbJEh+myY1mC6rOX+mzM/F2fiDqAw0zybHhfUab4zPHCO5RlgYVJ0L1DlGZUogVgRP6szH1xoBCcWQg==
   dependencies:
     "@types/lodash.mergewith" "4.6.6"
     css-box-model "1.2.1"
@@ -3545,7 +3569,7 @@
   dependencies:
     "@sinonjs/commons" "^1.7.0"
 
-"@storybook/addon-actions@6.5.10", "@storybook/addon-actions@^6.5.9":
+"@storybook/addon-actions@6.5.10", "@storybook/addon-actions@^6.5.10":
   version "6.5.10"
   resolved "https://registry.yarnpkg.com/@storybook/addon-actions/-/addon-actions-6.5.10.tgz#83ec807a899e0412cf98037647f256c45cc32bf5"
   integrity sha512-vpCnEu81fmtYzOf0QsRYoDuf9wXgVVl2VysE1dWRebRhIUDU0JurrthTnw322e38D4FzaoNGqZE7wnBYBohzZA==
@@ -3641,7 +3665,7 @@
     ts-dedent "^2.0.0"
     util-deprecate "^1.0.2"
 
-"@storybook/addon-essentials@^6.5.9":
+"@storybook/addon-essentials@^6.5.10":
   version "6.5.10"
   resolved "https://registry.yarnpkg.com/@storybook/addon-essentials/-/addon-essentials-6.5.10.tgz#d56f0f972e3bd5eae6c79b2126f510c5c020b62d"
   integrity sha512-PT2aiR4vgAyB0pl3HNBUa4/a7NDRxASxAazz7zt9ZDirkipDKfxwdcLeRoJzwSngVDWEhuz5/paN5x4eNp4Hww==
@@ -3662,7 +3686,7 @@
     regenerator-runtime "^0.13.7"
     ts-dedent "^2.0.0"
 
-"@storybook/addon-interactions@^6.5.9":
+"@storybook/addon-interactions@^6.5.10":
   version "6.5.10"
   resolved "https://registry.yarnpkg.com/@storybook/addon-interactions/-/addon-interactions-6.5.10.tgz#c1d635b972bb7d21ccfe9b3bd928916683d92b26"
   integrity sha512-+O/ZuQjonpFmTdFRqjCimQTx4S4c1+S3dYCn6gD/E4xzqlQn1BQaER3paX/aBUKb3oRaSO9RUQ+uxePM4zBEwA==
@@ -3683,7 +3707,7 @@
     polished "^4.2.2"
     ts-dedent "^2.2.0"
 
-"@storybook/addon-links@^6.5.9":
+"@storybook/addon-links@^6.5.10":
   version "6.5.10"
   resolved "https://registry.yarnpkg.com/@storybook/addon-links/-/addon-links-6.5.10.tgz#f66568fbc84b942032ac2de85f799d69fcf77922"
   integrity sha512-r3WzYIPz7WjHiaPObC2Tg6bHuZRBb/Kt/X+Eitw+jTqBel7ksvkO36tn81q8Eyj61qIdNQmUWAaX/0aewT0kLA==
@@ -3854,7 +3878,7 @@
     webpack-hot-middleware "^2.25.1"
     webpack-virtual-modules "^0.2.2"
 
-"@storybook/builder-webpack5@^6.5.9":
+"@storybook/builder-webpack5@^6.5.10":
   version "6.5.10"
   resolved "https://registry.yarnpkg.com/@storybook/builder-webpack5/-/builder-webpack5-6.5.10.tgz#de78a8a262410bbe65eecc62f2beaed1fe44dd5d"
   integrity sha512-Hcsm/TzGRXHndgQCftt+pzI7GQJRqAv8A8ie5b3aFcodhJfK0qzZsQD4Y4ZWxXh1I/xe5t74Kl2qUJ40PX+geA==
@@ -4243,7 +4267,7 @@
     webpack-dev-middleware "^3.7.3"
     webpack-virtual-modules "^0.2.2"
 
-"@storybook/manager-webpack5@^6.5.9":
+"@storybook/manager-webpack5@^6.5.10":
   version "6.5.10"
   resolved "https://registry.yarnpkg.com/@storybook/manager-webpack5/-/manager-webpack5-6.5.10.tgz#dff8e53615906284b68df013935e8a6234ddaafe"
   integrity sha512-uRo+6e5MiVOtyFVMYIKVqvpDveCjHyzXBfetSYR7rKEZoaDMEnLLiuF7DIH12lzxwmzCJ1gIc4lf5HFiTMNkgw==
@@ -4351,7 +4375,7 @@
     react-docgen-typescript "^2.1.1"
     tslib "^2.0.0"
 
-"@storybook/react@^6.5.9":
+"@storybook/react@^6.5.10":
   version "6.5.10"
   resolved "https://registry.yarnpkg.com/@storybook/react/-/react-6.5.10.tgz#6e9f5cf5e4c81d966774c08c87fb2414052db454"
   integrity sha512-m8S1qQrwA7pDGwdKEvL6LV3YKvSzVUY297Fq+xcTU3irnAy4sHDuFoLqV6Mi1510mErK1r8+rf+0R5rEXB219g==
@@ -8265,14 +8289,15 @@ eslint-plugin-react@^7.29.4:
     semver "^6.3.0"
     string.prototype.matchall "^4.0.7"
 
-eslint-plugin-storybook@^0.5.13:
-  version "0.5.13"
-  resolved "https://registry.yarnpkg.com/eslint-plugin-storybook/-/eslint-plugin-storybook-0.5.13.tgz#dee4056eaa59c886a9ae78fb7b2ee0ed5fad4366"
-  integrity sha512-82x3FH1VAi68Awu1VEjn/hLkzFZsOP8ItcC5/uGF9WszIrj6n7Q3MZD57oE26k3aKwuPfFtAPnSjFnaBkBab+g==
+eslint-plugin-storybook@^0.6.4:
+  version "0.6.4"
+  resolved "https://registry.yarnpkg.com/eslint-plugin-storybook/-/eslint-plugin-storybook-0.6.4.tgz#4b4f077fcc0cf3b3f4ebc730426497e814e38e49"
+  integrity sha512-wxwbAZqlgjj6MbS/llY7wnXCCUsuFcLB1XnahbgBtjmsFUggpiECt01Dt8huaKvriVXg2w4d7Ye+GzA00rdcKg==
   dependencies:
     "@storybook/csf" "^0.0.1"
     "@typescript-eslint/experimental-utils" "^5.3.0"
     requireindex "^1.1.0"
+    ts-dedent "^2.2.0"
 
 eslint-plugin-testing-library@^5.6.0:
   version "5.6.0"

@@ -58,17 +58,17 @@ Primary.argTypes = {
 
 Primary.parameters = {
   msw: [
-    rest.get('/api/auth/user', (req, res, ctx) => {
-      return res(
-        ctx.json({
-          user: {
-            id: '1',
-            username: 'Bobby Daniels',
-            avatarUrl: '',
-          },
-        })
-      );
-    }),
+    // rest.get('/api/auth/user', (req, res, ctx) => {
+    //   return res(
+    //     ctx.json({
+    //       user: {
+    //         id: '1',
+    //         username: 'Bobby Daniels',
+    //         avatarUrl: '',
+    //       },
+    //     })
+    //   );
+    // }),
     rest.get('/api/user/:id', (req, res, ctx) => {
       return res(
         ctx.json({
