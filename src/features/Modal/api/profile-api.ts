@@ -20,7 +20,7 @@ export const handleAvatarSubmit = async (imageData: GetCroppedImageReturn) => {
     const formData = new FormData();
     formData.append('croppedImage', imageData.croppedImage);
     formData.append('imageData', JSON.stringify(imageData.imageData));
-    await axios.post('/profile/avatar', formData, {
+    await axios.put('/profile/avatar', formData, {
       headers: { 'Content-Type': 'multipart/form-data' },
     });
     //chanve file to buffer
@@ -55,5 +55,3 @@ export const updateProfile = async (e: React.FormEvent<HTMLFormElement>) => {
   }
 };
 const deleteUser = async () => {};
-
-// export const updateProfile = async ({ bio }: { bio: string }) => {};

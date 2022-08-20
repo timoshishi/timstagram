@@ -5,6 +5,7 @@ import {
   getImageHash,
   createPlaceholder,
   resizeAvatarImage,
+  constructUploadUrl,
 } from './handleImageUpload';
 import { promises } from 'fs';
 import path from 'path';
@@ -197,5 +198,14 @@ describe('resizeAvatarImage', () => {
     image.buffer = buffer;
     const resized = await resizeAvatarImage(buffer);
     expect(resized instanceof Buffer).toBe(true);
+  });
+});
+
+describe('constructUploadUrl', () => {
+  const ext = 'jpg';
+  const id = 'testId';
+  it('should create the correct url', () => {
+    const url = constructUploadUrl({ ext, id });
+    expect(url).toBe(`https://witter-dev.s3.amazonaws.com/${id}.${ext}`);
   });
 });

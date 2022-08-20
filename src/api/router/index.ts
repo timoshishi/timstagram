@@ -6,6 +6,9 @@ import { ValidationChain, validationResult } from 'express-validator';
 
 export const appendUserToRequest = async (req: NextRequestWithUser, res: NextApiResponse, next: NextFunction) => {
   const { user, accessToken, error } = await getUser({ req, res });
+  if (error) {
+    console.error(error);
+  }
   req.user = user;
   await next();
 };
@@ -47,4 +50,20 @@ export const validate = (validations: ValidationChain[]) => {
     }
     next();
   };
+};
+
+export const methodNotAllowed = (req: NextRequestWithUser, res: NextApiResponse) => {
+  res.status(405).json({
+    error: 'Method not allowed',
+  });
+};
+
+export const handlerDefaults = {
+  onError: (err: any, req: any, res: any) => {
+    console.error(err);
+    res.status(500).json({ res: 'Something broke!', err: err });
+  },
+  onNoMatch: (_: any, res: any) => {
+    res.status(404).json({ error: 'Page is not found' });
+  },
 };
