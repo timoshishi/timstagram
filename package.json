@@ -102,6 +102,7 @@
     "msw-storybook-addon": "^1.6.3",
     "node-mocks-http": "^1.11.0",
     "prisma": "^4",
+    "prisma-dbml-generator": "^0.9.1",
     "storybook-addon-next": "^1.6.7",
     "storybook-addon-performance": "^0.16.1",
     "ts-node": "10.9.1",
