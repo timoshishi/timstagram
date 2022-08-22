@@ -12,25 +12,12 @@ Table profile {
   banned Boolean [not null, default: false]
   isBot Boolean [not null, default: false]
   comments comments [not null]
-  following follows [not null]
-  followers follows [not null]
+  followers profile [not null]
+  following profile [not null]
   postFlags post_flags [not null]
   likes post_likes [not null]
   posts posts [not null]
   avatarMediaId media
-}
-
-Table follows {
-  followerId String [not null]
-  folowerAvatarUrl String
-  followingId String [not null]
-  followingAvatarUrl String
-  follower profile [not null]
-  following profile [not null]
-
-  indexes {
-    (followerId, followingId) [pk]
-  }
 }
 
 Table posts {
@@ -53,13 +40,13 @@ Table posts {
   userAvatarUrl String [not null]
   username String [not null]
   postHash String [unique, not null]
-  postHashId PostHash [not null]
+  postHashId post_hashes [not null]
   media media [not null]
   profile profile [not null]
   comments comments [not null]
   postFlags post_flags [not null]
   postLikes post_likes [not null]
-  tags tag_on_posts [not null]
+  tags tags [not null]
 }
 
 Table comments {
@@ -72,7 +59,7 @@ Table comments {
   profile profile [not null]
 }
 
-Table PostHash {
+Table post_hashes {
   postHash String [pk, unique]
   postId posts
 }
@@ -135,21 +122,20 @@ Table post_likes {
   }
 }
 
-Table tag_on_posts {
-  postId String [not null]
-  tagId String [not null]
-  post posts [not null]
-  tag tags [not null]
-
-  indexes {
-    (postId, tagId) [pk]
-  }
-}
-
 Table tags {
   id String [pk]
   name String [unique, not null]
-  posts tag_on_posts [not null]
+  posts posts [not null]
+}
+
+Table UserFollows {
+  followersId String [ref: > profile.id]
+  followingId String [ref: > profile.id]
+}
+
+Table PostToTag {
+  tagsId String [ref: > tags.id]
+  postsId String [ref: > posts.id]
 }
 
 Enum FlagReason {
@@ -159,11 +145,7 @@ Enum FlagReason {
   OTHER
 }
 
-Ref: follows.followerId > profile.id
-
-Ref: follows.followingId > profile.id
-
-Ref: posts.postHash - PostHash.postHash
+Ref: posts.postHash - post_hashes.postHash
 
 Ref: posts.userId > profile.id
 
@@ -182,7 +164,3 @@ Ref: post_flags.flaggedByUserId > profile.id
 Ref: post_likes.postId > posts.id [delete: Cascade]
 
 Ref: post_likes.userId > profile.id [delete: Cascade]
-
-Ref: tag_on_posts.postId > posts.id [delete: Cascade]
-
-Ref: tag_on_posts.tagId > tags.id [delete: Cascade]

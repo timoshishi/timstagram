@@ -1,18 +1,20 @@
-generator client {
-  provider        = "prisma-client-js"
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+  referentialIntegrity = "foreignKeys"
 }
 
+generator client {
+  provider        = "prisma-client-js"
+  previewFeatures = ["referentialIntegrity", "orderByNulls"]
+}
 generator erd {
   provider = "prisma-erd-generator"
 }
 
 generator dbml {
   provider = "prisma-dbml-generator"
-}
-
-datasource db {
-  provider             = "postgresql"
-  url                  = env("DATABASE_URL")
 }
 
 // profile created with postgres function after user creation
@@ -27,8 +29,8 @@ model Profile {
   banned        Boolean    @default(false)
   isBot         Boolean    @default(false) @map("is_bot")
   comments      Comment[]
-  following     Follows[]  @relation("follower")
-  followers     Follows[]  @relation("following")
+  followers     Profile[]  @relation("UserFollows")
+  following     Profile[]  @relation("UserFollows")
   postFlags     PostFlag[]
   likes         PostLike[]
   posts         Post[]
@@ -38,45 +40,34 @@ model Profile {
   @@map("profile")
 }
 
-model Follows {
-  followerId         String  @map("follower_id") @db.Uuid()
-  folowerAvatarUrl   String? @map("follower_avatar_url")
-  followingId        String  @map("following_id") @db.Uuid()
-  followingAvatarUrl String? @map("following_avatar_url")
-  follower           Profile @relation("follower", fields: [followerId], references: [id])
-  following          Profile @relation("following", fields: [followingId], references: [id])
-
-  @@id([followerId, followingId])
-  @@map("follows")
-}
 
 model Post {
-  id            String       @id @default(uuid()) @db.Uuid()
-  postBody      String?      @map("post_body")
-  published     Boolean      @default(true)
-  userId        String       @map("user_id") @db.Uuid()
-  userDeleted   Boolean      @default(false) @map("user_deleted")
-  flagged       Boolean      @default(false)
-  deleted       Boolean      @default(false)
-  flagCount     Int          @default(0) @map("flag_count")
-  viewCount     Int          @default(0) @map("view_count")
-  likes         Int          @default(0)
-  mediaType     String?      @map("media_type")
-  mediaUrl      String?      @unique @map("media_url")
-  mediaId       String       @map("media_id") @db.Uuid()
-  createdAt     DateTime     @default(now()) @map("created_at")
-  isBotPost     Boolean      @default(false) @map("is_bot_post")
-  isShared      Boolean      @default(false) @map("is_shared")
-  userAvatarUrl String       @map("user_avatar_url")
+  id            String     @id @default(uuid()) @db.Uuid()
+  postBody      String?    @map("post_body")
+  published     Boolean    @default(true)
+  userId        String     @map("user_id") @db.Uuid()
+  userDeleted   Boolean    @default(false) @map("user_deleted")
+  flagged       Boolean    @default(false)
+  deleted       Boolean    @default(false)
+  flagCount     Int        @default(0) @map("flag_count")
+  viewCount     Int        @default(0) @map("view_count")
+  likes         Int        @default(0)
+  mediaType     String?    @map("media_type")
+  mediaUrl      String?    @unique @map("media_url")
+  mediaId       String     @map("media_id") @db.Uuid()
+  createdAt     DateTime   @default(now()) @map("created_at")
+  isBotPost     Boolean    @default(false) @map("is_bot_post")
+  isShared      Boolean    @default(false) @map("is_shared")
+  userAvatarUrl String     @map("user_avatar_url")
   username      String
-  postHash      String       @unique
-  postHashId    PostHash     @relation(fields: [postHash], references: [postHash])
+  postHash      String     @unique
+  postHashId    PostHash   @relation(fields: [postHash], references: [postHash])
   media         Media[]
-  profile       Profile      @relation(fields: [userId], references: [id])
+  profile       Profile    @relation(fields: [userId], references: [id])
   comments      Comment[]
   postFlags     PostFlag[]
   postLikes     PostLike[]
-  tags          TagOnPosts[]
+  tags          Tag[]
 
   @@map("posts")
 }
@@ -85,7 +76,7 @@ model Comment {
   id        String   @id @default(uuid()) @db.Uuid()
   content   String
   userId    String   @map("user_id") @db.Uuid()
-  postId    String   @map("post_id")
+  postId    String   @map("post_id") @db.Uuid() 
   createdAt DateTime @default(now()) @map("created_at")
   post      Post     @relation(fields: [postId], references: [id], onDelete: Cascade)
   profile   Profile  @relation(fields: [userId], references: [id])
@@ -96,6 +87,8 @@ model Comment {
 model PostHash {
   postHash String @id @unique
   postId   Post?
+
+  @@map("post_hashes")
 }
 
 model FlaggedMedia {
@@ -127,14 +120,14 @@ model Media {
   userMetadata  Json?
   source        String
   post          Post?    @relation(fields: [postId], references: [id], onDelete: Cascade)
-  postId        String?
+  postId        String?  @db.Uuid() 
   avatarMediaId Profile? @relation(fields: [url], references: [avatarUrl], onDelete: Cascade)
 
   @@map("media")
 }
 
 model PostFlag {
-  postId          String     @map("post_id")
+  postId          String     @map("post_id") @db.Uuid() 
   flaggedByUserId String     @map("user_id") @db.Uuid()
   reason          FlagReason
   moreInfo        String?    @map("more_info")
@@ -147,7 +140,7 @@ model PostFlag {
 }
 
 model PostLike {
-  postId    String   @map("post_id")
+  postId    String   @map("post_id") @db.Uuid()
   userId    String   @map("user_id") @db.Uuid()
   createdAt DateTime @default(now()) @map("created_at")
   doesLike  Boolean  @default(true) @map("does_like")
@@ -158,20 +151,10 @@ model PostLike {
   @@map("post_likes")
 }
 
-model TagOnPosts {
-  postId String @map("post_id")
-  tagId  String @map("tag_id") @db.Uuid()
-  post   Post   @relation(fields: [postId], references: [id], onDelete: Cascade)
-  tag    Tag    @relation(fields: [tagId], references: [id], onDelete: Cascade)
-
-  @@id([postId, tagId])
-  @@map("tag_on_posts")
-}
-
 model Tag {
-  id    String       @id @default(uuid()) @db.Uuid()
-  name  String       @unique
-  posts TagOnPosts[]
+  id    String @id @default(uuid()) @db.Uuid()
+  name  String @unique
+  posts Post[]
 
   @@map("tags")
 }
