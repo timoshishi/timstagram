@@ -20,7 +20,7 @@ generator dbml {
 // profile created with postgres function after user creation
 // username inserted in signup modal
 model Profile {
-  id            String     @id @db.Uuid()
+  id            String     @id @db.Uuid() @unique
   username      String?    @unique
   avatarUrl     String?    @unique @default("") @map("avatar_url")
   bio           String?    @default("") @map("bio")

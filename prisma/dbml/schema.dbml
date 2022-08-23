@@ -3,7 +3,7 @@
 //// ------------------------------------------------------
 
 Table profile {
-  id String [pk]
+  id String [pk, unique]
   username String [unique]
   avatarUrl String [unique, default: '']
   bio String [default: '']

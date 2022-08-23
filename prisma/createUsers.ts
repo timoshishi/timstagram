@@ -1,11 +1,12 @@
 import { Knex, knex } from 'knex';
 import { faker } from '@faker-js/faker';
 
-const definedUsers = [
-  { id: '0061b8f6-2f6f-4c55-a0f8-10c6962f9ba1', email: 'test1@me.com' },
-  { id: 'dfe1c7bd-e128-4a0f-898e-404f5506d6d6', email: 'test2@me.com' },
-  { id: 'caeb9e29-a6f2-49f9-bd5b-eb191f034b68', email: 'test3@me.com' },
-  { id: 'd024e81d-4155-449e-a9e2-4869c3db9d5a', email: 'test4@me.com' },
+export const definedUsers = [
+  { id: '0061b8f6-2f6f-4c55-a0f8-10c6962f9ba1', email: 'test1@test.com', username: 'test1', password: 'password' },
+  { id: 'dfe1c7bd-e128-4a0f-898e-404f5506d6d6', email: 'test2@test.com', username: 'test2', password: 'password' },
+  { id: 'caeb9e29-a6f2-49f9-bd5b-eb191f034b68', email: 'test3@test.com', username: 'test3', password: 'password' },
+  { id: 'd024e81d-4155-449e-a9e2-4869c3db9d5a', email: 'test4@test.com', username: 'test4', password: 'password' },
+  { id: 'd124e81d-4155-449e-a9e2-4869c3db9d5a', email: 'test5@test.com', username: 'test5', password: 'password' },
 ];
 
 const config: Knex.Config = {
@@ -29,13 +30,29 @@ const mockUsr = {
   email_change_confirm_status: 0,
 };
 
-const createUserObj = ({ id, email }: { id: string; email: string }): typeof mockUsr => ({
+export const createUserObj = ({
+  id,
+  email,
+  username,
+}: {
+  id: string;
+  email: string;
+  username?: string;
+}): typeof mockUsr => ({
   ...mockUsr,
   id,
   email,
+  raw_user_meta_data: JSON.stringify({
+    bio: faker.lorem.sentence(),
+    username: username || faker.internet.userName(),
+    avatarUrl: `https://avatars0.githubusercontent.com/u/${faker.datatype.number({
+      min: 1700,
+      max: 1799,
+    })}?v=4`,
+  }),
 });
 
-const createIdentifyObj = (user: typeof mockUsr): any => ({
+export const createIdentifyObj = (user: typeof mockUsr): any => ({
   id: user.id,
   user_id: user.id,
   identity_data: JSON.stringify({ sub: user.id }),
@@ -54,7 +71,7 @@ const insertDefinedUsers = async () => {
   const users = await knexInstance('users').select();
 };
 
-const createNUsers = (n: number) => {
+export const createNUsers = (n: number) => {
   const userIdsAndEmails = Array.from({ length: n }, (_, i) => ({
     id: faker.datatype.uuid() as string,
     email: faker.internet.email() as string,
@@ -62,7 +79,7 @@ const createNUsers = (n: number) => {
   return userIdsAndEmails.map(createUserObj);
 };
 
-const createIdentities = (users: typeof mockUsr[]) => {
+export const createIdentities = (users: typeof mockUsr[]) => {
   const identities = users.map(createIdentifyObj);
   return identities;
 };
