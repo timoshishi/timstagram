@@ -2,7 +2,7 @@
 //// THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 //// ------------------------------------------------------
 
-Table profile {
+Table profiles {
   id String [pk, unique]
   username String [unique]
   avatarUrl String [unique, default: '']
@@ -12,8 +12,8 @@ Table profile {
   banned Boolean [not null, default: false]
   isBot Boolean [not null, default: false]
   comments comments [not null]
-  followers profile [not null]
-  following profile [not null]
+  followers profiles [not null]
+  following profiles [not null]
   postFlags post_flags [not null]
   likes post_likes [not null]
   posts posts [not null]
@@ -42,7 +42,7 @@ Table posts {
   postHash String [unique, not null]
   postHashId post_hashes [not null]
   media media [not null]
-  profile profile [not null]
+  profile profiles [not null]
   comments comments [not null]
   postFlags post_flags [not null]
   postLikes post_likes [not null]
@@ -56,7 +56,7 @@ Table comments {
   postId String [not null]
   createdAt DateTime [default: `now()`, not null]
   post posts [not null]
-  profile profile [not null]
+  profile profiles [not null]
 }
 
 Table post_hashes {
@@ -92,7 +92,7 @@ Table media {
   source String [not null]
   post posts
   postId String
-  avatarMediaId profile
+  avatarMediaId profiles
 }
 
 Table post_flags {
@@ -102,7 +102,7 @@ Table post_flags {
   moreInfo String
   createdAt DateTime [default: `now()`, not null]
   post posts [not null]
-  profile profile [not null]
+  profile profiles [not null]
 
   indexes {
     (postId, flaggedByUserId) [pk]
@@ -115,7 +115,7 @@ Table post_likes {
   createdAt DateTime [default: `now()`, not null]
   doesLike Boolean [not null, default: true]
   post posts [not null]
-  profile profile [not null]
+  profile profiles [not null]
 
   indexes {
     (postId, userId) [pk]
@@ -129,8 +129,8 @@ Table tags {
 }
 
 Table UserFollows {
-  followersId String [ref: > profile.id]
-  followingId String [ref: > profile.id]
+  followersId String [ref: > profiles.id]
+  followingId String [ref: > profiles.id]
 }
 
 Table PostToTag {
@@ -147,20 +147,20 @@ Enum FlagReason {
 
 Ref: posts.postHash - post_hashes.postHash
 
-Ref: posts.userId > profile.id
+Ref: posts.userId > profiles.id
 
 Ref: comments.postId > posts.id [delete: Cascade]
 
-Ref: comments.userId > profile.id
+Ref: comments.userId > profiles.id
 
 Ref: media.postId > posts.id [delete: Cascade]
 
-Ref: media.url - profile.avatarUrl [delete: Cascade]
+Ref: media.url - profiles.avatarUrl [delete: Cascade]
 
 Ref: post_flags.postId > posts.id
 
-Ref: post_flags.flaggedByUserId > profile.id
+Ref: post_flags.flaggedByUserId > profiles.id
 
 Ref: post_likes.postId > posts.id [delete: Cascade]
 
-Ref: post_likes.userId > profile.id [delete: Cascade]
+Ref: post_likes.userId > profiles.id [delete: Cascade]

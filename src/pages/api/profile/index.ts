@@ -22,5 +22,6 @@ export default router
   })
   .put(authenticateHandler, validate(updateProfileValidator), profileController.updateProfile)
   .post(profileController.addMetadata)
+  .delete(authenticateHandler, profileController.removeUser)
   .all(methodNotAllowed)
   .handler(handlerDefaults);

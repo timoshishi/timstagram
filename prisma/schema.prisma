@@ -37,7 +37,7 @@ model Profile {
   avatarMediaId Media?
 
   @@index([username])
-  @@map("profile")
+  @@map("profiles")
 }
 
 

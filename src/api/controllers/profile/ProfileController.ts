@@ -30,7 +30,30 @@ export class ProfileController {
       },
     });
   }
-
+  removeUser = async (req: NextRequestWithUser, res: NextApiResponse): Promise<void> => {
+    try {
+      if (!req.user) {
+        res.status(401).json({
+          error: 'Unauthorized',
+        });
+        return;
+      }
+      const removedUser = await this.supabaseService.auth.api.deleteUser(req.user.id);
+      await this.prisma.profile.delete({
+        where: {
+          id: req.user.id,
+        },
+      });
+      return res.status(200).json({
+        data: removedUser,
+      });
+    } catch (error) {
+      console.error(error);
+      return res.status(500).json({
+        error: 'Server error',
+      });
+    }
+  };
   updateProfile = async (req: NextRequestWithUser, res: NextApiResponse): Promise<void> => {
     try {
       const { bio } = req.body;
