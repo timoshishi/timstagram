@@ -17,8 +17,8 @@
     "generate:feature": "node scripts/generate-feature.js $1",
     "generate:api": "node scripts/generate-api.js $1",
     "prisma:migrate:local": "dotenv -e .env.local -- npx prisma migrate dev --name postgres-init",
-    "prisma:push:local": "dotenv -e .env.local -- npx prisma db push"
-  },
+    "prisma:push:local": "dotenv -e .env.local -- npx prisma db push",
+    "prisma:seed:local": "dotenv -e .env.local npx prisma generate && npx prisma seed"},
   "dependencies": {
     "@aws-sdk/client-s3": "^3.150.0",
     "@aws-sdk/s3-request-presigner": "^3.150.0",
