@@ -100,7 +100,6 @@
 
 // export const createFlag = (post: Post, flagReasons): PostFlag => {
 //   const reason = flagReasons[arrIdx(flagReasons)];
-//   console.log(post);
 //   return {
 //     postId: post.id,
 //     userId: post.userId,
@@ -163,16 +162,6 @@
 // );
 
 // const tagOnPosts: TagOnPosts[] = createTagOnPosts(posts, tags);
-
-// console.log({
-//   users,
-//   posts,
-//   medias,
-//   postFlags,
-//   postLikes,
-//   tags,
-//   tagOnPosts,
-// });
 
 // export default users;
 export default {};

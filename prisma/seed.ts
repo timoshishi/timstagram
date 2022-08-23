@@ -53,9 +53,7 @@
 
 // async function main() {
 //   for (const u of userData) {
-//     console.log(`Created user with id: ${user.id}`);
 //   }
-//   console.log(`Seeding finished.`);
 // }
 
 // main()

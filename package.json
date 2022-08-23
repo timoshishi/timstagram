@@ -12,10 +12,12 @@
     "lint": "next lint",
     "storybook": "start-storybook -p 6006 -s public",
     "build-storybook": "yarn build && build-storybook -s public",
-    "test": "jest --watch",
+    "test": "dotenv -e .env.local jest --watch",
     "test:ci": "jest --ci",
     "generate:feature": "node scripts/generate-feature.js $1",
-    "generate:api": "node scripts/generate-api.js $1"
+    "generate:api": "node scripts/generate-api.js $1",
+    "prisma:migrate:local": "dotenv -e .env.local -- npx prisma migrate dev --name postgres-init",
+    "prisma:push:local": "dotenv -e .env.local -- npx prisma db push"
   },
   "dependencies": {
     "@aws-sdk/client-s3": "^3.150.0",
@@ -29,7 +31,7 @@
     "@prisma/client": "^4",
     "@supabase/auth-helpers-nextjs": "^0.2.7",
     "@supabase/auth-helpers-react": "^0.2.2",
-    "@supabase/supabase-js": "^1.35.3",
+    "@supabase/supabase-js": "^1.35.6",
     "@supabase/ui": "^0.36.5",
     "@types/cors": "^2.8.12",
     "@types/sharp": "^0.30.5",

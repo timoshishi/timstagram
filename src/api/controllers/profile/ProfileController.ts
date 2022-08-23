@@ -1,12 +1,12 @@
-import { PrismaClient, Media } from '@prisma/client';
+import { PrismaClient } from '@prisma/client';
 import { Profile } from '@prisma/client';
 import { User, ApiError, SupabaseClient } from '@supabase/supabase-js';
 import { imageService } from '@src/api/createSignedUrl';
 import { getImageProperties, resizeAvatarImage } from '@src/api/handleImageUpload';
-import prisma from '@src/lib/prisma';
 import { NextRequestWithUser } from '@api/types';
 import { NextApiRequest, NextApiResponse } from 'next';
 import { NextRequestWithUserFile } from '@pages/api/profile/avatar';
+import { SupaUser } from 'types/index';
 
 type Handler = (req: NextApiRequest, res: NextApiResponse) => Promise<void>;
 
@@ -65,15 +65,16 @@ export class ProfileController {
    */
   addMetadata = async (req: NextRequestWithUser, res: NextApiResponse): Promise<void> => {
     try {
-      if (!req.user) {
-        throw new Error('not authenticated');
-      }
-      const { username } = req.body;
-      const { id } = req.user!;
-      const { user } = await this.supabaseService.auth.api.updateUserById(id, {
+      const { username, id } = req.body;
+      const update: Partial<SupaUser> = {
         user_metadata: { username, avatarUrl: '', bio: '' },
-      });
+      };
 
+      const { user } = await this.supabaseService.auth.api.updateUserById(id, update);
+      // local supabase workaround so we don't have to confirm the user
+      if (process.env.ENVIRONMENT === 'local') {
+        this.supabaseService.auth.api.updateUserById(id, { email_confirm: true });
+      }
       return res.status(201).json({ user, error: null, loading: false });
     } catch (error) {
       console.error(error);

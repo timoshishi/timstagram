@@ -1,7 +1,7 @@
 export const requireEnvVariable = (name: string): string => {
   const value = process.env[name];
-  if (!value) {
-    throw new Error(`Missing environment variable ${name}`);
+  if (typeof value !== 'string') {
+    throw new Error(`Missing environment variable ${name}, ${process.env[name]}`);
   }
   return value;
 };
