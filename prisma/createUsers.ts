@@ -1,6 +1,14 @@
 import { Knex, knex } from 'knex';
 import { faker } from '@faker-js/faker';
 
+const config: Knex.Config = {
+  client: 'pg',
+  connection: process.env.DATABASE_URL,
+  searchPath: ['knex', 'public', 'auth'],
+};
+
+const knexInstance = knex(config);
+
 export const definedUsers = [
   { id: '0061b8f6-2f6f-4c55-a0f8-10c6962f9ba1', email: 'test1@test.com', username: 'test1', password: 'password' },
   { id: 'dfe1c7bd-e128-4a0f-898e-404f5506d6d6', email: 'test2@test.com', username: 'test2', password: 'password' },
@@ -9,11 +17,6 @@ export const definedUsers = [
   { id: 'd124e81d-4155-449e-a9e2-4869c3db9d5a', email: 'test5@test.com', username: 'test5', password: 'password' },
 ];
 
-const config: Knex.Config = {
-  client: 'pg',
-  connection: 'postgresql://postgres:postgres@localhost:54322/postgres',
-  searchPath: ['knex', 'public', 'auth'],
-};
 const mockUsr = {
   instance_id: '00000000-0000-0000-0000-000000000000',
   id: 'undefined',
@@ -63,7 +66,6 @@ export const createIdentifyObj = (user: typeof mockUsr): any => ({
 
 const userObjects = definedUsers.map(createUserObj);
 const identifyObjects = userObjects.map(createIdentifyObj);
-const knexInstance = knex(config);
 
 const insertDefinedUsers = async () => {
   await knexInstance.insert(userObjects).into('auth.users');
