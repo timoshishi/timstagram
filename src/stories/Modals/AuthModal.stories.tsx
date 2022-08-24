@@ -53,7 +53,7 @@ const ModalComp = (args) => {
 const Template: ComponentStory<typeof GlobalModal> = (args) => {
   return (
     <GlobalModal>
-      <ModalComp />
+      <ModalComp {...args} />
     </GlobalModal>
   );
 };
@@ -107,6 +107,7 @@ SignUp.parameters = {
         return res(ctx.delay(600), ctx.json(SIGN_UP_RESPONSE));
       }),
       rest.post('/api/profile', (req, res, ctx) => {
+        // delay
         return res(ctx.delay(500), ctx.json(SIGN_UP_RESPONSE));
       }),
       rest.post(SUPABASE_AUTH_URL + '/recover', (req, res, ctx) => {

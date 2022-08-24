@@ -56,11 +56,20 @@ export class ProfileController {
   };
   updateProfile = async (req: NextRequestWithUser, res: NextApiResponse): Promise<void> => {
     try {
-      const { bio } = req.body;
-      const { id } = req.user!;
-      if (!bio) {
-        return res.status(400).json({ error: 'Bad request' });
+      if (!req.user) {
+        res.status(401).json({
+          error: 'Unauthorized',
+        });
+        return;
       }
+      if (!req.body.bio) {
+        res.status(400).json({
+          error: 'Bad request',
+        });
+        return;
+      }
+      const { bio } = req.body;
+      const { id } = req.user;
 
       const profile = await this.prisma.profile.update({
         where: {

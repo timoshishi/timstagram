@@ -148,7 +148,7 @@ describe('updateProfile', () => {
     };
 
     await profileClient.updateProfile(req, res);
-    expect(res.statusCode).toBe(500);
+    expect(res.statusCode).toBe(401);
   });
 
   it('should return status 400 if there is no bio on the request', async () => {
