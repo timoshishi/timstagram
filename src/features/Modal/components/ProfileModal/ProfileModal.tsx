@@ -17,6 +17,7 @@ export const ProfileModal = () => {
   const { user } = useUser();
   const {
     componentProps: { initialProfileData },
+    useModalToast,
   } = useProfileModal();
   const {
     isOpen: isFormStepOpen,
@@ -36,12 +37,19 @@ export const ProfileModal = () => {
         await handleAvatarSubmit(croppedImage);
         clearFile();
         onToggle();
+        useModalToast.success({
+          message: 'Avatar updated successfully',
+        });
       }
     } catch (error) {
-      console.error(error);
+      useModalToast.error({
+        error,
+        message: 'Error updating avatar',
+      });
     }
     toggleUploaderLoading();
   }, [croppedImage]);
+
   useEffect(() => {
     onAvatarSubmit();
   }, [croppedImage]);
@@ -55,8 +63,6 @@ export const ProfileModal = () => {
     initialProfileData
   );
 
-  const deleteUser = async () => {};
-
   return (
     <>
       <ModalOverlay />
@@ -65,7 +71,6 @@ export const ProfileModal = () => {
           profile={profile}
           initialProfileData={initialProfileData}
           avatarUrl={user?.user_metadata?.avatarUrl || ''}
-          deleteUser={deleteUser}
           getButtonProps={getButtonProps}
           getDisclosureProps={getDisclosureProps}
         />

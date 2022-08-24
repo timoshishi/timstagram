@@ -4,13 +4,11 @@ import { MODAL_COMPONENTS } from '../constants/modal';
 
 export const GlobalModalComponent = ({
   modalType,
-  componentProps,
   modalProps,
   isOpen,
   hideModal,
 }: {
   modalType: ModalType | null;
-  componentProps: any;
   modalProps: any;
   isOpen: boolean;
   hideModal: () => void;
@@ -23,7 +21,7 @@ export const GlobalModalComponent = ({
   if (!!ModalComponent) {
     return (
       <ChakraModal isOpen={isOpen} onClose={hideModal} id='global-modal' {...modalProps}>
-        <ModalComponent {...componentProps} />
+        <ModalComponent />
       </ChakraModal>
     );
   }

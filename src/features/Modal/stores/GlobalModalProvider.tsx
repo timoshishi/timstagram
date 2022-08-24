@@ -1,5 +1,7 @@
-import React, { useState, useCallback } from 'react';
+import { useToast } from '@chakra-ui/react';
+import React, { useState, useCallback, useMemo } from 'react';
 import { GlobalModalComponent } from '../components/GlobalModalComponent';
+import { ModalToasts, useModalToasts } from '../hooks/useModalToasts';
 import { Store, ShowModal } from '../types/global-modal.types';
 import { GlobalModalContext } from './GlobalModalContext';
 
@@ -7,7 +9,7 @@ export const GlobalModal = ({ children }: { children: React.ReactNode }) => {
   const [store, setStore] = useState({} as Store<{}>);
   const { modalType, componentProps, modalProps }: Store = store;
   const [isOpen, setIsOpen] = useState(false);
-
+  const toast = useToast();
   const showModal: ShowModal = useCallback((modalType, componentProps, modalProps = {}) => {
     setStore({
       modalType,
@@ -16,6 +18,9 @@ export const GlobalModal = ({ children }: { children: React.ReactNode }) => {
     });
     setIsOpen(true);
   }, []);
+
+  let useModalToast = {} as ModalToasts;
+  useMemo(() => (useModalToast = useModalToasts(toast)), [useModalToast]);
 
   const updateStore = useCallback((newStore: Partial<Store>) => {
     setStore((prevStore) => ({
@@ -34,15 +39,11 @@ export const GlobalModal = ({ children }: { children: React.ReactNode }) => {
   };
 
   return (
-    <GlobalModalContext.Provider value={{ showModal, hideModal, isOpen, updateStore, modalProps, componentProps }}>
+    <GlobalModalContext.Provider
+      value={{ showModal, hideModal, isOpen, updateStore, modalProps, componentProps, useModalToast }}
+    >
       <>
-        <GlobalModalComponent
-          modalType={modalType}
-          componentProps={componentProps}
-          modalProps={modalProps}
-          isOpen={isOpen}
-          hideModal={hideModal}
-        />
+        <GlobalModalComponent modalType={modalType} modalProps={modalProps} isOpen={isOpen} hideModal={hideModal} />
         {children}
       </>
     </GlobalModalContext.Provider>

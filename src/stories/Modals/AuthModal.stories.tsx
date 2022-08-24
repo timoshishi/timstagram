@@ -53,7 +53,7 @@ const ModalComp = (args) => {
 const Template: ComponentStory<typeof GlobalModal> = (args) => {
   return (
     <GlobalModal>
-      <ModalComp {...args} />
+      <ModalComp />
     </GlobalModal>
   );
 };
@@ -75,7 +75,7 @@ SignUp.play = async ({ args, canvasElement }) => {
   await userEvent.click(screen.getByRole('button', { name: /Sign up/ }));
 };
 
-const SIGNUP_URL = 'https://kwgfmfvqwtlfbskfksiv.supabase.co/auth/v1/signup';
+const SUPABASE_AUTH_URL = 'https://kwgfmfvqwtlfbskfksiv.supabase.co/auth/v1';
 const SIGN_UP_RESPONSE = {
   id: '1fece489-59d8-47f5-88c1-c1e61c745716',
   aud: 'authenticated',
@@ -103,25 +103,15 @@ const SIGN_UP_RESPONSE = {
 SignUp.parameters = {
   msw: {
     handlers: [
-      rest.post(SIGNUP_URL, (req, res, ctx) => {
+      rest.post(SUPABASE_AUTH_URL + '/signup', (req, res, ctx) => {
         return res(ctx.delay(600), ctx.json(SIGN_UP_RESPONSE));
       }),
       rest.post('/api/profile', (req, res, ctx) => {
-        // delay
         return res(ctx.delay(500), ctx.json(SIGN_UP_RESPONSE));
       }),
-      // rest.get('/api/auth/user', (req, res, ctx) => {
-      //   return res(
-      //     ctx.delay(200),
-      //     ctx.json({
-      //       user: {
-      //         id: '1',
-      //         username: 'Bobby Daniels',
-      //         avatarUrl: '',
-      //       },
-      //     })
-      //   );
-      // }),
+      rest.post(SUPABASE_AUTH_URL + '/recover', (req, res, ctx) => {
+        return res(ctx.delay(500), ctx.json(SIGN_UP_RESPONSE));
+      }),
     ],
   },
 };

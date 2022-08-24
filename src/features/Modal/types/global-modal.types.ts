@@ -1,6 +1,7 @@
 import type { EmptyNoReturnFn } from '@common/utils';
 import type { ModalProps } from '@chakra-ui/react';
 import { MODAL_COMPONENTS } from '../constants/modal';
+import { ModalToasts } from '../hooks/useModalToasts';
 
 export type ModalType = keyof typeof MODAL_COMPONENTS;
 
@@ -25,6 +26,7 @@ export type GlobalContext<P> = {
   updateStore: UpdateStore;
   componentProps: Store<P>['componentProps'];
   modalProps: Store<P>['modalProps'];
+  useModalToast: ModalToasts;
 };
 
 export type InitialContext = GlobalContext<any>;

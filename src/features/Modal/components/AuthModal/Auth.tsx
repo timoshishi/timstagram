@@ -56,6 +56,8 @@ function Auth({
   const [authView, setAuthView] = useState(view);
   const [defaultEmail, setDefaultEmail] = useState('');
   const [defaultPassword, setDefaultPassword] = useState('');
+  const { hideModal, useModalToast } = useAuthModal();
+  const { user } = useUser();
 
   const verticalSocialLayout = socialLayout === 'vertical' ? true : false;
 
@@ -84,9 +86,6 @@ function Auth({
     </div>
   );
 
-  const { hideModal } = useAuthModal();
-  const { user } = useUser();
-
   useEffect(() => {
     // handle view override
     setAuthView(view);
@@ -110,13 +109,19 @@ function Auth({
             magicLink={magicLink}
             user={user}
             hideModal={hideModal}
+            useModalToast={useModalToast}
           />
         </Container>
       );
     case VIEWS.FORGOTTEN_PASSWORD:
       return (
         <Container>
-          <ForgottenPassword supabaseClient={supabaseClient} setAuthView={setAuthView} redirectTo={redirectTo} />
+          <ForgottenPassword
+            supabaseClient={supabaseClient}
+            setAuthView={setAuthView}
+            redirectTo={redirectTo}
+            useModalToast={useModalToast}
+          />
         </Container>
       );
 
