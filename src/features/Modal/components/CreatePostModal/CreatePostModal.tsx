@@ -1,15 +1,13 @@
 import { ImageUploader, ImageUploaderProvider } from '@features/ImageUploader';
 import { ModalOverlay, ModalContent } from '@chakra-ui/react';
-import { PostForm } from '@features/ImageUploader/components/Cropper/PostForm';
+import { PostForm } from '@features/Modal/components/CreatePostModal/PostForm';
 import { HandleSubmitPost } from '@features/Modal/hooks/useCreatePostModal';
 
-export interface CreatePostModalProps {
-  handleSubmit: HandleSubmitPost;
-}
+export interface CreatePostModalProps {}
 
 export const CreatePostModal = () => {
   return (
-    <ImageUploaderProvider>
+    <ImageUploaderProvider hasAdditionalStep={true}>
       <ModalOverlay />
       <ModalContent p='0' display={'flex'} flexDir='column'>
         <PostForm />

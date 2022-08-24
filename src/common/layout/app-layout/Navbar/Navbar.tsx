@@ -9,9 +9,7 @@ export const Navbar = () => {
   const { user, isLoading } = useUser();
 
   const colorMode = useColorModeValue('gray.100', 'gray.900');
-  if (isLoading) {
-    return <div>isLoading...</div>;
-  }
+
   return (
     <Box minW='100vw' maxW='100vw' position='fixed' top={0} left={0} zIndex={1} bg={colorMode} as='nav' id='navbar'>
       <Show above='lg'>
@@ -22,7 +20,7 @@ export const Navbar = () => {
           <Show above='xs'>
             <BrandLogo />
           </Show>
-          <NavbarLinks />
+          <NavbarLinks user={user} />
           {user && !isLoading ? <ProfileDropdown user={user} /> : <LoginButtons />}
         </Flex>
       </Box>

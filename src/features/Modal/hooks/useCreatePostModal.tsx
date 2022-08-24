@@ -11,18 +11,13 @@ export type HandleSubmitPost = ({
   caption: string;
 }) => Promise<void>;
 
-const handleSubmit: HandleSubmitPost = async ({ croppedImageData, caption }) => {
-  if (!croppedImageData) return;
-  await createPost({ caption, ...croppedImageData });
-};
-
 export const useCreatePostModal = () => {
   const { showModal, ...rest } = useGlobalModalContext<CreatePostModalProps>();
 
-  const showPostModal = (props: CreatePostModalProps) =>
+  const showPostModal = (props: any = {}) =>
     showModal(
       'CreatePostModal',
-      { ...props, handleSubmit },
+      { ...props },
       {
         size: ['md', 'lg', '3xl'],
         initialFocusRef: undefined,

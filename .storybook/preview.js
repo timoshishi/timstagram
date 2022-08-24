@@ -28,9 +28,9 @@ export const decorators = [
     <UserProvider supabaseClient={supabaseClient}>
       <ChakraProvider>
         <GlobalModal>
-          <AppLayout>
-            <Story />
-          </AppLayout>
+          {/* <AppLayout> */}
+          <Story />
+          {/* </AppLayout> */}
         </GlobalModal>
       </ChakraProvider>
     </UserProvider>

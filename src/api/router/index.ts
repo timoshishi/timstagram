@@ -3,6 +3,7 @@ import { NextApiResponse } from 'next';
 import { NextFunction } from 'express';
 import { getUser } from '@supabase/auth-helpers-nextjs';
 import { ValidationChain, validationResult } from 'express-validator';
+import morgan from 'morgan';
 
 export const appendUserToRequest = async (req: NextRequestWithUser, res: NextApiResponse, next: NextFunction) => {
   const { user, accessToken, error } = await getUser({ req, res });
@@ -20,6 +21,7 @@ export const authenticateHandler = async (req: NextRequestWithUser, res: NextApi
       error: 'not authenticated',
     });
   }
+  req = req as NextRequestWithRequiredUser;
   return next();
 };
 
@@ -48,6 +50,7 @@ export const validate = (validations: ValidationChain[]) => {
       console.error({ errorArray }, req.url, req.method);
       return res.status(400).end();
     }
+    req = req as NextRequestWithRequiredUser;
     next();
   };
 };
@@ -66,4 +69,12 @@ export const handlerDefaults = {
   onNoMatch: (_: any, res: any) => {
     res.status(404).json({ error: 'Page is not found' });
   },
+};
+
+export const devLogger = (req: NextRequestWithUser, res: NextApiResponse, next: NextFunction) => {
+  if (process.env.ENVIRONMENT === 'local') {
+    morgan('dev')(req, res, next);
+  } else {
+    next();
+  }
 };

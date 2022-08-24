@@ -6,7 +6,14 @@ import { uploadMiddleware } from '@src/api/handleImageUpload';
 import { ProfileController } from '@api/controllers/profile/ProfileController';
 import prisma from '@src/lib/prisma';
 import { NextRequestWithUser } from '@src/api/types';
-import { appendUserToRequest, authenticateHandler, handlerDefaults, methodNotAllowed } from '@src/api/router';
+import {
+  appendUserToRequest,
+  authenticateHandler,
+  devLogger,
+  handlerDefaults,
+  methodNotAllowed,
+} from '@src/api/router';
+
 import supabaseService from '@src/lib/initSupabaseServer';
 const profileController = new ProfileController(prisma, supabaseService);
 
@@ -18,6 +25,7 @@ const router = createRouter<NextRequestWithUserFile, NextApiResponse>();
 
 export default router
   .use(appendUserToRequest)
+  .use(devLogger)
   .use(expressWrapper(cors()))
   .put(expressWrapper(<any>uploadMiddleware), authenticateHandler, profileController.updateUserAvatar)
   .all(methodNotAllowed)

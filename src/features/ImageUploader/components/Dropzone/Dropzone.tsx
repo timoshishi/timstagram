@@ -47,7 +47,7 @@ export const Dropzone = () => {
         >
           <VStack>
             <Icon as={MdCloudUpload} w={60} h={60} color='blue.500' />
-            <input {...getInputProps()} />
+            <input data-testid='image-input' {...getInputProps()} />
             <Text fontSize='lg'>{dropText}</Text>
           </VStack>
         </Center>
