@@ -20,10 +20,8 @@ export default router
     const end = Date.now();
     console.log(`${req.method} ${req.url} ${res.statusCode} ${end - start}ms`);
   })
-  .get(async (req, res) => {
-    return res.status(200).json({ user: req.user });
-  })
   .put(authenticateHandler, validate(updateProfileValidator), profileController.updateProfile)
-  .post(authenticateHandler, profileController.addMetadata)
+  .post(profileController.addMetadata)
+  .delete(authenticateHandler, profileController.removeUser)
   .all(methodNotAllowed)
   .handler(handlerDefaults);

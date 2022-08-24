@@ -7,12 +7,15 @@ export const DeleteAccount = () => {
   const [isDeletingUser, { toggle: toggleIsDeletingUser }] = useBoolean();
   const [permDeleteText, setPermDeleteText] = useState('');
   const [isLoading, { toggle: toggleIsLoading }] = useBoolean();
-  const deleteIsValid = permDeleteText === 'permanently delete';
   const { hideModal } = useProfileModal();
+
+  const deleteIsValid = permDeleteText === 'permanently delete';
+
   const handleToggle = () => {
     toggleIsDeletingUser();
     setPermDeleteText('');
   };
+
   const handleDelete = async () => {
     toggleIsLoading();
     try {

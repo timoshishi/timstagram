@@ -1,3 +1,21 @@
+### Local Development against supabase
+
+1. Install supabase CLI
+2. Run `supabase link`
+3. Run `supabase start` to get your environmental variables
+4. Replace the supabase variables in the .env file you are using
+5. Run `yarn seed:local` to seed your local database
+
+### Migrations
+
+1. To apply your migrations against dev, _DO NOT RUN `yarn migrate dev`_ This will wipe all data in the remote dev db.
+2. Running them locally is easy, just run the local seed command and they will show up in the local dev db.
+
+### Getting latest changes from remote db
+
+1. as long as your branch is up to date, you should generate the latest version of the client when you run `yarn start`
+2. Run yarn migrate:local and this will apply any migrations from the migrations committed to the remote dev db.
+
 ### Jest resolver
 
 - using a custom resolver due to the fact that jest-environment-jsdom is not supporting esm modules and the UUID package

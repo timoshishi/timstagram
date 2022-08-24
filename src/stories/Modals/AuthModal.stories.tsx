@@ -36,7 +36,7 @@ export default {
 // More on component templates: https://storybook.js.org/docs/react/writing-stories/introduction#using-arg
 const ModalComp = (args) => {
   const { showAuthModal } = useAuthModal();
-  console.log(args.signUpActionType);
+  console.info(args.signUpActionType);
   return (
     <div>
       <Button
