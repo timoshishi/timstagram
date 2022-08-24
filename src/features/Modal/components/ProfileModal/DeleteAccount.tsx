@@ -7,7 +7,7 @@ export const DeleteAccount = () => {
   const [isDeletingUser, { toggle: toggleIsDeletingUser }] = useBoolean();
   const [permDeleteText, setPermDeleteText] = useState('');
   const [isLoading, { toggle: toggleIsLoading }] = useBoolean();
-  const { hideModal } = useProfileModal();
+  const { hideModal, useModalToast } = useProfileModal();
 
   const deleteIsValid = permDeleteText === 'permanently delete';
 
@@ -21,8 +21,15 @@ export const DeleteAccount = () => {
     try {
       await deleteUser();
       hideModal();
+      useModalToast.info({
+        title: "We're sorry to see you go",
+        message: 'Account deleted successfully',
+      });
     } catch (error) {
-      console.error(error);
+      useModalToast.error({
+        message: 'Error deleting account',
+        error,
+      });
     }
     toggleIsLoading();
   };

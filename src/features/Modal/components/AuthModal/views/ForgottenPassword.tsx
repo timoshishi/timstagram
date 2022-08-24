@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import type { SupabaseClient, Provider, ApiError, User } from '@supabase/supabase-js';
 import { Input, Button, Space, Typography, IconMail, IconInbox } from '@supabase/ui';
+import { ModalToasts } from '@features/Modal/hooks/useModalToasts';
 const VIEWS: ViewsMap = {
   SIGN_IN: 'sign_in',
   SIGN_UP: 'sign_up',
@@ -42,24 +43,36 @@ export function ForgottenPassword({
   setAuthView,
   supabaseClient,
   redirectTo,
+  useModalToast,
 }: {
   setAuthView: any;
   supabaseClient: SupabaseClient;
   redirectTo?: RedirectTo;
+  useModalToast: ModalToasts;
 }) {
   const [email, setEmail] = useState('');
-  const [error, setError] = useState('');
-  const [message, setMessage] = useState('');
   const [loading, setLoading] = useState(false);
 
   const handlePasswordReset = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    setError('');
-    setMessage('');
     setLoading(true);
-    const { error } = await supabaseClient.auth.api.resetPasswordForEmail(email, { redirectTo });
-    if (error) setError(error.message);
-    else setMessage('Check your email for the password reset link');
+    try {
+      const { error } = await supabaseClient.auth.api.resetPasswordForEmail(email, { redirectTo });
+      if (error) {
+        throw new Error(JSON.stringify(error));
+      } else {
+        useModalToast.info({
+          title: "We've sent you an email",
+          message: 'Check your email for the password reset link',
+        });
+      }
+    } catch (error) {
+      useModalToast.error({
+        title: 'Error',
+        message: 'Sorry something seems to have gone wrong.',
+        error: error,
+      });
+    }
     setLoading(false);
   };
 
@@ -72,6 +85,7 @@ export function ForgottenPassword({
             placeholder='Your email address'
             icon={<IconMail size={21} stroke={'#666666'} />}
             onChange={(e: React.ChangeEvent<HTMLInputElement>) => setEmail(e.target.value)}
+            type='email'
           />
           <Button block size='large' htmlType='submit' icon={<IconInbox size={21} />} loading={loading}>
             Send reset password instructions
@@ -86,8 +100,6 @@ export function ForgottenPassword({
         >
           Go back to sign in
         </Typography.Link>
-        {message && <Typography.Text>{message}</Typography.Text>}
-        {error && <Typography.Text type='danger'>{error}</Typography.Text>}
       </Space>
     </form>
   );

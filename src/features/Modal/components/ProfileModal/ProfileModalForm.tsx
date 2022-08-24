@@ -1,8 +1,6 @@
 import { Box, Flex, ModalCloseButton, AvatarBadge } from '@chakra-ui/react';
 import { BrandLogo } from '@src/common/components/BrandLogo';
-import { PostHeaderAvatar } from '@common/components/PostHeaderAvatar';
 import { ProfileModalProps } from './ProfileModal';
-import { EditIcon } from '@chakra-ui/icons';
 import { DeleteAccount } from './DeleteAccount';
 import { EditBio } from './EditBio';
 import { EditAvatar } from './EditAvatar';
@@ -10,7 +8,6 @@ import { EditAvatar } from './EditAvatar';
 interface ProfileModalFormProps {
   initialProfileData: ProfileModalProps['initialProfileData'];
   profile: Required<ProfileModalFormProps['initialProfileData']>;
-  deleteUser: () => void;
   getButtonProps: () => any;
   getDisclosureProps: () => any;
   avatarUrl: string;

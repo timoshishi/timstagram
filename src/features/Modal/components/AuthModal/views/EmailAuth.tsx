@@ -4,6 +4,8 @@ import { Input, Checkbox, Button, Space, Typography, IconKey, IconMail, IconLock
 import { FiUser } from 'react-icons/fi';
 import { msLeftUntilSubmission, usernameDoesExist } from '@features/Modal/api/auth-api';
 import { insertInitialProfileData } from '@features/Modal/api/profile-api';
+import { ModalToasts } from '@features/Modal/hooks/useModalToasts';
+
 const VIEWS: ViewsMap = {
   SIGN_IN: 'sign_in',
   SIGN_UP: 'sign_up',
@@ -37,8 +39,8 @@ function EmailAuth({
   supabaseClient,
   redirectTo,
   magicLink,
-  user,
   hideModal,
+  useModalToast,
 }: {
   authView: ViewType;
   defaultEmail: string;
@@ -52,28 +54,24 @@ function EmailAuth({
   magicLink?: boolean;
   user: User | null;
   hideModal: () => void;
+  useModalToast: ModalToasts;
 }) {
   const isMounted = useRef<boolean>(true);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [username, setUsername] = useState('');
   const [rememberMe, setRememberMe] = useState(false);
-  const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
-  const [message, setMessage] = useState('');
 
   const handleEmail = (val: string): void => {
     setEmail(val.toLowerCase().trim());
   };
 
-  function handleError(error: ApiError): void {
-    console.error(error);
-    if (error.status === 500) {
-      setError(ERRORS.DEFAULT_ERROR);
-      return;
+  function handleErrorMessage(error: ApiError): string {
+    if (error?.status === 500) {
+      return ERRORS.DEFAULT_ERROR;
     }
-    setError(error.message);
-    return;
+    return error?.message;
   }
 
   useEffect(() => {
@@ -86,30 +84,8 @@ function EmailAuth({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [authView]);
 
-  useEffect(() => {
-    let timeout: NodeJS.Timeout = setTimeout(() => {}, 0);
-    if (error.includes(ERRORS.TIME_ERROR)) {
-      const secondsToWait = msLeftUntilSubmission(error);
-      timeout = setTimeout(() => {
-        setError('');
-        setLoading(false);
-      }, secondsToWait);
-    } else if (error) {
-      timeout = setTimeout(() => {
-        setError('');
-      }, 5000);
-      setLoading(false);
-    }
-
-    error && setLoading(false);
-    return () => {
-      clearTimeout(timeout);
-    };
-  }, [error]);
-
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    setError('');
     setLoading(true);
     try {
       switch (authView) {
@@ -122,17 +98,21 @@ function EmailAuth({
             { redirectTo }
           );
           if (signInError) {
-            handleError(signInError);
-            console.error(signInError);
-            return;
+            useModalToast.error({
+              message: handleErrorMessage(signInError),
+              error: signInError,
+            });
           }
           if (user) hideModal();
           break;
         case 'sign_up':
           if (await usernameDoesExist(username)) {
-            setError(ERRORS.USERNAME_TAKEN);
+            useModalToast.warning({
+              title: 'Sorry about that',
+              message: ERRORS.USERNAME_TAKEN,
+            });
             setLoading(false);
-            break;
+            return;
           }
 
           const {
@@ -146,16 +126,21 @@ function EmailAuth({
             },
             { redirectTo }
           );
+
           if (signUpError) {
-            handleError(signUpError);
-            return;
+            useModalToast.error({
+              message: 'Something went wrong, please try again',
+              error: signUpError,
+            });
           }
 
           if (signUpUser) {
             const resp = await insertInitialProfileData({ id: signUpUser.id, username });
+            useModalToast.info({
+              title: `Welcome to ${process.env.NEXT_PUBLIC_APP_NAME}!`,
+              message: "We've sent you an email with a link to confirm your account",
+            });
           }
-
-          if (signUpUser && !signUpSession) setMessage('Check your email for the confirmation link.');
           break;
       }
 
@@ -164,7 +149,12 @@ function EmailAuth({
        * check if component is mounted before setting a useState
        */
       if (isMounted.current) setLoading(false);
-    } catch (handleError) {}
+    } catch (error: unknown) {
+      useModalToast.error({
+        message: handleErrorMessage(error as ApiError),
+        error,
+      });
+    }
   };
 
   const handleViewChange = (newView: ViewType) => {
@@ -187,7 +177,6 @@ function EmailAuth({
               value={username}
               icon={<FiUser size={21} stroke={'#666666'} strokeWidth='1px' />}
               onChange={(e) => {
-                if (error === ERRORS.USERNAME_TAKEN) setError('');
                 setUsername(e.target.value);
               }}
               required
@@ -195,7 +184,6 @@ function EmailAuth({
               minLength={4}
               maxLength={20}
               title='Username must start with a letter and only contain letters and numbers'
-              error={error === ERRORS.USERNAME_TAKEN ? '' : undefined}
             />
           )}
           <Input
@@ -278,8 +266,6 @@ function EmailAuth({
               Do you have an account? Sign in
             </Typography.Link>
           )}
-          {error && <Typography.Text type='danger'>{error}</Typography.Text>}
-          {message && <Typography.Text type='secondary'>{message}</Typography.Text>}
         </Space>
       </Space>
     </form>

@@ -20,7 +20,11 @@ const ModalComp = () => {
     <div>
       <Button
         onClick={() => {
-          showPostModal({});
+          showPostModal({
+            handleSubmit: (val) => {
+              console.log(val);
+            },
+          });
         }}
       >
         Open Modal

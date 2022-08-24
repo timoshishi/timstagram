@@ -12,6 +12,7 @@ import { updateProfile } from '@features/Modal/api/profile-api';
 import React, { FormEventHandler, useState } from 'react';
 import { EditIcon } from '@chakra-ui/icons';
 import { SupaUser } from 'types/index';
+import { useProfileModal } from '@features/Modal/hooks';
 
 interface EditBioProps {
   profile: Required<SupaUser['user_metadata']>;
@@ -21,6 +22,7 @@ export const EditBio = ({ profile }: EditBioProps) => {
   const [err, setErr] = useState('');
   const [isEditingBio, { toggle: toggleEditingBio }] = useBoolean(!profile.bio);
   const [isSubmitting, { toggle: toggleIsSubmitting }] = useBoolean();
+  const { useModalToast } = useProfileModal();
 
   const handleBioChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     if (!isEditingBio && bio) {
@@ -47,8 +49,14 @@ export const EditBio = ({ profile }: EditBioProps) => {
         bio,
       });
       toggleEditingBio();
+      useModalToast.success({
+        message: 'Bio updated successfully',
+      });
     } catch (error) {
-      console.error(error);
+      useModalToast.error({
+        error: error,
+        message: 'Error updating bio',
+      });
     }
     toggleIsSubmitting();
   };
