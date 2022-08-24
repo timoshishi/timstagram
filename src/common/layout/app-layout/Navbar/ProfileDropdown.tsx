@@ -3,7 +3,7 @@ import { supabase } from 'src/lib/initSupabase';
 import { Flex, Avatar, Button, Menu, MenuButton, MenuList, MenuItem, MenuDivider } from '@chakra-ui/react';
 import { SupaUser } from 'types/index';
 import { useProfileModal } from '@features/Modal';
-import { FiUser } from 'react-icons/fi';
+import { FiLogOut, FiUser } from 'react-icons/fi';
 interface ProfileDropdownProps {
   user: SupaUser;
 }
@@ -15,7 +15,13 @@ export const ProfileDropdown = ({ user }: ProfileDropdownProps) => {
       <Flex alignItems={'center'}>
         <Menu isLazy>
           <MenuButton as={Button} rounded={'full'} variant={'link'} cursor={'pointer'}>
-            <Avatar size={'sm'} src={user.user_metadata.avatarUrl} name={user.user_metadata.username} />
+            <Avatar
+              size={'sm'}
+              src={user.user_metadata.avatarUrl}
+              name={user.user_metadata.username}
+              role='user-avatar'
+              data-testid='user-avatar'
+            />
           </MenuButton>
           <MenuList>
             <MenuItem
@@ -32,9 +38,10 @@ export const ProfileDropdown = ({ user }: ProfileDropdownProps) => {
             >
               Update Profile
             </MenuItem>
-            <MenuItem>Link 2</MenuItem>
             <MenuDivider />
-            <MenuItem onClick={() => supabase.auth.signOut()}>SignOut</MenuItem>
+            <MenuItem icon={<FiLogOut />} onClick={() => supabase.auth.signOut()}>
+              Sign out
+            </MenuItem>
           </MenuList>
         </Menu>
       </Flex>

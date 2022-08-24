@@ -58,3 +58,30 @@ export const deleteUser = async () => {
     console.error(error);
   }
 };
+
+export const handlePostSubmit = async ({
+  imageData,
+  caption,
+}: {
+  imageData: GetCroppedImageReturn;
+  caption: string;
+}) => {
+  try {
+    const formData = new FormData();
+    formData.append('croppedImage', imageData.croppedImage);
+    formData.append('imageData', JSON.stringify(imageData.imageData));
+    formData.append('caption', caption);
+    await axios.put('/post', formData, {
+      headers: { 'Content-Type': 'multipart/form-data' },
+    });
+    //chanve file to buffer
+    // TODO: Post POST route - signed url can't be used if i'm altering the image on the server.
+    // const amz = await fetch(url.url, {
+    //   method: 'PUT',
+    //   body: await imageData.croppedImage.arrayBuffer(),
+    //   headers: { 'Content-Type': 'image/*' },
+    // });
+  } catch (error) {
+    console.error('GR', error);
+  }
+};

@@ -5,7 +5,6 @@ import { AuthModal, useAuthModal } from '../../features/Modal';
 import { Button } from '@chakra-ui/button';
 import { userEvent, waitFor, within, screen } from '@storybook/testing-library';
 import { expect } from '@storybook/jest';
-// More on default export: https://storybook.js.org/docs/react/writing-stories/introduction#default-export
 import { SIGN_UP_TEXTS } from '../../features/Modal/constants/modal';
 import { VIEWS } from '../../features/Modal/components/AuthModal/Auth';
 import { rest } from 'msw';

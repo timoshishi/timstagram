@@ -1,27 +1,40 @@
-import { EmptyNoReturnFn } from '@common/utils';
 import { useState } from 'react';
 import { Button, Box, Flex, Textarea, Collapse } from '@chakra-ui/react';
-import { PostHeaderAvatar } from '@common/components/PostHeaderAvatar';
-import { GetCroppedImage, GetCroppedImageReturn } from '@features/ImageUploader/types/image-uploader.types';
-import { createPost } from '@features/ImageUploader/api/createPost';
-import { HandleSubmitPost, useCreatePostModal } from '@features/Modal/hooks/useCreatePostModal';
+import { useCreatePostModal } from '@features/Modal/hooks/useCreatePostModal';
 import { useImageUploaderContext } from '@features/ImageUploader/hooks/useImageUploaderContext';
+import { handlePostSubmit } from '@features/Modal/api/profile-api';
 
-interface PostFormProps {
-  // isOpen: boolean;
-  // handleSubmit: HandleSubmitPost;
-  // handleCancel: EmptyNoReturnFn;
-}
+interface PostFormProps {}
 
 export const PostForm = ({}: PostFormProps) => {
-  const { croppedImage: croppedImageData, clearFile } = useImageUploaderContext();
-  const {
-    componentProps: { handleSubmit },
-  } = useCreatePostModal();
+  const { croppedImage: croppedImageData, clearFile, toggleUploaderLoading, croppedImage } = useImageUploaderContext();
+  const { useModalToast } = useCreatePostModal();
   const [caption, setCaption] = useState('');
+
   const handleCaption = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setCaption(e.target.value);
   };
+
+  const onFormSubmit = async () => {
+    toggleUploaderLoading();
+    try {
+      if (croppedImage !== null) {
+        await handlePostSubmit({ imageData: croppedImage, caption });
+        clearFile();
+        useModalToast.success({
+          message: 'Avatar updated successfully',
+        });
+      }
+      clearFile();
+    } catch (error) {
+      useModalToast.error({
+        error,
+        message: 'Error updating avatar',
+      });
+    }
+    toggleUploaderLoading();
+  };
+
   return (
     <Box>
       <Collapse in={!!croppedImageData}>
@@ -39,7 +52,6 @@ export const PostForm = ({}: PostFormProps) => {
           right='0'
           top='3.5rem'
         >
-          {/* {user && <PostHeaderAvatar username={user.username} avatarUrl={user.avatarUrl} />} */}
           <Textarea
             value={caption}
             onChange={handleCaption}
@@ -56,14 +68,7 @@ export const PostForm = ({}: PostFormProps) => {
             <Button variant='outline' colorScheme='telegram' size={['md', 'md', 'md']} onClick={clearFile}>
               Cancel
             </Button>
-            <Button
-              variant='solid'
-              colorScheme='telegram'
-              size={['md', 'md', 'md']}
-              onClick={() => {
-                handleSubmit({ caption, croppedImageData });
-              }}
-            >
+            <Button variant='solid' colorScheme='telegram' size={['md', 'md', 'md']} onClick={onFormSubmit}>
               Post
             </Button>
           </Flex>
