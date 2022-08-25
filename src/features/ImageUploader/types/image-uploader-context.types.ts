@@ -28,6 +28,7 @@ export type UseImageUploaderReturn = {
   setCroppedImage: Dispatch<SetStateAction<GetCroppedImageReturn | null>>;
   hasAdditionalStep: boolean;
   shape: 'rect' | 'round';
+  setPreview: Dispatch<SetStateAction<string | null>>;
 };
 
 export interface UseCreateUploaderContextProps {
