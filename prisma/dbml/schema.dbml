@@ -17,7 +17,7 @@ Table profiles {
   postFlags post_flags [not null]
   likes post_likes [not null]
   posts posts [not null]
-  avatarMediaId media
+  mediaId media [not null]
 }
 
 Table posts {
@@ -37,7 +37,7 @@ Table posts {
   createdAt DateTime [default: `now()`, not null]
   isBotPost Boolean [not null, default: false]
   isShared Boolean [not null, default: false]
-  userAvatarUrl String [not null]
+  userAvatarUrl String [unique]
   username String [not null]
   postHash String [unique, not null]
   postHashId post_hashes [not null]
@@ -92,7 +92,8 @@ Table media {
   source String [not null]
   post posts
   postId String
-  avatarMediaId profiles
+  userId String [not null]
+  user profiles
 }
 
 Table post_flags {
@@ -155,7 +156,7 @@ Ref: comments.userId > profiles.id
 
 Ref: media.postId > posts.id [delete: Cascade]
 
-Ref: media.url - profiles.avatarUrl [delete: Cascade]
+Ref: media.userId > profiles.id
 
 Ref: post_flags.postId > posts.id
 

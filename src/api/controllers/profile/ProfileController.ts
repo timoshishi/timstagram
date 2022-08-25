@@ -1,22 +1,14 @@
 import { PrismaClient } from '@prisma/client';
 import { Profile } from '@prisma/client';
-import { User, ApiError, SupabaseClient } from '@supabase/supabase-js';
+import { SupabaseClient } from '@supabase/supabase-js';
 import { imageService } from '@src/api/createSignedUrl';
 import { getImageProperties, resizeAvatarImage } from '@src/api/handleImageUpload';
-import { NextRequestWithUser } from '@api/types';
+import { Controller, NextRequestWithUser } from '@api/types';
 import { NextApiRequest, NextApiResponse } from 'next';
-import { NextRequestWithUserFile } from '@pages/api/profile/avatar';
+import { NextRequestWithUserFile } from '../../types';
 import { SupaUser } from 'types/index';
 
-type Handler = (req: NextApiRequest, res: NextApiResponse) => Promise<void>;
-
 const AVATAR_IMAGE_SIZE = 150;
-export interface SupabaseAuthResponse {
-  user: User | null;
-  data: User | null;
-  error: ApiError | null;
-}
-
 export class ProfileController {
   constructor(private prisma: PrismaClient, private supabaseService: SupabaseClient) {
     this.prisma = prisma;
@@ -30,7 +22,7 @@ export class ProfileController {
       },
     });
   }
-  removeUser = async (req: NextRequestWithUser, res: NextApiResponse): Promise<void> => {
+  removeUser: Controller = async (req, res) => {
     try {
       if (!req.user) {
         res.status(401).json({

@@ -10,6 +10,13 @@ interface ProfileDropdownProps {
 
 export const ProfileDropdown = ({ user }: ProfileDropdownProps) => {
   const { showProfileModal } = useProfileModal();
+  const handleSignOut = async () => {
+    try {
+      await supabase.auth.signOut();
+    } catch (error) {
+      console.error(error);
+    }
+  };
   return (
     <>
       <Flex alignItems={'center'}>
@@ -39,7 +46,7 @@ export const ProfileDropdown = ({ user }: ProfileDropdownProps) => {
               Update Profile
             </MenuItem>
             <MenuDivider />
-            <MenuItem icon={<FiLogOut />} onClick={() => supabase.auth.signOut()}>
+            <MenuItem icon={<FiLogOut />} onClick={handleSignOut}>
               Sign out
             </MenuItem>
           </MenuList>

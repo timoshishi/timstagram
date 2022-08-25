@@ -1,21 +1,34 @@
-import { NextApiRequest, NextApiResponse } from 'next';
-import { post } from '../../../../__mocks__/fixtures/post';
+import type { NextApiResponse } from 'next';
+import { createRouter, expressWrapper } from 'next-connect';
+import cors from 'cors';
+import { PostController } from '@api/controllers/post/PostController';
+import { NextRequestWithRequiredUser, NextRequestWithUser, NextRequestWithUserFile } from '@src/api/types';
+import {
+  appendUserToRequest,
+  authenticateHandler,
+  devLogger,
+  handlerDefaults,
+  methodNotAllowed,
+  validate,
+} from '@src/api/router';
+import { createPostValidator } from '@api/controllers/post/post-validation';
+import prisma from '@src/lib/prisma';
+import { uploadMiddleware } from '@api/handleImageUpload';
 
-// make a handler that returns a single post
-export default async function handler(
-  req: NextApiRequest,
-  res: NextApiResponse
-) {
-  try {
-    const postId = req.query.postId;
+const postController = new PostController(prisma);
 
-    if (req.method === 'GET') {
-      return res.json(post);
-    } else {
-      return res.status(405).send(`Method ${req.method} not allowed`);
-    }
-  } catch (error) {
-    console.error(error);
-    res.status(500).send('Server Error');
-  }
-}
+const router = createRouter<NextRequestWithUserFile, NextApiResponse>();
+
+export default router
+  .use(appendUserToRequest)
+  .use(devLogger)
+  .use(expressWrapper(cors()))
+  .post(expressWrapper(<any>uploadMiddleware), authenticateHandler, postController.createPost)
+  .all(methodNotAllowed)
+  .handler(handlerDefaults);
+
+export const config = {
+  api: {
+    bodyParser: false,
+  },
+};

@@ -1,6 +1,6 @@
 import getFeed from '@src/api/getFeed';
 import type { NextApiRequest, NextApiResponse } from 'next';
-import type { PostResponse } from 'types/post.types';
+
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   const page = req.query.page ? parseInt(req.query.page as string) : 1;
   const limit = req.query.limit ? parseInt(req.query.limit as string) : 15;
