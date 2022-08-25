@@ -1,5 +1,5 @@
 import { useRef, useState, useCallback } from 'react';
-import { useDimensions, Box, Flex, useBreakpointValue, Portal } from '@chakra-ui/react';
+import { Box, Flex } from '@chakra-ui/react';
 import Cropper, { Area } from 'react-easy-crop';
 import { getImageFromPreview } from '../../utils/cropper-functions';
 import { handleCroppedImage } from '../../utils/image-uploader-functions';
@@ -25,21 +25,10 @@ export const EasyCropper = ({}: CropperProps) => {
   });
 
   const cropperRef = useRef(null);
-  const modalRef = useRef(null);
-  const dimensions = useDimensions(modalRef, true);
 
   const onCropComplete = useCallback((_: Area, croppedAreaPixels: Area) => {
     setCroppedAreaPixels(croppedAreaPixels);
   }, []);
-  let minHeight = 400;
-
-  if (dimensions) {
-    const { width } = dimensions.borderBox;
-    const { width: originalWidth, height: originalHeight } = originalDimensions;
-    const aspectRatio = originalWidth / originalHeight;
-    const newHeight = width / aspectRatio;
-    minHeight = newHeight;
-  }
 
   const getCroppedImage: GetCroppedImage = useCallback(async () => {
     try {
@@ -69,21 +58,11 @@ export const EasyCropper = ({}: CropperProps) => {
       setRotation(0);
     }
   };
-  const controlsPositionOffset = useBreakpointValue({
-    base: '1rem',
-  });
 
   return (
-    <Flex
-      // minH={['100vh', '50%']}
-      maxH='100vh'
-      flexDir='column'
-      position='relative'
-      bg='whiteAlpha.100'
-      justifyContent={['center']}
-    >
+    <Flex flexDir='column' position='relative' bg='whiteAlpha.100' justifyContent={['center']}>
       <CropperButtons getCroppedImage={getCroppedImage} />
-      <Box position='relative'>
+      <Box position='relative' maxHeight={['90vh']}>
         <Cropper
           image={preview ?? undefined}
           crop={crop}

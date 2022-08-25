@@ -47,7 +47,9 @@ const Template: ComponentStory<typeof GlobalModal> = () => {
 };
 
 export const Primary = Template.bind({});
-Primary.play = async ({ args, canvasElement }) => {
+
+export const UploadAndPost = Template.bind({});
+UploadAndPost.play = async ({ args, canvasElement }) => {
   const canvas = within(canvasElement);
   await waitFor(
     () => {
@@ -76,4 +78,18 @@ Primary.play = async ({ args, canvasElement }) => {
   const textArea = screen.getByRole('textbox');
   await userEvent.type(textArea, 'Hello World');
   await userEvent.click(screen.getByRole('button', { name: /post/i }));
+};
+
+export const OpenImageSelector = Template.bind({});
+OpenImageSelector.play = async ({ args, canvasElement }) => {
+  const canvas = within(canvasElement);
+  await waitFor(
+    () => {
+      expect(canvas.getByText(/open modal/i)).toBeInTheDocument();
+    },
+    { timeout: 10000 }
+  );
+  await userEvent.click(canvas.getByText(/open modal/i));
+  await waitFor(() => expect(screen.getByText(/tap here/gi)).toBeInTheDocument());
+  await userEvent.click(screen.getByTestId('image-input'));
 };
