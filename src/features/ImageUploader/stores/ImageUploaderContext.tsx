@@ -60,9 +60,9 @@ export const ImageUploaderProvider = ({
       const orientation = (await getOrientation(file)) as unknown as OrientationKey;
       let imgUrl = await readFile(file);
       const image = await createImage(imgUrl);
-      const { width, height } = image;
-      setOriginalAspectRatio(width / height);
-      setDimensions({ width, height });
+
+      setOriginalAspectRatio(() => image.width / image.height);
+      setDimensions({ width: image.width, height: image.height });
       const rotation = ORIENTATION_TO_ANGLE[orientation] ?? 0;
 
       if (rotation) {
@@ -136,6 +136,7 @@ export const ImageUploaderProvider = ({
         croppedImage,
         hasAdditionalStep,
         shape,
+        setPreview, // this should only be used for testing
       }}
     >
       {children}

@@ -1,15 +1,5 @@
 import { useGlobalModalContext } from './useGlobalModal';
 import { CreatePostModalProps } from '../components';
-import { createPost } from '@features/ImageUploader/api/createPost';
-import { GetCroppedImageReturn, ImageData } from '@features/ImageUploader/types/image-uploader.types';
-
-export type HandleSubmitPost = ({
-  croppedImageData,
-  caption,
-}: {
-  croppedImageData: GetCroppedImageReturn | null;
-  caption: string;
-}) => Promise<void>;
 
 export const useCreatePostModal = () => {
   const { showModal, ...rest } = useGlobalModalContext<CreatePostModalProps>();

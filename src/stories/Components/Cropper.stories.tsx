@@ -1,6 +1,6 @@
 import React from 'react';
 import { ComponentStory, ComponentMeta } from '@storybook/react';
-import { Cropper, ImageUploaderProvider, useCreateUploaderContext } from '../../features/ImageUploader';
+import { Cropper, ImageUploaderProvider } from '../../features/ImageUploader';
 import { noOp } from '../../common/utils';
 import { Modal, ModalOverlay, ModalContent } from '@chakra-ui/react';
 import { withPerformance } from 'storybook-addon-performance';
@@ -12,18 +12,15 @@ export default {
 } as ComponentMeta<typeof Cropper>;
 
 const Template: ComponentStory<typeof Cropper> = (args) => {
-  const initialValue = useCreateUploaderContext();
+  // const initialValue = useCreateUploaderContext();
   const props = {
-    ...initialValue,
-    ...args,
+    // ...initialValue,
+    // ...args,
   };
   return (
     <ImageUploaderProvider>
       <Modal isOpen={true} onClose={noOp} size={['md', 'lg', '3xl']} initialFocusRef={undefined} isCentered={true}>
-        <ModalOverlay />
-        <ModalContent p='0' display={'flex'} flexDir='column'>
-          <Cropper />
-        </ModalContent>
+        <Cropper />
       </Modal>
     </ImageUploaderProvider>
   );

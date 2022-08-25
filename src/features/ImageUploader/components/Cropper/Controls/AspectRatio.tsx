@@ -12,6 +12,7 @@ import { FaExpandArrowsAlt } from 'react-icons/fa';
 const ASPECT_RATIOS = [
   { label: '1:1', value: '1' },
   { label: '4:3', value: '0.75' },
+  { label: '9:16', value: '0.5625' },
   { label: '16:9', value: '1.77' },
 ];
 
@@ -39,6 +40,7 @@ export const AspectRatio = ({ setAspectRatio }: AspectRatioSelectProps) => {
         variant='ghost'
         _hover={{
           cursor: 'pointer',
+          bg: 'rgba(0,0,0,0)',
         }}
         _active={{
           cursor: 'pointer',
@@ -48,13 +50,15 @@ export const AspectRatio = ({ setAspectRatio }: AspectRatioSelectProps) => {
           cursor: 'pointer',
           bg: 'rgba(0,0,0,0)',
         }}
-        icon={
-          <FaExpandArrowsAlt
-            fontSize={iconSize}
-            fill='white'
-            aria-label='change aspect ratio'
-          />
-        }
+        _focusWithin={{
+          cursor: 'pointer',
+          bg: 'rgba(0,0,0,0)',
+        }}
+        _focusVisible={{
+          cursor: 'pointer',
+          bg: 'rgba(0,0,0,0)',
+        }}
+        icon={<FaExpandArrowsAlt fontSize={iconSize} fill='white' aria-label='change aspect ratio' />}
       />
       <MenuList minW='14' pb='0.5' pt='2' mb='0.5'>
         <MenuOptionGroup defaultValue={'1:1'} onChange={handleSelect}>
@@ -80,7 +84,8 @@ export const AspectRatio = ({ setAspectRatio }: AspectRatioSelectProps) => {
                 style={{
                   marginLeft: '-0.5rem',
                   fontWeight: 'semibold',
-                }}>
+                }}
+              >
                 {label}
               </MenuItemOption>
             );
