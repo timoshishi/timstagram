@@ -13,12 +13,12 @@ class ImageService {
     this.bucket = bucket;
   }
 
-  async createSignedUrl({ file, fileName }: { file: Express.Multer.File; fileName: string }) {
+  async createSignedUrl({ file, filename }: { file: Express.Multer.File; filename: string }) {
     const command = new PutObjectCommand({
       Bucket: process.env.PHOTO_BUCKET,
-      Key: fileName,
+      Key: filename,
       Body: file.buffer,
-      // ContentType: file.mimetype,
+      ContentType: file.mimetype,
     });
     const signedUrl = await getSignedUrl(s3Client, command, {
       expiresIn: 60,

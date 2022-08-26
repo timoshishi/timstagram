@@ -4,14 +4,14 @@ import Cropper, { Area } from 'react-easy-crop';
 import { getImageFromPreview } from '../../utils/cropper-functions';
 import { handleCroppedImage } from '../../utils/image-uploader-functions';
 import { Controls } from './Controls/Controls';
-import { useImageUploaderContext } from '../../hooks/useImageUploaderContext';
+import { useImageUploader } from '../../hooks/useImageUploader';
 import { CropperButtons } from './Controls/CropperButtons';
 import { GetCroppedImage } from '../../types/image-uploader.types';
 
 export interface CropperProps {}
 
 export const EasyCropper = ({}: CropperProps) => {
-  const { preview, originalDimensions, cropShape, file, setCroppedImage, shape } = useImageUploaderContext();
+  const { preview, originalDimensions, cropShape, file, setCroppedImage, shape } = useImageUploader();
   const [crop, setCrop] = useState({ x: 0, y: 0 });
   const [rotation, setRotation] = useState(0);
   const [aspectRatio, setAspectRatio] = useState(1);
