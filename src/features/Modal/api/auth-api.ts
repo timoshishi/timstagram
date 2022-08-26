@@ -2,7 +2,7 @@ import { Profile } from '@prisma/client';
 import { supabaseClient } from '@supabase/auth-helpers-nextjs';
 
 export async function usernameDoesExist(username: string): Promise<boolean> {
-  const result = await supabaseClient.from<Profile>('profile').select('username').eq('username', username).limit(1);
+  const result = await supabaseClient.from<Profile>('profiles').select('username').eq('username', username).limit(1);
   return result?.data?.length ? true : false;
 }
 

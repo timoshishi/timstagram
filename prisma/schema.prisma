@@ -22,8 +22,8 @@ generator dbml {
 model Profile {
   id        String     @id @unique @db.Uuid()
   username  String?    @unique
-  avatarUrl String?    @unique @default("") @map("avatar_url")
-  avatarFilename String?    @unique @default("") @map("avatar_filename")
+  avatarUrl String?    @default("") @map("avatar_url")
+  avatarFilename String? @unique @map("avatar_filename")
   bio       String?    @default("") @map("bio")
   createdAt DateTime   @default(now()) @map("created_at")
   updatedAt DateTime?  @updatedAt @map("updated_at")
