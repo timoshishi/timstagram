@@ -33,7 +33,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       del = supabaseService.auth.api.deleteUser(user.id);
     }
     const profileDel = await supabaseService
-      .from('profile')
+      .from('profiles')
       .delete()
       .match({ id: user?.id || id });
     return res.json({ del, profileDel });

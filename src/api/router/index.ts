@@ -73,7 +73,8 @@ export const handlerDefaults = {
 };
 
 export const devLogger = (req: NextRequestWithUser, res: NextApiResponse, next: NextFunction) => {
-  if (process.env.ENVIRONMENT === 'local') {
+  const environment = process.env.ENVIRONMENT;
+  if (environment === 'local' || environment === 'test') {
     morgan('dev')(req, res, next);
   } else {
     next();

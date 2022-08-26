@@ -21,7 +21,7 @@ export const ProfileDropdown = ({ user }: ProfileDropdownProps) => {
     <>
       <Flex alignItems={'center'}>
         <Menu isLazy>
-          <MenuButton as={Button} rounded={'full'} variant={'link'} cursor={'pointer'}>
+          <MenuButton as={Button} rounded={'full'} variant={'link'} cursor={'pointer'} aria-role='profile-menu-button'>
             <Avatar
               size={'sm'}
               src={user.user_metadata.avatarUrl}

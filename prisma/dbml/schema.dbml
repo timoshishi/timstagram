@@ -5,8 +5,8 @@
 Table profiles {
   id String [pk, unique]
   username String [unique]
-  avatarUrl String [unique, default: '']
-  avatarFilename String [unique, default: '']
+  avatarUrl String [default: '']
+  avatarFilename String [unique]
   bio String [default: '']
   createdAt DateTime [default: `now()`, not null]
   updatedAt DateTime
