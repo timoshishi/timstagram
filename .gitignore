@@ -7,3 +7,6 @@ node_modules/
 
 coverage/lcov-report/**/*.html
 coverage/lcov-report/index.html
+
+cypress/screenshots/**/*
+cypress/videos/**/*
