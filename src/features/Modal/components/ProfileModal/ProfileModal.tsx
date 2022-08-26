@@ -3,7 +3,7 @@ import { useProfileModal } from '../../hooks/useProfileModal';
 import { ProfileModalForm } from './ProfileModalForm';
 import { SupaUser } from 'types/index';
 import { ImageUploader } from '@features/ImageUploader';
-import { useImageUploaderContext } from '@features/ImageUploader';
+import { useImageUploader } from '@features/ImageUploader';
 import { useCallback, useEffect } from 'react';
 import { handleAvatarSubmit } from '@features/Modal/api/profile-api';
 import { useUser } from '@common/hooks/useUser';
@@ -28,7 +28,7 @@ export const ProfileModal = () => {
     defaultIsOpen: true,
   });
 
-  const { croppedImage, clearFile, toggleUploaderLoading } = useImageUploaderContext();
+  const { croppedImage, clearFile, toggleUploaderLoading } = useImageUploader();
 
   const onAvatarSubmit = useCallback(async () => {
     toggleUploaderLoading();

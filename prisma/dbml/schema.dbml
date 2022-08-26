@@ -6,6 +6,7 @@ Table profiles {
   id String [pk, unique]
   username String [unique]
   avatarUrl String [unique, default: '']
+  avatarFilename String [unique, default: '']
   bio String [default: '']
   createdAt DateTime [default: `now()`, not null]
   updatedAt DateTime
@@ -34,6 +35,7 @@ Table posts {
   mediaType String
   mediaUrl String [unique]
   mediaId String [not null]
+  filename String [unique, not null]
   createdAt DateTime [default: `now()`, not null]
   isBotPost Boolean [not null, default: false]
   isShared Boolean [not null, default: false]

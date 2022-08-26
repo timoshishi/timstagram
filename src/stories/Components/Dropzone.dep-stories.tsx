@@ -2,7 +2,7 @@ import React from 'react';
 import { ComponentMeta } from '@storybook/react';
 import { Dropzone } from '../../features/ImageUploader/components/Dropzone';
 import { Modal, ModalContent } from '@chakra-ui/react';
-import { useImageUploaderContext } from '../../features/ImageUploader/hooks/useImageUploaderContext';
+import { useImageUploader } from '../../features/ImageUploader/hooks/useImageUploader';
 import { ErrorMessage } from '../../common/components/ErrorMessage';
 import { noOp } from '../../common/utils';
 // More on default export: https://storybook.js.org/docs/react/writing-stories/introduction#default-export
@@ -17,7 +17,7 @@ export default {
 // More on component templates: https://storybook.js.org/docs/react/writing-stories/introduction#using-args
 export const Primary = (args) => {
   const { getRootProps, getInputProps, isDragActive, preview, error, file, dimensions, aspectRatio, clearFile } =
-    useImageUploaderContext();
+    useImageUploader();
   console.info(file);
   return (
     <Modal isOpen={true} onClose={noOp} size='full'>

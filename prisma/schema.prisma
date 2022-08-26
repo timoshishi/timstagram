@@ -23,6 +23,7 @@ model Profile {
   id        String     @id @unique @db.Uuid()
   username  String?    @unique
   avatarUrl String?    @unique @default("") @map("avatar_url")
+  avatarFilename String?    @unique @default("") @map("avatar_filename")
   bio       String?    @default("") @map("bio")
   createdAt DateTime   @default(now()) @map("created_at")
   updatedAt DateTime?  @updatedAt @map("updated_at")
@@ -54,6 +55,7 @@ model Post {
   mediaType     String?    @map("media_type")
   mediaUrl      String?    @unique @map("media_url")
   mediaId       String     @map("media_id") @db.Uuid()
+  filename      String    @map("filename") @unique
   createdAt     DateTime   @default(now()) @map("created_at")
   isBotPost     Boolean    @default(false) @map("is_bot_post")
   isShared      Boolean    @default(false) @map("is_shared")

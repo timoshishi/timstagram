@@ -1,10 +1,10 @@
-import { useImageUploaderContext } from '../hooks/useImageUploaderContext';
+import { useImageUploader } from '../hooks/useImageUploader';
 import { Dropzone } from './Dropzone';
 import { Cropper } from './Cropper';
 import { Box, Center, Spinner, Flex } from '@chakra-ui/react';
 
 export const ImageUploader = () => {
-  const { preview, isUploaderLoading } = useImageUploaderContext();
+  const { preview, isUploaderLoading } = useImageUploader();
   if (isUploaderLoading) {
     return (
       <Box h='60' w='100%'>

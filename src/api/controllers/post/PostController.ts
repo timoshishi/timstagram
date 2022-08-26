@@ -1,7 +1,7 @@
-import { PostHash, Prisma, PrismaClient, PrismaPromise } from '@prisma/client';
+import { PostHash, PrismaClient } from '@prisma/client';
 import { imageService } from '@src/api/createSignedUrl';
 import { getImageProperties, resizeAvatarImage } from '@src/api/handleImageUpload';
-import { FileController, NextRequestWithUser, NextRequestWithUserFile } from '@api/types';
+import { NextRequestWithUserFile } from '@api/types';
 import { customNano } from '@src/lib/customNano';
 import { NextApiResponse } from 'next';
 import { randomUUID } from 'crypto';
@@ -66,6 +66,7 @@ export class PostController {
           mediaType: imageProperties.type,
           postBody: body.caption,
           mediaUrl: imageProperties.url,
+          filename: imageProperties.filename,
         },
       });
       console.log({ post });
@@ -74,7 +75,6 @@ export class PostController {
         filename: imageProperties.filename,
         file: croppedImage,
       });
-      console.log({ signedUrl });
 
       const createdMedia = await this.prisma.media.create({
         data: {
@@ -95,7 +95,7 @@ export class PostController {
         },
       });
 
-      return res.status(200).json({ imageProperties, signedUrl, createdMedia, post, postHash });
+      return res.status(200).json({ signedUrl });
     } catch (error) {
       console.error(error);
       res.status(500).json({ error: 'Something went wrong' });

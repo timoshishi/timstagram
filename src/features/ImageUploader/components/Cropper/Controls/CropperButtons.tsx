@@ -1,13 +1,13 @@
 import { Stack, Button } from '@chakra-ui/react';
 import { GetCroppedImage } from '../../../types/image-uploader.types';
-import { useImageUploaderContext } from '../../../hooks/useImageUploaderContext';
+import { useImageUploader } from '../../../hooks/useImageUploader';
 
 interface CropperButtonsProps {
   getCroppedImage: GetCroppedImage;
 }
 
 export const CropperButtons = ({ getCroppedImage }: CropperButtonsProps) => {
-  const { clearFile, hasAdditionalStep } = useImageUploaderContext();
+  const { clearFile, hasAdditionalStep } = useImageUploader();
 
   return (
     <Stack

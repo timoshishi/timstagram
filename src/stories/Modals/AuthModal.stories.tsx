@@ -8,11 +8,11 @@ import { expect } from '@storybook/jest';
 import { SIGN_UP_TEXTS } from '../../features/Modal/constants/modal';
 import { VIEWS } from '../../features/Modal/components/AuthModal/Auth';
 import { rest } from 'msw';
+
 export default {
   title: 'Modals/AuthModal',
   component: AuthModal,
   centered: true,
-  // More on argTypes: https://storybook.js.org/docs/react/api/argtypes
   argTypes: {
     viewType: {
       control: {
@@ -32,7 +32,6 @@ export default {
   },
 } as ComponentMeta<typeof GlobalModal>;
 
-// More on component templates: https://storybook.js.org/docs/react/writing-stories/introduction#using-arg
 const ModalComp = (args) => {
   const { showAuthModal } = useAuthModal();
   console.info(args.signUpActionType);
@@ -106,7 +105,6 @@ SignUp.parameters = {
         return res(ctx.delay(600), ctx.json(SIGN_UP_RESPONSE));
       }),
       rest.post('/api/profile', (req, res, ctx) => {
-        // delay
         return res(ctx.delay(500), ctx.json(SIGN_UP_RESPONSE));
       }),
       rest.post(SUPABASE_AUTH_URL + '/recover', (req, res, ctx) => {

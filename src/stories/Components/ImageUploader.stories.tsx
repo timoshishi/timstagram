@@ -1,19 +1,13 @@
 import React from 'react';
 import { ComponentStory, ComponentMeta } from '@storybook/react';
-import { ImageUploader, ImageUploaderProvider, useImageUploaderContext } from '../../features/ImageUploader';
+import { ImageUploader, ImageUploaderProvider, useImageUploader } from '../../features/ImageUploader';
 import { rest } from 'msw';
 import { Modal, ModalContent, ModalOverlay } from '@chakra-ui/react';
 import { userEvent, waitFor, within, screen } from '@storybook/testing-library';
 import { expect } from '@storybook/jest';
 
 // More on default export: https://storybook.js.org/docs/react/writing-stories/introduction#default-export
-const Wrapper = (...args) => {
-  return (
-    <Modal isOpen={true} onClose={noOp} size='full'>
-      <Story {...args} />
-    </Modal>
-  );
-};
+
 export default {
   title: 'Components/ImageUploader',
   component: ImageUploader,
@@ -36,7 +30,7 @@ export default {
 // More on component templates: https://storybook.js.org/docs/react/writing-stories/introduction#using-args
 const Template: ComponentStory<typeof ImageUploader> = (args: unknown) => {
   console.log(args);
-  const { setPreview } = useImageUploaderContext();
+  const { setPreview } = useImageUploader();
   setPreview(args?.preview || null);
   // const props = {
   //   ...initialValue,
@@ -87,38 +81,9 @@ Primary.play = async ({ args, canvasElement }) => {
   await userEvent.click(canvas.getByText(/open modal/i));
   await waitFor(() => expect(screen.getByText(/tap here/gi)).toBeInTheDocument());
   await userEvent.click(screen.getByTestId('image-input'));
-  // const result = await fetch(DEFAULT_IMAGE_PLACEHOLDER);
-  // const blob = await result.blob();
-  // const file = new File([blob], 'aspect-1-1.jpg', { type: 'image/jpeg' });
-  // await userEvent.upload(screen.getByTestId('image-input'), file);
-  // await waitFor(() => expect(screen.getByText(/next/gi)).toBeInTheDocument(), {
-  //   timeout: 10000,
-  // });
-  // await userEvent.click(screen.getByText(/next/gi));
-  // await waitFor(() =>
-  //   expect(
-  //     screen.getByRole('button', {
-  //       name: /post/i,
-  //     })
-  //   ).toBeInTheDocument()
-  // );
-  // const textArea = screen.getByRole('textbox');
-  // await userEvent.type(textArea, 'Hello World');
-  // await userEvent.click(screen.getByRole('button', { name: /post/i }));
 };
 Primary.parameters = {
   msw: [
-    // rest.get('/api/auth/user', (req, res, ctx) => {
-    //   return res(
-    //     ctx.json({
-    //       user: {
-    //         id: '1',
-    //         username: 'Bobby Daniels',
-    //         avatarUrl: '',
-    //       },
-    //     })
-    //   );
-    // }),
     rest.get('/api/user/:id', (req, res, ctx) => {
       return res(
         ctx.json({

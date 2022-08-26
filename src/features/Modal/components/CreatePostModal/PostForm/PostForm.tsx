@@ -1,13 +1,13 @@
 import { useState } from 'react';
-import { Button, Box, Flex, Textarea, Collapse } from '@chakra-ui/react';
+import { Button, Box, Textarea, Collapse, Stack } from '@chakra-ui/react';
 import { useCreatePostModal } from '@features/Modal/hooks/useCreatePostModal';
-import { useImageUploaderContext } from '@features/ImageUploader/hooks/useImageUploaderContext';
-import { handlePostSubmit } from '@features/Modal/api/profile-api';
+import { useImageUploader } from '@features/ImageUploader/hooks/useImageUploader';
+import { handlePostSubmit } from '@features/Modal/api/post-api';
 
 interface PostFormProps {}
 
 export const PostForm = ({}: PostFormProps) => {
-  const { croppedImage: croppedImageData, clearFile, toggleUploaderLoading, croppedImage } = useImageUploaderContext();
+  const { croppedImage: croppedImageData, clearFile, toggleUploaderLoading, croppedImage } = useImageUploader();
   const { useModalToast } = useCreatePostModal();
   const [caption, setCaption] = useState('');
 
@@ -22,14 +22,15 @@ export const PostForm = ({}: PostFormProps) => {
         await handlePostSubmit({ imageData: croppedImage, caption });
         clearFile();
         useModalToast.success({
-          message: 'Avatar updated successfully',
+          message: 'Post created!',
         });
       }
+      setCaption('');
       clearFile();
     } catch (error) {
       useModalToast.error({
         error,
-        message: 'Error updating avatar',
+        message: 'We have encountered an error. Please try again later.',
       });
     }
     toggleUploaderLoading();
@@ -64,14 +65,14 @@ export const PostForm = ({}: PostFormProps) => {
             _placeholder={{ color: 'white' }}
             mt='4'
           />
-          <Flex justifyContent={'flex-end'} w='100%' p='3' alignSelf={'flex-end'}>
+          <Stack spacing={['3']} justifyContent={'flex-end'} w='100%' p='3' alignSelf={'flex-end'}>
             <Button variant='outline' colorScheme='telegram' size={['md', 'md', 'md']} onClick={clearFile}>
               Cancel
             </Button>
             <Button variant='solid' colorScheme='telegram' size={['md', 'md', 'md']} onClick={onFormSubmit}>
               Post
             </Button>
-          </Flex>
+          </Stack>
         </Box>
       </Collapse>
     </Box>

@@ -9,10 +9,10 @@ import {
   ModalCloseButton,
 } from '@chakra-ui/react';
 import { MdCloudUpload } from 'react-icons/md';
-import { useImageUploaderContext } from '../../hooks/useImageUploaderContext';
+import { useImageUploader } from '../../hooks/useImageUploader';
 
 export const Dropzone = () => {
-  const { getRootProps, getInputProps, isDragActive } = useImageUploaderContext();
+  const { getRootProps, getInputProps, isDragActive } = useImageUploader();
   const baseText = useBreakpointValue({
     base: 'Tap here to select an image',
     md: 'Drag and drop or click here to select an image',
