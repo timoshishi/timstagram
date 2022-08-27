@@ -5,27 +5,27 @@ on:
   workflow_dispatch:
 
 jobs:
-  create_env_file_job:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Create .env file
-        uses: ozaytsev86/create-env-file@v1
-        with:
-          ENV_DATABASE_URL: ${{ secrets.DATABASE_URL }}
-          ENV_NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
-          ENV_NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.ENV_NEXT_PUBLIC_SUPABASE_ANON_KEY }}
-          ENV_SERVICE_ROLE_KEY: ${{ secrets.SERVICE_ROLE_KEY }}
-          ENV_IMAGE_HOST_DOMAIN: ${{ secrets.IMAGE_HOST_DOMAIN }}
-          ENV_PHOTO_BUCKET: ${{ secrets.PHOTO_BUCKET }}
-          ENV_NEXT_PUBLIC_APP_NAME: ${{ secrets.NEXT_PUBLIC_APP_NAME }}
-          ENV_NEXT_PUBLIC_API_URL: ${{ secrets.NEXT_PUBLIC_API_URL }}
-          ENV_AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          ENV_AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          ENV_BUCKET_REGION: ${{ secrets.BUCKET_REGION }}
-  # install_yarn_dependencies:
   test:
     runs-on: ubuntu-22.04
     steps:
+      - name: Create .env file
+        uses: SpicyPizza/create-envfile@v1.3
+        with:
+          envkey_DATABASE_URL: ${{ secrets.DATABASE_URL }}
+          envkey_NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
+          envkey_NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.NEXT_PUBLIC_SUPABASE_ANON_KEY }}
+          envkey_SERVICE_ROLE_KEY: ${{ secrets.SERVICE_ROLE_KEY }}
+          envkey_IMAGE_HOST_DOMAIN: ${{ secrets.IMAGE_HOST_DOMAIN }}
+          envkey_PHOTO_BUCKET: ${{ secrets.PHOTO_BUCKET }}
+          envkey_NEXT_PUBLIC_APP_NAME: ${{ secrets.NEXT_PUBLIC_APP_NAME }}
+          envkey_NEXT_PUBLIC_API_URL: ${{ secrets.NEXT_PUBLIC_API_URL }}
+          envkey_AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          envkey_AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          envkey_BUCKET_REGION: ${{ secrets.BUCKET_REGION }}
+          directory: ./
+          file_name: .env
+          fail_on_empty: false
+
       - name: Get yarn cache directory path
         id: yarn-cache-dir-path
         run: echo "::set-output name=dir::$(yarn cache dir)"
@@ -63,7 +63,7 @@ jobs:
         run: yarn prisma generate
 
       - name: Push Types to Supabase
-        run: npx prisma migrate deploy
+        run: npx prisma db push
 
       - name: Seed db and apply functions
         run: npx prisma db seed
