@@ -41,10 +41,12 @@ jobs:
           directory: ./
           file_name: .env
           fail_on_empty: true
+
       - name: echo secrets
         run: |
           echo ${{ secrets.TEST_SECRET }} |
           echo ${{ secrets.DATABASE_URL}}
+
       - name: Show files
         run: |
           ls -la
