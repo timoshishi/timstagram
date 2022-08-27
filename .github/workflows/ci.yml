@@ -71,14 +71,24 @@ jobs:
         run: npx prisma db seed
 
       - name: 🧪 Unit tests
-        run: yarn test
+        run: yarn test:ci
 
       # - name: Download the build folders
       #   uses: actions/download-artifact@v2
       #   with:
       #     name: build
       #     path: build
-
+      - name: Cache NPM and Cypress 📦
+        uses: actions/cache@v2
+        with:
+          path: |
+            ~/.cache/Cypress
+            node_modules
+          key: my-cache-${{ runner.os }}-${{ hashFiles('yarn-lock.json') }}
+      - name: Install Cypress 📥
+        run:
+          yarn add
+          https://cdn.cypress.io/beta/npm/10.0.0/linux-x64/10.0-release-04e5d70d48a1337b702f53ac9677350167eb7ae6/cypress.tgz
       - name: Cypress run
         uses: cypress-io/github-action@v4
       # - name: 🛩 E2E tests
