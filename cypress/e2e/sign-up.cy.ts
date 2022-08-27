@@ -1,27 +1,4 @@
-const createRandomUserCreds = () => {
-  const username = 'testuser' + Math.floor(Math.random() * 10000);
-  const email = Math.floor(Math.random() * 10000) + 'test12@test.com';
-  const password = 'password';
-  return { username, email, password };
-};
-
-const createUser = (cy: Cypress.cy, { username, email, password }: Record<string, string>) => {
-  cy.contains(/Sign up/i).click();
-  cy.wait(400);
-  cy.get('input[name="username"]').type(username);
-  cy.get('input[name="email"]').type(email);
-  cy.get('input[name="password"]').type(password);
-  cy.get('button[type="submit"]').click();
-  cy.get('button[aria-label="Close"]').click();
-};
-
-const loginUser = (cy: Cypress.cy, email: string, password: string) => {
-  cy.contains(/Sign In/i).click();
-  cy.wait(400);
-  cy.get('input[name="email"]').type(email);
-  cy.get('input[name="password"]').type(password);
-  cy.get('button[type="submit"]').click();
-};
+import { createRandomUserCreds } from 'cypress/utils';
 
 describe('Logging in and out', () => {
   const { username, password, email } = createRandomUserCreds();
@@ -30,10 +7,10 @@ describe('Logging in and out', () => {
   });
 
   it('creates a user, signs in and out', () => {
-    createUser(cy, { username, email, password });
+    cy.createUser({ username, email, password });
     cy.contains(/welcome/i).should('be.visible');
     cy.wait(1000);
-    loginUser(cy, email, password);
+    cy.loginUser({ email, password });
     cy.wait(1000);
     cy.get('[data-testid="user-avatar"]').should('be.visible');
     cy.get('[data-testid="profile-dropdown-button"]').click();
@@ -42,44 +19,45 @@ describe('Logging in and out', () => {
   });
 
   it('should be able to log back in after coming back to the page', () => {
-    loginUser(cy, email, password);
+    cy.loginUser({ email, password });
     cy.wait(1000);
     cy.get('[data-testid="user-avatar"]').should('be.visible');
   });
 });
 
-describe('failed logins', () => {
+describe.only('failed logins', () => {
   const { username, email, password } = createRandomUserCreds();
   beforeEach(() => {
     cy.visit('http://localhost:3000/');
+    console.log({ username, email, password });
   });
 
   it('creates a new user', () => {
-    createUser(cy, { username, email, password });
+    cy.createUser({ username, email, password });
     cy.wait(1000);
   });
 
   it('shows a warning if you try to create a user with a username that already exists', () => {
-    createUser(cy, { username, email, password });
+    cy.createUser({ username, email, password });
     cy.contains(/Sign up/i).click();
-    cy.wait(300);
-    cy.contains(/sorry about that/i).should('be.visible');
+    cy.wait(1000);
+    cy.contains(/sorry/i).should('be.visible');
   });
 
   it('shows an error if you try to log in with the wrong password', () => {
-    loginUser(cy, email, 'wrongpassword');
+    cy.loginUser({ email, password: 'wrongPass' });
     cy.wait(300);
     cy.contains(/invalid/i).should('be.visible');
   });
 
   it('shows an error if you try to log in with an invalid email', () => {
-    loginUser(cy, 'testy@snuggleBus.com', 'wrongpassword');
-    cy.wait(300);
+    cy.loginUser({ email: 'testy@snuggleBus.com', password });
+    cy.wait(1000);
     cy.contains(/invalid/i).should('be.visible');
   });
 
   it('should be able to log back in after failing logins previously', () => {
-    loginUser(cy, email, password);
+    cy.loginUser({ email, password });
     cy.wait(1000);
     cy.get('[data-testid="user-avatar"]').should('be.visible');
   });
