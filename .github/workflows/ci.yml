@@ -9,23 +9,13 @@ jobs:
     runs-on: ubuntu-latest
     environment: test
     steps:
-      # - name: Get yarn cache directory path
-      #   id: yarn-cache-dir-path
-      #   run: echo "::set-output name=dir::$(yarn cache dir)"
-      # - uses: actions/cache@v3
-      #   id: yarn-cache # use this to check for `cache-hit` (`steps.yarn-cache.outputs.cache-hit != 'true'`)
-      #   with:
-      #     path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
-      #     key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
-      #     restore-keys: |
-      #       ${{ runner.os }}-yarn-
       - uses: actions/checkout@v3
       - uses: actions/setup-node@v3
         with:
           node-version: 16
           cache: 'yarn'
 
-      - name: Create .env file
+      - name: 🔑 Create .env file
         uses: SpicyPizza/create-envfile@v1.3
         with:
           envkey_DATABASE_URL: ${{ secrets.DATABASE_URL }}
@@ -52,7 +42,7 @@ jobs:
         run: |
           ls -la
 
-      - name: Install dependencies
+      - name: 🏗️ Install dependencies
         id: yarn-install
         run: yarn install --frozen-lockfile
       - uses: supabase/setup-cli@v1
@@ -70,6 +60,7 @@ jobs:
             git diff
             exit 1
           fi
+
       - name: Generate Prisma Client
         run: yarn prisma generate
 
@@ -79,6 +70,8 @@ jobs:
       - name: Seed db and apply functions
         run: npx prisma db seed
 
+      - name: 🧪 E2E tests
+        run: yarn e2e:headless
       # SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
       # SUPABASE_DB_PASSWORD: ${{ secrets.STAGING_DB_PASSWORD }}
       # STAGING_PROJECT_ID: abcdefghijklmnopqrst

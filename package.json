@@ -10,6 +10,7 @@
     "build": "next build",
     "predev": "npx prisma generate",
     "start": "next start",
+    "build-start": "yarn build && yarn start",
     "lint": "next lint",
     "storybook": "start-storybook -p 6006 -s public",
     "build-storybook": "yarn build && build-storybook -s public",
@@ -24,7 +25,7 @@
     "dbpush:local": "dotenv -e .env.local -- npx prisma db push",
     "seed:local": "supabase stop && supabase start && dotenv -e .env.local prisma generate &&  dotenv -e .env.local npx prisma db push && dotenv -e .env.local -- npx prisma db seed",
     "cypress:headless": "cypress run",
-    "e2e:headless": "start-server-and-test 'yarn dev' http://localhost:3000 'yarn cypress:headless'"
+    "e2e:headless": "start-server-and-test 'yarn build-start' http://localhost:3000 'yarn cypress:headless'"
   },
   "dependencies": {
     "@aws-sdk/client-s3": "^3.150.0",
