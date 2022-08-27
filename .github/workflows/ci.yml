@@ -13,7 +13,7 @@ jobs:
         run: yarn install --frozen-lockfile
       - name: Show files
         run: |
-        ls -la 
+          ls -la
       - uses: supabase/setup-cli@v1
         with:
           version: 1.0.0
