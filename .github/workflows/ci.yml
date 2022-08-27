@@ -9,11 +9,14 @@ jobs:
     runs-on: ubuntu-22.04
     steps:
       - uses: actions/checkout@v3
-      - name: Install dependencies
-        run: yarn install --frozen-lockfile
       - name: Show files
         run: |
           ls -la
+      - name: Yarn version
+        run: |
+          yarn -v
+      - name: Install dependencies
+        run: yarn install --frozen-lockfile
       - uses: supabase/setup-cli@v1
         with:
           version: 1.0.0
@@ -32,7 +35,7 @@ jobs:
       - name: Generate Prisma Client
         run: yarn prisma generate
       - name: Push Types to Supabase
-        run: npx prisma deploy
+        run: npx prisma migrate deploy
       - name: Seed db and apply functions
         run: npx prisma db seed
       # SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
