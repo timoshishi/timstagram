@@ -26,7 +26,7 @@ jobs:
       - name: Create .env file
         uses: SpicyPizza/create-envfile@v1.3
         with:
-          envkey_DATABASE_URL: ${{ secrets.DATABASE_URL }}
+          envkey_DATABASE_URL: ${{ secrets.test.DATABASE_URL }}
           # envkey_NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
           # envkey_NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.NEXT_PUBLIC_SUPABASE_ANON_KEY }}
           # envkey_SERVICE_ROLE_KEY: ${{ secrets.SERVICE_ROLE_KEY }}
