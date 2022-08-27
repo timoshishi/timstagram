@@ -6,7 +6,8 @@ on:
 
 jobs:
   test:
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-latest
+    environment: test
     steps:
       # - name: Get yarn cache directory path
       #   id: yarn-cache-dir-path
