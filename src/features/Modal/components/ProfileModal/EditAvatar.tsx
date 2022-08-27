@@ -13,7 +13,7 @@ export const EditAvatar = ({ initialProfileData, getButtonProps, avatarUrl }: Pr
     <>
       {initialProfileData.username && (
         <Flex alignItems='center' justifyContent='space-between'>
-          <Box flexGrow={1} {...getButtonProps()}>
+          <Box flexGrow={1} {...getButtonProps()} data-testid='edit-avatar'>
             <PostHeaderAvatar
               username={initialProfileData.username}
               avatarUrl={avatarUrl}

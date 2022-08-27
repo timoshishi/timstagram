@@ -21,7 +21,9 @@
     "migrate:dev": "npx prisma migrate dev",
     "migrate:local": "dotenv -e .env.local -- npx prisma migrate",
     "dbpush:local": "dotenv -e .env.local -- npx prisma db push",
-    "seed:local": "supabase stop && supabase start && dotenv -e .env.local prisma generate &&  dotenv -e .env.local npx prisma db push && dotenv -e .env.local -- npx prisma db seed"
+    "seed:local": "supabase stop && supabase start && dotenv -e .env.local prisma generate &&  dotenv -e .env.local npx prisma db push && dotenv -e .env.local -- npx prisma db seed",
+    "cypress:headless": "cypress run",
+    "e2e:headless": "start-server-and-test 'yarn dev' http://localhost:3000 'yarn cypress:headless'"
   },
   "dependencies": {
     "@aws-sdk/client-s3": "^3.150.0",
@@ -99,6 +101,7 @@
     "babel-loader": "^8.2.5",
     "chance": "^1.1.8",
     "cypress": "^10.6.0",
+    "cypress-file-upload": "^5.0.8",
     "eslint": "^8.19.0",
     "eslint-config-next": "12.2.5",
     "eslint-config-prettier": "^8.5.0",
@@ -114,6 +117,7 @@
     "pg": "^8.8.0",
     "prisma": "^4",
     "prisma-dbml-generator": "^0.9.1",
+    "start-server-and-test": "^1.14.0",
     "storybook-addon-next": "^1.6.7",
     "storybook-addon-performance": "^0.16.1",
     "ts-node": "10.9.1",

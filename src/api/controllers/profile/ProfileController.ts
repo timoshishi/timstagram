@@ -159,7 +159,7 @@ export class ProfileController {
           avatarUrl: imageProperties.url,
         },
       });
-      return res.status(204).json({ url: imageProperties.url });
+      return res.status(200).json({ url: imageProperties.url });
     } catch (error) {
       console.error(error);
       res.status(500).json({ error: 'Something went wrong' });
