@@ -22,7 +22,7 @@ jobs:
           envkey_AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           envkey_AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           envkey_BUCKET_REGION: ${{ secrets.BUCKET_REGION }}
-          directory: <directory_name>
+          # directory: <directory_name>
           file_name: .env
           fail_on_empty: false
 
