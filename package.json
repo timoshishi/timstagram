@@ -13,6 +13,7 @@
     "lint": "next lint",
     "storybook": "start-storybook -p 6006 -s public",
     "build-storybook": "yarn build && build-storybook -s public",
+    "types:supabase": "supabase gen types typescript --local > ./src/types/database.ts",
     "test": "dotenv -e .env.local jest --watch",
     "test:ci": "jest --ci",
     "test:e2e": "dotenv -e .env.local -- cypress open",
