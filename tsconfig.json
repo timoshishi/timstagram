@@ -34,7 +34,7 @@
       "@src/*": ["./src/*"]
     }
   },
-  "exclude": ["node_modules", "**/types/*", "**/stories/**/*", "scripts/api-example"],
+  "exclude": ["node_modules", "**/types/*", "**/stories/**/*", "scripts/api-example", "**/*.spec.ts"],
   "include": [
     "next-env.d.ts",
     "**/*.ts",

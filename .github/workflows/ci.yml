@@ -7,7 +7,6 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
-    container: cypress/browsers:node12.18.3-chrome87-ff82
     environment: test
     steps:
       - uses: actions/checkout@v3
@@ -74,18 +73,14 @@ jobs:
       - name: 🧪 Unit tests
         run: yarn test
 
-      - name: Download the build folders
-        uses: actions/download-artifact@v2
-        with:
-          name: build
-          path: build
+      # - name: Download the build folders
+      #   uses: actions/download-artifact@v2
+      #   with:
+      #     name: build
+      #     path: build
 
       - name: Cypress run
         uses: cypress-io/github-action@v4
-        with:
-          # Specify Browser since container image is compile with Firefox
-          browser: firefox
-          build: yarn build
       # - name: 🛩 E2E tests
       #   run: yarn e2e:headless
       # SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
