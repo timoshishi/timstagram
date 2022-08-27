@@ -24,23 +24,23 @@ jobs:
         with:
           node-version: 16
           cache: 'yarn'
-      # - name: Create .env file
-      #   uses: SpicyPizza/create-envfile@v1.3
-      #   with:
-      #     envkey_DATABASE_URL: ${{ secrets.DATABASE_URL }}
-      #     # envkey_NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
-      #     # envkey_NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.NEXT_PUBLIC_SUPABASE_ANON_KEY }}
-      #     # envkey_SERVICE_ROLE_KEY: ${{ secrets.SERVICE_ROLE_KEY }}
-      #     # envkey_IMAGE_HOST_DOMAIN: ${{ secrets.IMAGE_HOST_DOMAIN }}
-      #     # envkey_PHOTO_BUCKET: ${{ secrets.PHOTO_BUCKET }}
-      #     # envkey_NEXT_PUBLIC_APP_NAME: ${{ secrets.NEXT_PUBLIC_APP_NAME }}
-      #     # envkey_NEXT_PUBLIC_API_URL: ${{ secrets.NEXT_PUBLIC_API_URL }}
-      #     # envkey_AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-      #     # envkey_AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-      #     # envkey_BUCKET_REGION: ${{ secrets.BUCKET_REGION }}
-      #     directory: ./
-      #     file_name: .env
-      #     fail_on_empty: true
+      - name: Create .env file
+        uses: SpicyPizza/create-envfile@v1.3
+        with:
+          envkey_DATABASE_URL: ${{ secrets.DATABASE_URL }}
+          envkey_NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
+          envkey_NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.NEXT_PUBLIC_SUPABASE_ANON_KEY }}
+          envkey_SERVICE_ROLE_KEY: ${{ secrets.SERVICE_ROLE_KEY }}
+          envkey_IMAGE_HOST_DOMAIN: ${{ secrets.IMAGE_HOST_DOMAIN }}
+          envkey_PHOTO_BUCKET: ${{ secrets.PHOTO_BUCKET }}
+          envkey_NEXT_PUBLIC_APP_NAME: ${{ secrets.NEXT_PUBLIC_APP_NAME }}
+          envkey_NEXT_PUBLIC_API_URL: ${{ secrets.NEXT_PUBLIC_API_URL }}
+          envkey_AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          envkey_AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          envkey_BUCKET_REGION: ${{ secrets.BUCKET_REGION }}
+          directory: ./
+          file_name: .env
+          fail_on_empty: true
       - name: echo secrets
         run: |
           echo ${{ secrets.TEST_SECRET }} |
@@ -48,35 +48,33 @@ jobs:
       - name: Show files
         run: |
           ls -la
-      - name: show env
+
+      - name: Install dependencies
+        id: yarn-install
+        run: yarn install --frozen-lockfile
+      - uses: supabase/setup-cli@v1
+        with:
+          version: 1.0.0
+
+      - name: Start Supabase local development setup
+        run: supabase start
+
+      - name: Verify generated types are up-to-date
         run: |
-          cat .env
-      # - name: Install dependencies
-      #   id: yarn-install
-      #   run: yarn install --frozen-lockfile
-      # - uses: supabase/setup-cli@v1
-      #   with:
-      #     version: 1.0.0
+          supabase gen types typescript --local > types.ts
+          if [ "$(git diff --ignore-space-at-eol types.ts | wc -l)" -gt "0" ]; then
+            echo "Detected uncommitted changes after build. See status below:"
+            git diff
+            exit 1
+          fi
+      - name: Generate Prisma Client
+        run: yarn prisma generate
 
-      # - name: Start Supabase local development setup
-      #   run: supabase start
+      - name: Push Types to Supabase
+        run: npx prisma db push
 
-      # - name: Verify generated types are up-to-date
-      #   run: |
-      #     supabase gen types typescript --local > types.ts
-      #     if [ "$(git diff --ignore-space-at-eol types.ts | wc -l)" -gt "0" ]; then
-      #       echo "Detected uncommitted changes after build. See status below:"
-      #       git diff
-      #       exit 1
-      #     fi
-      # - name: Generate Prisma Client
-      #   run: yarn prisma generate
-
-      # - name: Push Types to Supabase
-      #   run: npx prisma db push
-
-      # - name: Seed db and apply functions
-      #   run: npx prisma db seed
+      - name: Seed db and apply functions
+        run: npx prisma db seed
 
       # SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
       # SUPABASE_DB_PASSWORD: ${{ secrets.STAGING_DB_PASSWORD }}
