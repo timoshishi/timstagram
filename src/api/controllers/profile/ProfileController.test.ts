@@ -51,6 +51,7 @@ describe('getProfile', () => {
       updatedAt: new Date(),
       isBot: false,
       banned: false,
+      avatarFilename: 'thisisfilename.jpg',
     };
 
     prismaMock.profile.findUnique.mockResolvedValue(profile);
@@ -75,17 +76,20 @@ describe('addMetadata', () => {
     req.body = {
       username: 'test',
     };
-    supabaseServiceMock.auth.api.updateUserById.mockResolvedValue({
+
+    await supabaseServiceMock.auth.api.updateUserById.mockResolvedValue({
       user,
       error: null,
       data: null,
     });
     await profileClient.addMetadata(req, res);
-    expect(res.statusCode).toBe(201);
+    await expect(res.statusCode).toBe(200);
     /* tslint disable-next-line */
-    const data = res._getJSONData();
+    const data = await res._getJSONData();
     expect(data).toEqual(supaUserResponse);
+    res.end();
   });
+
   it('should return status 500 if there is no user id on the request', async () => {
     const { req, res } = mockRequestResponse();
     req.user = null;
@@ -94,15 +98,18 @@ describe('addMetadata', () => {
     };
 
     await profileClient.addMetadata(req, res);
-    expect(res.statusCode).toBe(500);
+    expect(res.statusCode).toEqual(500);
+    res.end();
   });
+
   it('should return status 500 if there is no username on the request', async () => {
     const { req, res } = mockRequestResponse();
     req.user = supaUserResponse as unknown as SupaUser;
     req.body = {};
 
     await profileClient.addMetadata(req, res);
-    expect(res.statusCode).toBe(500);
+    expect(res.statusCode).toEqual(500);
+    res.end();
   });
 });
 
@@ -138,6 +145,7 @@ describe('updateProfile', () => {
         username: 'test',
       },
     });
+    res.end();
   });
 
   it('should return status 500 if there is no user id on the request', async () => {
@@ -149,6 +157,7 @@ describe('updateProfile', () => {
 
     await profileClient.updateProfile(req, res);
     expect(res.statusCode).toBe(401);
+    res.end();
   });
 
   it('should return status 400 if there is no bio on the request', async () => {
@@ -158,6 +167,7 @@ describe('updateProfile', () => {
 
     await profileClient.updateProfile(req, res);
     expect(res.statusCode).toBe(400);
+    res.end();
   });
 });
 
@@ -213,12 +223,14 @@ describe('updateAvatar', () => {
     } as any);
 
     await profileClient.updateUserAvatar(req, res);
-    expect(res.statusCode).toBe(204);
+    expect(res.statusCode).toBe(200);
     expect(res.statusCode).not.toBe(500);
     /* tslint disable-next-line */
     const data = res._getJSONData();
     expect(data.url).toEqual(aws);
+    res.end();
   });
+
   it('should return an object that contains a URL', async () => {
     const { req, res } = mockRequestResponse();
     const user = supaUser as unknown as SupaUser;
@@ -241,5 +253,6 @@ describe('updateAvatar', () => {
     await profileClient.updateUserAvatar(req, res);
     expect(res.statusCode).not.toBe(204);
     expect(res.statusCode).toBe(500);
+    res.end();
   });
 });
