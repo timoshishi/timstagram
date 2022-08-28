@@ -45,9 +45,9 @@ jobs:
           version: 1.0.0
 
       - name: Start Supabase local development setup 🦸
-      - uses: mathiasvr/command-output@v1
-        run: supabase start
         id: supabase
+        run: supabase start
+      - uses: mathiasvr/command-output@v1
 
       # - name: log that shit
       #   run: |
