@@ -65,9 +65,6 @@ jobs:
       - name: Seed db and apply functions 🌰
         run: npx prisma db seed
 
-      - name: add dotenv
-        run: yarn global add dotenv-cli
-
       - name: Unit tests 🧪
         run: yarn test:ci
 

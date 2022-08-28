@@ -16,7 +16,7 @@
     "build-storybook": "yarn build && build-storybook -s public",
     "types:supabase": "supabase gen types typescript --local > ./src/types/database.ts",
     "test": "dotenv -e .env.local jest --watch",
-    "test:ci": "dotenv -e .env jest",
+    "test:ci": "jest --ci",
     "test:e2e": "dotenv -e .env.local -- cypress open",
     "generate:feature": "node scripts/generate-feature.js $1",
     "generate:api": "node scripts/generate-api.js $1",
