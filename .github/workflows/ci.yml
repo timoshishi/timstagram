@@ -45,8 +45,11 @@ jobs:
           version: 1.0.0
 
       - name: Start Supabase local development setup 🦸
+      - uses: mathiasvr/command-output@v1
         run: supabase start
+        id: supabase
 
+      - run: echo your API urls are ${{ steps.supabase.output.stdout }}
       - name: Verify generated types are up-to-date
         run: |
           supabase gen types typescript --local > types.ts
