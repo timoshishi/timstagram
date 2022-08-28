@@ -46,12 +46,13 @@ jobs:
 
       - name: Start Supabase local development setup 🦸
         id: supabase
-        run: supabase start
       - uses: mathiasvr/command-output@v1
+        with:
+          run: supabase start
 
-      # - name: log that shit
-      #   run: |
-      #     echo your API urls are ${{ steps.supabase.output.stdout }}
+      - name: log that shit
+        run: |
+          echo your API urls are ${{ steps.supabase.output.stdout }}
 
       - name: Verify generated types are up-to-date
         run: |
