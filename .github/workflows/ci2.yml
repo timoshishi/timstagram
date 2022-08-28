@@ -15,7 +15,7 @@ jobs:
           node-version: 16
           cache: 'yarn'
 
-      - name: 🔑 Create .env file
+      - name: Create .env file 🔑
         uses: SpicyPizza/create-envfile@v1.3
         with:
           envkey_DATABASE_URL: ${{ secrets.DATABASE_URL }}
@@ -33,23 +33,18 @@ jobs:
           file_name: .env
           fail_on_empty: true
 
-      - name: echo secrets
-        run: |
-          echo ${{ secrets.TEST_SECRET }} |
-          echo ${{ secrets.DATABASE_URL}}
-
-      - name: Show files
+      - name: Show files 📁
         run: |
           ls -la
 
-      - name: 🏗️ Install dependencies
+      - name: Install dependencies 🏗️
         id: yarn-install
         run: yarn install --frozen-lockfile
       - uses: supabase/setup-cli@v1
         with:
           version: 1.0.0
 
-      - name: Start Supabase local development setup
+      - name: Start Supabase local development setup 🦸
         run: supabase start
 
       - name: Verify generated types are up-to-date
@@ -61,20 +56,20 @@ jobs:
             exit 1
           fi
 
-      - name: Generate Prisma Client
+      - name: Generate Prisma Client 💠
         run: yarn prisma generate
 
       - name: Push Types to Supabase
         run: npx prisma db push
 
-      - name: Seed db and apply functions
+      - name: Seed db and apply functions 🌰
         run: npx prisma db seed
 
       - name: add dotenv
         run: yarn global add dotenv-cli
 
-      - name: 🧪 Unit tests
-        run: yarn dotenv -e .env jest
+      - name: Unit tests 🧪
+        run: dotenv -e .env jest
 
       # - name: Download the build folders
       #   uses: actions/download-artifact@v2
