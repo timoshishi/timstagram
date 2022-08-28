@@ -45,14 +45,7 @@ jobs:
           version: 1.0.0
 
       - name: Start Supabase local development setup 🦸
-        id: supabase
-      - uses: mathiasvr/command-output@v1
-        with:
-          run: supabase start
-
-      - name: log that shit
-        run: |
-          echo your API urls are ${{ steps.supabase.output.stdout }}
+        run: supabase start
 
       - name: Verify generated types are up-to-date
         run: |
@@ -80,12 +73,14 @@ jobs:
       #   with:
       #     name: build
       #     path: build
-      # - name: Build the dang thing already
-      # run: yarn build && yarn start
+      - name: Build the dang thing already
+        run: yarn build && yarn start
 
       - name: Cypress run
         uses: cypress-io/github-action@v4
-        run: yarn e2e:headless
+        with:
+          run: yarn test:e2e
+
       # - name: 🛩 E2E tests
       #   run: yarn e2e:headless
       # SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
