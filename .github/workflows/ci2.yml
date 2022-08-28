@@ -69,7 +69,7 @@ jobs:
         run: yarn global add dotenv-cli
 
       - name: Unit tests 🧪
-        run: dotenv -e .env jest
+        run: yarn test:ci
 
       # - name: Download the build folders
       #   uses: actions/download-artifact@v2
