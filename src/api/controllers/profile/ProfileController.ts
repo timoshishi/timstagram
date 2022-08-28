@@ -103,9 +103,8 @@ export class ProfileController {
           console.error(result.error);
           return res.status(500).json({ error: 'Something went wrong' });
         }
-
-        return res.status(200).json({ user, error: null, loading: false });
       }
+      return res.status(200).json({ user, error: null, loading: false });
     } catch (error) {
       console.error(error);
       res.status(500).json({ error: 'Something went wrong' });
