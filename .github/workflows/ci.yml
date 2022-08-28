@@ -45,13 +45,7 @@ jobs:
           version: 1.0.0
 
       - name: Start Supabase local development setup 🦸
-        id: supabase
-        uses: mathiasvr/command-output@v1
-        with:
-          run: supabase start
-
-      - run: |
-          echo Today is ${{ steps.supabase.outputs.stdout }}
+        run: supabase start
 
       - name: Verify generated types are up-to-date
         run: |
