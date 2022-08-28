@@ -72,9 +72,9 @@ jobs:
       #   uses: actions/download-artifact@v2
       #   with:
       #     name: build
-      #     path: build
-      - name: Build the dang thing already
-        run: yarn build && yarn start
+      # #     path: build
+      # - name: Build the dang thing already
+      #   run: yarn build && yarn start
 
       - name: Cypress run
         uses: cypress-io/github-action@v4
