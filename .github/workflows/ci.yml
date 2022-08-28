@@ -50,7 +50,7 @@ jobs:
         id: supabase
 
       - name: log that shit
-      - run: echo your API urls are ${{ steps.supabase.output.stdout }}
+        run: echo your API urls are ${{ steps.supabase.output.stdout }}
 
       - name: Verify generated types are up-to-date
         run: |
