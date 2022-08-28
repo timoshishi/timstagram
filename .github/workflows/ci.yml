@@ -73,6 +73,8 @@ jobs:
       #   with:
       #     name: build
       #     path: build
+      - name: Build the dang thing already
+        run: yarn build && yarn start
 
       - name: Cypress run
         uses: cypress-io/github-action@v4
