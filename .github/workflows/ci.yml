@@ -49,7 +49,9 @@ jobs:
         run: supabase start
         id: supabase
 
+      - name: log that shit
       - run: echo your API urls are ${{ steps.supabase.output.stdout }}
+
       - name: Verify generated types are up-to-date
         run: |
           supabase gen types typescript --local > types.ts
@@ -76,11 +78,12 @@ jobs:
       #   with:
       #     name: build
       #     path: build
-      - name: Build the dang thing already
-        run: yarn build && yarn start
+      # - name: Build the dang thing already
+      # run: yarn build && yarn start
 
       - name: Cypress run
         uses: cypress-io/github-action@v4
+        run: yarn e2e:headless
       # - name: 🛩 E2E tests
       #   run: yarn e2e:headless
       # SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
