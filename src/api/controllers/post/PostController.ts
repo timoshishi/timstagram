@@ -69,7 +69,6 @@ export class PostController {
           filename: imageProperties.filename,
         },
       });
-      console.log({ post });
 
       const signedUrl = await imageService.createSignedUrl({
         filename: imageProperties.filename,
