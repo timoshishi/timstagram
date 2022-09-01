@@ -26,7 +26,7 @@ describe('getImageProperties', () => {
   let image: Express.Multer.File;
   beforeEach(() => {
     image = {
-      buffer: new Buffer('test'),
+      buffer: Buffer.from('test'),
       mimetype: 'image/jpeg',
       originalname: 'testOriginalName.jpg',
       filename: 'testFilename.jpg',
@@ -113,7 +113,7 @@ describe('getImageHash', () => {
   let image: Express.Multer.File;
   beforeEach(() => {
     image = {
-      buffer: new Buffer('test'),
+      buffer: Buffer.from('test'),
       mimetype: 'image/jpeg',
       originalname: 'testOriginalName.jpg',
       filename: 'testFilename.jpg',
@@ -146,7 +146,7 @@ describe('getImageHash', () => {
   });
 
   it('throws an error if the image is not an image', async () => {
-    const buffer = new Buffer('test');
+    const buffer = Buffer.from('test');
     image.buffer = buffer;
     image.mimetype = 'text/plain';
     await expect(getImageHash(image)).rejects.toThrowError();
@@ -157,7 +157,7 @@ describe('createPlaceholder', () => {
   let image: Express.Multer.File;
   beforeEach(() => {
     image = {
-      buffer: new Buffer('test'),
+      buffer: Buffer.from('test'),
       mimetype: 'image/jpeg',
       originalname: 'testOriginalName.jpg',
       filename: 'testFilename.jpg',
@@ -181,7 +181,7 @@ describe('resizeAvatarImage', () => {
   let image: Express.Multer.File;
   beforeEach(() => {
     image = {
-      buffer: new Buffer('test'),
+      buffer: Buffer.from('test'),
       mimetype: 'image/jpeg',
       originalname: 'testOriginalName.jpg',
       filename: 'testFilename.jpg',
