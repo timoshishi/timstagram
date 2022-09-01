@@ -6,7 +6,7 @@ const nextConfig = {
     images: { allowFutureImage: true },
   },
   images: {
-    domains: ['picsum.photos'],
+    domains: ['picsum.photos', 'witter-dev.s3.amazonaws.com'],
   },
   eslint: {
     ignoreDuringBuilds: true,
