@@ -76,10 +76,10 @@ jobs:
       # - name: Build the dang thing already
       #   run: yarn build && yarn start
 
-      - name: Cypress run
-        uses: cypress-io/github-action@v4
-        with:
-          run: yarn test:e2e
+      # - name: Cypress run
+      #   uses: cypress-io/github-action@v4
+      #   with:
+      #     run: yarn test:e2e
 
       # - name: 🛩 E2E tests
       #   run: yarn e2e:headless
