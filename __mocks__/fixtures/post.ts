@@ -45,7 +45,7 @@ export const createPost = () => {
     imageUrl: `https://picsum.photos/id/${randomIntInRange(1, 150)}/400/500`,
     poster: {
       username: faker.internet.userName(),
-      avatarUrl: faker.image.avatar(),
+      avatarUrl: '',
       followerCount: numOrNumInRange(0, 100),
       followingCount: numOrNumInRange(0, 100),
       userDescription: faker.lorem.sentence(),

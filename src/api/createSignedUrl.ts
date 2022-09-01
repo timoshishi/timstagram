@@ -19,6 +19,7 @@ class ImageService {
       Key: filename,
       Body: file.buffer,
       ContentType: file.mimetype,
+      ChecksumAlgorithm: 'SHA256',
     });
     const signedUrl = await getSignedUrl(s3Client, command, {
       expiresIn: 60,
