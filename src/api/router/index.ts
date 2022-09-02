@@ -47,7 +47,6 @@ export const validate = (validations: ValidationChain[]) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
       const errorArray = errors.array();
-      console.log(req.body);
       console.error({ errorArray }, req.url, req.method);
       return res.status(400).end();
     }
