@@ -1,15 +1,34 @@
 import { PostHash, PrismaClient } from '@prisma/client';
 import { imageService } from '@src/api/createSignedUrl';
 import { getImageProperties, resizeAvatarImage } from '@src/api/handleImageUpload';
-import { NextRequestWithUserFile } from '@api/types';
+import { NextRequestWithUserFile, NextRequestWithUser } from '@api/types';
 import { customNano } from '@src/lib/customNano';
 import { NextApiResponse } from 'next';
 import { randomUUID } from 'crypto';
+import { getPostByHashOrId } from '@api/getPost';
 
 export class PostController {
   constructor(private prisma: PrismaClient) {
     this.prisma = prisma;
   }
+
+  getPost = async (req: NextRequestWithUser, res: NextApiResponse) => {
+    try {
+      const postHash = req.query.postHash as string;
+      const responseBody = await getPostByHashOrId({
+        userId: req.user?.id,
+        postHash,
+        prisma: this.prisma,
+      });
+      if (!responseBody) {
+        return res.status(404);
+      }
+      return res.status(200).json(responseBody);
+    } catch (error) {
+      console.error(error);
+      return res.status(500);
+    }
+  };
 
   createPostHash = async (): Promise<string | null> => {
     let result: PostHash | null;
@@ -49,14 +68,10 @@ export class PostController {
         altText: `${user.user_metadata.username}'s avatar`,
         username: user.user_metadata.username,
       });
-      const postId = randomUUID();
-      const hashUrl = await this.prisma.postHash.create({
-        data: {
-          postHash,
-        },
-      });
 
-      const post = await this.prisma.post.create({
+      const postId = randomUUID();
+
+      await this.prisma.post.create({
         data: {
           id: postId,
           mediaId: imageProperties.id,
@@ -75,7 +90,11 @@ export class PostController {
         file: croppedImage,
       });
 
-      const createdMedia = await this.prisma.media.create({
+      if (!signedUrl) {
+        throw new Error('Could not create signed url');
+      }
+
+      await this.prisma.media.create({
         data: {
           userId: user.id,
           aspectRatio: imageProperties.aspectRatio,

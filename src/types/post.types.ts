@@ -1,29 +1,42 @@
+import { Tag } from '@prisma/client';
+
 export interface Poster {
   username: string;
-  userDescription?: string;
+  bio: string;
   avatarUrl: string;
   followerCount: number;
   followingCount: number;
 }
+
+export interface PostResponseLike {
+  userId: string;
+  username: string;
+  avatarUrl: string;
+}
+
 export interface Post {
   postId: string;
-  viewsCount: number;
-  commentsCount: number;
-  commentsToRender: [PostComment?, PostComment?, PostComment?];
+  viewCount: number;
+  commentCount: number;
+  comments: PostComment[];
+  likes: PostResponseLike[];
   hasLiked: boolean;
   isFollowing: boolean;
-  repostsCount: number;
-  likesCount: number;
+  repostCount: number;
+  likeCount: number;
   imageUrl: string;
   poster: Poster;
-  description: string;
-  tags: string[];
+  postBody: string;
+  tags: Tag[];
   createdAt: string;
 }
 
 export interface PostComment {
   username: string;
-  title: string;
+  content: string;
+  userId: string;
+  createdAt: string;
+  avatarUrl: string;
 }
 
 export interface PostResponse {

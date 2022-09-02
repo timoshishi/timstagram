@@ -4,10 +4,10 @@
 
 Table profiles {
   id String [pk, unique]
-  username String [unique]
-  avatarUrl String [default: '']
+  username String [unique, not null]
+  avatarUrl String [not null, default: '']
   avatarFilename String [unique]
-  bio String [default: '']
+  bio String [not null, default: '']
   createdAt DateTime [default: `now()`, not null]
   updatedAt DateTime
   banned Boolean [not null, default: false]
@@ -23,7 +23,7 @@ Table profiles {
 
 Table posts {
   id String [pk]
-  postBody String
+  postBody String [not null]
   published Boolean [not null, default: true]
   userId String [not null]
   userDeleted Boolean [not null, default: false]
@@ -33,7 +33,7 @@ Table posts {
   viewCount Int [not null, default: 0]
   likes Int [not null, default: 0]
   mediaType String
-  mediaUrl String [unique]
+  mediaUrl String [unique, not null]
   mediaId String [not null]
   filename String [unique, not null]
   createdAt DateTime [default: `now()`, not null]

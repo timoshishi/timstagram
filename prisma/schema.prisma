@@ -21,10 +21,10 @@ generator dbml {
 // username inserted in signup modal
 model Profile {
   id        String     @id @unique @db.Uuid()
-  username  String?    @unique
-  avatarUrl String?    @default("") @map("avatar_url")
+  username  String    @unique
+  avatarUrl String    @default("") @map("avatar_url")
   avatarFilename String? @unique @map("avatar_filename")
-  bio       String?    @default("") @map("bio")
+  bio       String    @default("") @map("bio")
   createdAt DateTime   @default(now()) @map("created_at")
   updatedAt DateTime?  @updatedAt @map("updated_at")
   banned    Boolean    @default(false)
@@ -43,7 +43,7 @@ model Profile {
 
 model Post {
   id            String     @id @default(uuid()) @db.Uuid()
-  postBody      String?    @map("post_body")
+  postBody      String    @map("post_body")
   published     Boolean    @default(true)
   userId        String     @map("user_id") @db.Uuid()
   userDeleted   Boolean    @default(false) @map("user_deleted")
@@ -51,9 +51,8 @@ model Post {
   deleted       Boolean    @default(false)
   flagCount     Int        @default(0) @map("flag_count")
   viewCount     Int        @default(0) @map("view_count")
-  likes         Int        @default(0)
   mediaType     String?    @map("media_type")
-  mediaUrl      String?    @unique @map("media_url")
+  mediaUrl      String    @unique @map("media_url")
   mediaId       String     @map("media_id") @db.Uuid()
   filename      String    @map("filename") @unique
   createdAt     DateTime   @default(now()) @map("created_at")
