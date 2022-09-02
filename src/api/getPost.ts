@@ -14,26 +14,112 @@ export const getPostByHashOrId = async ({ postHash, postId, prisma, userId }: Ge
   if (!postHash && !postId) {
     throw new Error('Must provide either postHash or postId');
   }
-
   const post: PostQueryResponse = await getSinglePost({ postHash, postId, prisma });
-  if (!post || !post.published || post.flagged || post.userDeleted || post.deleted) {
+  if (!post) {
     return null;
   }
-
-  if (!post || !post.published || post.flagged || post.userDeleted || post.deleted) {
-    return null;
-  }
-
   const { hasLikedPost, hasFlaggedPost, isFollowingUser } = await getPersonalizedUserProperties({
     userId,
     post,
     prisma,
   });
-
   if (hasFlaggedPost) {
     return null;
   }
+  return constructPostResponseObject({ post, hasLikedPost, isFollowingUser, hasFlaggedPost });
+};
 
+export const getUserPosts = async ({
+  userId,
+  prisma,
+  page,
+  limit,
+  sort,
+}: {
+  userId: string;
+  prisma: PrismaClient;
+  page?: number;
+  limit?: number;
+  sort?: string;
+}): Promise<Post[]> => {
+  const posts: PostQueryResponse[] = await prisma.post.findMany({
+    where: {
+      userId,
+      AND: activePostQueryObj,
+    },
+    select: postSelectObj,
+    skip: page && limit ? (page - 1) * limit : undefined,
+    take: limit,
+    orderBy: sort ? { [sort]: 'desc' } : undefined,
+  });
+  return createResponseObjectArray(posts);
+};
+
+export const getUserLikedPosts = async ({
+  userId,
+  prisma,
+  page,
+  limit,
+  sort,
+}: {
+  userId: string;
+  prisma: PrismaClient;
+  page?: number;
+  limit?: number;
+  sort?: string;
+}): Promise<Post[]> => {
+  const posts: PostQueryResponse[] = await prisma.post.findMany({
+    where: {
+      userId,
+      AND: {
+        postLikes: {
+          some: {
+            userId,
+          },
+        },
+      },
+    },
+    select: postSelectObj,
+    skip: page && limit ? (page - 1) * limit : undefined,
+    take: limit,
+    orderBy: sort ? { [sort]: 'desc' } : undefined,
+  });
+  return createResponseObjectArray(posts);
+};
+
+const createResponseObjectArray = (posts: PostQueryResponse[]): Post[] => {
+  const responseBody: Post[] = posts.reduce((posts: Post[], post: PostQueryResponse) => {
+    const body = constructPostResponseObject({
+      post,
+      hasLikedPost: false,
+      isFollowingUser: false,
+      hasFlaggedPost: false,
+    });
+    if (body) {
+      posts.push(body);
+    }
+    return posts;
+  }, []);
+  return responseBody;
+};
+
+const constructPostResponseObject = ({
+  post,
+  hasLikedPost,
+  isFollowingUser,
+  hasFlaggedPost,
+}: {
+  post: PostQueryResponse;
+  hasLikedPost: boolean;
+  isFollowingUser: boolean;
+  hasFlaggedPost: boolean;
+}): Post | null => {
+  if (!post) {
+    throw new Error('Post is required');
+  }
+  if (hasFlaggedPost) {
+    return null;
+  }
   const comments = post.comments.map((comment) => ({
     userId: comment.id,
     username: comment.profile.username,
@@ -83,83 +169,9 @@ const getSinglePost = async ({ postHash, postId, prisma }: GetPostParams) => {
             id: postId,
           },
         ],
+        AND: activePostQueryObj,
       },
-      select: {
-        id: true,
-        published: true,
-        postBody: true,
-        createdAt: true,
-        viewCount: true,
-        mediaUrl: true,
-        userAvatarUrl: true,
-        username: true,
-        userId: true,
-        postHash: true,
-        flagged: true,
-        userDeleted: true,
-        deleted: true,
-        comments: {
-          select: {
-            id: true,
-            content: true,
-            createdAt: true,
-          },
-          include: {
-            profile: {
-              select: {
-                username: true,
-                id: true,
-                avatarUrl: true,
-              },
-            },
-          },
-        },
-        tags: {
-          select: {
-            id: true,
-            name: true,
-          },
-        },
-        media: {
-          select: {
-            id: true,
-            url: true,
-            bucket: true,
-            filename: true,
-          },
-        },
-        postLikes: {
-          where: {
-            doesLike: true,
-          },
-          select: {
-            profile: {
-              select: {
-                username: true,
-                id: true,
-                avatarUrl: true,
-              },
-            },
-          },
-        },
-        profile: {
-          select: {
-            username: true,
-            id: true,
-            avatarUrl: true,
-            bio: true,
-          },
-          include: {
-            _count: {
-              select: {
-                followers: true,
-                following: true,
-                posts: true,
-              },
-            },
-          },
-        },
-      },
+      select: postSelectObj,
     });
   } catch (error) {
     console.error(error);
@@ -225,4 +237,84 @@ const getPersonalizedUserProperties = async ({
     console.error(error);
     throw new Error('Error getting user properties');
   }
+};
+
+const postSelectObj = {
+  id: true,
+  postBody: true,
+  createdAt: true,
+  viewCount: true,
+  mediaUrl: true,
+  userAvatarUrl: true,
+  username: true,
+  userId: true,
+  postHash: true,
+  comments: {
+    select: {
+      id: true,
+      content: true,
+      createdAt: true,
+    },
+    include: {
+      profile: {
+        select: {
+          username: true,
+          id: true,
+          avatarUrl: true,
+        },
+      },
+    },
+  },
+  tags: {
+    select: {
+      id: true,
+      name: true,
+    },
+  },
+  media: {
+    select: {
+      id: true,
+      url: true,
+      bucket: true,
+      filename: true,
+    },
+  },
+  postLikes: {
+    where: {
+      doesLike: true,
+    },
+    select: {
+      profile: {
+        select: {
+          username: true,
+          id: true,
+          avatarUrl: true,
+        },
+      },
+    },
+  },
+  profile: {
+    select: {
+      username: true,
+      id: true,
+      avatarUrl: true,
+      bio: true,
+    },
+    include: {
+      _count: {
+        select: {
+          followers: true,
+          following: true,
+          posts: true,
+        },
+      },
+    },
+  },
+};
+
+const activePostQueryObj = {
+  deleted: false,
+  userDeleted: false,
+  published: true,
+  flagged: false,
 };
