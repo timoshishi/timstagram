@@ -14,14 +14,14 @@ export class PostController {
 
   getPost = async (req: NextRequestWithUser, res: NextApiResponse) => {
     try {
-      const postHash = req.query.postHash as string;
+      const id = req.query.id as string;
       const responseBody = await getPostByHashOrId({
         userId: req.user?.id,
-        postHash,
+        postHash: id,
         prisma: this.prisma,
       });
-      if (!responseBody) {
-        return res.status(404);
+      if (responseBody === null) {
+        return res.status(404).end();
       }
       return res.status(200).json(responseBody);
     } catch (error) {
@@ -61,6 +61,11 @@ export class PostController {
       if (!postHash) {
         throw new Error('Could not create post hash');
       }
+      await this.prisma.postHash.create({
+        data: {
+          postHash,
+        },
+      });
       const imageProperties = await getImageProperties({
         image: croppedImage,
         userId: user.id,
@@ -68,7 +73,6 @@ export class PostController {
         altText: `${user.user_metadata.username}'s avatar`,
         username: user.user_metadata.username,
       });
-
       const postId = randomUUID();
 
       await this.prisma.post.create({
@@ -110,6 +114,13 @@ export class PostController {
           kind: 'post',
           hash: imageProperties.hash,
           postId: postId,
+        },
+      });
+
+      await this.prisma.postLike.create({
+        data: {
+          postId,
+          userId: user.id,
         },
       });
 

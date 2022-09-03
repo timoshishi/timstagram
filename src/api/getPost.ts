@@ -16,6 +16,7 @@ export const getPostByHashOrId = async ({ postHash, postId, prisma, userId }: Ge
   }
   const post: PostQueryResponse = await getSinglePost({ postHash, postId, prisma });
   if (!post) {
+    console.log('post not found');
     return null;
   }
   const { hasLikedPost, hasFlaggedPost, isFollowingUser } = await getPersonalizedUserProperties({
@@ -158,24 +159,20 @@ const constructPostResponseObject = ({
 };
 
 const getSinglePost = async ({ postHash, postId, prisma }: GetPostParams) => {
-  try {
-    return prisma.post.findFirst({
-      where: {
-        OR: [
-          {
-            postHash,
-          },
-          {
-            id: postId,
-          },
-        ],
-        AND: activePostQueryObj,
-      },
-      select: postSelectObj,
-    });
-  } catch (error) {
-    console.error(error);
-  }
+  return prisma.post.findFirst({
+    where: {
+      OR: [
+        {
+          postHash,
+        },
+        {
+          id: postId,
+        },
+      ],
+      AND: activePostQueryObj,
+    },
+    select: postSelectObj,
+  });
 };
 
 const getPersonalizedUserProperties = async ({
@@ -254,8 +251,6 @@ const postSelectObj = {
       id: true,
       content: true,
       createdAt: true,
-    },
-    include: {
       profile: {
         select: {
           username: true,
@@ -299,8 +294,6 @@ const postSelectObj = {
       id: true,
       avatarUrl: true,
       bio: true,
-    },
-    include: {
       _count: {
         select: {
           followers: true,

@@ -20,22 +20,22 @@ generator dbml {
 // profile created with postgres function after user creation
 // username inserted in signup modal
 model Profile {
-  id        String     @id @unique @db.Uuid()
-  username  String    @unique
-  avatarUrl String    @default("") @map("avatar_url")
-  avatarFilename String? @unique @map("avatar_filename")
-  bio       String    @default("") @map("bio")
-  createdAt DateTime   @default(now()) @map("created_at")
-  updatedAt DateTime?  @updatedAt @map("updated_at")
-  banned    Boolean    @default(false)
-  isBot     Boolean    @default(false) @map("is_bot")
-  comments  Comment[]
-  followers Profile[]  @relation("UserFollows")
-  following Profile[]  @relation("UserFollows")
-  postFlags PostFlag[]
-  likes     PostLike[]
-  posts     Post[]
-  mediaId   Media[]
+  id             String     @id @unique @db.Uuid()
+  username       String     @unique
+  avatarUrl      String     @default("") @map("avatar_url")
+  avatarFilename String?    @unique @map("avatar_filename")
+  bio            String     @default("") @map("bio")
+  createdAt      DateTime   @default(now()) @map("created_at")
+  updatedAt      DateTime?  @updatedAt @map("updated_at")
+  banned         Boolean    @default(false)
+  isBot          Boolean    @default(false) @map("is_bot")
+  comments       Comment[]
+  followers      Profile[]  @relation("UserFollows")
+  following      Profile[]  @relation("UserFollows")
+  postFlags      PostFlag[]
+  likes          PostLike[]
+  posts          Post[]
+  mediaId        Media[]
 
   @@index([username])
   @@map("profiles")
@@ -43,18 +43,18 @@ model Profile {
 
 model Post {
   id            String     @id @default(uuid()) @db.Uuid()
-  postBody      String    @map("post_body")
+  postBody      String     @map("post_body")
   published     Boolean    @default(true)
   userId        String     @map("user_id") @db.Uuid()
   userDeleted   Boolean    @default(false) @map("user_deleted")
   flagged       Boolean    @default(false)
   deleted       Boolean    @default(false)
   flagCount     Int        @default(0) @map("flag_count")
-  viewCount     Int        @default(0) @map("view_count")
+  viewCount     Int        @default(1) @map("view_count")
   mediaType     String?    @map("media_type")
-  mediaUrl      String    @unique @map("media_url")
+  mediaUrl      String     @unique @map("media_url")
   mediaId       String     @map("media_id") @db.Uuid()
-  filename      String    @map("filename") @unique
+  filename      String     @unique @map("filename")
   createdAt     DateTime   @default(now()) @map("created_at")
   isBotPost     Boolean    @default(false) @map("is_bot_post")
   isShared      Boolean    @default(false) @map("is_shared")
