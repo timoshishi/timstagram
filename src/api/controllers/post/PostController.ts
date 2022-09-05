@@ -1,15 +1,34 @@
 import { PostHash, PrismaClient } from '@prisma/client';
 import { imageService } from '@src/api/createSignedUrl';
 import { getImageProperties, resizeAvatarImage } from '@src/api/handleImageUpload';
-import { NextRequestWithUserFile } from '@api/types';
+import { NextRequestWithUserFile, NextRequestWithUser } from '@api/types';
 import { customNano } from '@src/lib/customNano';
 import { NextApiResponse } from 'next';
 import { randomUUID } from 'crypto';
+import { getPostByHashOrId } from '@api/getPost';
 
 export class PostController {
   constructor(private prisma: PrismaClient) {
     this.prisma = prisma;
   }
+
+  getPost = async (req: NextRequestWithUser, res: NextApiResponse) => {
+    try {
+      const id = req.query.id as string;
+      const responseBody = await getPostByHashOrId({
+        userId: req.user?.id,
+        postId: id,
+        prisma: this.prisma,
+      });
+      if (responseBody === null) {
+        return res.status(404).end();
+      }
+      return res.status(200).json(responseBody);
+    } catch (error) {
+      console.error(error);
+      return res.status(500);
+    }
+  };
 
   createPostHash = async (): Promise<string | null> => {
     let result: PostHash | null;
@@ -42,6 +61,11 @@ export class PostController {
       if (!postHash) {
         throw new Error('Could not create post hash');
       }
+      await this.prisma.postHash.create({
+        data: {
+          postHash,
+        },
+      });
       const imageProperties = await getImageProperties({
         image: croppedImage,
         userId: user.id,
@@ -50,13 +74,8 @@ export class PostController {
         username: user.user_metadata.username,
       });
       const postId = randomUUID();
-      const hashUrl = await this.prisma.postHash.create({
-        data: {
-          postHash,
-        },
-      });
 
-      const post = await this.prisma.post.create({
+      await this.prisma.post.create({
         data: {
           id: postId,
           mediaId: imageProperties.id,
@@ -75,7 +94,11 @@ export class PostController {
         file: croppedImage,
       });
 
-      const createdMedia = await this.prisma.media.create({
+      if (!signedUrl) {
+        throw new Error('Could not create signed url');
+      }
+
+      await this.prisma.media.create({
         data: {
           userId: user.id,
           aspectRatio: imageProperties.aspectRatio,
@@ -91,6 +114,13 @@ export class PostController {
           kind: 'post',
           hash: imageProperties.hash,
           postId: postId,
+        },
+      });
+
+      await this.prisma.postLike.create({
+        data: {
+          postId,
+          userId: user.id,
         },
       });
 
