@@ -11,6 +11,7 @@ Before getting started, make sure you have the following applications and packag
 - Docker
 - nvm
 - PostgreSQL
+- dotenv cli
 
 1. Get a copy of `.env.local` from the AWS secrets manager
 
@@ -24,7 +25,7 @@ Before getting started, make sure you have the following applications and packag
 
 4. Go to the base directory and run
 
-   `yarn install`
+   `yarn setup`
 
 5. This should set up an environment for you to work with locally. It may take a little bit the first time as supabase
    will need to pull down it's docker images to get running.
@@ -84,6 +85,7 @@ The CLI can be run with the following command
 - Co-located with the files they are testing
 
   - Using [jest]('jest.io') and [testing library react]('testing library react')
+  - Run with `yarn test`
 
 **Jest resolver**
 
@@ -96,6 +98,19 @@ The CLI can be run with the following command
 
 - Located in `/cypress`
   - Uses [cypress]('cypress.io')
+  - To run in headed mode
+    1. Run `yarn dev` and then `yarn test:e2e`
+  - To run in headless mode
+    1. Run `yarn e2e:headless`
+
+### Component Testing in Storybook
+
+Component testing with automation can be done directly in Storybook but these tests do not contribute to code coverage.
+
+The automation is generally best used for automating actions needed to be performed each time you refresh the component
+as you develop it.
+
+- "msw" is used to capture and mock API requests and responses here.
 
 ### Creating Database types
 
@@ -122,3 +137,10 @@ Dates - use dateFormatter from utils which is just dayjs extended with relative 
 - `yarn generate:feature <FeatureName>` - creates a new feature folder and files
 - `yarn generate:api <route-name>` - creates a new api route and files
 - `yarn prisma generate dev` - generates the prisma schema
+
+## CI/CD (WIP)
+
+We are currently following a truck based model of development.... a. preview deploys with smoke tests We are using
+Github Actions for our automated deployments at this time.
+
+1. Tests are run. Failing tests will block a PR from merge.
