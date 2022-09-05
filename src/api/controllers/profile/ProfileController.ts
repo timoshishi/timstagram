@@ -4,7 +4,7 @@ import { SupabaseClient } from '@supabase/supabase-js';
 import { imageService } from '@src/api/createSignedUrl';
 import { getImageProperties, resizeAvatarImage } from '@src/api/handleImageUpload';
 import { Controller, NextRequestWithUser } from '@api/types';
-import { NextApiRequest, NextApiResponse } from 'next';
+import { NextApiResponse } from 'next';
 import { NextRequestWithUserFile } from '../../types';
 import { SupaUser } from 'types/index';
 

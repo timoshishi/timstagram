@@ -11,23 +11,28 @@ type GetPostParams = {
 type PostQueryResponse = Prisma.PromiseReturnType<typeof getSinglePost>;
 
 export const getPostByHashOrId = async ({ postHash, postId, prisma, userId }: GetPostParams): Promise<Post | null> => {
-  if (!postHash && !postId) {
-    throw new Error('Must provide either postHash or postId');
-  }
-  const post: PostQueryResponse = await getSinglePost({ postHash, postId, prisma });
-  if (!post) {
-    console.log('post not found');
+  try {
+    if (!postHash && !postId) {
+      console.error('Must provide either postHash or postId');
+    }
+    const post: PostQueryResponse = await getSinglePost({ postHash, postId, prisma });
+    if (!post) {
+      console.log('post not found');
+      return null;
+    }
+    const { hasLikedPost, hasFlaggedPost, isFollowingUser } = await getPersonalizedUserProperties({
+      userId,
+      post,
+      prisma,
+    });
+    if (hasFlaggedPost) {
+      return null;
+    }
+    return constructPostResponseObject({ post, hasLikedPost, isFollowingUser, hasFlaggedPost });
+  } catch (error) {
+    console.error(error);
     return null;
   }
-  const { hasLikedPost, hasFlaggedPost, isFollowingUser } = await getPersonalizedUserProperties({
-    userId,
-    post,
-    prisma,
-  });
-  if (hasFlaggedPost) {
-    return null;
-  }
-  return constructPostResponseObject({ post, hasLikedPost, isFollowingUser, hasFlaggedPost });
 };
 
 export const getUserPosts = async ({
@@ -159,20 +164,26 @@ const constructPostResponseObject = ({
 };
 
 const getSinglePost = async ({ postHash, postId, prisma }: GetPostParams) => {
-  return prisma.post.findFirst({
-    where: {
-      OR: [
-        {
-          postHash,
-        },
-        {
-          id: postId,
-        },
-      ],
-      AND: activePostQueryObj,
-    },
-    select: postSelectObj,
-  });
+  try {
+    const foundPost = await prisma.post.findFirst({
+      where: {
+        OR: [
+          {
+            postHash,
+          },
+          {
+            id: postId,
+          },
+        ],
+        AND: activePostQueryObj,
+      },
+      select: postSelectObj,
+    });
+    console.log({ foundPost });
+    return foundPost;
+  } catch (error) {
+    console.error(error);
+  }
 };
 
 const getPersonalizedUserProperties = async ({

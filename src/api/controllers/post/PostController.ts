@@ -17,7 +17,7 @@ export class PostController {
       const id = req.query.id as string;
       const responseBody = await getPostByHashOrId({
         userId: req.user?.id,
-        postHash: id,
+        postId: id,
         prisma: this.prisma,
       });
       if (responseBody === null) {
