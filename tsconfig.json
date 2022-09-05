@@ -50,7 +50,8 @@
     "__tests__/**/*.ts",
     "__tests__/**/*.tsx",
     "resolver.js",
-    "src/mocks/api/handlers.js"
+    "src/mocks/api/handlers.js",
+    "prisma/seed.ts"
   ],
   "ts-node": {
     "compilerOptions": {

@@ -1,5 +1,5 @@
 import { PostHash, PrismaClient } from '@prisma/client';
-import { imageService } from '@src/api/createSignedUrl';
+import { imageService } from '@api/imageService';
 import { getImageProperties, resizeAvatarImage } from '@src/api/handleImageUpload';
 import { NextRequestWithUserFile, NextRequestWithUser } from '@api/types';
 import { customNano } from '@src/lib/customNano';
@@ -58,14 +58,17 @@ export class PostController {
     try {
       const imageData = JSON.parse(body.imageData);
       const postHash = await this.createPostHash();
+
       if (!postHash) {
         throw new Error('Could not create post hash');
       }
+
       await this.prisma.postHash.create({
         data: {
           postHash,
         },
       });
+
       const imageProperties = await getImageProperties({
         image: croppedImage,
         userId: user.id,

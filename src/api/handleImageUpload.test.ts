@@ -206,6 +206,6 @@ describe('constructUploadUrl', () => {
   const id = 'testId';
   it('should create the correct url', () => {
     const url = constructUploadUrl({ ext, id });
-    expect(url).toBe(`https://witter-dev.s3.amazonaws.com/${id}.${ext}`);
+    expect(url).toBe(`https://${process.env.PHOTO_BUCKET}.s3.amazonaws.com/${id}.${ext}`);
   });
 });

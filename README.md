@@ -12,6 +12,7 @@ Before getting started, make sure you have the following applications and packag
 - nvm
 - PostgreSQL
 - dotenv cli
+- aws-cli
 
 1. Get a copy of `.env.local` from the AWS secrets manager
 

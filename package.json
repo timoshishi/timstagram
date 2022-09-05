@@ -9,7 +9,7 @@
     "dev": "next",
     "build": "next build",
     "predev": "npx prisma generate",
-    "setup": "yarn install && yarn prisma:local",
+    "setup": "supabase login && aws login && yarn install && yarn prisma:local",
     "start": "next start",
     "build-start": "yarn build && yarn start",
     "lint": "next lint",

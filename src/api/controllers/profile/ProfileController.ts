@@ -1,7 +1,7 @@
 import { PrismaClient } from '@prisma/client';
 import { Profile } from '@prisma/client';
 import { SupabaseClient } from '@supabase/supabase-js';
-import { imageService } from '@src/api/createSignedUrl';
+import { imageService } from '@api/imageService';
 import { getImageProperties, resizeAvatarImage } from '@src/api/handleImageUpload';
 import { Controller, NextRequestWithUser } from '@api/types';
 import { NextApiResponse } from 'next';

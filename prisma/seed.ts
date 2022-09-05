@@ -2,6 +2,8 @@ import prisma from '../src/lib/prisma';
 import { faker } from '@faker-js/faker';
 import { createClient } from '@supabase/supabase-js';
 import knex, { definedUsers } from './createUsers';
+import { imageService } from '../src/api/imageService';
+
 const supabaseServer = createClient(process.env.NEXT_PUBLIC_SUPABASE_URL!, process.env.SERVICE_ROLE_KEY!);
 
 console.log('CURRENT SUPABASE URL', process.env.NEXT_PUBLIC_SUPABASE_URL);
@@ -20,10 +22,7 @@ const createNewUsers = async () => {
       user_metadata: {
         bio: faker.lorem.sentence(),
         username: user.username,
-        avatarUrl: `https://avatars0.githubusercontent.com/u/${faker.datatype.number({
-          min: 1700,
-          max: 1799,
-        })}?v=4`,
+        avatarUrl: `/storybook/avatar-${Math.round(Math.random())}.png`,
       },
       email_confirm: true,
     }));
@@ -60,8 +59,11 @@ const deleteOldUsers = async () => {
 
 (async () => {
   try {
-    /***  AUTO CREATE PROFILE ON CONFIRM ***/
+    /***  AUTO CREATE PROFILE ON CONFIRM RPC FUNCTION ***/
     await knex.raw(onConfirmUserFunction);
+
+    /** CREATE PERSONAL PHOTO BUCKET */
+    // await imageService.duplicateExampleBucket();
 
     /** Wipe old users if for some reason they exist or you are testing scripts */
     await deleteOldUsers();
