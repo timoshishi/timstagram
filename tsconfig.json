@@ -34,7 +34,14 @@
       "@src/*": ["./src/*"]
     }
   },
-  "exclude": ["node_modules", "**/types/*", "**/stories/**/*", "scripts/api-example", "**/*.spec.ts"],
+  "exclude": [
+    "node_modules",
+    "**/types/*",
+    "**/stories/**/*",
+    "scripts/api-example",
+    "**/*.spec.ts",
+    "./cypress.config.ts"
+  ],
   "include": [
     "next-env.d.ts",
     "**/*.ts",

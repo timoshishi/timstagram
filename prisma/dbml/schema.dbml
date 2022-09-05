@@ -30,7 +30,7 @@ Table posts {
   flagged Boolean [not null, default: false]
   deleted Boolean [not null, default: false]
   flagCount Int [not null, default: 0]
-  viewCount Int [not null, default: 0]
+  viewCount Int [not null, default: 1]
   mediaType String
   mediaUrl String [unique, not null]
   mediaId String [not null]
