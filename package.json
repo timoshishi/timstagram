@@ -9,6 +9,7 @@
     "dev": "next",
     "build": "next build",
     "predev": "npx prisma generate",
+    "postinstall": "supabase stop && supabase start && dotenv -e .env.local prisma generate &&  dotenv -e .env.local npx prisma db push && dotenv -e .env.local -- npx prisma db seed && yarn types:supabase",
     "start": "next start",
     "build-start": "yarn build && yarn start",
     "lint": "next lint",
@@ -23,7 +24,7 @@
     "migrate:dev": "npx prisma migrate dev",
     "migrate:local": "dotenv -e .env.local -- npx prisma migrate",
     "dbpush:local": "dotenv -e .env.local -- npx prisma db push",
-    "seed:local": "supabase stop && supabase start && dotenv -e .env.local prisma generate &&  dotenv -e .env.local npx prisma db push && dotenv -e .env.local -- npx prisma db seed",
+    "seed:local": "supabase stop && supabase start && dotenv -e .env.local prisma generate &&  dotenv -e .env.local npx prisma db push && dotenv -e .env.local -- npx prisma db seed && yarn types:supabase",
     "cypress:headless": "cypress run",
     "e2e:headless": "start-server-and-test 'yarn build-start' http://localhost:3000 'yarn cypress:headless'"
   },

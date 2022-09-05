@@ -1,185 +1,137 @@
-export type Json = string | number | boolean | null | { [key: string]: Json } | Json[];
+export type Json =
+  | string
+  | number
+  | boolean
+  | null
+  | { [key: string]: Json }
+  | Json[];
 
 export interface Database {
   public: {
     Tables: {
-      profile: {
+      flagged_media: {
         Row: {
           id: string;
-          username: string | null;
-          updated_at: string | null;
-          avatar_url: string | null;
-          bio: string | null;
-          created_at: string;
-          banned: boolean;
-          is_bot: boolean;
+          mediaHash: string;
         };
         Insert: {
           id: string;
-          username?: string | null;
-          updated_at?: string | null;
-          avatar_url?: string | null;
-          bio?: string | null;
-          created_at?: string;
-          banned?: boolean;
-          is_bot?: boolean;
+          mediaHash: string;
         };
         Update: {
           id?: string;
-          username?: string | null;
-          updated_at?: string | null;
-          avatar_url?: string | null;
-          bio?: string | null;
-          created_at?: string;
-          banned?: boolean;
-          is_bot?: boolean;
+          mediaHash?: string;
         };
       };
-      follows: {
+      post_hashes: {
         Row: {
-          follower_id: string;
-          follower_avatar_url: string | null;
-          following_id: string;
-          following_avatar_url: string | null;
+          postHash: string;
         };
         Insert: {
-          follower_id: string;
-          follower_avatar_url?: string | null;
-          following_id: string;
-          following_avatar_url?: string | null;
+          postHash: string;
         };
         Update: {
-          follower_id?: string;
-          follower_avatar_url?: string | null;
-          following_id?: string;
-          following_avatar_url?: string | null;
-        };
-      };
-      media: {
-        Row: {
-          id: string;
-          url: string;
-          bucket: string;
-          type: string;
-          alt: string | null;
-          filename: string;
-          size: number;
-          width: number;
-          height: number;
-          aspect_ratio: number;
-          category: string | null;
-          user_id: string;
-          hash: string | null;
-          placeholder: string | null;
-          metadata: Json | null;
-          source: string;
-          scraped: boolean;
-          deleted: boolean;
-          created_at: string;
-        };
-        Insert: {
-          id: string;
-          url: string;
-          bucket: string;
-          type: string;
-          alt?: string | null;
-          filename: string;
-          size: number;
-          width: number;
-          height: number;
-          aspect_ratio: number;
-          category?: string | null;
-          user_id: string;
-          hash?: string | null;
-          placeholder?: string | null;
-          metadata?: Json | null;
-          source: string;
-          scraped?: boolean;
-          deleted?: boolean;
-          created_at?: string;
-        };
-        Update: {
-          id?: string;
-          url?: string;
-          bucket?: string;
-          type?: string;
-          alt?: string | null;
-          filename?: string;
-          size?: number;
-          width?: number;
-          height?: number;
-          aspect_ratio?: number;
-          category?: string | null;
-          user_id?: string;
-          hash?: string | null;
-          placeholder?: string | null;
-          metadata?: Json | null;
-          source?: string;
-          scraped?: boolean;
-          deleted?: boolean;
-          created_at?: string;
+          postHash?: string;
         };
       };
       posts: {
         Row: {
           id: string;
-          post_body: string | null;
+          post_body: string;
           user_id: string;
           media_type: string | null;
-          media_url: string | null;
+          media_url: string;
           media_id: string;
-          user_avatar_url: string;
+          filename: string;
+          user_avatar_url: string | null;
           username: string;
+          postHash: string;
           published: boolean;
           user_deleted: boolean;
           flagged: boolean;
           deleted: boolean;
           flag_count: number;
           view_count: number;
-          likes: number;
           created_at: string;
           is_bot_post: boolean;
           is_shared: boolean;
         };
         Insert: {
           id: string;
-          post_body?: string | null;
+          post_body: string;
           user_id: string;
           media_type?: string | null;
-          media_url?: string | null;
+          media_url: string;
           media_id: string;
-          user_avatar_url: string;
+          filename: string;
+          user_avatar_url?: string | null;
           username: string;
+          postHash: string;
           published?: boolean;
           user_deleted?: boolean;
           flagged?: boolean;
           deleted?: boolean;
           flag_count?: number;
           view_count?: number;
-          likes?: number;
           created_at?: string;
           is_bot_post?: boolean;
           is_shared?: boolean;
         };
         Update: {
           id?: string;
-          post_body?: string | null;
+          post_body?: string;
           user_id?: string;
           media_type?: string | null;
-          media_url?: string | null;
+          media_url?: string;
           media_id?: string;
-          user_avatar_url?: string;
+          filename?: string;
+          user_avatar_url?: string | null;
           username?: string;
+          postHash?: string;
           published?: boolean;
           user_deleted?: boolean;
           flagged?: boolean;
           deleted?: boolean;
           flag_count?: number;
           view_count?: number;
-          likes?: number;
           created_at?: string;
           is_bot_post?: boolean;
           is_shared?: boolean;
+        };
+      };
+      profiles: {
+        Row: {
+          id: string;
+          username: string;
+          avatar_filename: string | null;
+          updated_at: string | null;
+          avatar_url: string;
+          bio: string;
+          created_at: string;
+          banned: boolean;
+          is_bot: boolean;
+        };
+        Insert: {
+          id: string;
+          username: string;
+          avatar_filename?: string | null;
+          updated_at?: string | null;
+          avatar_url?: string;
+          bio?: string;
+          created_at?: string;
+          banned?: boolean;
+          is_bot?: boolean;
+        };
+        Update: {
+          id?: string;
+          username?: string;
+          avatar_filename?: string | null;
+          updated_at?: string | null;
+          avatar_url?: string;
+          bio?: string;
+          created_at?: string;
+          banned?: boolean;
+          is_bot?: boolean;
         };
       };
       comments: {
@@ -205,26 +157,100 @@ export interface Database {
           created_at?: string;
         };
       };
+      media: {
+        Row: {
+          id: string;
+          url: string;
+          bucket: string;
+          type: string;
+          alt: string | null;
+          filename: string;
+          size: number;
+          width: number;
+          height: number;
+          kind: string | null;
+          aspect_ratio: number;
+          category: string | null;
+          hash: string | null;
+          placeholder: string | null;
+          metadata: Json | null;
+          userMetadata: Json | null;
+          source: string;
+          postId: string | null;
+          user_id: string;
+          scraped: boolean;
+          deleted: boolean;
+          created_at: string;
+        };
+        Insert: {
+          id: string;
+          url: string;
+          bucket: string;
+          type: string;
+          alt?: string | null;
+          filename: string;
+          size: number;
+          width: number;
+          height: number;
+          kind?: string | null;
+          aspect_ratio: number;
+          category?: string | null;
+          hash?: string | null;
+          placeholder?: string | null;
+          metadata?: Json | null;
+          userMetadata?: Json | null;
+          source: string;
+          postId?: string | null;
+          user_id: string;
+          scraped?: boolean;
+          deleted?: boolean;
+          created_at?: string;
+        };
+        Update: {
+          id?: string;
+          url?: string;
+          bucket?: string;
+          type?: string;
+          alt?: string | null;
+          filename?: string;
+          size?: number;
+          width?: number;
+          height?: number;
+          kind?: string | null;
+          aspect_ratio?: number;
+          category?: string | null;
+          hash?: string | null;
+          placeholder?: string | null;
+          metadata?: Json | null;
+          userMetadata?: Json | null;
+          source?: string;
+          postId?: string | null;
+          user_id?: string;
+          scraped?: boolean;
+          deleted?: boolean;
+          created_at?: string;
+        };
+      };
       post_flags: {
         Row: {
           post_id: string;
           user_id: string;
-          reason: 'ABUSIVE' | 'ILLEGAL' | 'COPYRIGHT' | 'OTHER';
-          content: string | null;
+          reason: "ABUSIVE" | "ILLEGAL" | "COPYRIGHT" | "OTHER";
+          more_info: string | null;
           created_at: string;
         };
         Insert: {
           post_id: string;
           user_id: string;
-          reason: 'ABUSIVE' | 'ILLEGAL' | 'COPYRIGHT' | 'OTHER';
-          content?: string | null;
+          reason: "ABUSIVE" | "ILLEGAL" | "COPYRIGHT" | "OTHER";
+          more_info?: string | null;
           created_at?: string;
         };
         Update: {
           post_id?: string;
           user_id?: string;
-          reason?: 'ABUSIVE' | 'ILLEGAL' | 'COPYRIGHT' | 'OTHER';
-          content?: string | null;
+          reason?: "ABUSIVE" | "ILLEGAL" | "COPYRIGHT" | "OTHER";
+          more_info?: string | null;
           created_at?: string;
         };
       };
@@ -233,53 +259,65 @@ export interface Database {
           post_id: string;
           user_id: string;
           created_at: string;
-          doesLike: boolean;
+          does_like: boolean;
         };
         Insert: {
           post_id: string;
           user_id: string;
           created_at?: string;
-          doesLike?: boolean;
+          does_like?: boolean;
         };
         Update: {
           post_id?: string;
           user_id?: string;
           created_at?: string;
-          doesLike?: boolean;
+          does_like?: boolean;
         };
       };
-      post_tags: {
+      _UserFollows: {
         Row: {
-          post_id: string;
-          tag_id: string;
+          A: string;
+          B: string;
         };
         Insert: {
-          post_id: string;
-          tag_id: string;
+          A: string;
+          B: string;
         };
         Update: {
-          post_id?: string;
-          tag_id?: string;
+          A?: string;
+          B?: string;
+        };
+      };
+      _PostToTag: {
+        Row: {
+          A: string;
+          B: string;
+        };
+        Insert: {
+          A: string;
+          B: string;
+        };
+        Update: {
+          A?: string;
+          B?: string;
         };
       };
       tags: {
         Row: {
           id: string;
           name: string;
-          media_id: string | null;
         };
         Insert: {
           id: string;
           name: string;
-          media_id?: string | null;
         };
         Update: {
           id?: string;
           name?: string;
-          media_id?: string | null;
         };
       };
     };
     Functions: {};
   };
 }
+
