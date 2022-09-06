@@ -3,6 +3,8 @@ import { faker } from '@faker-js/faker';
 import { createClient } from '@supabase/supabase-js';
 import knex, { definedUsers } from './createUsers';
 import { imageService } from '../src/api/imageService';
+import { createPost } from './createPost';
+import { getImageFileNode } from '../test-utils';
 
 const supabaseServer = createClient(process.env.NEXT_PUBLIC_SUPABASE_URL!, process.env.SERVICE_ROLE_KEY!);
 
@@ -64,13 +66,25 @@ const deleteOldUsers = async () => {
     await knex.raw(onConfirmUserFunction);
 
     /** CREATE PERSONAL PHOTO BUCKET */
-    await imageService.duplicateExampleBucket();
+    if (process.env.ENVIRONMENT === 'ci') {
+      await imageService.duplicateExampleBucket();
+    }
 
     /** Wipe old users if for some reason they exist or you are testing scripts */
     await deleteOldUsers();
     /** START NEW USER CREATION **/
-    await createNewUsers();
+    const users = await createNewUsers();
     /** END NEW USER CREATION **/
+    const [imgBuff, imgFile] = await getImageFileNode('../public/storybook/aspect-1-1.jpg');
+    const createdPost = await createPost({
+      croppedImage: imgBuff as any,
+      user: users?.data?.[0]!,
+      body: {
+        imageData: '{"dimensions":{"width":300,"height":300},"aspectRatio":1,"originalImageName":"aspect-4-3.jpg"}',
+        caption: 'here is a picture',
+      },
+    });
+    console.log(createdPost);
 
     process.exit(0);
   } catch (error) {
