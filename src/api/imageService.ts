@@ -4,10 +4,10 @@ import {
   DeleteObjectCommand,
   PutObjectCommand,
   GetBucketCorsCommand,
-  GetBucketAclCommand,
   PutBucketCorsCommand,
   GetBucketPolicyCommand,
   PutBucketPolicyCommand,
+  ListBucketsCommand,
 } from '@aws-sdk/client-s3';
 import { s3Client } from '../lib/s3Client'; // Helper function that creates an Amazon S3 service client module.
 import { getSignedUrl } from '@aws-sdk/s3-request-presigner';
@@ -58,19 +58,23 @@ class ImageService {
   public async duplicateExampleBucket() {
     const defaultBucket = { Bucket: process.env.EXAMPLE_BUCKET };
     try {
-      const acl = await s3Client.send(new GetBucketAclCommand(defaultBucket));
-      console.log('ACL', JSON.stringify(acl));
-      console.log(`Creating bucket ${this.bucket}`);
-      await s3Client.send(
-        new CreateBucketCommand({
-          Bucket: this.bucket,
-        })
-      );
-      console.log(`Waiting for "${this.bucket}" bucket creation...`);
+      const buckets = await s3Client.send(new ListBucketsCommand({}));
+      console.log(buckets);
+      if (!buckets?.Buckets?.filter(({ Name }) => Name === this.bucket).length) {
+        console.log(`Creating bucket ${this.bucket}`);
+        console.log(`Waiting for "${this.bucket}" bucket creation...`);
+        await s3Client.send(
+          new CreateBucketCommand({
+            Bucket: this.bucket,
+          })
+        );
+        console.log(`${process.env.PHOTO_BUCKET} successfully created`);
+      }
+      console.log('Duplicating Policies...');
 
-      // duplicate corsPolicies
+      // CORS
       const corsData = await s3Client.send(new GetBucketCorsCommand(defaultBucket));
-      const corsUpdate = await s3Client.send(
+      await s3Client.send(
         new PutBucketCorsCommand({
           Bucket: this.bucket,
           CORSConfiguration: {
@@ -78,18 +82,20 @@ class ImageService {
           },
         })
       );
-      console.log('Cors Policy', JSON.stringify(corsUpdate));
 
+      // POLICIES
       const bucketPolicy = await s3Client.send(new GetBucketPolicyCommand(defaultBucket));
-      console.log('original bucket policy', JSON.stringify(bucketPolicy.Policy));
-      const updatePolicy = await s3Client.send(
+      const parsedPolicy = JSON.parse(bucketPolicy.Policy!);
+      parsedPolicy.Statement.forEach((state: any) => {
+        state.Resource = state.Resource.replace(process.env.EXAMPLE_BUCKET!, this.bucket);
+      });
+
+      await s3Client.send(
         new PutBucketPolicyCommand({
           Bucket: this.bucket,
-          Policy: bucketPolicy.Policy,
+          Policy: JSON.stringify(parsedPolicy),
         })
       );
-      console.log('Bucket Policy', JSON.stringify(updatePolicy));
-      console.log('ACL', JSON.stringify(acl));
     } catch (err) {
       console.log('Error creating bucket', err);
     }

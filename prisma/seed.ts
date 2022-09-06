@@ -33,6 +33,7 @@ const createNewUsers = async () => {
     const newUsers = await supabaseServer.auth.api.listUsers();
 
     console.log('created users:', newUsers?.data?.length, 'error?:', newUsers.error);
+    return newUsers;
   } catch (error) {
     console.log(error);
   }
@@ -63,7 +64,7 @@ const deleteOldUsers = async () => {
     await knex.raw(onConfirmUserFunction);
 
     /** CREATE PERSONAL PHOTO BUCKET */
-    // await imageService.duplicateExampleBucket();
+    await imageService.duplicateExampleBucket();
 
     /** Wipe old users if for some reason they exist or you are testing scripts */
     await deleteOldUsers();
