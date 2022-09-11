@@ -3,8 +3,8 @@ import { faker } from '@faker-js/faker';
 import { createClient } from '@supabase/supabase-js';
 import knex, { definedUsers } from './createUsers';
 import { imageService } from '../src/api/imageService';
-import { createPost } from './createPost';
-import { getImageFileNode } from '../test-utils';
+// import { createPost } from './createPost';
+// import { getImageFileNode } from '../test-utils';
 
 const supabaseServer = createClient(process.env.NEXT_PUBLIC_SUPABASE_URL!, process.env.SERVICE_ROLE_KEY!);
 
@@ -63,28 +63,33 @@ const deleteOldUsers = async () => {
 (async () => {
   try {
     /***  AUTO CREATE PROFILE ON CONFIRM RPC FUNCTION ***/
-    await knex.raw(onConfirmUserFunction);
-
+    const results = await knex.raw(onConfirmUserFunction);
+    console.log(results, 'ON CONFIRM USER FUNCTION CREATED');
     /** CREATE PERSONAL PHOTO BUCKET */
     if (process.env.ENVIRONMENT === 'ci') {
       await imageService.duplicateExampleBucket();
     }
 
     /** Wipe old users if for some reason they exist or you are testing scripts */
+    console.log('starting to delete users');
     await deleteOldUsers();
+    console.log('finished deleting users');
     /** START NEW USER CREATION **/
+    console.log('starting to create users');
     const users = await createNewUsers();
+    console.log('finished creating users');
+    console.log(users);
     /** END NEW USER CREATION **/
-    const [imgBuff, imgFile] = await getImageFileNode('../public/storybook/aspect-1-1.jpg');
-    const createdPost = await createPost({
-      croppedImage: imgBuff as any,
-      user: users?.data?.[0]!,
-      body: {
-        imageData: '{"dimensions":{"width":300,"height":300},"aspectRatio":1,"originalImageName":"aspect-4-3.jpg"}',
-        caption: 'here is a picture',
-      },
-    });
-    console.log(createdPost);
+    // const [imgBuff, imgFile] = await getImageFileNode('../public/storybook/aspect-1-1.jpg');
+    // const createdPost = await createPost({
+    //   croppedImage: imgBuff as any,
+    //   user: users?.data?.[0]!,
+    //   body: {
+    //     imageData: '{"dimensions":{"width":300,"height":300},"aspectRatio":1,"originalImageName":"aspect-4-3.jpg"}',
+    //     caption: 'here is a picture',
+    //   },
+    // });
+    // console.log(createdPost);
 
     process.exit(0);
   } catch (error) {
