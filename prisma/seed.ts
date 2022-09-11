@@ -42,7 +42,10 @@ const createNewUsers = async () => {
 };
 const deleteOldUsers = async () => {
   try {
+    console.log('before users');
+
     const tableUsers = await supabaseServer.auth.api.listUsers();
+    console.log('after users');
     if (tableUsers.data) {
       const deleteUsers = tableUsers?.data?.map(({ id }) => supabaseServer.auth.api.deleteUser(id));
       await prisma.profile.deleteMany({
@@ -72,11 +75,15 @@ const deleteOldUsers = async () => {
 
     /** Wipe old users if for some reason they exist or you are testing scripts */
     console.log('starting to delete users');
-    await deleteOldUsers();
+    const deleting = await deleteOldUsers();
+    console.log({ deleting });
     console.log('finished deleting users');
     /** START NEW USER CREATION **/
     console.log('starting to create users');
     const users = await createNewUsers();
+    if (!users || users.error) {
+      console.log(users?.error);
+    }
     console.log('finished creating users');
     console.log(users);
     /** END NEW USER CREATION **/
@@ -90,9 +97,10 @@ const deleteOldUsers = async () => {
     //   },
     // });
     // console.log(createdPost);
-
+    console.log('roc');
     process.exit(0);
   } catch (error) {
+    console.log('ERROR');
     console.error(error);
     process.exit(0);
   }
