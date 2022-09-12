@@ -1,4 +1,4 @@
-import { Flex, Box, useColorModeValue, useDisclosure } from '@chakra-ui/react';
+import { Flex, Box, useColorModeValue } from '@chakra-ui/react';
 import { PostHeader } from './PostHeader';
 import { PostImage } from './PostImage';
 import type { Post } from 'types/post.types';
@@ -14,21 +14,7 @@ export interface PostCardProps {
 }
 
 export const PostCard = ({
-  post: {
-    postId,
-    viewsCount,
-    description,
-    commentsCount,
-    commentsToRender,
-    hasLiked,
-    createdAt,
-    isFollowing,
-    repostsCount,
-    likesCount,
-    imageUrl,
-    poster,
-    tags,
-  },
+  post: { postId, viewCount, postBody, commentCount, hasLiked, createdAt, isFollowing, likes, imageUrl, poster, tags },
   setSize,
   size,
   refreshIdx,
@@ -51,8 +37,8 @@ export const PostCard = ({
         <Box w='100%' h='70%' display='block'>
           <PostHeader
             poster={poster}
-            repostsCount={repostsCount}
-            viewsCount={viewsCount}
+            repostsCount={0}
+            viewCount={viewCount}
             createdAt={createdAt}
             isFollowing={isFollowing}
           />
@@ -71,11 +57,11 @@ export const PostCard = ({
         <PostFooter
           tags={tags}
           postId={postId}
-          description={description}
+          postBody={postBody}
           hasLiked={hasLiked}
-          likesCount={likesCount}
+          likesCount={likes.length}
           username={poster.username}
-          commentsCount={commentsCount}
+          commentCount={commentCount}
         />
       </Box>
     </Flex>

@@ -1,4 +1,4 @@
-import { Box, Flex, ModalCloseButton, AvatarBadge } from '@chakra-ui/react';
+import { Box, Flex, ModalCloseButton } from '@chakra-ui/react';
 import { BrandLogo } from '@src/common/components/BrandLogo';
 import { ProfileModalProps } from './ProfileModal';
 import { DeleteAccount } from './DeleteAccount';

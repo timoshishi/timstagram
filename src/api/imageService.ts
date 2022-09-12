@@ -12,7 +12,7 @@ import {
 import { s3Client } from '../lib/s3Client'; // Helper function that creates an Amazon S3 service client module.
 import { getSignedUrl } from '@aws-sdk/s3-request-presigner';
 
-class ImageService {
+export class ImageService {
   bucket: string;
   botId: string;
   constructor(bucket: string) {

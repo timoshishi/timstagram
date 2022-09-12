@@ -10,31 +10,6 @@ type GetPostParams = {
 
 export type PostQueryResponse = Prisma.PromiseReturnType<typeof getSinglePost>;
 
-export const getPostByHashOrId = async ({ postHash, postId, prisma, userId }: GetPostParams): Promise<Post | null> => {
-  try {
-    if (!postHash && !postId) {
-      console.error('Must provide either postHash or postId');
-    }
-    const post: PostQueryResponse = await getSinglePost({ postHash, postId, prisma });
-    if (!post) {
-      console.log('post not found');
-      return null;
-    }
-    const { hasLikedPost, hasFlaggedPost, isFollowingUser } = await getPersonalizedUserProperties({
-      userId,
-      post,
-      prisma,
-    });
-    if (hasFlaggedPost) {
-      return null;
-    }
-    return constructPostResponseObject({ post, hasLikedPost, isFollowingUser, hasFlaggedPost });
-  } catch (error) {
-    console.error(error);
-    return null;
-  }
-};
-
 export const getUserPosts = async ({
   userId,
   prisma,
@@ -109,7 +84,7 @@ const createResponseObjectArray = (posts: PostQueryResponse[]): Post[] => {
   return responseBody;
 };
 
-const constructPostResponseObject = ({
+export const constructPostResponseObject = ({
   post,
   hasLikedPost,
   isFollowingUser,
@@ -249,7 +224,7 @@ const getPersonalizedUserProperties = async ({
   }
 };
 
-const postSelectObj = {
+export const postSelectObj = {
   id: true,
   postBody: true,
   createdAt: true,
@@ -318,7 +293,7 @@ const postSelectObj = {
   },
 };
 
-const activePostQueryObj = {
+export const activePostQueryObj = {
   deleted: false,
   userDeleted: false,
   published: true,

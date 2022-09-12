@@ -2,10 +2,10 @@
 import React from 'react';
 import Image from 'next/image';
 import { DEFAULT_IMAGE_PLACEHOLDER } from '@common/constants/index';
-
+import { Tag } from '@src/types/post.types';
 interface PostImageProps {
   imageUrl: string;
-  tags: string[];
+  tags: Tag[];
   size: number;
   setSize: (size: number) => void;
   refreshIdx: number;

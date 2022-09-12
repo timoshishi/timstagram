@@ -1,6 +1,6 @@
-import { renderHook } from '@testing-library/react';
+// import { renderHook } from '@testing-library/react';
 // import { useCreateUploaderContext, ImageUploaderProvider } from './ImageUploaderContext';
-import { ReactNode } from 'react';
+// import { ReactNode } from 'react';
 
 describe('ImageUploaderContext', () => {
   /* eslint-disable react/display-name */
@@ -61,3 +61,5 @@ describe('ImageUploaderContext', () => {
   //   );
   // });
 });
+
+export {};

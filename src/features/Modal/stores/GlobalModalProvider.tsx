@@ -1,5 +1,5 @@
 import { useToast } from '@chakra-ui/react';
-import React, { useState, useCallback, useMemo } from 'react';
+import React, { useState, useCallback, useRef } from 'react';
 import { GlobalModalComponent } from '../components/GlobalModalComponent';
 import { ModalToasts, useModalToasts } from '../hooks/useModalToasts';
 import { Store, ShowModal } from '../types/global-modal.types';
@@ -20,7 +20,7 @@ export const GlobalModal = ({ children }: { children: React.ReactNode }) => {
   }, []);
 
   let useModalToast = {} as ModalToasts;
-  useMemo(() => (useModalToast = useModalToasts(toast)), [useModalToast]);
+  useModalToast = useRef(useModalToasts(toast)).current;
 
   const updateStore = useCallback((newStore: Partial<Store>) => {
     setStore((prevStore) => ({

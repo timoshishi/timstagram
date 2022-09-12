@@ -1,7 +1,5 @@
 import { ChakraProvider } from '@chakra-ui/react';
 import { supabase } from '../lib/initSupabase';
-import { supabaseClient } from '@supabase/auth-helpers-nextjs';
-
 import '../style.css';
 import { StrictMode } from 'react';
 import { UserProvider } from '@supabase/auth-helpers-react';

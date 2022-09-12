@@ -22,12 +22,14 @@ interface NavbarLinksProps {
 export const NavbarLinks = ({ user }: NavbarLinksProps) => {
   const { showAuthModal } = useAuthModal();
   const { showPostModal } = useCreatePostModal();
+
   const handlePost = useCallback(() => {
     if (!user) {
       showAuthModal({ viewType: 'sign_up', signUpActionType: 'POST' });
     } else {
       showPostModal();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user]);
 
   const LinkItems: Array<LinkItemProps> = [

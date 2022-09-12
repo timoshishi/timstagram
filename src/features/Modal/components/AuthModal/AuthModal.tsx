@@ -1,7 +1,6 @@
 import Auth from './Auth';
 import { supabase } from '@src/lib/initSupabase';
-import { ModalContent, Flex, Text, ModalCloseButton, ModalOverlay } from '@chakra-ui/react';
-import { BrandLogo } from '@common/components/BrandLogo';
+import { ModalContent, Flex, ModalCloseButton, ModalOverlay } from '@chakra-ui/react';
 import { useAuthModal } from '@features/Modal';
 import { SignUpActionType } from './AuthHeader';
 import { ViewType } from './Auth';

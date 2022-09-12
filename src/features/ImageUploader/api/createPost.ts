@@ -1,4 +1,3 @@
-import axios from '@src/lib/axios';
 import { ImageData } from '../types/image-uploader.types';
 
 export interface PostDTO {
