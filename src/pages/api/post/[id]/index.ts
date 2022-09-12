@@ -3,18 +3,13 @@ import { createRouter, expressWrapper } from 'next-connect';
 import cors from 'cors';
 import { PostController } from '@api/controllers/post/PostController';
 import { NextRequestWithRequiredUser, NextRequestWithUser } from '@src/api/types';
-import {
-  appendUserToRequest,
-  authenticateHandler,
-  devLogger,
-  handlerDefaults,
-  methodNotAllowed,
-  validate,
-} from '@src/api/router';
-import { updateProfileValidator } from '@api/controllers/profile/profile-validation';
+import { devLogger, handlerDefaults, methodNotAllowed } from '@src/api/router';
 import prisma from '@src/lib/prisma';
-import supabaseService from '@src/lib/initSupabaseServer';
-const postController = new PostController(prisma);
+import { PostService } from '@api/services/PostService';
+
+const postService = new PostService(process.env.PHOTO_BUCKET!, prisma);
+
+const postController = new PostController(prisma, postService);
 
 const router = createRouter<NextRequestWithUser | NextRequestWithRequiredUser, NextApiResponse>();
 

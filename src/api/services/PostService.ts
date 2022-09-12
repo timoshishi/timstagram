@@ -1,43 +1,78 @@
 import { PrismaClient, Prisma } from '@prisma/client';
-import { imageService } from '@api/imageService';
-import { getImageProperties, resizeAvatarImage } from '@src/api/handleImageUpload';
-import { NextRequestWithUserFile, NextRequestWithUser } from '@api/types';
+import { ImageService } from '@api/imageService';
+import { getImageProperties } from '@src/api/handleImageUpload';
 import { customNano } from '@src/lib/customNano';
-import { NextApiResponse } from 'next';
 import { randomUUID } from 'crypto';
-import { getPostByHashOrId } from '@api/getPost';
-import prisma from '@src/lib/prisma';
+import { constructPostResponseObject, postSelectObj, activePostQueryObj } from '../getPost';
+import { Post } from 'types/post.types';
+import { PostHash as PrismaPostHash } from '@prisma/client';
+import { SupaUser } from 'types/index';
+import { ImageData } from '@features/ImageUploader/types/image-uploader.types';
+
 type GetPostParams = {
   postHash?: string;
   postId?: string;
-  prisma: PrismaClient;
   userId?: string;
 };
 
-export type PostQueryResponse = Prisma.PromiseReturnType<typeof PostService.getSinglePost>;
-class PostService {
-  constructor(protected prisma: PrismaClient) {}
+type PostQueryResponse = Prisma.PromiseReturnType<PostService['getSinglePost']>;
+export class PostService extends ImageService {
+  constructor(bucket: string, private prisma: PrismaClient) {
+    super(bucket);
+    this.prisma = prisma;
+  }
 
-  getPost = async (req: NextRequestWithUser, res: NextApiResponse) => {
+  getPostByHashOrId = async ({ postHash, postId, userId }: GetPostParams): Promise<Post | null> => {
     try {
-      const id = req.query.id as string;
-      const responseBody = await getPostByHashOrId({
-        userId: req.user?.id,
-        postId: id,
-        prisma: this.prisma,
-      });
-      if (responseBody === null) {
-        return res.status(404).end();
+      if (!postHash && !postId) {
+        console.error('Must provide either postHash or postId');
       }
-      return res.status(200).json(responseBody);
+      const post: PostQueryResponse = await this.getSinglePost({ postHash, postId });
+      if (!post) {
+        console.log('post not found');
+        return null;
+      }
+      const { hasLikedPost, hasFlaggedPost, isFollowingUser } = await this.getPersonalizedUserProperties({
+        userId,
+        post,
+      });
+      if (hasFlaggedPost) {
+        return null;
+      }
+      return constructPostResponseObject({ post, hasLikedPost, isFollowingUser, hasFlaggedPost });
     } catch (error) {
       console.error(error);
-      return res.status(500);
+      return null;
+    }
+  };
+
+  getSinglePost = async ({ postHash, postId }: GetPostParams) => {
+    try {
+      const foundPost = await this.prisma.post.findFirst({
+        where: {
+          OR: [
+            {
+              postHash,
+            },
+            {
+              id: postId,
+            },
+          ],
+          AND: activePostQueryObj,
+        },
+        select: postSelectObj,
+      });
+      if (!foundPost) {
+        return null;
+      }
+      return foundPost;
+    } catch (error) {
+      console.error(error);
     }
   };
 
   createPostHash = async (): Promise<string | null> => {
-    let result: PostHash | null;
+    let result: PrismaPostHash | null;
     //TODO: Change this to a get req to the PostHash table that has pre-generated base62 encoded hashes
     let nano: string | null = null;
     for (let retries = 0; retries < 3; retries++) {
@@ -55,14 +90,18 @@ class PostService {
     return nano;
   };
 
-  createPost = async (req: NextRequestWithUserFile, res: NextApiResponse) => {
-    if (!req.user) {
-      throw new Error('User is not logged in');
-    }
-    const { file: croppedImage, body, user } = req;
-
+  createPost = async ({
+    user,
+    croppedImage,
+    imageData,
+    caption,
+  }: {
+    user: SupaUser;
+    croppedImage: Express.Multer.File;
+    imageData: ImageData;
+    caption: string;
+  }): Promise<string | null> => {
     try {
-      const imageData = JSON.parse(body.imageData);
       const postHash = await this.createPostHash();
 
       if (!postHash) {
@@ -92,13 +131,13 @@ class PostService {
           userId: user.id,
           username: user.user_metadata.username,
           mediaType: imageProperties.type,
-          postBody: body.caption,
+          postBody: caption,
           mediaUrl: imageProperties.url,
           filename: imageProperties.filename,
         },
       });
 
-      const signedUrl = await imageService.createSignedUrl({
+      const signedUrl = await this.createSignedUrl({
         filename: imageProperties.filename,
         file: croppedImage,
       });
@@ -133,14 +172,69 @@ class PostService {
         },
       });
 
-      return res.status(200).json({ signedUrl });
+      return signedUrl;
     } catch (error) {
       console.error(error);
-      res.status(500).json({ error: 'Something went wrong' });
+      return null;
+    }
+  };
+
+  getPersonalizedUserProperties = async ({
+    userId,
+    post,
+  }: {
+    userId?: string;
+    post: PostQueryResponse;
+  }): Promise<{ hasLikedPost: boolean; hasFlaggedPost: boolean; isFollowingUser: boolean }> => {
+    try {
+      if (!post) {
+        throw new Error('Post is required');
+      }
+
+      if (!userId) {
+        Promise.resolve({
+          hasLikedPost: false,
+          hasFlaggedPost: false,
+          isFollowingUser: false,
+        });
+      }
+
+      const isFollowingUser = !!(await this.prisma.profile.findFirst({
+        where: {
+          AND: [
+            {
+              id: userId,
+            },
+            {
+              following: {
+                every: {
+                  id: post?.userId,
+                },
+              },
+            },
+          ],
+        },
+      }));
+
+      const hasLikedPost = !!post?.postLikes.find((like) => like.profile.id === userId);
+
+      const hasFlaggedPost = !!(await this.prisma.postFlag.findFirst({
+        where: {
+          AND: [
+            {
+              postId: post?.id,
+            },
+            {
+              flaggedByUserId: userId,
+            },
+          ],
+        },
+      }));
+
+      return { hasLikedPost, hasFlaggedPost, isFollowingUser };
+    } catch (error) {
+      console.error(error);
+      throw new Error('Error getting user properties');
     }
   };
 }
-
-const postService = new PostService(prisma);
-
-export default postService;
