@@ -2,6 +2,10 @@ import prisma from '../src/lib/prisma';
 import { faker } from '@faker-js/faker';
 import { createClient } from '@supabase/supabase-js';
 import knex, { definedUsers } from './createUsers';
+import { imageService } from '../src/api/imageService';
+// import { createPost } from './createPost';
+// import { getImageFileNode } from '../test-utils';
+
 const supabaseServer = createClient(process.env.NEXT_PUBLIC_SUPABASE_URL!, process.env.SERVICE_ROLE_KEY!);
 
 console.log('CURRENT SUPABASE URL', process.env.NEXT_PUBLIC_SUPABASE_URL);
@@ -20,10 +24,7 @@ const createNewUsers = async () => {
       user_metadata: {
         bio: faker.lorem.sentence(),
         username: user.username,
-        avatarUrl: `https://avatars0.githubusercontent.com/u/${faker.datatype.number({
-          min: 1700,
-          max: 1799,
-        })}?v=4`,
+        avatarUrl: `/storybook/avatar-${Math.round(Math.random())}.png`,
       },
       email_confirm: true,
     }));
@@ -34,13 +35,17 @@ const createNewUsers = async () => {
     const newUsers = await supabaseServer.auth.api.listUsers();
 
     console.log('created users:', newUsers?.data?.length, 'error?:', newUsers.error);
+    return newUsers;
   } catch (error) {
     console.log(error);
   }
 };
 const deleteOldUsers = async () => {
   try {
+    console.log('before users');
+
     const tableUsers = await supabaseServer.auth.api.listUsers();
+    console.log('after users');
     if (tableUsers.data) {
       const deleteUsers = tableUsers?.data?.map(({ id }) => supabaseServer.auth.api.deleteUser(id));
       await prisma.profile.deleteMany({
@@ -60,17 +65,42 @@ const deleteOldUsers = async () => {
 
 (async () => {
   try {
-    /***  AUTO CREATE PROFILE ON CONFIRM ***/
-    await knex.raw(onConfirmUserFunction);
+    /***  AUTO CREATE PROFILE ON CONFIRM RPC FUNCTION ***/
+    const results = await knex.raw(onConfirmUserFunction);
+    console.log(results, 'ON CONFIRM USER FUNCTION CREATED');
+    /** CREATE PERSONAL PHOTO BUCKET */
+    if (process.env.ENVIRONMENT === 'ci') {
+      await imageService.duplicateExampleBucket();
+    }
 
     /** Wipe old users if for some reason they exist or you are testing scripts */
-    await deleteOldUsers();
+    console.log('starting to delete users');
+    const deleting = await deleteOldUsers();
+    console.log({ deleting });
+    console.log('finished deleting users');
     /** START NEW USER CREATION **/
-    await createNewUsers();
+    console.log('starting to create users');
+    const users = await createNewUsers();
+    if (!users || users.error) {
+      console.log(users?.error);
+    }
+    console.log('finished creating users');
+    console.log(users);
     /** END NEW USER CREATION **/
-
+    // const [imgBuff, imgFile] = await getImageFileNode('../public/storybook/aspect-1-1.jpg');
+    // const createdPost = await createPost({
+    //   croppedImage: imgBuff as any,
+    //   user: users?.data?.[0]!,
+    //   body: {
+    //     imageData: '{"dimensions":{"width":300,"height":300},"aspectRatio":1,"originalImageName":"aspect-4-3.jpg"}',
+    //     caption: 'here is a picture',
+    //   },
+    // });
+    // console.log(createdPost);
+    console.log('roc');
     process.exit(0);
   } catch (error) {
+    console.log('ERROR');
     console.error(error);
     process.exit(0);
   }

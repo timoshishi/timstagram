@@ -8,7 +8,7 @@ type GetPostParams = {
   userId?: string;
 };
 
-type PostQueryResponse = Prisma.PromiseReturnType<typeof getSinglePost>;
+export type PostQueryResponse = Prisma.PromiseReturnType<typeof getSinglePost>;
 
 export const getPostByHashOrId = async ({ postHash, postId, prisma, userId }: GetPostParams): Promise<Post | null> => {
   try {
@@ -179,7 +179,9 @@ const getSinglePost = async ({ postHash, postId, prisma }: GetPostParams) => {
       },
       select: postSelectObj,
     });
-    console.log({ foundPost });
+    if (!foundPost) {
+      return null;
+    }
     return foundPost;
   } catch (error) {
     console.error(error);

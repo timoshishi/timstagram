@@ -34,7 +34,14 @@
       "@src/*": ["./src/*"]
     }
   },
-  "exclude": ["node_modules", "**/types/*", "**/stories/**/*", "scripts/api-example", "**/*.spec.ts"],
+  "exclude": [
+    "node_modules",
+    "**/types/*",
+    "**/stories/**/*",
+    "scripts/api-example",
+    "**/*.spec.ts",
+    "./cypress.config.ts"
+  ],
   "include": [
     "next-env.d.ts",
     "**/*.ts",
@@ -43,7 +50,8 @@
     "__tests__/**/*.ts",
     "__tests__/**/*.tsx",
     "resolver.js",
-    "src/mocks/api/handlers.js"
+    "src/mocks/api/handlers.js",
+    "prisma/**/*.ts"
   ],
   "ts-node": {
     "compilerOptions": {

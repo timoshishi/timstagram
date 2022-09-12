@@ -1,0 +1,41 @@
+{
+  "extends": "../tsconfig.json",
+  "compilerOptions": {
+    "baseUrl": "..",
+    "paths": {
+      "@pages/*": ["/src/pages/*"],
+      "@common/*": ["/src/common/*"],
+      "@components/*": ["/src/common/components/*"],
+      "types/*": ["/src/types/*"],
+      "@views/*": ["/src/views/*"],
+      "@features/*": ["/src/features/*"],
+      "@api/*": ["/src/api/*"],
+      "@src/*": ["/src/*"]
+    }
+  },
+  "exclude": [
+    "node_modules",
+    "**/types/*",
+    "**/stories/**/*",
+    "scripts/api-example",
+    "**/*.spec.ts",
+    "./cypress.config.ts",
+    "**/test-utils/**/*"
+  ],
+  "include": [
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    "types.d.ts",
+    "__tests__/**/*.ts",
+    "__tests__/**/*.tsx",
+    "resolver.js",
+    "src/mocks/api/handlers.js",
+    "prisma/**/*.ts"
+  ],
+  "ts-node": {
+    "compilerOptions": {
+      "module": "commonjs"
+    }
+  }
+}

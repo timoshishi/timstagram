@@ -1,16 +1,22 @@
-import { PostHash, PrismaClient } from '@prisma/client';
-import { imageService } from '../../imageService';
-import { getImageProperties, resizeAvatarImage } from '../../handleImageUpload';
-import { NextRequestWithUserFile, NextRequestWithUser } from '../../types';
+import { PrismaClient, Prisma } from '@prisma/client';
+import { imageService } from '@api/imageService';
+import { getImageProperties, resizeAvatarImage } from '@src/api/handleImageUpload';
+import { NextRequestWithUserFile, NextRequestWithUser } from '@api/types';
 import { customNano } from '@src/lib/customNano';
 import { NextApiResponse } from 'next';
 import { randomUUID } from 'crypto';
-import { getPostByHashOrId } from '../../getPost';
+import { getPostByHashOrId } from '@api/getPost';
+import prisma from '@src/lib/prisma';
+type GetPostParams = {
+  postHash?: string;
+  postId?: string;
+  prisma: PrismaClient;
+  userId?: string;
+};
 
-export class PostController {
-  constructor(private prisma: PrismaClient) {
-    this.prisma = prisma;
-  }
+export type PostQueryResponse = Prisma.PromiseReturnType<typeof PostService.getSinglePost>;
+class PostService {
+  constructor(protected prisma: PrismaClient) {}
 
   getPost = async (req: NextRequestWithUser, res: NextApiResponse) => {
     try {
@@ -76,7 +82,6 @@ export class PostController {
         altText: `${user.user_metadata.username}'s avatar`,
         username: user.user_metadata.username,
       });
-
       const postId = randomUUID();
 
       await this.prisma.post.create({
@@ -135,3 +140,7 @@ export class PostController {
     }
   };
 }
+
+const postService = new PostService(prisma);
+
+export default postService;

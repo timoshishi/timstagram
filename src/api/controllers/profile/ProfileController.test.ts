@@ -15,12 +15,12 @@ import 'crypto';
 import { rest } from 'msw';
 
 const imageId = '4184012e-2641-44be-97c4-508461dc7840';
-const aws = `https://witter-dev.s3.amazonaws.com/${imageId}.jpeg`;
+const aws = `https://${process.env.PHOTO_BUCKET}.s3.amazonaws.com/${imageId}.jpeg`;
 
 const constructUploadUrl = jest.fn();
 constructUploadUrl.mockReturnValue(aws);
 
-jest.mock('@api/createSignedUrl', () => ({
+jest.mock('@api/imageService', () => ({
   imageService: {
     uploadFileToS3: jest.fn(),
   },
