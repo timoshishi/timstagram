@@ -25,7 +25,7 @@ Cypress.Commands.addAll({
     cy.get('input[name="email"]').type(email);
     cy.get('input[name="password"]').type(password);
     cy.get('button[type="submit"]').click();
-    cy.get('button[aria-label="Close"]').click();
+    cy.get('.chakra-modal__close-btn').click();
   },
   loginUser({ email, password }: { email: string; password: string }) {
     cy.contains(/Sign In/i).click();
