@@ -1,54 +1,6 @@
-import { scaleImage, sizeValidator, readFile, handleCroppedImage } from './image-uploader-functions';
+import { scaleImage, sizeValidator, readFile } from './image-uploader-functions';
 import { MAX_MEGABYTES, MEGABYTE } from './image-uploader.constants';
 import { Dimensions } from '../types/image-uploader.types';
-
-/*
-export class Component {
-  object = {
-    image: ''
-  };
-  handleFileUpload(event) {
-    let reader = new FileReader();
-    let file = event.target.files[0];
-
-    reader.readAsBinaryString(file);
-
-    reader.onload = () => {
-      let base64String = btoa(reader.result as string);
-      this.object.image = base64String;
-    };
-
-    return reader;
-  }
-}
-*/
-/*
-import { Component } from './';
-
-const cmp = new Component();
-
-describe('main', () => {
-  beforeEach(() => {
-    jest.restoreAllMocks();
-  });
-  test('should test handle file upload correctly', () => {
-    const mFile = new File(['go'], 'go.pdf');
-    const mEvent = { target: { files: [mFile] } };
-    const readAsBinaryStringSpy = jest.spyOn(FileReader.prototype, 'readAsBinaryString');
-    const btoaSpy = jest.spyOn(window, 'btoa');
-    const reader = cmp.handleFileUpload(mEvent);
-    expect(reader).toBeInstanceOf(FileReader);
-    if (reader.onload) {
-      Object.defineProperty(reader, 'result', { value: 'gogo' });
-      const mOnloadEvent = {} as any;
-      reader.onload(mOnloadEvent);
-      expect(btoaSpy).toBeCalledWith('gogo');
-      expect(cmp.object.image).toBe(btoa('gogo'));
-    }
-    expect(readAsBinaryStringSpy).toBeCalledWith(mFile);
-  });
-});
-*/
 
 describe('sizeValidator', () => {
   it('returns an error that the file is too large if it is above max_megabytes', () => {

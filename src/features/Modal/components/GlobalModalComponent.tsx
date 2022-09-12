@@ -1,4 +1,4 @@
-import { Portal, Modal as ChakraModal } from '@chakra-ui/react';
+import { Modal as ChakraModal } from '@chakra-ui/react';
 import { ModalComponent, ModalType } from '../types/global-modal.types';
 import { MODAL_COMPONENTS } from '../constants/modal';
 

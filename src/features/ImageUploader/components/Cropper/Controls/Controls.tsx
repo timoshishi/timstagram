@@ -2,7 +2,6 @@ import { Box, Icon, Flex } from '@chakra-ui/react';
 import { Zoom } from './Zoom';
 import { AspectRatio } from './AspectRatio';
 import { FiRotateCw } from 'react-icons/fi';
-import { RefObject } from 'react';
 
 interface ControlsProps {
   setZoom: (zoom: number) => void;

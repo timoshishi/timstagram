@@ -48,10 +48,12 @@ export const ProfileModal = () => {
       });
     }
     toggleUploaderLoading();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [croppedImage]);
 
   useEffect(() => {
     onAvatarSubmit();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [croppedImage]);
 
   const profile: SupaUser['user_metadata'] = Object.assign(

@@ -5231,6 +5231,11 @@
     "@types/connect" "*"
     "@types/node" "*"
 
+"@types/chai@^4.3.3":
+  version "4.3.3"
+  resolved "https://registry.yarnpkg.com/@types/chai/-/chai-4.3.3.tgz#3c90752792660c4b562ad73b3fbd68bf3bc7ae07"
+  integrity sha512-hC7OMnszpxhZPduX+m+nrx+uFoLkWOMiR4oa/AZF3MuSETYTZmFfJAHqZEM8MVlvfG7BEUcgvtwoCTxBp6hm3g==
+
 "@types/chance@^1.1.3":
   version "1.1.3"
   resolved "https://registry.npmjs.org/@types/chance/-/chance-1.1.3.tgz"
@@ -8350,11 +8355,6 @@ dashdash@^1.12.0:
   dependencies:
     assert-plus "^1.0.0"
 
-data-uri-to-buffer@^4.0.0:
-  version "4.0.0"
-  resolved "https://registry.npmjs.org/data-uri-to-buffer/-/data-uri-to-buffer-4.0.0.tgz"
-  integrity sha512-Vr3mLBA8qWmcuschSLAOogKgQ/Jwxulv3RNE4FXnYWRGujzrRWQI4m12fQqRkwX06C0KanhLr4hK+GydchZsaA==
-
 data-urls@^3.0.1:
   version "3.0.2"
   resolved "https://registry.npmjs.org/data-urls/-/data-urls-3.0.2.tgz"
@@ -9158,6 +9158,18 @@ eslint-plugin-testing-library@^5.6.0:
   dependencies:
     "@typescript-eslint/utils" "^5.13.0"
 
+eslint-plugin-unused-imports@^2.0.0:
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/eslint-plugin-unused-imports/-/eslint-plugin-unused-imports-2.0.0.tgz#d8db8c4d0cfa0637a8b51ce3fd7d1b6bc3f08520"
+  integrity sha512-3APeS/tQlTrFa167ThtP0Zm0vctjr4M44HMpeg1P4bK6wItarumq0Ma82xorMKdFsWpphQBlRPzw/pxiVELX1A==
+  dependencies:
+    eslint-rule-composer "^0.3.0"
+
+eslint-rule-composer@^0.3.0:
+  version "0.3.0"
+  resolved "https://registry.yarnpkg.com/eslint-rule-composer/-/eslint-rule-composer-0.3.0.tgz#79320c927b0c5c0d3d3d2b76c8b4a488f25bbaf9"
+  integrity sha512-bt+Sh8CtDmn2OajxvNO+BX7Wn4CIWMpTRm3MaiKPCQcnnlm0CS2mhui6QaoeQugs+3Kj2ESKEEGJUdVafwhiCg==
+
 eslint-scope@5.1.1, eslint-scope@^5.1.1:
   version "5.1.1"
   resolved "https://registry.npmjs.org/eslint-scope/-/eslint-scope-5.1.1.tgz"
@@ -9616,14 +9628,6 @@ fd-slicer@~1.1.0:
   dependencies:
     pend "~1.2.0"
 
-fetch-blob@^3.1.2, fetch-blob@^3.1.4:
-  version "3.2.0"
-  resolved "https://registry.npmjs.org/fetch-blob/-/fetch-blob-3.2.0.tgz"
-  integrity sha512-7yAQpD2UMJzLi1Dqv7qFYnPbaPx7ZfFK6PiIxQ4PfkGPyNyl2Ugx+a/umUonmKqjhM4DnfbMvdX6otXq83soQQ==
-  dependencies:
-    node-domexception "^1.0.0"
-    web-streams-polyfill "^3.0.3"
-
 fetch-retry@^5.0.2:
   version "5.0.3"
   resolved "https://registry.npmjs.org/fetch-retry/-/fetch-retry-5.0.3.tgz"
@@ -9899,13 +9903,6 @@ form-data@~2.3.2:
     asynckit "^0.4.0"
     combined-stream "^1.0.6"
     mime-types "^2.1.12"
-
-formdata-polyfill@^4.0.10:
-  version "4.0.10"
-  resolved "https://registry.npmjs.org/formdata-polyfill/-/formdata-polyfill-4.0.10.tgz"
-  integrity sha512-buewHzMvYL29jdeQTVILecSaZKnt/RJWjoZCF5OW60Z67/GmSLBkOFM7qh1PI3zFNtJbaZL5eQu1vLfazOwj4g==
-  dependencies:
-    fetch-blob "^3.1.2"
 
 forwarded@0.2.0:
   version "0.2.0"
@@ -12283,6 +12280,13 @@ loader-utils@^3.2.0:
   resolved "https://registry.npmjs.org/loader-utils/-/loader-utils-3.2.0.tgz"
   integrity sha512-HVl9ZqccQihZ7JM85dco1MvO9G+ONvxoGa9rkhzFsneGLKSUg1gJf9bWzhRhcvm2qChhWpebQhP44qxjKIUCaQ==
 
+local-cypress@^1.2.6:
+  version "1.2.6"
+  resolved "https://registry.yarnpkg.com/local-cypress/-/local-cypress-1.2.6.tgz#13d49beb5112f9c06d710388b721be1512a54c60"
+  integrity sha512-F3d7eyZNkqOwEamtziRgzleCiKd05z3leIyVR/G9w6IMwnYn4wRtw68C/THx6C+PUFDsBgwNUVNuReRSKRj70A==
+  dependencies:
+    debug "4.3.4"
+
 locate-path@^2.0.0:
   version "2.0.0"
   resolved "https://registry.npmjs.org/locate-path/-/locate-path-2.0.0.tgz"
@@ -13335,26 +13339,12 @@ node-dir@^0.1.10:
   dependencies:
     minimatch "^3.0.2"
 
-node-domexception@^1.0.0:
-  version "1.0.0"
-  resolved "https://registry.npmjs.org/node-domexception/-/node-domexception-1.0.0.tgz"
-  integrity sha512-/jKZoMpw0F8GRwl4/eLROPA3cfcXtLApP0QzLmUT/HuPCZWyB7IY9ZrMeKw2O/nFIqPQB3PVM9aYm0F312AXDQ==
-
 node-fetch@2.6.7, node-fetch@^2.6.1, node-fetch@^2.6.7:
   version "2.6.7"
   resolved "https://registry.npmjs.org/node-fetch/-/node-fetch-2.6.7.tgz"
   integrity sha512-ZjMPFEfVx5j+y2yF35Kzx5sF7kDzxuDj6ziH4FFbOp87zKDZNx8yExJIb05OGF4Nlt9IHFIMBkRl41VdvcNdbQ==
   dependencies:
     whatwg-url "^5.0.0"
-
-node-fetch@^3.2.10:
-  version "3.2.10"
-  resolved "https://registry.npmjs.org/node-fetch/-/node-fetch-3.2.10.tgz"
-  integrity sha512-MhuzNwdURnZ1Cp4XTazr69K0BTizsBroX7Zx3UgDSVcZYKF/6p0CBe4EUb/hLqmzVhl0UpYfgRljQ4yxE+iCxA==
-  dependencies:
-    data-uri-to-buffer "^4.0.0"
-    fetch-blob "^3.1.4"
-    formdata-polyfill "^4.0.10"
 
 node-gyp-build@^4.3.0:
   version "4.5.0"
@@ -14380,6 +14370,11 @@ postgres-interval@^1.1.0:
   integrity sha512-9ZhXKM/rw350N1ovuWHbGxnGh/SNJ4cnxHiM0rxE4VN41wsg8P8zWn9hv/buK00RP4WvlOyr/RBDiptyxVbkZQ==
   dependencies:
     xtend "^4.0.0"
+
+postinstall-postinstall@^2.1.0:
+  version "2.1.0"
+  resolved "https://registry.yarnpkg.com/postinstall-postinstall/-/postinstall-postinstall-2.1.0.tgz#4f7f77441ef539d1512c40bd04c71b06a4704ca3"
+  integrity sha512-7hQX6ZlZXIoRiWNrbMQaLzUUfH+sSx39u8EJ9HYuDc1kLo9IXKWjM5RSquZN1ad5GnH8CGFM78fsAAQi3OKEEQ==
 
 preact-render-to-string@^5.1.19:
   version "5.2.1"
@@ -16377,14 +16372,6 @@ stylis@4.0.13:
   resolved "https://registry.npmjs.org/stylis/-/stylis-4.0.13.tgz"
   integrity sha512-xGPXiFVl4YED9Jh7Euv2V220mriG9u4B2TA6Ybjc1catrstKD2PpIdU3U0RKpkVBC2EhmL/F0sPCr9vrFTNRag==
 
-supabase@^1.4.3:
-  version "1.4.3"
-  resolved "https://registry.npmjs.org/supabase/-/supabase-1.4.3.tgz"
-  integrity sha512-JgTTJhaMsK49xv1UMam4oDS6KU3G1di0mzrwjRgiL7SOq9QT1mf9tTswoGMouafHSggZDsRw6uLuLMH21yE9ng==
-  dependencies:
-    node-fetch "^3.2.10"
-    tar "6.1.11"
-
 supports-color@^5.3.0, supports-color@^5.5.0:
   version "5.5.0"
   resolved "https://registry.npmjs.org/supports-color/-/supports-color-5.5.0.tgz"
@@ -17564,11 +17551,6 @@ web-namespaces@^1.0.0:
   version "1.1.4"
   resolved "https://registry.npmjs.org/web-namespaces/-/web-namespaces-1.1.4.tgz"
   integrity sha512-wYxSGajtmoP4WxfejAPIr4l0fVh+jeMXZb08wNc0tMg6xsfZXj3cECqIK0G7ZAqUq0PP8WlMDtaOGVBTAWztNw==
-
-web-streams-polyfill@^3.0.3:
-  version "3.2.1"
-  resolved "https://registry.npmjs.org/web-streams-polyfill/-/web-streams-polyfill-3.2.1.tgz"
-  integrity sha512-e0MO3wdXWKrLbL0DgGnUV7WHVuw9OUvL4hjgnPkIeEvESk74gAITi5G606JtZPp39cd8HA9VQzCIvA49LpPN5Q==
 
 webidl-conversions@^3.0.0:
   version "3.0.1"

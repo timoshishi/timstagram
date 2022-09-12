@@ -27,7 +27,7 @@ export interface Post {
   likeCount: number;
   imageUrl: string;
   poster: Poster;
-  tags: PrismaTag[];
+  tags: Tag[];
   createdAt: string;
 }
 
@@ -44,3 +44,5 @@ export interface PostResponse {
   total: number;
   page: number;
 }
+
+export type Tag = PrismaTag;

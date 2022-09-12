@@ -2,7 +2,7 @@ import { Box, HStack, Show, VStack } from '@chakra-ui/react';
 import { useUser } from '@common/hooks/useUser';
 import { NextPageWithLayout } from 'types/page.types';
 import { SWRConfig } from 'swr';
-import useSWRInfinite, { SWRInfiniteResponse } from 'swr/infinite';
+import useSWRInfinite from 'swr/infinite';
 import getFeed from '@src/api/getFeed';
 import { PostCard } from '@common/components/PostCard';
 import { fetcher } from 'src/lib/axios';

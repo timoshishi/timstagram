@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import type { SupabaseClient, Provider, ApiError, User } from '@supabase/supabase-js';
+import type { SupabaseClient, Provider } from '@supabase/supabase-js';
 import { Input, Button, Space, Typography, IconMail, IconInbox } from '@supabase/ui';
 import { ModalToasts } from '@features/Modal/hooks/useModalToasts';
 const VIEWS: ViewsMap = {

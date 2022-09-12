@@ -1,4 +1,5 @@
 import { createRandomUserCreds } from 'cypress/utils';
+import { cy } from 'local-cypress';
 
 describe('Logging in and out', () => {
   const { username, password, email } = createRandomUserCreds();

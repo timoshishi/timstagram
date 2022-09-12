@@ -2,7 +2,7 @@ import { Link, Text, chakra, Flex } from '@chakra-ui/react';
 import { Fragment, ReactElement } from 'react';
 
 interface DescriptionProps {
-  description: string;
+  postBody: string;
   postId: string;
 }
 const renderWord = (word: string): ReactElement => {
@@ -32,10 +32,10 @@ const renderWord = (word: string): ReactElement => {
   }
 };
 
-export const Description = ({ description, postId }: DescriptionProps) => (
+export const Description = ({ postBody, postId }: DescriptionProps) => (
   <Flex justifyContent={'space-between'}>
     <Text fontSize='md'>
-      {description.split(' ').map((word, i) => (
+      {postBody.split(' ').map((word, i) => (
         <Fragment key={`${postId}-${i}-${word}`}>{renderWord(word)}</Fragment>
       ))}
     </Text>

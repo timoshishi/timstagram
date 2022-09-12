@@ -1,5 +1,6 @@
 import { nanoid } from 'nanoid';
 import { createRandomUserCreds } from '../utils';
+import { cy, expect } from 'local-cypress';
 
 describe('a user can edit their profile', () => {
   beforeEach(() => {

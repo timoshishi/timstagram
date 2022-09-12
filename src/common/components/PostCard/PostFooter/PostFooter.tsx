@@ -1,25 +1,26 @@
 import { Box, Flex, Link } from '@chakra-ui/react';
+import { Tag } from 'types/post.types';
 import { ActionIcons } from './ActionIcons';
 import { Description } from './Description';
 import { Tags } from './Tags';
 import { UserLink } from './UserLink';
 interface PostFooterProps {
-  tags: string[];
+  tags: Tag[];
   postId: string;
   hasLiked: boolean;
   likesCount: number;
-  description: string;
+  postBody: string;
   username: string;
-  commentsCount: number;
+  commentCount: number;
 }
 
 export const PostFooter = ({
   tags,
   postId,
   hasLiked,
-  description,
+  postBody,
   username,
-  commentsCount,
+  commentCount,
   likesCount,
 }: PostFooterProps) => (
   <Box px='6' py={4}>
@@ -30,11 +31,11 @@ export const PostFooter = ({
       </Box>
       <ActionIcons hasLiked={hasLiked} likesCount={likesCount} />
     </Flex>
-    <Description description={description} postId={postId} />
+    <Description postBody={postBody} postId={postId} />
     <Box mt='3'>
       <Link size={'md'} color='teal.300' fontWeight='semibold'>
-        Click here to see all {commentsCount} comment
-        {commentsCount !== 1 ? 's' : ''} and {likesCount} like
+        Click here to see all {commentCount} comment
+        {commentCount !== 1 ? 's' : ''} and {likesCount} like
         {likesCount !== 1 ? 's' : ''}
       </Link>
     </Box>

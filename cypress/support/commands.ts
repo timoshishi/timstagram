@@ -2,6 +2,7 @@
 
 import axios from 'axios';
 import 'cypress-file-upload';
+import { Cypress, cy, expect } from 'local-cypress';
 // ***********************************************
 // This example commands.ts shows you how to
 // create various custom commands and overwrite

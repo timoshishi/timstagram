@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import type { SupabaseClient, ApiError, User } from '@supabase/supabase-js';
 import { Input, Checkbox, Button, Space, Typography, IconKey, IconMail, IconLock } from '@supabase/ui';
 import { FiUser } from 'react-icons/fi';
-import { msLeftUntilSubmission, usernameDoesExist } from '@features/Modal/api/auth-api';
+import { usernameDoesExist } from '@features/Modal/api/auth-api';
 import { insertInitialProfileData } from '@features/Modal/api/profile-api';
 import { ModalToasts } from '@features/Modal/hooks/useModalToasts';
 

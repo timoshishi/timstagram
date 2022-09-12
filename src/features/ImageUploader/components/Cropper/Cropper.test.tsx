@@ -1,8 +1,8 @@
-import { render, waitFor, renderHook, act, screen } from '../../../../../test-utils';
+// import { render, waitFor, renderHook, act, screen } from '../../../../../test-utils';
 import '@testing-library/jest-dom';
 // import { ImageUploaderProvider, useCreateUploaderContext } from '../../stores/ImageUploaderContext';
-import { Cropper } from '.';
-import userEvent from '@testing-library/user-event';
+// import { Cropper } from '.';
+// import userEvent from '@testing-library/user-event';
 
 describe('Cropper', () => {
   // it('should render with an image  the control buttons and three svg buttons', async () => {
@@ -114,3 +114,5 @@ describe('Cropper', () => {
   //   });
   // });
 });
+
+export {};

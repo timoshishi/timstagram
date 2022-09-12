@@ -1,5 +1,5 @@
 import { Component } from 'react';
-import { NextRouter, Router, useRouter, withRouter } from 'next/router';
+import { NextRouter, withRouter } from 'next/router';
 interface ErrorBoundaryProps {
   children: React.ReactNode;
   router: NextRouter;

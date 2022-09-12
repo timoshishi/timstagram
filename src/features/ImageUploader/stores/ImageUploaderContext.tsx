@@ -1,5 +1,5 @@
 import { useDropzone, FileError } from 'react-dropzone';
-import { useState, useEffect, useCallback, createContext, useContext, Context } from 'react';
+import { useState, useEffect, useCallback, createContext, Context } from 'react';
 import { getOrientation } from 'get-orientation/browser.es5';
 import type { Dimensions, GetCroppedImageReturn } from '../types/image-uploader.types';
 import { createImage, getRotatedImage } from '../utils/cropper-functions';
