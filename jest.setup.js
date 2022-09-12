@@ -6,11 +6,10 @@
 // https://stackoverflow.com/questions/41318115/testing-two-environments-with-jest
 import '@testing-library/jest-dom/extend-expect';
 import { TextEncoder, TextDecoder } from 'util';
-// import { server } from './src/mocks/server.js';
-
-// Establish API mocking before all tests.
 window.TextEncoder = TextEncoder;
 window.TextDecoder = TextDecoder;
+// import { server } from './src/mocks/server.js';
+// Establish API mocking before all tests.
 // beforeAll(() => server.listen());
 // Reset any request handlers that we may add during the tests,
 // so they don't affect other tests.

@@ -26,10 +26,11 @@ export class PostService extends ImageService {
     try {
       if (!postHash && !postId) {
         console.error('Must provide either postHash or postId');
+        return null;
       }
       const post: PostQueryResponse = await this.getSinglePost({ postHash, postId });
       if (!post) {
-        console.log('post not found');
+        console.info('post not found');
         return null;
       }
       const { hasLikedPost, hasFlaggedPost, isFollowingUser } = await this.getPersonalizedUserProperties({
@@ -74,20 +75,18 @@ export class PostService extends ImageService {
   createPostHash = async (): Promise<string | null> => {
     let result: PrismaPostHash | null;
     //TODO: Change this to a get req to the PostHash table that has pre-generated base62 encoded hashes
-    let nano: string | null = null;
     for (let retries = 0; retries < 3; retries++) {
-      nano = customNano();
-
+      const nano = customNano();
       result = await this.prisma.postHash.findUnique({
         where: {
           postHash: nano,
         },
       });
       if (!result) {
-        break;
+        return nano;
       }
     }
-    return nano;
+    return null;
   };
 
   createPost = async ({
@@ -215,7 +214,7 @@ export class PostService extends ImageService {
           ],
         },
       }));
-
+      // TODO: this is going to need to be changed to a query that checks if the user has flagged the post in the future
       const hasLikedPost = !!post?.postLikes.find((like) => like.profile.id === userId);
 
       const hasFlaggedPost = !!(await this.prisma.postFlag.findFirst({

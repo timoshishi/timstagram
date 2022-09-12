@@ -5,6 +5,7 @@ import { ChakraProvider } from '@chakra-ui/react';
 import { GlobalModal } from '@features/Modal';
 import { supabase } from '@src/lib/initSupabase';
 import { promises } from 'fs';
+
 const AllTheProviders: FC<{ children: React.ReactNode }> = ({ children }) => {
   Object.defineProperty(window, 'matchMedia', {
     writable: true,

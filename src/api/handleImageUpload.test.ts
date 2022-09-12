@@ -65,7 +65,6 @@ describe('getImageProperties', () => {
     expect(img.height).toEqual(400);
     expect(img.id).toMatch(UUIDReg);
     expect(typeof img.metadata).toBe('string');
-    console.log('PLACEHOLDER', JSON.stringify(img.placeholder));
 
     expect(img.placeholder.startsWith('data:image/')).toBe(true);
     expect(img.source).toEqual([process.env.NEXT_PUBLIC_APP_NAME, userId, 'testOriginalName.jpg'].join('/'));

@@ -37,6 +37,7 @@ const customJestConfig = {
     '!**/vendor/**',
     '!**/test-utils',
     '!**/stories/**',
+    '!**/mocks/**',
   ],
 };
 
@@ -44,5 +45,6 @@ const customJestConfig = {
 const asyncConfig = createJestConfig(customJestConfig);
 module.exports = async () => {
   const config = await asyncConfig();
+  config.transformIgnorePatterns = ['<rootDir>/node_modules/(?!nanoid)/'];
   return config;
 };
