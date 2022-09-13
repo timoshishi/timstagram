@@ -8,6 +8,7 @@ import {
   GetBucketPolicyCommand,
   PutBucketPolicyCommand,
   ListBucketsCommand,
+  S3Client,
 } from '@aws-sdk/client-s3';
 import { s3Client } from '../lib/s3Client'; // Helper function that creates an Amazon S3 service client module.
 import { getSignedUrl } from '@aws-sdk/s3-request-presigner';
@@ -15,8 +16,10 @@ import { getSignedUrl } from '@aws-sdk/s3-request-presigner';
 export class ImageService {
   bucket: string;
   botId: string;
-  constructor(bucket: string) {
+  s3Client: S3Client;
+  constructor(bucket: string, s3Client: S3Client) {
     this.bucket = bucket;
+    this.s3Client = s3Client;
   }
 
   async createSignedUrl({ file, filename }: { file: Express.Multer.File; filename: string }) {
@@ -27,7 +30,7 @@ export class ImageService {
       ContentType: file.mimetype,
       ChecksumAlgorithm: 'SHA256',
     });
-    const signedUrl = await getSignedUrl(s3Client, command, {
+    const signedUrl = await getSignedUrl(this.s3Client, command, {
       expiresIn: 60,
     });
     return signedUrl;
@@ -40,7 +43,7 @@ export class ImageService {
       Body: file,
       // ContentType: file.mimetype,
     });
-    return s3Client.send(command);
+    return this.s3Client.send(command);
   }
 
   public async deleteFile(fileName: string) {
@@ -49,7 +52,7 @@ export class ImageService {
         Bucket: this.bucket,
         Key: fileName,
       });
-      await s3Client.send(command);
+      await this.s3Client.send(command);
     } catch (error) {
       console.error(error);
     }
@@ -58,12 +61,12 @@ export class ImageService {
   public async duplicateExampleBucket() {
     const defaultBucket = { Bucket: process.env.EXAMPLE_BUCKET };
     try {
-      const buckets = await s3Client.send(new ListBucketsCommand({}));
+      const buckets = await this.s3Client.send(new ListBucketsCommand({}));
       console.log(buckets);
       if (!buckets?.Buckets?.filter(({ Name }) => Name === this.bucket).length) {
         console.log(`Creating bucket ${this.bucket}`);
         console.log(`Waiting for "${this.bucket}" bucket creation...`);
-        await s3Client.send(
+        await this.s3Client.send(
           new CreateBucketCommand({
             Bucket: this.bucket,
           })
@@ -73,8 +76,8 @@ export class ImageService {
       console.log('Duplicating Policies...');
 
       // CORS
-      const corsData = await s3Client.send(new GetBucketCorsCommand(defaultBucket));
-      await s3Client.send(
+      const corsData = await this.s3Client.send(new GetBucketCorsCommand(defaultBucket));
+      await this.s3Client.send(
         new PutBucketCorsCommand({
           Bucket: this.bucket,
           CORSConfiguration: {
@@ -84,13 +87,13 @@ export class ImageService {
       );
 
       // POLICIES
-      const bucketPolicy = await s3Client.send(new GetBucketPolicyCommand(defaultBucket));
+      const bucketPolicy = await this.s3Client.send(new GetBucketPolicyCommand(defaultBucket));
       const parsedPolicy = JSON.parse(bucketPolicy.Policy!);
       parsedPolicy.Statement.forEach((state: any) => {
         state.Resource = state.Resource.replace(process.env.EXAMPLE_BUCKET!, this.bucket);
       });
 
-      await s3Client.send(
+      await this.s3Client.send(
         new PutBucketPolicyCommand({
           Bucket: this.bucket,
           Policy: JSON.stringify(parsedPolicy),
@@ -102,6 +105,6 @@ export class ImageService {
   }
 }
 
-const imageService = new ImageService(process.env.PHOTO_BUCKET!);
+const imageService = new ImageService(process.env.PHOTO_BUCKET!, s3Client);
 
 export { imageService };

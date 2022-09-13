@@ -14,7 +14,7 @@ const fixturesDir = path.join(__dirname, '../../__mocks__/fixtures');
 const oneAspect = path.join(fixturesDir, 'aspect-1-1.jpg');
 const fourThreeAspect = path.join(fixturesDir, 'aspect-4-3.jpg');
 
-export const getImageFileNode = async (filePath: string): Promise<[Buffer, File]> => {
+const getImageFileNode = async (filePath: string): Promise<[Buffer, File]> => {
   const fileBuffer = await promises.readFile(filePath);
   return [fileBuffer, new File([fileBuffer], 'file' as string, { type: 'image/png' })];
 };
