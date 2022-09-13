@@ -1,13 +1,20 @@
-import { prismaMock } from '@src/mocks/singleton';
+import { prismaMock, s3ClientMock } from '@src/mocks/singleton';
 import { PostService } from './PostService';
 import { Post } from 'types/post.types';
 import { ImageService } from '@api/imageService';
-import { s3Client } from '@src/lib/s3Client';
+import { supaUser } from '@src/mocks/supaUser';
+import { SupaUser } from 'types/index';
+import { getImageFileNode } from '../../../test-utils';
+import path from 'path';
 
 const MOCK_NANO = '08461dc7840';
-
+const fixturesDir = path.join(__dirname, '../../../__mocks__/fixtures');
+const oneAspect = path.join(fixturesDir, 'aspect-1-1.jpg');
 jest.mock('@src/lib/customNano', () => ({
   customNano: () => MOCK_NANO,
+}));
+jest.mock('@aws-sdk/s3-request-presigner', () => ({
+  getSignedUrl: () => 'https://signed-url.com',
 }));
 jest.spyOn(console, 'error').mockImplementation(() => {});
 const fullPostReturn = {
@@ -80,13 +87,12 @@ describe('PostService', () => {
   let postService: PostService;
   let foundPost: any;
   beforeEach(() => {
-    postService = new PostService(prismaMock, new ImageService(process.env.PHOTO_BUCKET!, s3Client));
+    postService = new PostService(prismaMock, new ImageService('fake-bucket', s3ClientMock));
     foundPost = { ...getSinglePostReturn };
   });
 
   afterEach(() => {
     jest.clearAllMocks();
-    prismaMock.$disconnect();
   });
 
   describe('getPostByHashOrId', () => {
@@ -221,6 +227,63 @@ describe('PostService', () => {
       expect(result.hasLikedPost).toEqual(true);
       expect(result.hasFlaggedPost).toEqual(false);
       expect(result.isFollowingUser).not.toEqual(false);
+    });
+  });
+
+  describe('createPost', () => {
+    let image: Express.Multer.File;
+    let imageData: ImageData;
+    let file: Express.Multer.File;
+    beforeEach(() => {
+      image = {
+        buffer: Buffer.from('test'),
+        mimetype: 'image/jpeg',
+        originalname: 'testOriginalName.jpg',
+        filename: 'testFilename.jpg',
+        fieldname: 'croppedImage',
+        encoding: '7bit',
+        size: 100,
+        destination: 'memory',
+        path: 'memory',
+      } as Express.Multer.File;
+    });
+
+    it('should return a signedUrl with the correct bucket info if the correct input is passed in', async () => {
+      const [buffer] = await getImageFileNode(oneAspect);
+      image.buffer = buffer;
+      const result = await postService.createPost({
+        user: supaUser as unknown as SupaUser,
+        croppedImage: image,
+        imageData: {
+          originalImageName: 'testOriginalName.jpg',
+          aspectRatio: 1,
+          dimensions: {
+            width: 400,
+            height: 400,
+          },
+        },
+        caption: 'test',
+      });
+      expect(result?.includes('signed-url')).toBeTruthy();
+    });
+    it('should return null if incorrect information is sent in', async () => {
+      const [buffer] = await getImageFileNode(oneAspect);
+      image.buffer = buffer;
+      expect(
+        await postService.createPost({
+          user: supaUser as unknown as SupaUser,
+          croppedImage: 'newIMage',
+          imageData: {
+            originalImageName: 'testOriginalName.jpg',
+            aspectRatio: 1,
+            dimensions: {
+              width: 400,
+              height: 400,
+            },
+          },
+          caption: 'test',
+        })
+      ).toBeNull();
     });
   });
 });
