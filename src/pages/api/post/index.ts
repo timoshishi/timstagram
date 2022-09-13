@@ -13,8 +13,10 @@ import {
 import prisma from '@src/lib/prisma';
 import { uploadMiddleware } from '@api/handleImageUpload';
 import { PostService } from '@api/services/PostService';
+import { ImageService } from '@api/imageService';
+import { s3Client } from '@src/lib/s3Client';
 
-const postService = new PostService(process.env.PHOTO_BUCKET!, prisma);
+const postService = new PostService(prisma, new ImageService(process.env.PHOTO_BUCKET!, s3Client));
 const postController = new PostController(prisma, postService);
 
 const router = createRouter<NextRequestWithUserFile, NextApiResponse>();

@@ -16,11 +16,8 @@ type GetPostParams = {
 };
 
 type PostQueryResponse = Prisma.PromiseReturnType<PostService['getSinglePost']>;
-export class PostService extends ImageService {
-  constructor(bucket: string, private prisma: PrismaClient) {
-    super(bucket);
-    this.prisma = prisma;
-  }
+export class PostService {
+  constructor(private prisma: PrismaClient, private imageService: ImageService) {}
 
   getPostByHashOrId = async ({ postHash, postId, userId }: GetPostParams): Promise<Post | null> => {
     try {
@@ -117,7 +114,7 @@ export class PostService extends ImageService {
         image: croppedImage,
         userId: user.id,
         imageData,
-        altText: `${user.user_metadata.username}'s avatar`,
+        altText: `${user.user_metadata.username}'s avatar`, //TODO: Handle tags as alt text
         username: user.user_metadata.username,
       });
       const postId = randomUUID();
@@ -136,7 +133,7 @@ export class PostService extends ImageService {
         },
       });
 
-      const signedUrl = await this.createSignedUrl({
+      const signedUrl = await this.imageService.createSignedUrl({
         filename: imageProperties.filename,
         file: croppedImage,
       });

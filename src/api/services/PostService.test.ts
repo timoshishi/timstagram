@@ -1,6 +1,8 @@
 import { prismaMock } from '@src/mocks/singleton';
 import { PostService } from './PostService';
 import { Post } from 'types/post.types';
+import { ImageService } from '@api/imageService';
+import { s3Client } from '@src/lib/s3Client';
 
 const MOCK_NANO = '08461dc7840';
 
@@ -78,7 +80,7 @@ describe('PostService', () => {
   let postService: PostService;
   let foundPost: any;
   beforeEach(() => {
-    postService = new PostService('test-post-service', prismaMock);
+    postService = new PostService(prismaMock, new ImageService(process.env.PHOTO_BUCKET!, s3Client));
     foundPost = { ...getSinglePostReturn };
   });
 
