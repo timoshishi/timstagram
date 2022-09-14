@@ -1,16 +1,22 @@
 import prisma from '../src/lib/prisma';
 import { faker } from '@faker-js/faker';
-import { createClient } from '@supabase/supabase-js';
+import { createClient, User } from '@supabase/supabase-js';
 import knex, { definedUsers } from './createUsers';
-import { imageService } from '../src/api/imageService';
-// import { createPost } from './createPost';
-// import { getImageFileNode } from '../test-utils';
+import { ImageService } from '../src/api/services/ImageService';
+import { PostService } from '../src/api/services/PostService';
+import { s3Client } from '../src/lib/s3Client';
+import { randomUUID } from 'crypto';
+import { ImageProperties } from '../src/api/handleImageUpload';
+import { SupaUser } from 'types/index';
+import { Post } from '@prisma/client';
+import { DEFAULT_IMAGE_PLACEHOLDER } from '../src/common/constants';
+import fs from 'fs';
+import path from 'path';
 
+const imageService = new ImageService(process.env.PHOTO_BUCKET!, s3Client);
 const supabaseServer = createClient(process.env.NEXT_PUBLIC_SUPABASE_URL!, process.env.SERVICE_ROLE_KEY!);
-
+const postService = new PostService(prisma, imageService);
 console.log('CURRENT SUPABASE URL', process.env.NEXT_PUBLIC_SUPABASE_URL);
-const fs = require('fs');
-const path = require('path');
 
 const queryPath = path.join(__dirname, '..', 'queries');
 const onConfirmUserFunction = fs.readFileSync(path.join(queryPath, 'email-confirm-func.sql'), 'utf8');
@@ -33,19 +39,15 @@ const createNewUsers = async () => {
     await Promise.all(seedUserPromises);
 
     const newUsers = await supabaseServer.auth.api.listUsers();
-
-    console.log('created users:', newUsers?.data?.length, 'error?:', newUsers.error);
     return newUsers;
   } catch (error) {
     console.log(error);
   }
 };
+
 const deleteOldUsers = async () => {
   try {
-    console.log('before users');
-
     const tableUsers = await supabaseServer.auth.api.listUsers();
-    console.log('after users');
     if (tableUsers.data) {
       const deleteUsers = tableUsers?.data?.map(({ id }) => supabaseServer.auth.api.deleteUser(id));
       await prisma.profile.deleteMany({
@@ -56,48 +58,91 @@ const deleteOldUsers = async () => {
         },
       });
       const deleted = await Promise.all(deleteUsers);
-      console.log('DELETED', deleted.length);
+      return deleted;
     }
   } catch (error) {
     console.log(error);
   }
+};
+const deleteOldData = async () => {
+  await prisma.media.deleteMany();
+  await prisma.postLike.deleteMany();
+  await prisma.post.deleteMany();
+  await prisma.postHash.deleteMany();
+};
+
+const createImageProperties = (arr: any, createdUsers: { data: User[] }): ImageProperties[] => {
+  return arr.map((data: any) => {
+    const { filename, aspectRatio, dimensions, url, size, bucket } = data;
+    const { width, height } = dimensions;
+    const { id } = createdUsers.data[Math.floor(Math.random() * definedUsers.length)];
+    const imageId = randomUUID();
+    const createdFilename = imageId + '.' + filename.split('.').pop();
+    return {
+      id: randomUUID(),
+      filename: createdFilename,
+      aspectRatio,
+      width,
+      height,
+      url,
+      size,
+      bucket,
+      alt: 'example image',
+      placeholder: DEFAULT_IMAGE_PLACEHOLDER,
+      hash: 'example-hash',
+      source: 'example-source',
+      userId: id,
+      metadata: '{}',
+      type: filename!.split('.').pop() as string,
+    };
+  });
+};
+
+const createPosts = async (createdUsers: { data: User[] }): Promise<Post[]> => {
+  const objects = await imageService.copyOrReplaceExampleObjects();
+  const copiedImageProperties = createImageProperties(objects, createdUsers);
+  const postPromises = copiedImageProperties.map((imageProperties) => {
+    return postService.createPost({
+      imageProperties,
+      caption: 'example caption',
+      user: createdUsers.data.find((user) => user.id === imageProperties.userId)! as SupaUser,
+    });
+  });
+  const posts = await Promise.all(postPromises);
+  return posts;
 };
 
 (async () => {
   try {
     /***  AUTO CREATE PROFILE ON CONFIRM RPC FUNCTION ***/
     const results = await knex.raw(onConfirmUserFunction);
-    console.log(results, 'ON CONFIRM USER FUNCTION CREATED');
+    console.log('onConfirmUserFunction created:', !!results);
+
     /** CREATE PERSONAL PHOTO BUCKET */
     if (process.env.ENVIRONMENT === 'ci') {
       await imageService.duplicateExampleBucket();
     }
-
+    // delete data before users
+    await deleteOldData();
     /** Wipe old users if for some reason they exist or you are testing scripts */
-    console.log('starting to delete users');
-    const deleting = await deleteOldUsers();
-    console.log({ deleting });
-    console.log('finished deleting users');
+    const deletedUsers = await deleteOldUsers();
+    console.log('deleted users:', deletedUsers?.length);
     /** START NEW USER CREATION **/
-    console.log('starting to create users');
-    const users = await createNewUsers();
-    if (!users || users.error) {
-      console.log(users?.error);
+    const createdUsers = await createNewUsers();
+    if (!createdUsers || createdUsers.error) {
+      console.log(createdUsers?.error);
     }
-    console.log('finished creating users');
-    console.log(users);
+    console.log('Created users:', createdUsers?.data?.length);
     /** END NEW USER CREATION **/
-    // const [imgBuff, imgFile] = await getImageFileNode('../public/storybook/aspect-1-1.jpg');
-    // const createdPost = await createPost({
-    //   croppedImage: imgBuff as any,
-    //   user: users?.data?.[0]!,
-    //   body: {
-    //     imageData: '{"dimensions":{"width":300,"height":300},"aspectRatio":1,"originalImageName":"aspect-4-3.jpg"}',
-    //     caption: 'here is a picture',
-    //   },
-    // });
-    // console.log(createdPost);
-    console.log('roc');
+
+    if (createdUsers?.data) {
+      /** CREATE POSTS */
+      // copy images from example bucket to personal bucket and create posts
+      const posts = await createPosts(createdUsers);
+      console.log('created posts:', posts.length);
+      /** END CREATE POSTS */
+    }
+
     process.exit(0);
   } catch (error) {
     console.log('ERROR');

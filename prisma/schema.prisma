@@ -69,6 +69,7 @@ model Post {
   postLikes     PostLike[]
   tags          Tag[]
 
+  @@index([postHash])
   @@map("posts")
 }
 
@@ -95,34 +96,38 @@ model FlaggedMedia {
   id        String @id @default(uuid()) @db.Uuid()
   mediaHash String @unique
 
+  @@index([mediaHash])
   @@map("flagged_media")
 }
 
 model Media {
-  id           String   @id @default(uuid()) @db.Uuid()
-  url          String   @unique
-  bucket       String
-  type         String
-  alt          String?
-  filename     String
-  size         Int
-  width        Int
-  height       Int
-  kind         String?
-  aspectRatio  Float    @map("aspect_ratio")
-  scraped      Boolean  @default(false)
-  category     String?
-  deleted      Boolean  @default(false)
-  createdAt    DateTime @default(now()) @map("created_at")
-  hash         String?
-  placeholder  String?
-  metadata     Json?
-  userMetadata Json?
-  source       String
-  post         Post?    @relation(fields: [postId], references: [id], onDelete: Cascade)
-  postId       String?  @db.Uuid()
-  userId       String   @map("user_id") @db.Uuid()
-  user         Profile? @relation(fields: [userId], references: [id])
+  id                      String    @id @default(uuid()) @db.Uuid()
+  url                     String    @unique
+  bucket                  String
+  type                    String
+  alt                     String?
+  filename                String
+  size                    Int
+  width                   Int
+  height                  Int
+  kind                    String?
+  aspectRatio             Float     @map("aspect_ratio")
+  scraped                 Boolean   @default(false)
+  category                String?
+  deleted                 Boolean   @default(false)
+  createdAt               DateTime  @default(now()) @map("created_at")
+  hash                    String?
+  placeholder             String?
+  metadata                Json?
+  userMetadata            Json?
+  source                  String
+  post                    Post?     @relation(fields: [postId], references: [id], onDelete: Cascade)
+  postId                  String?   @db.Uuid()
+  userId                  String    @map("user_id") @db.Uuid()
+  user                    Profile?  @relation(fields: [userId], references: [id])
+  postFlag                PostFlag? @relation(fields: [postFlagPostId, postFlagFlaggedByUserId], references: [postId, flaggedByUserId])
+  postFlagPostId          String?   @db.Uuid()
+  postFlagFlaggedByUserId String?   @db.Uuid()
 
   @@map("media")
 }
@@ -135,6 +140,7 @@ model PostFlag {
   createdAt       DateTime   @default(now()) @map("created_at")
   post            Post       @relation(fields: [postId], references: [id])
   profile         Profile    @relation(fields: [flaggedByUserId], references: [id])
+  media           Media[]
 
   @@id([postId, flaggedByUserId])
   @@map("post_flags")

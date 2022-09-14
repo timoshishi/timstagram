@@ -9,8 +9,10 @@ import {
   PutBucketPolicyCommand,
   ListBucketsCommand,
   S3Client,
+  ListObjectsCommand,
+  CopyObjectCommand,
 } from '@aws-sdk/client-s3';
-import { s3Client } from '../lib/s3Client'; // Helper function that creates an Amazon S3 service client module.
+import { s3Client } from '../../lib/s3Client'; // Helper function that creates an Amazon S3 service client module.
 import { getSignedUrl } from '@aws-sdk/s3-request-presigner';
 
 export class ImageService {
@@ -101,6 +103,62 @@ export class ImageService {
       );
     } catch (err) {
       console.log('Error creating bucket', err);
+    }
+  }
+
+  public async copyOrReplaceExampleObjects(): Promise<
+    {
+      filename: string;
+      dimensions: {
+        width: number;
+        height: number;
+      };
+      aspectRatio: number;
+      size: number;
+      bucket: string;
+      url: string;
+    }[]
+  > {
+    try {
+      // list the objects
+      const objects = await this.s3Client.send(
+        new ListObjectsCommand({
+          Bucket: process.env.EXAMPLE_BUCKET,
+        })
+      );
+
+      // copy and replace the objects to this.bucket if they don't exist there already
+      const copyObjectPromises = objects.Contents?.map(async (object) => {
+        const command = new CopyObjectCommand({
+          Bucket: this.bucket,
+          Key: object.Key!,
+          CopySource: `${process.env.EXAMPLE_BUCKET}/${object.Key!}`,
+        });
+        await this.s3Client.send(command);
+      });
+      await Promise.all(copyObjectPromises!);
+      const exampleImages = (objects.Contents || [])
+        .filter(({ Key }) => Key?.includes('example-images'))
+        .map(({ Key, Size }) => {
+          const [folder, size, filename] = Key!.split('/');
+          const [aspectFirst, aspectSecond, width, height] = size.split('-');
+          const aspectRatio = parseInt(aspectFirst) / parseInt(aspectSecond);
+          return {
+            filename,
+            aspectRatio,
+            dimensions: {
+              width: parseInt(width),
+              height: parseInt(height),
+            },
+            url: `https://${this.bucket}.s3.amazonaws.com/${Key}`,
+            size: Size!,
+            bucket: this.bucket,
+          };
+        });
+      return exampleImages || [];
+    } catch (err) {
+      console.log('Error copying objects', err);
+      return Promise.reject();
     }
   }
 }

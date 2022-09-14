@@ -1,22 +1,27 @@
 import { prismaMock, s3ClientMock } from '@src/mocks/singleton';
 import { PostService } from './PostService';
 import { Post } from 'types/post.types';
-import { ImageService } from '@api/imageService';
+import { ImageService } from '@api/services/ImageService';
 import { supaUser } from '@src/mocks/supaUser';
 import { SupaUser } from 'types/index';
 import { getImageFileNode } from '../../../test-utils';
 import path from 'path';
+import { getImageProperties } from '@api/handleImageUpload';
 
 const MOCK_NANO = '08461dc7840';
 const fixturesDir = path.join(__dirname, '../../../__mocks__/fixtures');
 const oneAspect = path.join(fixturesDir, 'aspect-1-1.jpg');
+
 jest.mock('@src/lib/customNano', () => ({
   customNano: () => MOCK_NANO,
 }));
+
 jest.mock('@aws-sdk/s3-request-presigner', () => ({
   getSignedUrl: () => 'https://signed-url.com',
 }));
+
 jest.spyOn(console, 'error').mockImplementation(() => {});
+
 const fullPostReturn = {
   postId: '44cbb560-e09c-4ff6-b4de-fe42c82ad53e',
   postBody: 'hello dolly',
@@ -82,7 +87,27 @@ const getSinglePostReturn = {
     _count: { followers: 0, following: 0, posts: 1 },
   },
 };
-
+const prismaPost = {
+  id: '945f8acf-5dbb-4400-98fc-9a3e4fb194ef',
+  postBody: 'This is a test post',
+  published: true,
+  userId: '65472697-7e71-4bf7-8059-5113ddd59bc1',
+  userDeleted: false,
+  flagged: false,
+  deleted: false,
+  flagCount: 0,
+  viewCount: 1,
+  mediaType: 'image/png',
+  mediaUrl: 'https://witter-dev.s3.amazonaws.com/3117b291-08af-4b55-b042-4790b2241442.png',
+  mediaId: '3117b291-08af-4b55-b042-4790b2241442',
+  filename: '3117b291-08af-4b55-b042-4790b2241442.png',
+  createdAt: new Date('2022-09-13T21:43:27.097Z'),
+  isBotPost: false,
+  isShared: false,
+  userAvatarUrl: null,
+  username: 'test1',
+  postHash: 'F62jKB',
+};
 describe('PostService', () => {
   let postService: PostService;
   let foundPost: any;
@@ -232,8 +257,6 @@ describe('PostService', () => {
 
   describe('createPost', () => {
     let image: Express.Multer.File;
-    let imageData: ImageData;
-    let file: Express.Multer.File;
     beforeEach(() => {
       image = {
         buffer: Buffer.from('test'),
@@ -248,42 +271,38 @@ describe('PostService', () => {
       } as Express.Multer.File;
     });
 
-    it('should return a signedUrl with the correct bucket info if the correct input is passed in', async () => {
+    it('should return a post with the correct info if the correct input is passed in', async () => {
       const [buffer] = await getImageFileNode(oneAspect);
       image.buffer = buffer;
-      const result = await postService.createPost({
-        user: supaUser as unknown as SupaUser,
-        croppedImage: image,
-        imageData: {
-          originalImageName: 'testOriginalName.jpg',
-          aspectRatio: 1,
-          dimensions: {
-            width: 400,
-            height: 400,
-          },
+      const imageData = {
+        originalImageName: 'testOriginalName.jpg',
+        aspectRatio: 1,
+        dimensions: {
+          width: 400,
+          height: 400,
         },
+      };
+      const imageProperties = await getImageProperties({
+        username: 'test',
+        userId: 'test',
+        image,
+        imageData,
+        altText: 'test',
+      });
+      await prismaMock.post.create.mockResolvedValue(prismaPost);
+      await prismaMock.postLike.create.mockResolvedValue({ id: 'test' });
+      await prismaMock.media.create.mockResolvedValue({ id: 'test' });
+      const createdPost = await postService.createPost({
+        user: supaUser as unknown as SupaUser,
+        imageProperties,
         caption: 'test',
       });
-      expect(result?.includes('signed-url')).toBeTruthy();
-    });
-    it('should return null if incorrect information is sent in', async () => {
-      const [buffer] = await getImageFileNode(oneAspect);
-      image.buffer = buffer;
-      expect(
-        await postService.createPost({
-          user: supaUser as unknown as SupaUser,
-          croppedImage: 'newIMage',
-          imageData: {
-            originalImageName: 'testOriginalName.jpg',
-            aspectRatio: 1,
-            dimensions: {
-              width: 400,
-              height: 400,
-            },
-          },
-          caption: 'test',
-        })
-      ).toBeNull();
+      expect(imageProperties.width).toBe(400);
+      expect(imageProperties.aspectRatio).toBe(1);
+      expect(imageProperties.height).toBe(400);
+      expect(imageProperties.url.includes('amazon')).toBe(true);
+      expect(createdPost.postBody).toBe(prismaPost.postBody);
+      expect(createdPost).toEqual(prismaPost);
     });
   });
 });

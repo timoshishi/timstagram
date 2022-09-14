@@ -95,6 +95,9 @@ Table media {
   postId String
   userId String [not null]
   user profiles
+  postFlag post_flags
+  postFlagPostId String
+  postFlagFlaggedByUserId String
 }
 
 Table post_flags {
@@ -105,6 +108,7 @@ Table post_flags {
   createdAt DateTime [default: `now()`, not null]
   post posts [not null]
   profile profiles [not null]
+  media media [not null]
 
   indexes {
     (postId, flaggedByUserId) [pk]
@@ -158,6 +162,8 @@ Ref: comments.userId > profiles.id
 Ref: media.postId > posts.id [delete: Cascade]
 
 Ref: media.userId > profiles.id
+
+Ref: media.(postFlagPostId, postFlagFlaggedByUserId) > post_flags.(postId, flaggedByUserId)
 
 Ref: post_flags.postId > posts.id
 
