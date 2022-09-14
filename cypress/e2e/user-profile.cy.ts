@@ -8,23 +8,20 @@ describe('a user can edit their profile', () => {
   });
 
   it('can update the text of a users profile', () => {
+    const { username, email, password } = createRandomUserCreds();
+    cy.createUser({ username, email, password });
     cy.loginUser({ email: 'test1@test.com', password: 'password' });
-    const updateText = nanoid();
+    cy.userIsLoggedIn();
 
-    cy.wait(1000);
+    const updateText = nanoid();
     cy.get('[data-testid="profile-dropdown-button"]').click();
     cy.contains(/update profile/i).click();
     cy.get('h2')
       .invoke('text')
       .then((text1) => {
-        // do more work here
         cy.contains(/update bio/i).click();
-        // click the button which changes the div's text
-        // cy.get('button').click()
         cy.get('textarea').clear().type(updateText);
         cy.get('button[type="submit"]').click();
-        // grab the div again and compare its previous text
-        // to the current text
         cy.contains(/update bio/i).should('be.visible');
         cy.get('h2')
           .invoke('text')
@@ -37,24 +34,44 @@ describe('a user can edit their profile', () => {
   });
 
   it('can change a users avatar', () => {
-    cy.loginUser({ email: 'test1@test.com', password: 'password' });
+    const { username, email, password } = createRandomUserCreds();
+    cy.createUser({ username, email, password });
+    cy.loginUser({ email, password });
+    cy.userIsLoggedIn();
 
-    cy.wait(1000);
     cy.get('[data-testid="profile-dropdown-button"]').click();
     cy.contains(/update profile/i).click();
 
-    cy.wait(400);
-    cy.get('div span img')
-      .invoke('attr', 'src')
+    let firstImage = '';
+    let secondImage = '';
+    cy.get('.chakra-avatar')
+      .should('be.visible')
       .then((src) => {
         cy.get('[data-testid="edit-avatar"]').click();
         cy.get('input[type="file"]').attachFile('../fixtures/aspect-1-1.jpg');
-        cy.contains(/submit/i).click();
-        cy.wait(3000);
-        cy.get('div span img')
+        cy.get('[data-testid="cropper-next-button"]').click();
+        cy.get('.chakra-avatar__img', { timeout: 15000 })
           .invoke('attr', 'src')
           .should((src2) => {
             expect(src).not.to.eq(src2);
+            if (typeof src2 === 'string') {
+              firstImage = src2;
+            }
+          })
+          .then(() => {
+            cy.get('[data-testid="edit-avatar"]').click();
+            cy.get('input[type="file"]').attachFile('../fixtures/aspect-4-3.jpg');
+            cy.get('[data-testid="cropper-next-button"]').click();
+            cy.get('.chakra-avatar__img', { timeout: 15000 })
+              .invoke('attr', 'src')
+              .should((src3) => {
+                cy.wait(4000);
+                expect(src).not.to.eq(src3);
+                if (typeof src3 === 'string') {
+                  secondImage = src3;
+                }
+                expect(firstImage).not.to.eq(secondImage);
+              });
           });
       });
   });

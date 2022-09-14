@@ -17,7 +17,7 @@ export default {
   centered: true,
   parameters: {
     msw: {
-      delayResponse: 500,
+      delayResponse: 800,
       handlers: [
         rest.post('/api/post', (req, res, ctx) => {
           return res(ctx.status(200), ctx.json({ signedUrl: 'http://localhost:6006/fakeapi' }));
@@ -101,6 +101,21 @@ UploadAndPostFail.parameters = {
     handlers: [
       rest.put('http://localhost:6006/fakeapi', (req, res, ctx) => {
         return res(ctx.status(500), ctx.json({ status: 500 }));
+      }),
+    ],
+  },
+};
+
+export const UploadAndPostLoading = Template.bind({});
+UploadAndPostLoading.play = UploadAndPost.play;
+UploadAndPostLoading.parameters = {
+  msw: {
+    handlers: [
+      rest.post('/api/post', (req, res, ctx) => {
+        return res(ctx.delay('infinite'));
+      }),
+      rest.put('http://localhost:6006/fakeapi', (req, res, ctx) => {
+        res(ctx.delay('infinite'));
       }),
     ],
   },

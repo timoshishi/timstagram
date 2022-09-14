@@ -18,7 +18,8 @@
     "types:supabase": "supabase gen types typescript --local > ./src/types/database.ts",
     "test": "dotenv -e .env.local jest -- --watch",
     "test:ci": "jest --ci",
-    "test:e2e": "dotenv -e .env.local -- cypress open",
+    "test:e2e:headed": "start-server-and-test 'yarn dev' http://localhost:3000 'yarn cypress open'",
+    "test:e2e:headless": "start-server-and-test 'yarn dev' http://localhost:3000 'yarn cypress run'",
     "generate:feature": "node scripts/generate-feature.js $1",
     "generate:api": "node scripts/generate-api.js $1",
     "migrate:dev": "npx prisma migrate dev",
@@ -27,7 +28,6 @@
     "generate:local": "dotenv -e .env.local prisma generate",
     "seed:local": "dotenv -e .env.local -- npx prisma db seed",
     "prisma:local": "supabase stop && supabase start && npx prisma validate && yarn generate:local && yarn dbpush:local && yarn seed:local && yarn types:supabase",
-    "cypress:headless": "cypress run",
     "e2e:headless": "start-server-and-test 'yarn build-start' http://localhost:3000 'yarn cypress:headless'"
   },
   "dependencies": {

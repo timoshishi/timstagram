@@ -7,10 +7,16 @@ import { handlePostSubmit } from '@features/Modal/api/post-api';
 interface PostFormProps {}
 
 export const PostForm = ({}: PostFormProps) => {
-  const { croppedImage: croppedImageData, clearFile, toggleUploaderLoading, croppedImage } = useImageUploader();
+  const {
+    croppedImage: croppedImageData,
+    clearFile,
+    toggleUploaderLoading,
+    croppedImage,
+    isUploaderLoading,
+  } = useImageUploader();
   const { useModalToast } = useCreatePostModal();
   const [caption, setCaption] = useState('');
-
+  console.log({ isUploaderLoading });
   const handleCaption = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setCaption(e.target.value);
   };
@@ -38,7 +44,7 @@ export const PostForm = ({}: PostFormProps) => {
 
   return (
     <Box>
-      <Collapse in={!!croppedImageData}>
+      <Collapse in={!!croppedImageData && !isUploaderLoading}>
         <Box
           p='6'
           color='white'
