@@ -178,6 +178,8 @@ export interface Database {
           source: string;
           postId: string | null;
           user_id: string;
+          postFlagPostId: string | null;
+          postFlagFlaggedByUserId: string | null;
           scraped: boolean;
           deleted: boolean;
           created_at: string;
@@ -202,6 +204,8 @@ export interface Database {
           source: string;
           postId?: string | null;
           user_id: string;
+          postFlagPostId?: string | null;
+          postFlagFlaggedByUserId?: string | null;
           scraped?: boolean;
           deleted?: boolean;
           created_at?: string;
@@ -226,6 +230,8 @@ export interface Database {
           source?: string;
           postId?: string | null;
           user_id?: string;
+          postFlagPostId?: string | null;
+          postFlagFlaggedByUserId?: string | null;
           scraped?: boolean;
           deleted?: boolean;
           created_at?: string;

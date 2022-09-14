@@ -2,16 +2,8 @@
   "extends": "../tsconfig.json",
   "compilerOptions": {
     "baseUrl": "..",
-    "paths": {
-      "@pages/*": ["/src/pages/*"],
-      "@common/*": ["/src/common/*"],
-      "@components/*": ["/src/common/components/*"],
-      "types/*": ["/src/types/*"],
-      "@views/*": ["/src/views/*"],
-      "@features/*": ["/src/features/*"],
-      "@api/*": ["/src/api/*"],
-      "@src/*": ["/src/*"]
-    }
+    "esModuleInterop": true,
+    "module": "CommonJS"
   },
   "exclude": [
     "node_modules",
@@ -32,10 +24,5 @@
     "resolver.js",
     "src/mocks/api/handlers.js",
     "prisma/**/*.ts"
-  ],
-  "ts-node": {
-    "compilerOptions": {
-      "module": "commonjs"
-    }
-  }
+  ]
 }

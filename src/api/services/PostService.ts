@@ -1,13 +1,12 @@
-import { PrismaClient, Prisma } from '@prisma/client';
-import { ImageService } from '@api/imageService';
-import { getImageProperties } from '@src/api/handleImageUpload';
-import { customNano } from '@src/lib/customNano';
+import { PrismaClient, Prisma, Post as PrismaPost } from '@prisma/client';
+import { ImageService } from './ImageService';
+import { ImageProperties } from '../handleImageUpload';
+import { customNano } from '../../lib/customNano';
 import { randomUUID } from 'crypto';
 import { constructPostResponseObject, postSelectObj, activePostQueryObj } from '../getPost';
 import { Post } from 'types/post.types';
 import { PostHash as PrismaPostHash } from '@prisma/client';
 import { SupaUser } from 'types/index';
-import { ImageData } from '@features/ImageUploader/types/image-uploader.types';
 
 type GetPostParams = {
   postHash?: string;
@@ -88,15 +87,13 @@ export class PostService {
 
   createPost = async ({
     user,
-    croppedImage,
-    imageData,
+    imageProperties,
     caption,
   }: {
     user: SupaUser;
-    croppedImage: Express.Multer.File;
-    imageData: ImageData;
+    imageProperties: ImageProperties;
     caption: string;
-  }): Promise<string | null> => {
+  }): Promise<PrismaPost> => {
     try {
       const postHash = await this.createPostHash();
 
@@ -110,16 +107,9 @@ export class PostService {
         },
       });
 
-      const imageProperties = await getImageProperties({
-        image: croppedImage,
-        userId: user.id,
-        imageData,
-        altText: `${user.user_metadata.username}'s avatar`, //TODO: Handle tags as alt text
-        username: user.user_metadata.username,
-      });
       const postId = randomUUID();
 
-      await this.prisma.post.create({
+      const post = await this.prisma.post.create({
         data: {
           id: postId,
           mediaId: imageProperties.id,
@@ -132,16 +122,6 @@ export class PostService {
           filename: imageProperties.filename,
         },
       });
-
-      const signedUrl = await this.imageService.createSignedUrl({
-        filename: imageProperties.filename,
-        file: croppedImage,
-      });
-
-      if (!signedUrl) {
-        throw new Error('Could not create signed url');
-      }
-
       await this.prisma.media.create({
         data: {
           userId: user.id,
@@ -154,7 +134,7 @@ export class PostService {
           source: imageProperties.source,
           url: imageProperties.url,
           userMetadata: {} as any,
-          size: croppedImage.buffer.byteLength,
+          size: imageProperties.size,
           kind: 'post',
           hash: imageProperties.hash,
           postId: postId,
@@ -168,10 +148,10 @@ export class PostService {
         },
       });
 
-      return signedUrl;
+      return post;
     } catch (error) {
       console.error(error);
-      return null;
+      throw error;
     }
   };
 

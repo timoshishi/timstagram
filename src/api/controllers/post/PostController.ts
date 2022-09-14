@@ -1,7 +1,10 @@
-import { PrismaClient } from '@prisma/client';
+import { PrismaClient, Post as PrismaPost } from '@prisma/client';
 import { NextRequestWithUserFile, NextRequestWithUser } from '../../types';
 import { NextApiResponse } from 'next';
 import { PostService } from '../../services/PostService';
+import { getImageProperties } from '@api/handleImageUpload';
+import { imageService } from '../../services/ImageService';
+
 export class PostController {
   constructor(private prisma: PrismaClient, private postService: PostService) {
     this.prisma = prisma;
@@ -32,11 +35,29 @@ export class PostController {
     const { file: croppedImage, body, user } = req;
 
     try {
-      const signedUrl = await this.postService.createPost({
-        user,
-        croppedImage,
+      const imageProperties = await getImageProperties({
+        image: croppedImage,
+        userId: user.id,
         imageData: JSON.parse(body.imageData),
+        altText: `${user.user_metadata.username}'s avatar`, //TODO: Handle tags as alt text
+        username: user.user_metadata.username,
+      });
+      if (!imageProperties) {
+        throw new Error('Could not get image properties');
+      }
+      const createdPost: PrismaPost | null = await this.postService.createPost({
+        user,
         caption: body.caption,
+        imageProperties,
+      });
+
+      if (!createdPost) {
+        throw new Error('Could not create post');
+      }
+
+      const signedUrl = await imageService.createSignedUrl({
+        filename: imageProperties.filename,
+        file: croppedImage,
       });
 
       if (!signedUrl) {

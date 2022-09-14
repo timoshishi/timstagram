@@ -6,8 +6,9 @@ import { NextRequestWithRequiredUser, NextRequestWithUser } from '@src/api/types
 import { devLogger, handlerDefaults, methodNotAllowed } from '@src/api/router';
 import prisma from '@src/lib/prisma';
 import { PostService } from '@api/services/PostService';
+import { imageService } from '@api/services/ImageService';
 
-const postService = new PostService(process.env.PHOTO_BUCKET!, prisma);
+const postService = new PostService(prisma, imageService);
 
 const postController = new PostController(prisma, postService);
 

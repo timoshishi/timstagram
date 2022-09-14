@@ -20,7 +20,7 @@ const aws = `https://${process.env.PHOTO_BUCKET}.s3.amazonaws.com/${imageId}.jpe
 const constructUploadUrl = jest.fn();
 constructUploadUrl.mockReturnValue(aws);
 
-jest.mock('@api/imageService', () => ({
+jest.mock('../../services/ImageService', () => ({
   imageService: {
     uploadFileToS3: jest.fn(),
   },

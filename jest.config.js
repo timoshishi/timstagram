@@ -24,7 +24,7 @@ const customJestConfig = {
   moduleNameMapper: {
     '^@common/(.*)$': '<rootDir>/src/common/$1',
     '^@components/(.*)$': '<rootDir>/src/common/components/$1',
-    '^@types/(.*)$': '<rootDir>/src/types/$1',
+    '^types/(.*)$': '<rootDir>/src/types/$1',
     '^@views/(.*)$': '<rootDir>/src/views/$1',
     '^@api/(.*)$': '<rootDir>/src/api/$1',
     '^@src/(.*)$': '<rootDir>/src/$1',
