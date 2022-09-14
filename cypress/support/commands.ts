@@ -34,6 +34,26 @@ Cypress.Commands.addAll({
     cy.get('input[name="password"]').type(password);
     cy.get('button[type="submit"]').click();
   },
+  userIsLoggedIn() {
+    cy.get('[data-testid="profile-dropdown-button"]');
+  },
+  userIsLoggedOut() {
+    cy.contains(/Sign up/i).should('exist');
+  },
+  logoutUser() {
+    cy.get('[data-testid="profile-dropdown-button"]').click();
+    cy.contains(/Sign out/i).click();
+  },
+  deleteUser() {
+    cy.get('[data-testid="profile-dropdown-button"]').click();
+    cy.contains(/update profile/i).click();
+    cy.contains(/delete account/i).click();
+    cy.get('input').type('permanently delete');
+    cy.contains(/delete account/i).click();
+  },
+  closeModal() {
+    cy.get('.chakra-modal__close-btn').click();
+  },
 });
 
 // -- This is a child command --
@@ -61,6 +81,11 @@ declare global {
       createUser({ username, email, password }: Record<string, string>): Chainable<void>;
       loginUser({ email, password }: { email: string; password: string }): Chainable<void>;
       attachFile(path: string): Chainable<void>;
+      logoutUser(): Chainable<void>;
+      deleteUser(): Chainable<void>;
+      closeModal(): Chainable<void>;
+      userIsLoggedIn(): Chainable<void>;
+      userIsLoggedOut(): Chainable<void>;
     }
   }
 }
