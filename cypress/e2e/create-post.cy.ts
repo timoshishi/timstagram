@@ -25,7 +25,9 @@ describe('a user can edit their profile', () => {
     cy.contains(/next/i).click();
     cy.get('textarea').type('this is a test post');
     cy.get('button[type="submit"]').click();
-    cy.contains(/success/i).should('be.visible');
+    cy.contains(/success/i, {
+      timeout: 10000,
+    }).should('be.visible');
     expect(cy.contains(/an image/i)).to.exist;
     cy.closeModal();
   });

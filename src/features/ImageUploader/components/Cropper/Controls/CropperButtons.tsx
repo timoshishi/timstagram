@@ -21,7 +21,13 @@ export const CropperButtons = ({ getCroppedImage }: CropperButtonsProps) => {
       <Button variant='outline' colorScheme='telegram' onClick={clearFile} size={['sm', 'sm', 'md']}>
         Back
       </Button>
-      <Button variant='solid' colorScheme='telegram' size={['sm', 'sm', 'md']} onClick={getCroppedImage}>
+      <Button
+        variant='solid'
+        colorScheme='telegram'
+        size={['sm', 'sm', 'md']}
+        onClick={getCroppedImage}
+        data-testid='cropper-next-button'
+      >
         {hasAdditionalStep ? 'Next' : 'Submit'}
       </Button>
     </Stack>
