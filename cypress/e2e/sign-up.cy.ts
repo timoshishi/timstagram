@@ -12,8 +12,7 @@ describe('Logging in and out', () => {
     cy.contains(/welcome/i).should('be.visible');
     cy.wait(1000);
     cy.loginUser({ email, password });
-    cy.wait(1000);
-    cy.get('[data-testid="user-avatar"]').should('be.visible');
+    cy.userIsLoggedIn();
     cy.get('[data-testid="profile-dropdown-button"]').click();
     cy.contains(/Sign out/i).click();
     cy.get('button[name="signup"]').should('be.visible');
@@ -26,23 +25,23 @@ describe('Logging in and out', () => {
   });
 });
 
-describe.only('failed logins', () => {
+describe('failed logins', () => {
   const { username, email, password } = createRandomUserCreds();
   beforeEach(() => {
     cy.visit('http://localhost:3000/');
-    console.log({ username, email, password });
   });
 
   it('creates a new user', () => {
     cy.createUser({ username, email, password });
-    cy.wait(1000);
+    cy.contains(/welcome/i).should('be.visible');
   });
 
   it('shows a warning if you try to create a user with a username that already exists', () => {
     cy.createUser({ username, email, password });
     cy.contains(/Sign up/i).click();
-    cy.wait(1000);
+
     cy.contains(/sorry/i).should('be.visible');
+    cy.userIsLoggedOut();
   });
 
   it('shows an error if you try to log in with the wrong password', () => {
@@ -59,8 +58,7 @@ describe.only('failed logins', () => {
 
   it('should be able to log back in after failing logins previously', () => {
     cy.loginUser({ email, password });
-    cy.wait(1000);
-    cy.get('[data-testid="user-avatar"]').should('be.visible');
+    cy.userIsLoggedIn();
   });
 });
 

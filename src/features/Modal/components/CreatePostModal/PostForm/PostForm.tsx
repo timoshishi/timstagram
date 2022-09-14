@@ -69,7 +69,13 @@ export const PostForm = ({}: PostFormProps) => {
             <Button variant='outline' colorScheme='telegram' size={['md', 'md', 'md']} onClick={clearFile}>
               Cancel
             </Button>
-            <Button variant='solid' colorScheme='telegram' size={['md', 'md', 'md']} onClick={onFormSubmit}>
+            <Button
+              variant='solid'
+              type='submit'
+              colorScheme='telegram'
+              size={['md', 'md', 'md']}
+              onClick={onFormSubmit}
+            >
               Post
             </Button>
           </Stack>
