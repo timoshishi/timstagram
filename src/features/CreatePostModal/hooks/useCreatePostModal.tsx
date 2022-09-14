@@ -1,5 +1,5 @@
-import { useGlobalModalContext } from './useGlobalModal';
-import { CreatePostModalProps } from '../components';
+import { useGlobalModalContext } from '@features/Modal';
+import { CreatePostModalProps } from '../types';
 
 export const useCreatePostModal = () => {
   const { showModal, ...rest } = useGlobalModalContext<CreatePostModalProps>();

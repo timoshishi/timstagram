@@ -4,7 +4,7 @@ import { FiHome, FiTrendingUp, FiCompass, FiStar } from 'react-icons/fi';
 import { AiOutlineForm } from 'react-icons/ai';
 import { IconType } from 'react-icons';
 import { Search } from './Search/Search';
-import { useCreatePostModal } from '@features/Modal';
+import { useCreatePostModal } from '@features/CreatePostModal';
 import { useAuthModal } from '@features/AuthModal';
 import { SupaUser } from 'types/index';
 

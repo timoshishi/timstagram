@@ -1,8 +1,6 @@
 import { ImageUploader, ImageUploaderProvider } from '@features/ImageUploader';
 import { ModalOverlay, ModalContent } from '@chakra-ui/react';
-import { PostForm } from '@features/Modal/components/CreatePostModal/PostForm';
-
-export interface CreatePostModalProps {}
+import { PostForm } from './PostForm';
 
 export const CreatePostModal = () => {
   return (

@@ -1,8 +1,8 @@
 import { useState } from 'react';
 import { Button, Box, Textarea, Collapse, Stack } from '@chakra-ui/react';
-import { useCreatePostModal } from '@features/Modal/hooks/useCreatePostModal';
-import { useImageUploader } from '@features/ImageUploader/hooks/useImageUploader';
-import { handlePostSubmit } from '@features/Modal/api/post-api';
+import { useCreatePostModal } from '../../hooks';
+import { useImageUploader } from '@features/ImageUploader';
+import { handlePostSubmit } from '../../api/post-api';
 
 interface PostFormProps {}
 

@@ -1,6 +1,7 @@
 import { ImageUploader } from '@features/ImageUploader';
-import { ProfileModal, CreatePostModal } from '../components';
+import { ProfileModal } from '../components';
 import { AuthModal } from '@features/AuthModal';
+import { CreatePostModal } from '@features/CreatePostModal';
 
 export const MODAL_COMPONENTS = {
   AuthModal: AuthModal,
@@ -8,12 +9,3 @@ export const MODAL_COMPONENTS = {
   ProfileModal: ProfileModal,
   CreatePostModal: CreatePostModal,
 } as const;
-
-export const SIGN_UP_TEXTS = {
-  LIKE: 'Sign up to show other users you like their content!',
-  SAVE: 'Sign up to save your favorite content!',
-  COMMENT: 'Sign up to comment on posts!',
-  FOLLOW: 'Sign up to follow other users!',
-  POST: 'Sign up to post your own content!',
-  DEFAULT: 'Sign up to get started!',
-};

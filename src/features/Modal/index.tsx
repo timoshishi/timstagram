@@ -1,3 +1,3 @@
-export { CreatePostModal, ProfileModal } from './components';
-export { useCreatePostModal, useProfileModal, useGlobalModalContext } from './hooks';
+export { ProfileModal } from './components';
+export { useProfileModal, useGlobalModalContext } from './hooks';
 export { GlobalModal } from './stores/GlobalModalProvider';
