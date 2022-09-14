@@ -5,28 +5,14 @@ import { FiUser } from 'react-icons/fi';
 import { usernameDoesExist } from '@features/Modal/api/auth-api';
 import { insertInitialProfileData } from '@features/Modal/api/profile-api';
 import { ModalToasts } from '@features/Modal/hooks/useModalToasts';
-
-const VIEWS: ViewsMap = {
-  SIGN_IN: 'sign_in',
-  SIGN_UP: 'sign_up',
-  FORGOTTEN_PASSWORD: 'forgotten_password',
-  MAGIC_LINK: 'magic_link',
-  UPDATE_PASSWORD: 'update_password',
-};
+import { ViewType, RedirectTo } from '../../types';
+import { VIEWS } from '../../constants';
 
 const ERRORS = {
   USERNAME_TAKEN: 'Username taken, please try another',
   TIME_ERROR: 'For security purposes, you can only request this after',
   DEFAULT_ERROR: 'Something went wrong, please try again',
 };
-
-interface ViewsMap {
-  [key: string]: ViewType;
-}
-
-type ViewType = 'sign_in' | 'sign_up' | 'forgotten_password' | 'magic_link' | 'update_password';
-
-type RedirectTo = undefined | string;
 
 function EmailAuth({
   authView,

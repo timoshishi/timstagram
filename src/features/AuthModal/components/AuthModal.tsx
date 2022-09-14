@@ -1,14 +1,8 @@
 import Auth from './Auth';
 import { supabase } from '@src/lib/initSupabase';
 import { ModalContent, Flex, ModalCloseButton, ModalOverlay } from '@chakra-ui/react';
-import { useAuthModal } from '@features/Modal';
-import { SignUpActionType } from './AuthHeader';
-import { ViewType } from './Auth';
+import { useAuthModal } from '@features/AuthModal';
 
-export interface AuthModalProps {
-  viewType: ViewType;
-  signUpActionType?: SignUpActionType;
-}
 export const AuthModal = () => {
   const {
     componentProps: { viewType, signUpActionType },

@@ -1,21 +1,8 @@
 import React, { useState } from 'react';
 import type { SupabaseClient } from '@supabase/supabase-js';
 import { Input, Button, Space, Typography, IconMail, IconInbox } from '@supabase/ui';
-const VIEWS: ViewsMap = {
-  SIGN_IN: 'sign_in',
-  SIGN_UP: 'sign_up',
-  FORGOTTEN_PASSWORD: 'forgotten_password',
-  MAGIC_LINK: 'magic_link',
-  UPDATE_PASSWORD: 'update_password',
-};
-
-interface ViewsMap {
-  [key: string]: ViewType;
-}
-
-type ViewType = 'sign_in' | 'sign_up' | 'forgotten_password' | 'magic_link' | 'update_password';
-
-type RedirectTo = undefined | string;
+import { RedirectTo } from '../../types';
+import { VIEWS } from '../../constants';
 
 export function MagicLink({
   setAuthView,

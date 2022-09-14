@@ -2,26 +2,8 @@ import React, { useState } from 'react';
 import type { SupabaseClient, Provider } from '@supabase/supabase-js';
 import { Input, Button, Space, Typography, IconMail, IconInbox } from '@supabase/ui';
 import { ModalToasts } from '@features/Modal/hooks/useModalToasts';
-const VIEWS: ViewsMap = {
-  SIGN_IN: 'sign_in',
-  SIGN_UP: 'sign_up',
-  FORGOTTEN_PASSWORD: 'forgotten_password',
-  MAGIC_LINK: 'magic_link',
-  UPDATE_PASSWORD: 'update_password',
-};
-
-interface ViewsMap {
-  [key: string]: ViewType;
-}
-
-type ViewType = 'sign_in' | 'sign_up' | 'forgotten_password' | 'magic_link' | 'update_password';
-
-type RedirectTo = undefined | string;
-
-type APIError = {
-  status: number;
-  messsage: string;
-};
+import { ViewType, RedirectTo } from '../../types';
+import { VIEWS } from '../../constants';
 
 export interface Props {
   supabaseClient: SupabaseClient;

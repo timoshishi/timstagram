@@ -1,7 +1,7 @@
 import { useImageUploader } from '../hooks/useImageUploader';
 import { Dropzone } from './Dropzone';
 import { Cropper } from './Cropper';
-import { Box, Center, Spinner, Flex } from '@chakra-ui/react';
+import { Center, Spinner, Flex } from '@chakra-ui/react';
 import { BrandLogo } from '@common/components/BrandLogo';
 
 export const ImageUploader = () => {

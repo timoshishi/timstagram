@@ -3,10 +3,7 @@ import type { SupabaseClient, Provider } from '@supabase/supabase-js';
 import { Button, Space, Typography, Divider } from '@supabase/ui';
 import * as SocialIcons from '../Icons';
 import AuthStyles from '../Auth.module.css';
-
-type ViewType = 'sign_in' | 'sign_up' | 'forgotten_password' | 'magic_link' | 'update_password';
-
-type RedirectTo = undefined | string;
+import { ViewType, RedirectTo } from '../../types';
 
 export interface AuthProps {
   supabaseClient: SupabaseClient;

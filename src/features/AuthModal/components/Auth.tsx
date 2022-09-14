@@ -3,24 +3,11 @@ import type { SupabaseClient, Provider } from '@supabase/supabase-js';
 import { SocialAuth, EmailAuth, ForgottenPassword, UpdatePassword, MagicLink } from './views';
 import { Space } from '@supabase/ui';
 import AuthStyles from './Auth.module.css';
-import { useAuthModal } from '@features/Modal/hooks';
+import { useAuthModal } from '../hooks';
 import { useUser } from '@common/hooks/useUser';
 import { AuthHeader } from './AuthHeader';
-import type { SignUpActionType } from './AuthHeader';
-interface ViewsMap {
-  [key: string]: ViewType;
-}
-
-export type ViewType = 'sign_in' | 'sign_up' | 'forgotten_password' | 'magic_link' | 'update_password';
-
-export type RedirectTo = undefined | string;
-export const VIEWS: ViewsMap = {
-  SIGN_IN: 'sign_in',
-  SIGN_UP: 'sign_up',
-  FORGOTTEN_PASSWORD: 'forgotten_password',
-  MAGIC_LINK: 'magic_link',
-  UPDATE_PASSWORD: 'update_password',
-};
+import type { SignUpActionType, ViewType, RedirectTo } from '../types';
+import { VIEWS } from '../constants';
 
 export interface Props {
   supabaseClient: SupabaseClient;

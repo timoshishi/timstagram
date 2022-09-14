@@ -1,5 +1,5 @@
-import { useGlobalModalContext } from './useGlobalModal';
-import { AuthModalProps } from '../components/AuthModal';
+import { useGlobalModalContext } from '@features/Modal';
+import { AuthModalProps } from '../types';
 
 export const useAuthModal = () => {
   const { showModal, ...authModal } = useGlobalModalContext<AuthModalProps>();

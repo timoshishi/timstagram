@@ -1,5 +1,6 @@
 import { ImageUploader } from '@features/ImageUploader';
-import { ProfileModal, CreatePostModal, AuthModal } from '../components';
+import { ProfileModal, CreatePostModal } from '../components';
+import { AuthModal } from '@features/AuthModal';
 
 export const MODAL_COMPONENTS = {
   AuthModal: AuthModal,

@@ -6,7 +6,6 @@ const nextConfig = {
     domains: ['picsum.photos', 'witter-dev.s3.amazonaws.com'],
   },
   eslint: {
-    ignoreDuringBuilds: true,
     dirs: ['src'],
   },
   typescript: {
