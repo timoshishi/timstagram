@@ -48,11 +48,10 @@ export const PostForm = ({}: PostFormProps) => {
         <Box
           p='6'
           color='white'
-          w={['100%', '80%', '60%']}
+          w={['100%']}
           maxH={'100%'}
-          bg='teal.500'
+          minH={'80%'}
           zIndex={100}
-          // width={'100%'}
           rounded='md'
           shadow='md'
           position='absolute'
@@ -66,13 +65,19 @@ export const PostForm = ({}: PostFormProps) => {
             size='lg'
             resize='none'
             minH='10rem'
-            bg='transparent'
             color='white'
+            bg='blackAlpha.600'
             _placeholder={{ color: 'white' }}
-            mt='4'
           />
           <Stack spacing={['3']} justifyContent={'flex-end'} w='100%' p='3' alignSelf={'flex-end'}>
-            <Button variant='outline' colorScheme='telegram' size={['md', 'md', 'md']} onClick={clearFile}>
+            <Button
+              variant='outline'
+              colorScheme='telegram'
+              bg='white'
+              opacity='0.9'
+              size={['md', 'md', 'md']}
+              onClick={clearFile}
+            >
               Cancel
             </Button>
             <Button
