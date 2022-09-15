@@ -6,7 +6,7 @@ import { ImageService } from '../src/api/services/ImageService';
 import { PostService } from '../src/api/services/PostService';
 import { s3Client } from '../src/lib/s3Client';
 import { randomUUID } from 'crypto';
-import { ImageProperties } from '../src/api/handleImageUpload';
+import { ImageProperties } from '../src/api/services/types';
 import { SupaUser } from 'types/index';
 import { Post } from '@prisma/client';
 import { DEFAULT_IMAGE_PLACEHOLDER } from '../src/common/constants';

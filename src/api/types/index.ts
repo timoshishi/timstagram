@@ -19,3 +19,5 @@ export interface NextRequestWithUserFile extends NextRequestWithUser {
 }
 
 export type FileController = (req: NextRequestWithUserFile, res: NextApiResponse) => NextApiResponse<any>;
+
+export type NextUserMiddleware = (req: NextRequestWithUser, res: NextApiResponse, next: NextFunction) => void;

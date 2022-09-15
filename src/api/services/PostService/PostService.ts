@@ -1,8 +1,8 @@
-import { PrismaClient, Post as PrismaPost, PostLike } from '@prisma/client';
+import { PrismaClient, Post as PrismaPost } from '@prisma/client';
 import { ImageService } from '../ImageService';
 import { customNano } from '../../../lib/customNano';
 import { randomUUID } from 'crypto';
-import { postSelectObj, activePostQueryObj } from '../../query-objects';
+import { postSelectObj, activePostQueryObj } from '../../utils/query-objects';
 import { Post } from 'types/post.types';
 import { PostHash as PrismaPostHash } from '@prisma/client';
 import { SupaUser } from 'types/index';
