@@ -7,24 +7,7 @@ import { MAX_MEGABYTES, MEGABYTE } from '@features/ImageUploader/utils/image-upl
 import type { ImageData } from '@features/ImageUploader';
 import { randomUUID } from 'crypto';
 export const AVATAR_IMAGE_SIZE = 150;
-
-export type ImageProperties = {
-  id: string;
-  width: number;
-  height: number;
-  aspectRatio: number;
-  filename: string;
-  url: string;
-  alt: string;
-  bucket: string;
-  type: string;
-  size: number;
-  userId: string;
-  hash: string;
-  placeholder: string;
-  source: string;
-  metadata: string;
-};
+import type { ImageProperties } from '../types';
 
 export const constructUploadUrl = ({ id, ext }: { id: string; ext: string }): string => {
   return `https://${process.env.PHOTO_BUCKET}.s3.amazonaws.com/${id}.${ext}`;

@@ -1,4 +1,3 @@
-// Import the required AWS SDK clients and commands for Node.js
 import {
   CreateBucketCommand,
   DeleteObjectCommand,
@@ -12,7 +11,7 @@ import {
   ListObjectsCommand,
   CopyObjectCommand,
 } from '@aws-sdk/client-s3';
-import { s3Client } from '../../lib/s3Client'; // Helper function that creates an Amazon S3 service client module.
+import { s3Client } from '../../../lib/s3Client';
 import { getSignedUrl } from '@aws-sdk/s3-request-presigner';
 
 export class ImageService {

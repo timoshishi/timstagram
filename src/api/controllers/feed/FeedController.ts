@@ -2,10 +2,10 @@ import { PrismaClient, Post as PrismaPost } from '@prisma/client';
 import { NextRequestWithUserFile, NextRequestWithUser } from '../../types';
 import { NextApiResponse } from 'next';
 import { PostService } from '../../services/PostService';
-import { getImageProperties } from '../../services/ImageService/handleImageUpload';
+import { getImageProperties } from '@api/services/ImageService/handleImageUpload';
 import { imageService } from '../../services/ImageService';
 
-export class PostController {
+export class FeedController {
   constructor(private prisma: PrismaClient, private postService: PostService) {
     this.prisma = prisma;
     this.postService = postService;

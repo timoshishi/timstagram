@@ -2,7 +2,7 @@
 import type { NextApiResponse } from 'next';
 import { createRouter, expressWrapper } from 'next-connect';
 import cors from 'cors';
-import { uploadMiddleware } from '@src/api/handleImageUpload';
+import { uploadMiddleware } from '@api/services/ImageService/handleImageUpload';
 import { ProfileController } from '@api/controllers/profile/ProfileController';
 import prisma from '@src/lib/prisma';
 import { NextRequestWithUserFile } from '@src/api/types';
