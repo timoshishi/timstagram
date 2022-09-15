@@ -4,10 +4,9 @@ import { BadRequestException } from '@storyofams/next-api-decorators';
 const { getPlaiceholder } = require('plaiceholder');
 import multer from 'multer';
 import { MAX_MEGABYTES, MEGABYTE } from '@features/ImageUploader/utils/image-uploader.constants';
-import type { ImageData } from '@features/ImageUploader';
 import { randomUUID } from 'crypto';
 export const AVATAR_IMAGE_SIZE = 150;
-import type { ImageProperties } from '../types';
+import type { ImageProperties, GetImagePropertiesParams } from '../../types';
 
 export const constructUploadUrl = ({ id, ext }: { id: string; ext: string }): string => {
   return `https://${process.env.PHOTO_BUCKET}.s3.amazonaws.com/${id}.${ext}`;
@@ -48,13 +47,7 @@ export const getImageProperties = async ({
   imageData,
   userId,
   altText,
-}: {
-  image: Express.Multer.File;
-  imageData: ImageData;
-  userId: string;
-  username: string;
-  altText: string;
-}): Promise<ImageProperties> => {
+}: GetImagePropertiesParams): Promise<ImageProperties> => {
   const id = randomUUID();
   const hash = await getImageHash(image);
   const type = image.mimetype;

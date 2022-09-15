@@ -6,7 +6,7 @@ import { postSelectObj, activePostQueryObj } from '../../utils/query-objects';
 import { Post } from 'types/post.types';
 import { PostHash as PrismaPostHash } from '@prisma/client';
 import { SupaUser } from 'types/index';
-import type { PostQueryResponse, ImageProperties } from '../types';
+import type { PostQueryResponse, ImageProperties } from '../../types';
 
 type GetPostParams = {
   postHash?: string;

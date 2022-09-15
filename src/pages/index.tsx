@@ -7,7 +7,8 @@ import getFeed from '@src/api/getFeed';
 import { PostCard } from '@common/components/PostCard';
 import { fetcher } from 'src/lib/axios';
 import { PostResponse } from 'types/post.types';
-const API = '/post/popular';
+
+const API = '/feed';
 
 export async function getStaticProps() {
   const posts: PostResponse = await getFeed();
