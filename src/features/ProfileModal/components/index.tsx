@@ -1,4 +1,4 @@
-import { ProfileModal as ProfileModalBase } from './ProfileModal';
+import { ProfileModalBase } from './ProfileModalBase';
 import { ImageUploaderProvider } from '@features/ImageUploader';
 
 export const ProfileModal = () => {

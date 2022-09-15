@@ -1,6 +1,6 @@
 import { useContext } from 'react';
 import { ImageUploaderContext } from '../stores';
-import { UseImageUploaderReturn } from '../types/image-uploader-context.types';
+import type { UseImageUploaderReturn } from '../types';
 
 export const useImageUploader = (): UseImageUploaderReturn => {
   const context = useContext(ImageUploaderContext);

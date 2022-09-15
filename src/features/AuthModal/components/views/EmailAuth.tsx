@@ -3,7 +3,7 @@ import type { SupabaseClient, ApiError, User } from '@supabase/supabase-js';
 import { Input, Checkbox, Button, Space, Typography, IconKey, IconMail, IconLock } from '@supabase/ui';
 import { FiUser } from 'react-icons/fi';
 import { usernameDoesExist } from '../../api/auth-api';
-import { insertInitialProfileData } from '@features/Modal/api/profile-api';
+import { insertInitialProfileData } from '../../api/auth-api';
 import { ModalToasts } from '@features/Modal/hooks/useModalToasts';
 import { ViewType, RedirectTo } from '../../types';
 import { VIEWS } from '../../constants';

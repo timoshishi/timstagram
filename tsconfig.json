@@ -40,7 +40,8 @@
     "**/stories/**/*",
     "scripts/api-example",
     "**/*.spec.ts",
-    "./cypress.config.ts"
+    "./cypress.config.ts",
+    "__mocks__"
   ],
   "include": [
     "next-env.d.ts",

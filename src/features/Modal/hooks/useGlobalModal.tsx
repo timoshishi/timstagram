@@ -1,5 +1,5 @@
 import { useContext } from 'react';
-import type { GlobalContext } from '../types/global-modal.types';
+import type { GlobalContext } from '../types';
 import { GlobalModalContext } from '../stores/GlobalModalContext';
 
 export function useGlobalModalContext<P>(): GlobalContext<P> {

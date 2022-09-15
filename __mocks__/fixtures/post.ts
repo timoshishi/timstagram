@@ -10,8 +10,8 @@ export const post: Post = {
   postBody:
     "This is a long winded #description where I holler at my boy @jenkins we'll keep the length to under 300 characters my #guys.",
   comments: [
-    { username: 'user1', title: 'comment1 is all about this comment' },
-    { username: 'user2', title: 'comment2' },
+    { username: 'user1', content: 'comment1 is all about this comment' },
+    { username: 'user2', content: 'comment2' },
   ],
   isFollowing: false,
   likesCount: 24,

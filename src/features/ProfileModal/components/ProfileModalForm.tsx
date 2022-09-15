@@ -1,6 +1,6 @@
 import { Box, Flex, ModalCloseButton } from '@chakra-ui/react';
 import { BrandLogo } from '@src/common/components/BrandLogo';
-import { ProfileModalProps } from './ProfileModal';
+import type { ProfileModalProps } from './ProfileModalBase';
 import { DeleteAccount } from './DeleteAccount';
 import { EditBio } from './EditBio';
 import { EditAvatar } from './EditAvatar';

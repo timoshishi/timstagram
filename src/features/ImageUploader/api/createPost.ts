@@ -1,4 +1,4 @@
-import { ImageData } from '../types/image-uploader.types';
+import type { ImageData } from '../types';
 
 export interface PostDTO {
   caption: string;

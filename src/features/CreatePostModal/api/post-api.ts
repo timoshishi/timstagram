@@ -1,4 +1,4 @@
-import { GetCroppedImageReturn } from '@features/ImageUploader/types/image-uploader.types';
+import type { GetCroppedImageReturn } from '@features/ImageUploader';
 import axios from '@src/lib/axios';
 
 export const handlePostSubmit = async ({

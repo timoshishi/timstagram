@@ -1,11 +1,11 @@
 import { ModalContent, ModalOverlay, useDisclosure, Box, Button } from '@chakra-ui/react';
-import { useProfileModal } from '../../hooks/useProfileModal';
+import { useProfileModal } from '../hooks/useProfileModal';
 import { ProfileModalForm } from './ProfileModalForm';
 import { SupaUser } from 'types/index';
 import { ImageUploader } from '@features/ImageUploader';
 import { useImageUploader } from '@features/ImageUploader';
 import { useCallback, useEffect } from 'react';
-import { handleAvatarSubmit } from '@features/Modal/api/profile-api';
+import { handleAvatarSubmit } from '../api/profile-api';
 import { useUser } from '@common/hooks/useUser';
 import { ChevronLeftIcon } from '@chakra-ui/icons';
 
@@ -13,7 +13,7 @@ export interface ProfileModalProps {
   initialProfileData: SupaUser['user_metadata'];
 }
 
-export const ProfileModal = () => {
+export const ProfileModalBase = () => {
   const { user } = useUser();
   const {
     componentProps: { initialProfileData },

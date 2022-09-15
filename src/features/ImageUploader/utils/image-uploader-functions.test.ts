@@ -1,6 +1,6 @@
 import { scaleImage, sizeValidator, readFile } from './image-uploader-functions';
 import { MAX_MEGABYTES, MEGABYTE } from './image-uploader.constants';
-import { Dimensions } from '../types/image-uploader.types';
+import type { Dimensions } from '../types';
 
 describe('sizeValidator', () => {
   it('returns an error that the file is too large if it is above max_megabytes', () => {
@@ -87,37 +87,3 @@ describe('readFile', () => {
       });
   });
 });
-
-// describe('handleCroppedImage', () => {
-//   let fle: any = 'asdfdasf';
-//   let area = { width: 10, height: 10, x: 0, y: 0 };
-//   it('returrns null if an invalid file is passed as an argument', () => {
-//     expect(
-//       handleCroppedImage({
-//         croppedImage: undefined as any as File,
-//         croppedAreaPixels: area,
-//         aspectRatio: 1,
-//       })
-//     ).toBeNull();
-//   });
-
-//   it('returns the correct properties if it is passed an image', () => {
-//     const file = new File(['heresisssoedata'], 'filetype.png', {
-//       lastModified: Date.now(),
-//       type: 'image/png',
-//     });
-//     const result = handleCroppedImage({
-//       croppedImage: file,
-//       croppedAreaPixels: area,
-//       aspectRatio: 0.5,
-//     });
-//     expect(result).toEqual({
-//       croppedImage: file,
-//       dimensions: {
-//         width: area.width,
-//         height: area.height,
-//       },
-//       aspectRatio: 0.5,
-//     });
-//   });
-// });

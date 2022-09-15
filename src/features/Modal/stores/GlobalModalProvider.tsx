@@ -2,7 +2,7 @@ import { useToast } from '@chakra-ui/react';
 import React, { useState, useCallback, useRef } from 'react';
 import { GlobalModalComponent } from '../components/GlobalModalComponent';
 import { ModalToasts, useModalToasts } from '../hooks/useModalToasts';
-import { Store, ShowModal } from '../types/global-modal.types';
+import { Store, ShowModal } from '../types';
 import { GlobalModalContext } from './GlobalModalContext';
 
 export const GlobalModal = ({ children }: { children: React.ReactNode }) => {

@@ -1,7 +1,7 @@
 import { ModalProps } from '@chakra-ui/react';
-import { useGlobalModalContext } from './useGlobalModal';
-import type { GlobalContext } from '../types/global-modal.types';
-import { ProfileModalProps } from '../components/ProfileModal/ProfileModal';
+import { useGlobalModalContext } from '@features/Modal';
+import type { GlobalContext } from '@features/Modal';
+import type { ProfileModalProps } from '../components/ProfileModalBase';
 import { useCallback } from 'react';
 
 export type UseProfileModalReturn = Omit<GlobalContext<ProfileModalProps>, 'showModal'> & {

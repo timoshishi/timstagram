@@ -4,7 +4,7 @@ import { BadRequestException } from '@storyofams/next-api-decorators';
 const { getPlaiceholder } = require('plaiceholder');
 import multer from 'multer';
 import { MAX_MEGABYTES, MEGABYTE } from '@features/ImageUploader/utils/image-uploader.constants';
-import { ImageData } from '@features/ImageUploader/types/image-uploader.types';
+import type { ImageData } from '@features/ImageUploader';
 import { randomUUID } from 'crypto';
 export const AVATAR_IMAGE_SIZE = 150;
 

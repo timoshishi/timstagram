@@ -8,11 +8,11 @@ import {
   FormErrorMessage,
   useBoolean,
 } from '@chakra-ui/react';
-import { updateProfile } from '@features/Modal/api/profile-api';
+import { updateProfile } from '../api/profile-api';
 import React, { FormEventHandler, useState } from 'react';
 import { EditIcon } from '@chakra-ui/icons';
 import { SupaUser } from 'types/index';
-import { useProfileModal } from '@features/Modal/hooks';
+import { useProfileModal } from '../hooks/useProfileModal';
 
 interface EditBioProps {
   profile: Required<SupaUser['user_metadata']>;

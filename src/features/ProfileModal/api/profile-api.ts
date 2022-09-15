@@ -1,19 +1,6 @@
 import axios from '@src/lib/axios';
-import { GetCroppedImageReturn } from '@features/ImageUploader/types/image-uploader.types';
+import type { GetCroppedImageReturn } from '@features/ImageUploader';
 import { supabase } from '@src/lib/initSupabase';
-
-export type CreateProfileParams = {
-  id: string;
-  username: string;
-};
-
-export const insertInitialProfileData = async ({ id, username }: CreateProfileParams) => {
-  const { data } = await axios.post('/profile', {
-    id,
-    username,
-  });
-  return data;
-};
 
 export const handleAvatarSubmit = async (imageData: GetCroppedImageReturn) => {
   try {
@@ -23,15 +10,8 @@ export const handleAvatarSubmit = async (imageData: GetCroppedImageReturn) => {
     await axios.put('/profile/avatar', formData, {
       headers: { 'Content-Type': 'multipart/form-data' },
     });
-    //chanve file to buffer
     await supabase.auth.refreshSession();
     await supabase.auth.session();
-    // TODO: Post POST route - signed url can't be used if i'm altering the image on the server.
-    // const amz = await fetch(url.url, {
-    //   method: 'PUT',
-    //   body: await imageData.croppedImage.arrayBuffer(),
-    //   headers: { 'Content-Type': 'image/*' },
-    // });
   } catch (error) {
     console.error('GR', error);
   }
@@ -74,13 +54,6 @@ export const handlePostSubmit = async ({
     const url = await axios.post('/post', formData, {
       headers: { 'Content-Type': 'multipart/form-data' },
     });
-    //chanve file to buffer
-    // TODO: Post POST route - signed url can't be used if i'm altering the image on the server.
-    // const amz = await fetch(url.url, {
-    //   method: 'PUT',
-    //   body: await imageData.croppedImage.arrayBuffer(),
-    //   headers: { 'Content-Type': 'image/*' },
-    // });
   } catch (error) {
     console.error('GR', error);
   }

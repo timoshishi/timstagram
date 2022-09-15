@@ -1,7 +1,7 @@
 import { Button, FormControl, FormHelperText, Flex, useBoolean, Collapse, Input } from '@chakra-ui/react';
 import { useState } from 'react';
-import { deleteUser } from '@features/Modal/api/profile-api';
-import { useProfileModal } from '@features/Modal/hooks';
+import { deleteUser } from '../api/profile-api';
+import { useProfileModal } from '../hooks/useProfileModal';
 
 export const DeleteAccount = () => {
   const [isDeletingUser, { toggle: toggleIsDeletingUser }] = useBoolean();

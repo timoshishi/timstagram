@@ -1,5 +1,5 @@
 import { createContext } from 'react';
-import type { InitialContext } from '../types/global-modal.types';
+import type { InitialContext } from '../types';
 
 import { Context } from 'react';
 import { ModalToasts } from '../hooks/useModalToasts';

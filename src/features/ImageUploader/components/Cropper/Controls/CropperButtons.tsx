@@ -1,5 +1,5 @@
 import { Stack, Button } from '@chakra-ui/react';
-import { GetCroppedImage } from '../../../types/image-uploader.types';
+import type { GetCroppedImage } from '../../../types';
 import { useImageUploader } from '../../../hooks/useImageUploader';
 
 interface CropperButtonsProps {

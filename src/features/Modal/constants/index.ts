@@ -1,5 +1,5 @@
 import { ImageUploader } from '@features/ImageUploader';
-import { ProfileModal } from '../components';
+import { ProfileModal } from '@features/ProfileModal/components';
 import { AuthModal } from '@features/AuthModal';
 import { CreatePostModal } from '@features/CreatePostModal';
 

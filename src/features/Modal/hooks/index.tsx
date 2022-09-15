@@ -1,2 +1,2 @@
-export { useProfileModal } from './useProfileModal';
 export { useGlobalModalContext } from './useGlobalModal';
+export { useModalToasts } from './useModalToasts';

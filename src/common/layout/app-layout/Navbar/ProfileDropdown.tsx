@@ -2,7 +2,7 @@ import { supabase } from 'src/lib/initSupabase';
 
 import { Flex, Avatar, Button, Menu, MenuButton, MenuList, MenuItem, MenuDivider } from '@chakra-ui/react';
 import { SupaUser } from 'types/index';
-import { useProfileModal } from '@features/Modal';
+import { useProfileModal } from '@features/ProfileModal';
 import { FiLogOut, FiUser } from 'react-icons/fi';
 interface ProfileDropdownProps {
   user: SupaUser;
