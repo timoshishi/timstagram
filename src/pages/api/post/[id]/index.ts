@@ -6,11 +6,9 @@ import { NextRequestWithRequiredUser, NextRequestWithUser } from '@src/api/types
 import { devLogger, handlerDefaults, methodNotAllowed } from '@src/api/utils/router';
 import prisma from '@src/lib/prisma';
 import { PostService } from '@api/services/PostService';
-import { imageService } from '@api/services/ImageService';
 
-const postService = new PostService(prisma, imageService);
-
-const postController = new PostController(prisma, postService);
+const postService = new PostService(prisma);
+const postController = new PostController(postService);
 
 const router = createRouter<NextRequestWithUser | NextRequestWithRequiredUser, NextApiResponse>();
 

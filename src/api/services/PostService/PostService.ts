@@ -1,12 +1,11 @@
 import { PrismaClient, Post as PrismaPost } from '@prisma/client';
-import { ImageService } from '../ImageService';
 import { customNano } from '../../../lib/customNano';
 import { randomUUID } from 'crypto';
 import { postSelectObj, activePostQueryObj } from '../../utils/query-objects';
 import { Post } from 'types/post.types';
 import { PostHash as PrismaPostHash } from '@prisma/client';
 import { SupaUser } from 'types/index';
-import type { PostQueryResponse, ImageProperties } from '../types';
+import type { PostQueryResponse, ImageProperties } from '../../types';
 
 type GetPostParams = {
   postHash?: string;
@@ -15,7 +14,7 @@ type GetPostParams = {
 };
 
 export class PostService {
-  constructor(private prisma: PrismaClient, public imageService: ImageService) {}
+  constructor(private prisma: PrismaClient) {}
 
   getPostByHashOrId = async ({ postHash, postId, userId }: GetPostParams): Promise<Post | null> => {
     try {

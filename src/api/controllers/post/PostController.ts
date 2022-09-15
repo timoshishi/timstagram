@@ -1,4 +1,4 @@
-import { PrismaClient, Post as PrismaPost } from '@prisma/client';
+import { Post as PrismaPost } from '@prisma/client';
 import { NextRequestWithUserFile, NextRequestWithUser } from '../../types';
 import { NextApiResponse } from 'next';
 import { PostService } from '../../services/PostService';
@@ -6,8 +6,7 @@ import { getImageProperties } from '../../services/ImageService/handleImageUploa
 import { imageService } from '../../services/ImageService';
 
 export class PostController {
-  constructor(private prisma: PrismaClient, private postService: PostService) {
-    this.prisma = prisma;
+  constructor(private postService: PostService) {
     this.postService = postService;
   }
 
