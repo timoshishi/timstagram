@@ -1,5 +1,4 @@
 import { PrismaClient, Post as PrismaPost } from '@prisma/client';
-import { ImageService } from '../ImageService';
 import { customNano } from '../../../lib/customNano';
 import { randomUUID } from 'crypto';
 import { postSelectObj, activePostQueryObj } from '../../utils/query-objects';

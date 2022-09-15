@@ -113,7 +113,7 @@ describe('PostService', () => {
   let postService: PostService;
   let foundPost: any;
   beforeEach(() => {
-    postService = new PostService(prismaMock, new ImageService('fake-bucket', s3Client));
+    postService = new PostService(prismaMock);
     foundPost = { ...getSinglePostReturn };
   });
 

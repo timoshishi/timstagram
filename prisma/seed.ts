@@ -6,7 +6,7 @@ import { ImageService } from '../src/api/services/ImageService';
 import { PostService } from '../src/api/services/PostService';
 import { s3Client } from '../src/lib/s3Client';
 import { randomUUID } from 'crypto';
-import { ImageProperties } from '../src/api/services/types';
+import { ImageProperties } from '../src/api/types';
 import { SupaUser } from 'types/index';
 import { Post } from '@prisma/client';
 import { DEFAULT_IMAGE_PLACEHOLDER } from '../src/common/constants';
@@ -15,7 +15,7 @@ import path from 'path';
 
 const imageService = new ImageService(process.env.PHOTO_BUCKET!, s3Client);
 const supabaseServer = createClient(process.env.NEXT_PUBLIC_SUPABASE_URL!, process.env.SERVICE_ROLE_KEY!);
-const postService = new PostService(prisma, imageService);
+const postService = new PostService(prisma);
 console.log('CURRENT SUPABASE URL', process.env.NEXT_PUBLIC_SUPABASE_URL);
 
 const queryPath = path.join(__dirname, '..', 'queries');

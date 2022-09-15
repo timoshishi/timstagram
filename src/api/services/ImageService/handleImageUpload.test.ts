@@ -9,7 +9,7 @@ import {
 import { promises } from 'fs';
 import path from 'path';
 import { UUIDReg } from '@common/utils/regexp';
-import type { ImageProperties } from '../types';
+import type { ImageProperties } from '../../types';
 
 const fixturesDir = path.join(__dirname, '../../../../__mocks__/fixtures');
 const oneAspect = path.join(fixturesDir, 'aspect-1-1.jpg');
