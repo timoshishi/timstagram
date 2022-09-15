@@ -17,6 +17,7 @@ export const LoginButtons = () => {
             as={'a'}
             fontSize={'sm'}
             fontWeight={400}
+            color={'blackAlpha.700'}
             name='signin'
             variant={'link'}
             onClick={() => handleLogin('sign_in')}
@@ -27,8 +28,8 @@ export const LoginButtons = () => {
         <Button
           fontSize={'sm'}
           fontWeight={600}
-          color={'white'}
-          bg={'pink.400'}
+          variant={'solid'}
+          colorScheme='telegram'
           _hover={{
             bg: 'pink.300',
           }}

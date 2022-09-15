@@ -1,13 +1,11 @@
 import { prismaMock } from '@src/mocks/singleton';
 import { PostService } from './PostService';
 import { Post } from 'types/post.types';
-import { ImageService } from '../ImageService';
 import { supaUser } from '@src/mocks/supaUser';
 import { SupaUser } from 'types/index';
 import { getImageFileNode } from '../../../../test-utils';
 import path from 'path';
 import { getImageProperties } from '../ImageService/handleImageUpload';
-import { s3Client } from '@src/lib/s3Client';
 
 const MOCK_NANO = '08461dc7840';
 const fixturesDir = path.join(__dirname, '../../../../__mocks__/fixtures');

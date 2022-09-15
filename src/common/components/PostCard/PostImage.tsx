@@ -31,6 +31,7 @@ export const PostImage = ({
       width={800}
       height={600}
       loading={currentIdx < 7 ? 'eager' : 'lazy'}
+      priority={currentIdx < 3 && page === 1 ? true : false}
       layout='responsive' // this should be commented out when not using storybooks
       blurDataURL={placeholder || DEFAULT_IMAGE_PLACEHOLDER}
       placeholder='blur'
