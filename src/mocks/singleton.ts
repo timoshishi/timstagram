@@ -35,11 +35,3 @@ beforeEach(() => {
   mockReset(supabaseMock);
 });
 export const supabaseMock = supabase as unknown as DeepMockProxy<SupabaseClient>;
-
-import { mockClient } from 'aws-sdk-client-mock';
-import { S3Client } from '@aws-sdk/client-s3';
-const s3Client = new S3Client({ region: process.env.BUCKET_REGION });
-export const s3ClientMock = mockClient(s3Client);
-beforeEach(() => {
-  s3ClientMock.reset();
-});
