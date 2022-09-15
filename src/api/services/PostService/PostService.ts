@@ -15,7 +15,7 @@ type GetPostParams = {
 };
 
 export class PostService {
-  constructor(private prisma: PrismaClient, public imageService: ImageService) {}
+  constructor(private prisma: PrismaClient) {}
 
   getPostByHashOrId = async ({ postHash, postId, userId }: GetPostParams): Promise<Post | null> => {
     try {

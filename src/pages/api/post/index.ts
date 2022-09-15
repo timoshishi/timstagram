@@ -16,7 +16,7 @@ import { PostService } from '@api/services/PostService';
 import { ImageService } from '@api/services/ImageService';
 import { s3Client } from '@src/lib/s3Client';
 
-const postService = new PostService(prisma, new ImageService(process.env.PHOTO_BUCKET!, s3Client));
+const postService = new PostService(prisma);
 const postController = new PostController(prisma, postService);
 
 const router = createRouter<NextRequestWithUserFile, NextApiResponse>();
