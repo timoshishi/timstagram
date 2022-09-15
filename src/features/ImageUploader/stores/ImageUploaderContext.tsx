@@ -1,10 +1,9 @@
 import { useDropzone, FileError } from 'react-dropzone';
 import { useState, useEffect, useCallback, createContext, Context } from 'react';
 import { getOrientation } from 'get-orientation/browser.es5';
-import type { Dimensions, GetCroppedImageReturn } from '../types/image-uploader.types';
+import type { Dimensions, GetCroppedImageReturn, UseImageUploaderReturn, OrientationKey } from '../types';
 import { createImage, getRotatedImage } from '../utils/cropper-functions';
 import { sizeValidator } from '../utils/image-uploader-functions';
-import type { UseImageUploaderReturn, OrientationKey } from '../types/image-uploader-context.types';
 import { readFile, scaleImage, clearUrl } from '../utils/image-uploader-functions';
 import { useBoolean } from '@chakra-ui/react';
 

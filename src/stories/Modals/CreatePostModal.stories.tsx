@@ -1,9 +1,9 @@
 import React from 'react';
 import { ComponentStory, ComponentMeta } from '@storybook/react';
 import { GlobalModal } from '../../features/Modal';
-import { CreatePostModal } from '../../features/Modal';
+import { CreatePostModal } from '../../features/CreatePostModal';
 import { Button } from '@chakra-ui/button';
-import { useCreatePostModal } from '../../features/Modal/hooks/useCreatePostModal';
+import { useCreatePostModal } from '../../features/CreatePostModal';
 import { userEvent, waitFor, within, screen } from '@storybook/testing-library';
 import { expect } from '@storybook/jest';
 import { rest } from 'msw';

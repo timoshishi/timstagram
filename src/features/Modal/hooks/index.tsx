@@ -1,3 +1,2 @@
-export { useAuthModal } from './useAuthModal';
-export { useCreatePostModal } from './useCreatePostModal';
-export { useProfileModal } from './useProfileModal';
+export { useGlobalModalContext } from './useGlobalModal';
+export { useModalToasts } from './useModalToasts';

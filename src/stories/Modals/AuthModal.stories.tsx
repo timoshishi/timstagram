@@ -1,12 +1,12 @@
 import React from 'react';
 import { ComponentStory, ComponentMeta } from '@storybook/react';
 import { GlobalModal } from '../../features/Modal';
-import { AuthModal, useAuthModal } from '../../features/Modal';
+import { AuthModal, useAuthModal } from '../../features/AuthModal';
 import { Button } from '@chakra-ui/button';
 import { userEvent, waitFor, within, screen } from '@storybook/testing-library';
 import { expect } from '@storybook/jest';
 import { SIGN_UP_TEXTS } from '../../features/Modal/constants/modal';
-import { VIEWS } from '../../features/Modal/components/AuthModal/Auth';
+import { VIEWS } from '../../features/AuthModal/components/Auth';
 import { rest } from 'msw';
 
 export default {

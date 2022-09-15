@@ -1,6 +1,6 @@
 import { Modal as ChakraModal } from '@chakra-ui/react';
-import { ModalComponent, ModalType } from '../types/global-modal.types';
-import { MODAL_COMPONENTS } from '../constants/modal';
+import type { ModalComponent, ModalType } from '../types';
+import { MODAL_COMPONENTS } from '../constants';
 
 export const GlobalModalComponent = ({
   modalType,

@@ -1,5 +1,4 @@
-import { HandleCroppedImage } from '../types/image-uploader.types';
-import type { Dimensions } from '../types/image-uploader.types';
+import type { Dimensions, HandleCroppedImage } from '../types';
 import { MEGABYTE, MAX_MEGABYTES } from './image-uploader.constants';
 
 export function sizeValidator(file: File) {
