@@ -64,18 +64,17 @@ export class ImageService {
     const defaultBucket = { Bucket: process.env.EXAMPLE_BUCKET };
     try {
       const buckets = await this.s3Client.send(new ListBucketsCommand({}));
-      console.log(buckets);
       if (!buckets?.Buckets?.filter(({ Name }) => Name === this.bucket).length) {
-        console.log(`Creating bucket ${this.bucket}`);
-        console.log(`Waiting for "${this.bucket}" bucket creation...`);
+        console.info(`Creating bucket ${this.bucket}`);
+        console.info(`Waiting for "${this.bucket}" bucket creation...`);
         await this.s3Client.send(
           new CreateBucketCommand({
             Bucket: this.bucket,
           })
         );
-        console.log(`${process.env.PHOTO_BUCKET} successfully created`);
+        console.info(`${process.env.PHOTO_BUCKET} successfully created`);
       }
-      console.log('Duplicating Policies...');
+      console.info('Duplicating Policies...');
 
       // CORS
       const corsData = await this.s3Client.send(new GetBucketCorsCommand(defaultBucket));
@@ -102,7 +101,7 @@ export class ImageService {
         })
       );
     } catch (err) {
-      console.log('Error creating bucket', err);
+      console.error('Error creating bucket', JSON.stringify(err));
     }
   }
 
@@ -157,7 +156,7 @@ export class ImageService {
         });
       return exampleImages || [];
     } catch (err) {
-      console.log('Error copying objects', err);
+      console.error('Error copying objects', err);
       return Promise.reject();
     }
   }

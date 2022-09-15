@@ -16,7 +16,7 @@ export const PostForm = ({}: PostFormProps) => {
   } = useImageUploader();
   const { useModalToast } = useCreatePostModal();
   const [caption, setCaption] = useState('');
-  console.log({ isUploaderLoading });
+
   const handleCaption = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setCaption(e.target.value);
   };
