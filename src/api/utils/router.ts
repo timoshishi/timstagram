@@ -1,4 +1,4 @@
-import { NextRequestWithRequiredUser, NextRequestWithUser } from '../types';
+import { NextRequestWithRequiredUser, NextRequestWithUser, NextUserMiddleware } from '../types';
 import { NextApiResponse } from 'next';
 import { NextFunction } from 'express';
 import { getUser } from '@supabase/auth-helpers-nextjs';
@@ -6,14 +6,13 @@ import { ValidationChain, validationResult } from 'express-validator';
 import morgan from 'morgan';
 
 export const appendUserToRequest = async (req: NextRequestWithUser, res: NextApiResponse, next: NextFunction) => {
-  const { user, accessToken, error } = await getUser({ req, res });
+  const { user, error } = await getUser({ req, res });
   if (error) {
     console.error(error);
   }
   req.user = user;
   await next();
 };
-export type NextUserMiddleware = (req: NextRequestWithUser, res: NextApiResponse, next: NextFunction) => void;
 
 export const authenticateHandler = async (req: NextRequestWithUser, res: NextApiResponse, next: NextFunction) => {
   if (!req.user) {

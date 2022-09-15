@@ -1,15 +1,16 @@
-import { prismaMock, s3ClientMock } from '@src/mocks/singleton';
+import { prismaMock } from '@src/mocks/singleton';
 import { PostService } from './PostService';
 import { Post } from 'types/post.types';
-import { ImageService } from '@api/services/ImageService';
+import { ImageService } from '../ImageService';
 import { supaUser } from '@src/mocks/supaUser';
 import { SupaUser } from 'types/index';
-import { getImageFileNode } from '../../../test-utils';
+import { getImageFileNode } from '../../../../test-utils';
 import path from 'path';
-import { getImageProperties } from '@api/handleImageUpload';
+import { getImageProperties } from '../ImageService/handleImageUpload';
+import { s3Client } from '@src/lib/s3Client';
 
 const MOCK_NANO = '08461dc7840';
-const fixturesDir = path.join(__dirname, '../../../__mocks__/fixtures');
+const fixturesDir = path.join(__dirname, '../../../../__mocks__/fixtures');
 const oneAspect = path.join(fixturesDir, 'aspect-1-1.jpg');
 
 jest.mock('@src/lib/customNano', () => ({
@@ -112,7 +113,7 @@ describe('PostService', () => {
   let postService: PostService;
   let foundPost: any;
   beforeEach(() => {
-    postService = new PostService(prismaMock, new ImageService('fake-bucket', s3ClientMock));
+    postService = new PostService(prismaMock, new ImageService('fake-bucket', s3Client));
     foundPost = { ...getSinglePostReturn };
   });
 
@@ -217,7 +218,7 @@ describe('PostService', () => {
     });
 
     it('should return hasFlaggedPost as true if the user has flagged the post in the past', async () => {
-      prismaMock.postFlag.findFirst.mockResolvedValue({ id: 'test' });
+      prismaMock.postFlag.findFirst.mockResolvedValue({ id: 'test' } as any);
       const result = await postService.getPersonalizedUserProperties({
         userId: 'test',
         post: foundPost,
@@ -230,7 +231,7 @@ describe('PostService', () => {
 
     it('should return hasLikedPost as true if the user id is in the likes array', async () => {
       prismaMock.postFlag.findFirst.mockResolvedValue(null);
-      prismaMock.postLike.findFirst.mockResolvedValue({ id: 'test' });
+      prismaMock.postLike.findFirst.mockResolvedValue({ id: 'test' } as any);
       const result = await postService.getPersonalizedUserProperties({
         userId: foundPost.postLikes[0].profile.id,
         post: foundPost,
@@ -243,7 +244,7 @@ describe('PostService', () => {
 
     it('should return isFollowingUser as true if the user is found as following', async () => {
       prismaMock.postFlag.findFirst.mockResolvedValue(null);
-      prismaMock.profile.findFirst.mockResolvedValue({ id: 'test' });
+      prismaMock.profile.findFirst.mockResolvedValue({ id: 'test' } as any);
       const result = await postService.getPersonalizedUserProperties({
         userId: foundPost.profile.id,
         post: foundPost,
@@ -290,8 +291,8 @@ describe('PostService', () => {
         altText: 'test',
       });
       await prismaMock.post.create.mockResolvedValue(prismaPost);
-      await prismaMock.postLike.create.mockResolvedValue({ id: 'test' });
-      await prismaMock.media.create.mockResolvedValue({ id: 'test' });
+      await prismaMock.postLike.create.mockResolvedValue({ id: 'test' } as any);
+      await prismaMock.media.create.mockResolvedValue({ id: 'test' } as any);
       const createdPost = await postService.createPost({
         user: supaUser as unknown as SupaUser,
         imageProperties,

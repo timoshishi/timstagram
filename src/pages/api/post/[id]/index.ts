@@ -3,7 +3,7 @@ import { createRouter, expressWrapper } from 'next-connect';
 import cors from 'cors';
 import { PostController } from '@api/controllers/post/PostController';
 import { NextRequestWithRequiredUser, NextRequestWithUser } from '@src/api/types';
-import { devLogger, handlerDefaults, methodNotAllowed } from '@src/api/router';
+import { devLogger, handlerDefaults, methodNotAllowed } from '@src/api/utils/router';
 import prisma from '@src/lib/prisma';
 import { PostService } from '@api/services/PostService';
 import { imageService } from '@api/services/ImageService';

@@ -2,7 +2,7 @@ import { PrismaClient } from '@prisma/client';
 import { Profile } from '@prisma/client';
 import { SupabaseClient } from '@supabase/supabase-js';
 import { imageService } from '@api/services/ImageService';
-import { getImageProperties, resizeAvatarImage } from '@src/api/handleImageUpload';
+import { getImageProperties, resizeAvatarImage } from '@src/api/services/ImageService/handleImageUpload';
 import { Controller, NextRequestWithUser } from '@api/types';
 import { NextApiResponse } from 'next';
 import { NextRequestWithUserFile } from '../../types';

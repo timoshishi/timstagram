@@ -1,12 +1,12 @@
-import { PrismaClient, Prisma, Post as PrismaPost } from '@prisma/client';
-import { ImageService } from './ImageService';
-import { ImageProperties } from '../handleImageUpload';
-import { customNano } from '../../lib/customNano';
+import { PrismaClient, Post as PrismaPost } from '@prisma/client';
+import { ImageService } from '../ImageService';
+import { customNano } from '../../../lib/customNano';
 import { randomUUID } from 'crypto';
-import { constructPostResponseObject, postSelectObj, activePostQueryObj } from '../getPost';
+import { postSelectObj, activePostQueryObj } from '../../utils/query-objects';
 import { Post } from 'types/post.types';
 import { PostHash as PrismaPostHash } from '@prisma/client';
 import { SupaUser } from 'types/index';
+import type { PostQueryResponse, ImageProperties } from '../types';
 
 type GetPostParams = {
   postHash?: string;
@@ -14,7 +14,6 @@ type GetPostParams = {
   userId?: string;
 };
 
-type PostQueryResponse = Prisma.PromiseReturnType<PostService['getSinglePost']>;
 export class PostService {
   constructor(private prisma: PrismaClient, public imageService: ImageService) {}
 
@@ -36,7 +35,7 @@ export class PostService {
       if (hasFlaggedPost) {
         return null;
       }
-      return constructPostResponseObject({ post, hasLikedPost, isFollowingUser, hasFlaggedPost });
+      return this.constructPostResponseObject({ post, hasLikedPost, isFollowingUser, hasFlaggedPost });
     } catch (error) {
       console.error(error);
       return null;
@@ -212,5 +211,75 @@ export class PostService {
       console.error(error);
       throw new Error('Error getting user properties');
     }
+  };
+
+  constructPostResponseObject = ({
+    post,
+    hasLikedPost,
+    isFollowingUser,
+    hasFlaggedPost,
+  }: {
+    post: PostQueryResponse;
+    hasLikedPost: boolean;
+    isFollowingUser: boolean;
+    hasFlaggedPost: boolean;
+  }): Post | null => {
+    if (!post) {
+      throw new Error('Post is required');
+    }
+    if (hasFlaggedPost) {
+      return null;
+    }
+    const comments = post.comments.map((comment) => ({
+      userId: comment.id,
+      username: comment.profile.username,
+      avatarUrl: comment.profile.avatarUrl,
+      content: comment.content,
+      createdAt: comment.createdAt.toISOString(),
+    }));
+
+    const responseBody: Post = {
+      postId: post.id,
+      postBody: post.postBody,
+      viewCount: post.viewCount,
+      commentCount: post.comments.length,
+      comments: comments,
+      hasLiked: hasLikedPost,
+      isFollowing: !!isFollowingUser,
+      repostCount: 0,
+      likeCount: post.postLikes.length,
+      likes: post.postLikes.map((like) => ({
+        userId: like.profile.id,
+        username: like.profile.username,
+        avatarUrl: like.profile.avatarUrl,
+      })),
+      imageUrl: post.media[0]?.url,
+      tags: post.tags,
+      createdAt: post.createdAt.toISOString(),
+      poster: {
+        username: post.profile.username,
+        bio: post.profile.bio,
+        avatarUrl: post.profile.avatarUrl,
+        followerCount: post.profile._count.followers,
+        followingCount: post.profile._count.following,
+      },
+    };
+    return responseBody;
+  };
+
+  formatPostResponseObjects = (posts: PostQueryResponse[]): Post[] => {
+    const responseBody: Post[] = posts.reduce((posts: Post[], post: PostQueryResponse) => {
+      const body = this.constructPostResponseObject({
+        post,
+        hasLikedPost: false,
+        isFollowingUser: false,
+        hasFlaggedPost: false,
+      });
+      if (body) {
+        posts.push(body);
+      }
+      return posts;
+    }, []);
+    return responseBody;
   };
 }

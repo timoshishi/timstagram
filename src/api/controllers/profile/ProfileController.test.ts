@@ -4,7 +4,7 @@ let profileClient: ProfileController;
 import { Profile } from '@prisma/client';
 import path from 'path';
 import { supaUser, supaUserResponse } from '../../../mocks/supaUser';
-import { SupaUser } from 'types/index';
+import type { SupaUser } from '@src/types/index';
 import { RequestMethod, createMocks } from 'node-mocks-http';
 import { NextRequestWithUser } from '@api/types';
 import { NextApiResponse } from 'next';

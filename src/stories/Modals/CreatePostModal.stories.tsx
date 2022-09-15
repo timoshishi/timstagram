@@ -41,7 +41,7 @@ const ModalComp = () => {
         onClick={() => {
           showPostModal({
             handleSubmit: (val) => {
-              console.log(val);
+              console.info(val);
             },
           });
         }}

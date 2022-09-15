@@ -29,7 +29,6 @@ export default {
 
 // More on component templates: https://storybook.js.org/docs/react/writing-stories/introduction#using-args
 const Template: ComponentStory<typeof ImageUploader> = (args: unknown) => {
-  console.log(args);
   const { setPreview } = useImageUploader();
   setPreview(args?.preview || null);
   // const props = {

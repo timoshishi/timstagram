@@ -10,7 +10,7 @@ import {
   handlerDefaults,
   methodNotAllowed,
   validate,
-} from '@src/api/router';
+} from '@api/utils/router';
 import { updateProfileValidator } from '@api/controllers/profile/profile-validation';
 import prisma from '@src/lib/prisma';
 import supabaseService from '@src/lib/initSupabaseServer';

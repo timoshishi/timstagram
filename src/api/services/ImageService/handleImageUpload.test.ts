@@ -1,6 +1,5 @@
 import {
   getImageProperties,
-  ImageProperties,
   getAltText,
   getImageHash,
   createPlaceholder,
@@ -10,7 +9,9 @@ import {
 import { promises } from 'fs';
 import path from 'path';
 import { UUIDReg } from '@common/utils/regexp';
-const fixturesDir = path.join(__dirname, '../../__mocks__/fixtures');
+import type { ImageProperties } from '../types';
+
+const fixturesDir = path.join(__dirname, '../../../../__mocks__/fixtures');
 const oneAspect = path.join(fixturesDir, 'aspect-1-1.jpg');
 const fourThreeAspect = path.join(fixturesDir, 'aspect-4-3.jpg');
 
