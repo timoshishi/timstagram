@@ -2,7 +2,7 @@ import nanoid from 'nanoid';
 import { createRandomUserCreds } from '../utils';
 import { cy, expect } from 'local-cypress';
 
-describe('a user can edit their profile', () => {
+describe('a user can create a post', () => {
   const { username, email, password } = createRandomUserCreds();
 
   beforeEach(() => {

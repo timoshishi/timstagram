@@ -17,18 +17,29 @@
     "build-storybook": "yarn build && build-storybook -s public",
     "types:supabase": "supabase gen types typescript --local > ./src/types/database.ts",
     "test": "dotenv -e .env.local jest -- --watch",
-    "test:ci": "jest --ci",
     "test:e2e:headed": "start-server-and-test 'yarn dev' http://localhost:3000 'yarn cypress open'",
     "test:e2e:headless": "start-server-and-test 'yarn dev' http://localhost:3000 'yarn cypress run'",
+    "test:coverage": "yarn test:ci --coverage && yarn test:e2e:headless",
+    "test:ci": "jest --ci",
     "generate:feature": "node scripts/generate-feature.js $1",
     "generate:api": "node scripts/generate-api.js $1",
     "migrate:dev": "npx prisma migrate dev",
     "migrate:local": "yarn npx prisma format && yarn npx prisma validate && dotenv -e .env.local -- npx prisma migrate",
     "dbpush:local": "dotenv -e .env.local -- npx prisma db push",
+    "db:reset": "supabase stop && supabase start",
     "generate:local": "dotenv -e .env.local prisma generate",
     "seed:local": "dotenv -e .env.local -- npx prisma db seed",
-    "prisma:local": "supabase stop && supabase start && npx prisma validate && yarn generate:local && yarn dbpush:local && yarn seed:local && yarn types:supabase",
-    "e2e:headless": "start-server-and-test 'yarn build-start' http://localhost:3000 'yarn cypress:headless'"
+    "prisma:local": "yarn db:reset && npx prisma validate && yarn generate:local && yarn dbpush:local && yarn seed:local",
+    "postprisma:local": "yarn types:supabase",
+    "pretest:coverage": "mv .babel__ .babelrc && rm -rf .nyc_output || true",
+    "posttest:coverage": "yarn report:combined && mv .babelrc .babel__",
+    "mkdir:reports": "mkdir reports || true",
+    "precopy:reports": "yarn mkdir:reports",
+    "copy:reports": "cp cypress-coverage/coverage-final.json reports/from-cypress.json && cp jest-coverage/coverage-final.json reports/from-jest.json",
+    "precombine:reports": "yarn copy:reports && mkdir .nyc_output || true",
+    "combine:reports": "npx nyc merge reports && mv coverage.json .nyc_output/out.json",
+    "prereport:combined": "yarn combine:reports",
+    "report:combined": "npx nyc report --reporter lcov --reporter text --report-dir coverage"
   },
   "dependencies": {
     "@aws-sdk/client-s3": "^3.150.0",
@@ -78,6 +89,7 @@
   "devDependencies": {
     "@babel/core": "^7.18.10",
     "@chakra-ui/storybook-addon": "^4.0.8",
+    "@cypress/code-coverage": "^3.10.0",
     "@faker-js/faker": "^7.3.0",
     "@storybook/addon-actions": "^6.5.10",
     "@storybook/addon-essentials": "^6.5.10",
@@ -101,12 +113,14 @@
     "@types/multer": "^1.4.7",
     "@types/nanoid": "^2",
     "@types/next-auth": "3.15.0",
-    "@types/node": "18.7.3",
+    "@types/node": "^18.7.18",
     "@types/react": "^18.0.15",
     "@types/react-dom": "^18.0.6",
     "@typescript-eslint/eslint-plugin": "^5.30.5",
     "@typescript-eslint/parser": "^5.30.5",
     "babel-loader": "^8.2.5",
+    "babel-plugin-istanbul": "^6.1.1",
+    "check-code-coverage": "^1.10.0",
     "cypress": "^10.7.0",
     "cypress-file-upload": "^5.0.8",
     "eslint": "^8.19.0",
@@ -115,6 +129,7 @@
     "eslint-plugin-storybook": "^0.6.4",
     "eslint-plugin-testing-library": "^5.6.0",
     "eslint-plugin-unused-imports": "^2.0.0",
+    "istanbul-lib-coverage": "^3.2.0",
     "jest": "^28.1.3",
     "jest-environment-jsdom": "^28.1.3",
     "jest-mock-extended": "2.0.4",
@@ -123,6 +138,7 @@
     "msw": "^0.44.2",
     "msw-storybook-addon": "^1.6.3",
     "node-mocks-http": "^1.11.0",
+    "nyc": "^15.1.0",
     "pg": "^8.8.0",
     "postinstall-postinstall": "^2.1.0",
     "prisma": "^4",
@@ -138,5 +154,12 @@
   },
   "msw": {
     "workerDirectory": "public"
+  },
+  "nyc": {
+    "report-dir": "cypress-coverage",
+    "reporter": [
+      "html",
+      "json"
+    ]
   }
 }

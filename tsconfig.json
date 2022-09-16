@@ -52,6 +52,7 @@
     "__tests__/**/*.tsx",
     "resolver.js",
     "src/mocks/api/handlers.js",
-    "prisma/**/*.ts"
+    "prisma/**/*.ts",
+    "cypress/plugins/index.ts"
   ]
 }

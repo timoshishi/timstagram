@@ -3,7 +3,7 @@ const nextJest = require('next/jest');
 const createJestConfig = nextJest({
   dir: '.',
   coverageThreshold: {
-    '<rootdir>/src/': {
+    '<rootDir>/src/': {
       functions: 50,
       branches: 40,
       statements: 40,
@@ -39,6 +39,7 @@ const customJestConfig = {
     '!**/stories/**',
     '!**/mocks/**',
   ],
+  coverageDirectory: '<rootDir>/jest-coverage',
 };
 
 // createJestConfig is exported this way to ensure that next/jest can load the Next.js config which is async
