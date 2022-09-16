@@ -1,6 +1,6 @@
 import { Tag as PrismaTag } from '@prisma/client';
 
-export interface Poster {
+export interface Author {
   username: string;
   bio: string;
   avatarUrl: string;
@@ -26,7 +26,7 @@ export interface Post {
   repostCount: number;
   likeCount: number;
   imageUrl: string;
-  poster: Poster;
+  author: Author;
   tags: Tag[];
   createdAt: string;
 }

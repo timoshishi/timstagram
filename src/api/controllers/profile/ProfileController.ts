@@ -3,7 +3,7 @@ import { Profile } from '@prisma/client';
 import { SupabaseClient } from '@supabase/supabase-js';
 import { imageService } from '@api/services/ImageService';
 import { getImageProperties, resizeAvatarImage } from '@src/api/services/ImageService/handleImageUpload';
-import { Controller, NextRequestWithUser } from '@api/types';
+import { Controller, ImageProperties, NextRequestWithUser } from '@api/types';
 import { NextApiResponse } from 'next';
 import { NextRequestWithUserFile } from '../../types';
 import { SupaUser } from 'types/index';
@@ -22,6 +22,7 @@ export class ProfileController {
       },
     });
   }
+
   removeUser: Controller = async (req, res) => {
     try {
       if (!req.user) {
@@ -46,6 +47,7 @@ export class ProfileController {
       });
     }
   };
+
   updateProfile = async (req: NextRequestWithUser, res: NextApiResponse): Promise<void> => {
     try {
       if (!req.user) {
@@ -119,7 +121,7 @@ export class ProfileController {
     const imageData = JSON.parse(body.imageData);
 
     try {
-      const imageProperties = await getImageProperties({
+      const imageProperties: ImageProperties = await getImageProperties({
         image: croppedImage,
         userId: user.id,
         imageData,
@@ -136,7 +138,15 @@ export class ProfileController {
 
       await this.prisma.media.create({
         data: {
-          ...imageProperties,
+          aspectRatio: imageProperties.aspectRatio,
+          id: imageProperties.id,
+          type: imageProperties.type,
+          userId: imageProperties.userId,
+          filename: imageProperties.filename,
+          alt: imageProperties.alt,
+          source: imageProperties.source,
+          bucket: imageProperties.bucket,
+          domain: imageProperties.domain,
           width: AVATAR_IMAGE_SIZE,
           height: AVATAR_IMAGE_SIZE,
           kind: 'avatar',
@@ -157,6 +167,9 @@ export class ProfileController {
         },
         data: {
           avatarUrl: imageProperties.url,
+          avatarFilename: imageProperties.filename,
+          avatarBucket: imageProperties.bucket,
+          avatarDomain: imageProperties.domain,
         },
       });
       return res.status(200).json({ url: imageProperties.url });

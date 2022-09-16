@@ -1,5 +1,5 @@
 import { Post } from 'types/post.types';
-
+import { Post as PrismaPost } from '@prisma/client';
 export const post: Post = {
   postId: '8a184667-6ea8-4ac5-83b9-b22ab633faac',
   postBody: 'this is a #post that i made @myman timmy',
@@ -20,11 +20,25 @@ export const post: Post = {
   imageUrl: 'https://witter-dev.s3.amazonaws.com/92aa1296-28c9-4e56-a16c-73d1705511fa.png',
   tags: [],
   createdAt: '2022-09-03T18:55:10.294Z',
-  poster: {
+  author: {
     username: 'test1',
     bio: 'Et maxime facilis temporibus nihil aut non alias repudiandae autem.',
     avatarUrl: 'https://avatars0.githubusercontent.com/u/1703?v=4',
     followerCount: 0,
     followingCount: 0,
   },
+};
+
+export const prismaPost: PrismaPost = {
+  id: '945f8acf-5dbb-4400-98fc-9a3e4fb194ef',
+  postBody: 'This is a test post',
+  published: true,
+  authorId: '65472697-7e71-4bf7-8059-5113ddd59bc1',
+  flagged: false,
+  deleted: false,
+  flagCount: 0,
+  viewCount: 1,
+  filename: '3117b291-08af-4b55-b042-4790b2241442.png',
+  createdAt: new Date('2022-09-13T21:43:27.097Z'),
+  postHash: 'F62jKB',
 };

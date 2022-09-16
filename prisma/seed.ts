@@ -71,16 +71,16 @@ const deleteOldData = async () => {
   await prisma.postHash.deleteMany();
 };
 
-const createImageProperties = (arr: any, createdUsers: { data: User[] }): ImageProperties[] => {
+const createMockImageProperties = (arr: any, createdUsers: { data: User[] }): ImageProperties[] => {
   return arr.map((data: any) => {
-    const { filename, aspectRatio, dimensions, url, size, bucket } = data;
+    const { filename, aspectRatio, dimensions, url, size, bucket, key } = data;
     const { width, height } = dimensions;
-    const { id } = createdUsers.data[Math.floor(Math.random() * definedUsers.length)];
+    const { id: userId } = createdUsers.data[Math.floor(Math.random() * definedUsers.length)];
     const imageId = randomUUID();
-    const createdFilename = imageId + '.' + filename.split('.').pop();
+
     return {
       id: randomUUID(),
-      filename: createdFilename,
+      filename: key, // reusing the key to the example folder, this would usually be replaced by a uuid
       aspectRatio,
       width,
       height,
@@ -91,20 +91,21 @@ const createImageProperties = (arr: any, createdUsers: { data: User[] }): ImageP
       placeholder: DEFAULT_IMAGE_PLACEHOLDER,
       hash: 'example-hash',
       source: 'example-source',
-      userId: id,
+      userId,
+      domain: process.env.IMAGE_HOST_DOMAIN!,
       metadata: '{}',
-      type: filename!.split('.').pop() as string,
+      type: 'png',
     };
   });
 };
 
 const createPosts = async (createdUsers: { data: User[] }): Promise<Post[]> => {
   const objects = await imageService.copyOrReplaceExampleObjects();
-  const copiedImageProperties = createImageProperties(objects, createdUsers);
+  const copiedImageProperties = createMockImageProperties(objects, createdUsers);
   const postPromises = copiedImageProperties.map((imageProperties) => {
     return postService.createPost({
       imageProperties,
-      caption: 'example caption',
+      caption: faker.lorem.sentence(),
       user: createdUsers.data.find((user) => user.id === imageProperties.userId)! as SupaUser,
     });
   });
@@ -119,9 +120,9 @@ const createPosts = async (createdUsers: { data: User[] }): Promise<Post[]> => {
     console.log('onConfirmUserFunction created:', !!results);
 
     /** CREATE PERSONAL PHOTO BUCKET */
-    if (process.env.ENVIRONMENT === 'ci') {
-      await imageService.duplicateExampleBucket();
-    }
+    // if (process.env.ENVIRONMENT === 'ci') {
+    await imageService.duplicateExampleBucket();
+    // }
     // delete data before users
     await deleteOldData();
     /** Wipe old users if for some reason they exist or you are testing scripts */

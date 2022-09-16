@@ -3,13 +3,24 @@ import { imageHash } from 'image-hash';
 import { BadRequestException } from '@storyofams/next-api-decorators';
 const { getPlaiceholder } = require('plaiceholder');
 import multer from 'multer';
-import { MAX_MEGABYTES, MEGABYTE } from '@features/ImageUploader/utils/image-uploader.constants';
+import { MAX_MEGABYTES, MEGABYTE } from '../../../features/ImageUploader/utils/image-uploader.constants';
 import { randomUUID } from 'crypto';
 export const AVATAR_IMAGE_SIZE = 150;
 import type { ImageProperties, GetImagePropertiesParams } from '../../types';
 
-export const constructUploadUrl = ({ id, ext }: { id: string; ext: string }): string => {
-  return `https://${process.env.PHOTO_BUCKET}.s3.amazonaws.com/${id}.${ext}`;
+export const constructMediaUrl = ({
+  filename,
+  bucket,
+  imageHostDomain,
+}: {
+  filename: string;
+  bucket?: string;
+  imageHostDomain?: string;
+}): string => {
+  const url = `https://${bucket || process.env.PHOTO_BUCKET}.${
+    imageHostDomain || process.env.IMAGE_HOST_DOMAIN
+  }/${filename}`;
+  return url;
 };
 
 export const getImageHash = async (image: any): Promise<string> => {
@@ -52,21 +63,23 @@ export const getImageProperties = async ({
   const hash = await getImageHash(image);
   const type = image.mimetype;
   const [, ext] = type.split('/');
+  const filename = `${id}.${ext}`;
   const aspectRatio = imageData.aspectRatio;
   const source = process.env.NEXT_PUBLIC_APP_NAME + '/' + userId + '/' + imageData.originalImageName;
   const metadata = await sharp(image.buffer).metadata();
   const { width, height, size } = metadata;
   const { width: imageWidth, height: imageHeight } = imageData.dimensions;
-  const url = constructUploadUrl({ id, ext });
-
+  const url = constructMediaUrl({ filename });
   const placeholder = await createPlaceholder(image);
   const aspect = width && height ? width / height : aspectRatio;
+
   return {
     id,
     url,
-    filename: id + '.' + ext,
-    alt: altText,
+    filename,
     bucket: process.env.PHOTO_BUCKET!,
+    alt: altText,
+    domain: process.env.IMAGE_HOST_DOMAIN!,
     type,
     size: size || image.buffer.byteLength,
     width: width || imageWidth,

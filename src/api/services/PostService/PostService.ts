@@ -6,6 +6,7 @@ import { Post } from 'types/post.types';
 import { PostHash as PrismaPostHash } from '@prisma/client';
 import { SupaUser } from 'types/index';
 import type { PostQueryResponse, ImageProperties } from '../../types';
+import { constructMediaUrl } from '../ImageService/handleImageUpload';
 
 type GetPostParams = {
   postHash?: string;
@@ -110,32 +111,33 @@ export class PostService {
       const post = await this.prisma.post.create({
         data: {
           id: postId,
-          mediaId: imageProperties.id,
           postHash,
-          userId: user.id,
-          username: user.user_metadata.username,
-          mediaType: imageProperties.type,
+          authorId: user.id,
           postBody: caption,
-          mediaUrl: imageProperties.url,
           filename: imageProperties.filename,
-        },
-      });
-      await this.prisma.media.create({
-        data: {
-          userId: user.id,
-          aspectRatio: imageProperties.aspectRatio,
-          width: imageProperties.width,
-          height: imageProperties.height,
-          bucket: imageProperties.bucket,
-          filename: imageProperties.filename,
-          type: imageProperties.type,
-          source: imageProperties.source,
-          url: imageProperties.url,
-          userMetadata: {} as any,
-          size: imageProperties.size,
-          kind: 'post',
-          hash: imageProperties.hash,
-          postId: postId,
+          media: {
+            create: [
+              {
+                user: {
+                  connect: {
+                    id: user.id,
+                  },
+                },
+                aspectRatio: imageProperties.aspectRatio,
+                width: imageProperties.width,
+                height: imageProperties.height,
+                bucket: imageProperties.bucket,
+                filename: imageProperties.filename,
+                type: imageProperties.type,
+                source: imageProperties.source,
+                domain: imageProperties.domain,
+                userMetadata: {} as any,
+                size: imageProperties.size,
+                kind: 'post',
+                hash: imageProperties.hash,
+              },
+            ],
+          },
         },
       });
 
@@ -182,7 +184,7 @@ export class PostService {
             {
               following: {
                 every: {
-                  id: post?.userId,
+                  id: post?.authorId,
                 },
               },
             },
@@ -252,10 +254,14 @@ export class PostService {
         username: like.profile.username,
         avatarUrl: like.profile.avatarUrl,
       })),
-      imageUrl: post.media[0]?.url,
+      imageUrl: constructMediaUrl({
+        filename: post.media[0].filename,
+        bucket: post.media[0].bucket,
+        imageHostDomain: post.media[0].domain,
+      }),
       tags: post.tags,
       createdAt: post.createdAt.toISOString(),
-      poster: {
+      author: {
         username: post.profile.username,
         bio: post.profile.bio,
         avatarUrl: post.profile.avatarUrl,

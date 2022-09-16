@@ -6,6 +6,9 @@ Table profiles {
   id String [pk, unique]
   username String [unique, not null]
   avatarUrl String [not null, default: '']
+  avatarId String
+  avatarBucket String [default: '']
+  avatarDomain String [default: '']
   avatarFilename String [unique]
   bio String [not null, default: '']
   createdAt DateTime [default: `now()`, not null]
@@ -25,29 +28,21 @@ Table posts {
   id String [pk]
   postBody String [not null]
   published Boolean [not null, default: true]
-  userId String [not null]
-  userDeleted Boolean [not null, default: false]
+  authorId String [not null]
   flagged Boolean [not null, default: false]
   deleted Boolean [not null, default: false]
   flagCount Int [not null, default: 0]
   viewCount Int [not null, default: 1]
-  mediaType String
-  mediaUrl String [unique, not null]
-  mediaId String [not null]
   filename String [unique, not null]
   createdAt DateTime [default: `now()`, not null]
-  isBotPost Boolean [not null, default: false]
-  isShared Boolean [not null, default: false]
-  userAvatarUrl String [unique]
-  username String [not null]
   postHash String [unique, not null]
   postHashId post_hashes [not null]
-  media media [not null]
   profile profiles [not null]
   comments comments [not null]
   postFlags post_flags [not null]
   postLikes post_likes [not null]
   tags tags [not null]
+  media media [not null]
 }
 
 Table comments {
@@ -72,8 +67,8 @@ Table flagged_media {
 
 Table media {
   id String [pk]
-  url String [unique, not null]
   bucket String [not null]
+  domain String [not null]
   type String [not null]
   alt String
   filename String [not null]
@@ -91,8 +86,8 @@ Table media {
   metadata Json
   userMetadata Json
   source String [not null]
-  post posts
   postId String
+  post posts
   userId String [not null]
   user profiles
   postFlag post_flags
@@ -153,13 +148,13 @@ Enum FlagReason {
 
 Ref: posts.postHash - post_hashes.postHash
 
-Ref: posts.userId > profiles.id
+Ref: posts.authorId > profiles.id
 
 Ref: comments.postId > posts.id [delete: Cascade]
 
 Ref: comments.userId > profiles.id
 
-Ref: media.postId > posts.id [delete: Cascade]
+Ref: media.postId > posts.id
 
 Ref: media.userId > profiles.id
 

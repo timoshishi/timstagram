@@ -24,7 +24,7 @@ const formattedPostReturn = {
   imageUrl: 'https://witter-dev.s3.amazonaws.com/f144dbef-48bf-4bd8-bef4-ec1c3e9601e7.png',
   tags: [],
   createdAt: '2022-09-12T20:50:17.329Z',
-  poster: {
+  author: {
     username: 'test1',
     bio: 'gC5u2os7ZAX127E3H9Es8',
     avatarUrl: 'https://witter-dev.s3.amazonaws.com/c650d27a-d84c-4497-ac63-3a93757c9ebf.png',
@@ -53,7 +53,8 @@ const formattedPostReturnNoUser = {
   imageUrl: 'https://witter-dev.s3.amazonaws.com/f144dbef-48bf-4bd8-bef4-ec1c3e9601e7.png',
   tags: [],
   createdAt: '2022-09-12T20:50:17.329Z',
-  poster: {
+
+  author: {
     username: 'test1',
     bio: 'gC5u2os7ZAX127E3H9Es8',
     avatarUrl: 'https://witter-dev.s3.amazonaws.com/c650d27a-d84c-4497-ac63-3a93757c9ebf.png',

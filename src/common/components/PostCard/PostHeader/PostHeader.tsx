@@ -1,21 +1,21 @@
 import { Flex, Text } from '@chakra-ui/react';
-import { Poster } from '../../../../types/post.types';
+import { Author } from '../../../../types/post.types';
 import dayjs from '@common/utils/dateFormatter';
 import { PostHeaderAvatar } from '../../PostHeaderAvatar';
 import { PostDetail } from './PostDetail';
 
 interface PostHeaderProps {
-  poster: Poster;
+  author: Author;
   repostsCount: number;
   viewCount: number;
   createdAt: string;
   isFollowing: boolean;
 }
 
-export const PostHeader = ({ poster, repostsCount, viewCount, createdAt, isFollowing }: PostHeaderProps) => (
+export const PostHeader = ({ author, repostsCount, viewCount, createdAt, isFollowing }: PostHeaderProps) => (
   <Flex py={3} px={5} direction='column'>
     <Flex alignContent='center' justifyContent='space-between'>
-      <PostHeaderAvatar username={poster.username} avatarUrl={poster.avatarUrl} isFollowing={isFollowing} />
+      <PostHeaderAvatar username={author.username} avatarUrl={author.avatarUrl} isFollowing={isFollowing} />
       <PostDetail repostsCount={repostsCount} viewCount={viewCount} />
     </Flex>
     <Text fontSize='sm' color='gray.500' ml={1} mt={2}>

@@ -37,6 +37,7 @@ export type ImageProperties = {
   id: string;
   width: number;
   height: number;
+  domain: string;
   aspectRatio: number;
   filename: string;
   url: string;
