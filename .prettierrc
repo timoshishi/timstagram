@@ -6,7 +6,6 @@
   "jsxSingleQuote": true,
   "jsxBracketSameLine": false,
   "proseWrap": "always",
-  "useEditorConfig": false,
   "bracketSpacing": true,
   "arrowParens": "always",
   "embeddedLanguageFormatting": "auto",
