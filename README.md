@@ -75,6 +75,13 @@ The CLI can be run with the following command
 
 ## Testing
 
+### Coverage
+
+- Currently local only
+  - `yarn test:coverage`
+- If you abort the test early, it will leave a .babelrc in the root directory. You will need to rename this back to
+  `.babel__rc` this file before pushing or running the test again.
+
 ### Unit tests
 
 - Co-located with the files that they are testing

@@ -5,8 +5,10 @@ node_modules/
 .env.local
 .env.development
 
-coverage/lcov-report/**/*.html
-coverage/lcov-report/index.html
+coverage/**/*
 
 cypress/screenshots/**/*
 cypress/videos/**/*
+
+jest-coverage/**/*
+cypress-coverage/**/*
