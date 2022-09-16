@@ -1,6 +1,2 @@
-import fs from 'fs';
-
 export const DEFAULT_IMAGE_PLACEHOLDER =
   'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAQAAAAECAIAAAAmkwkpAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAPUlEQVQImWNorzHVVGIQZ2BIjFJjSIzUtLbgMbVgjIpQYogPkfr/f//V50uUjBkYtDQZwnIZ+hcYWQQzAABayQ5hzoK+iAAAAABJRU5ErkJggg==';
-
-export const;

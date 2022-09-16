@@ -87,7 +87,7 @@ describe('addMetadata', () => {
     });
     await profileClient.addMetadata(req, res);
     await expect(res.statusCode).toBe(200);
-    /* tslint disable-next-line */
+    // @ts-ignore/
     const data = await res._getJSONData();
     expect(data).toEqual(supaUserResponse);
     res.end();
@@ -139,7 +139,7 @@ describe('updateProfile', () => {
     } as any);
     await profileClient.updateProfile(req, res);
     expect(res.statusCode).toBe(204);
-    /* tslint disable-next-line */
+    // @ts-ignore/
     const data = res._getJSONData();
     expect(data).toEqual({
       profile: {
@@ -228,7 +228,7 @@ describe('updateAvatar', () => {
     await profileClient.updateUserAvatar(req, res);
     expect(res.statusCode).toBe(200);
     expect(res.statusCode).not.toBe(500);
-    /* tslint disable-next-line */
+    // @ts-ignore/
     const data = res._getJSONData();
     expect(data.url).toEqual(aws);
     res.end();
