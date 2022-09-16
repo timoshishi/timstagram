@@ -3,10 +3,7 @@ export const postSelectObj = {
   postBody: true,
   createdAt: true,
   viewCount: true,
-  mediaUrl: true,
-  userAvatarUrl: true,
-  username: true,
-  userId: true,
+  authorId: true,
   postHash: true,
   comments: {
     select: {
@@ -33,7 +30,11 @@ export const postSelectObj = {
       id: true,
       url: true,
       bucket: true,
+      domain: true,
       filename: true,
+      height: true,
+      width: true,
+      aspectRatio: true,
     },
   },
   postLikes: {
@@ -69,7 +70,6 @@ export const postSelectObj = {
 
 export const activePostQueryObj = {
   deleted: false,
-  userDeleted: false,
   published: true,
   flagged: false,
 };

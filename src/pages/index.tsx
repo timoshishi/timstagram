@@ -36,11 +36,11 @@ const Feed: NextPageWithLayout = () => {
   const { data, error: feedError, mutate, size, setSize, isValidating } = useSWRInfinite(getKey, fetcher);
   let postResponses: PostResponse[] = data ? [].concat(...data) : [];
   const isLoadingInitialData = !data && !error;
-  const appName = process.env.NEXT_PUBLIC_APP_NAME;
+  const title = `${process.env.NEXT_PUBLIC_APP_NAME} | Feed`;
   return (
     <>
       <Head>
-        <title>{appName} | Feed</title>
+        <title>{title}</title>
         <meta name='viewport' content='initial-scale=1.0, width=device-width' />
       </Head>
       <Box w='full' minH='100vh' mt='60px' maxW='100%'>

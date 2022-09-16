@@ -27,7 +27,7 @@ export class FeedService {
   }): Promise<Post[]> => {
     const posts: PostQueryResponse[] = await this.prisma.post.findMany({
       where: {
-        userId,
+        authorId: userId,
         AND: {
           postLikes: {
             every: {
@@ -56,7 +56,7 @@ export class FeedService {
   }): Promise<Post[]> => {
     const posts: PostQueryResponse[] = await this.prisma.post.findMany({
       where: {
-        userId,
+        authorId: userId,
         AND: activePostQueryObj,
       },
       select: postSelectObj,

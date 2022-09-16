@@ -47,11 +47,14 @@ describe('getProfile', () => {
       id: '1',
       bio: 'test',
       avatarUrl: 'test',
+      avatarId: 'avatar-id',
+      avatarBucket: 'avatar-bucket',
+      avatarFilename: 'avatar-filename.jpg',
+      avatarDomain: 'avatar-domain',
       createdAt: new Date(),
       updatedAt: new Date(),
       isBot: false,
       banned: false,
-      avatarFilename: 'thisisfilename.jpg',
     };
 
     prismaMock.profile.findUnique.mockResolvedValue(profile);

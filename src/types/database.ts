@@ -38,74 +38,53 @@ export interface Database {
         Row: {
           id: string;
           post_body: string;
-          user_id: string;
-          media_type: string | null;
-          media_url: string;
+          author_id: string;
           published: boolean;
-          media_id: string;
           filename: string;
-          user_avatar_url: string | null;
-          username: string;
           postHash: string;
-          user_deleted: boolean;
           flagged: boolean;
           deleted: boolean;
           flag_count: number;
           view_count: number;
           created_at: string;
-          is_bot_post: boolean;
-          is_shared: boolean;
         };
         Insert: {
           id: string;
           post_body: string;
-          user_id: string;
-          media_type?: string | null;
-          media_url: string;
+          author_id: string;
           published?: boolean;
-          media_id: string;
           filename: string;
-          user_avatar_url?: string | null;
-          username: string;
           postHash: string;
-          user_deleted?: boolean;
           flagged?: boolean;
           deleted?: boolean;
           flag_count?: number;
           view_count?: number;
           created_at?: string;
-          is_bot_post?: boolean;
-          is_shared?: boolean;
         };
         Update: {
           id?: string;
           post_body?: string;
-          user_id?: string;
-          media_type?: string | null;
-          media_url?: string;
+          author_id?: string;
           published?: boolean;
-          media_id?: string;
           filename?: string;
-          user_avatar_url?: string | null;
-          username?: string;
           postHash?: string;
-          user_deleted?: boolean;
           flagged?: boolean;
           deleted?: boolean;
           flag_count?: number;
           view_count?: number;
           created_at?: string;
-          is_bot_post?: boolean;
-          is_shared?: boolean;
         };
       };
       profiles: {
         Row: {
           id: string;
           username: string;
+          avatar_id: string | null;
           avatar_filename: string | null;
           updated_at: string | null;
           avatar_url: string;
+          avatar_bucket: string | null;
+          avatar_domain: string | null;
           bio: string;
           created_at: string;
           banned: boolean;
@@ -114,9 +93,12 @@ export interface Database {
         Insert: {
           id: string;
           username: string;
+          avatar_id?: string | null;
           avatar_filename?: string | null;
           updated_at?: string | null;
           avatar_url?: string;
+          avatar_bucket?: string | null;
+          avatar_domain?: string | null;
           bio?: string;
           created_at?: string;
           banned?: boolean;
@@ -125,9 +107,12 @@ export interface Database {
         Update: {
           id?: string;
           username?: string;
+          avatar_id?: string | null;
           avatar_filename?: string | null;
           updated_at?: string | null;
           avatar_url?: string;
+          avatar_bucket?: string | null;
+          avatar_domain?: string | null;
           bio?: string;
           created_at?: string;
           banned?: boolean;
@@ -162,6 +147,7 @@ export interface Database {
           id: string;
           url: string;
           bucket: string;
+          domain: string;
           type: string;
           alt: string | null;
           filename: string;
@@ -188,6 +174,7 @@ export interface Database {
           id: string;
           url: string;
           bucket: string;
+          domain: string;
           type: string;
           alt?: string | null;
           filename: string;
@@ -214,6 +201,7 @@ export interface Database {
           id?: string;
           url?: string;
           bucket?: string;
+          domain?: string;
           type?: string;
           alt?: string | null;
           filename?: string;

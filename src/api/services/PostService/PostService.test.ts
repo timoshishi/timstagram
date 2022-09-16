@@ -6,6 +6,7 @@ import { SupaUser } from 'types/index';
 import { getImageFileNode } from '../../../../test-utils';
 import path from 'path';
 import { getImageProperties } from '../ImageService/handleImageUpload';
+import { prismaPost } from '@src/mocks/post';
 
 const MOCK_NANO = '08461dc7840';
 const fixturesDir = path.join(__dirname, '../../../../__mocks__/fixtures');
@@ -41,7 +42,7 @@ const fullPostReturn = {
   imageUrl: 'https://witter-dev.s3.amazonaws.com/f144dbef-48bf-4bd8-bef4-ec1c3e9601e7.png',
   tags: [],
   createdAt: '2022-09-12T20:50:17.329Z',
-  poster: {
+  author: {
     username: 'test1',
     bio: 'gC5u2os7ZAX127E3H9Es8',
     avatarUrl: 'https://witter-dev.s3.amazonaws.com/c650d27a-d84c-4497-ac63-3a93757c9ebf.png',
@@ -86,27 +87,7 @@ const getSinglePostReturn = {
     _count: { followers: 0, following: 0, posts: 1 },
   },
 };
-const prismaPost = {
-  id: '945f8acf-5dbb-4400-98fc-9a3e4fb194ef',
-  postBody: 'This is a test post',
-  published: true,
-  userId: '65472697-7e71-4bf7-8059-5113ddd59bc1',
-  userDeleted: false,
-  flagged: false,
-  deleted: false,
-  flagCount: 0,
-  viewCount: 1,
-  mediaType: 'image/png',
-  mediaUrl: 'https://witter-dev.s3.amazonaws.com/3117b291-08af-4b55-b042-4790b2241442.png',
-  mediaId: '3117b291-08af-4b55-b042-4790b2241442',
-  filename: '3117b291-08af-4b55-b042-4790b2241442.png',
-  createdAt: new Date('2022-09-13T21:43:27.097Z'),
-  isBotPost: false,
-  isShared: false,
-  userAvatarUrl: null,
-  username: 'test1',
-  postHash: 'F62jKB',
-};
+
 describe('PostService', () => {
   let postService: PostService;
   let foundPost: any;

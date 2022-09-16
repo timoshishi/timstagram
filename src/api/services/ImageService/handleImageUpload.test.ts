@@ -4,13 +4,14 @@ import {
   getImageHash,
   createPlaceholder,
   resizeAvatarImage,
-  constructUploadUrl,
+  constructMediaUrl,
 } from './handleImageUpload';
 import { promises } from 'fs';
 import path from 'path';
 import { UUIDReg } from '@common/utils/regexp';
 import type { ImageProperties } from '../../types';
 
+const imageHostDomain = process.env.IMAGE_HOST_DOMAIN;
 const fixturesDir = path.join(__dirname, '../../../../__mocks__/fixtures');
 const oneAspect = path.join(fixturesDir, 'aspect-1-1.jpg');
 const fourThreeAspect = path.join(fixturesDir, 'aspect-4-3.jpg');
@@ -76,6 +77,9 @@ describe('getImageProperties', () => {
     expect(img.width).toEqual(400);
     expect(img.size).toBe(image.size);
     expect(img.width).not.toBe(500);
+    expect(img.domain).toBe(imageHostDomain);
+    expect(img.domain).toBeDefined();
+    expect(img.domain).not.toBeUndefined();
   });
 
   it('returns the correct data if the client sent in incorrect data', async () => {
@@ -203,11 +207,15 @@ describe('resizeAvatarImage', () => {
   });
 });
 
-describe('constructUploadUrl', () => {
+describe('constructMediaUrl', () => {
   const ext = 'jpg';
   const id = 'testId';
   it('should create the correct url', () => {
-    const url = constructUploadUrl({ ext, id });
-    expect(url).toBe(`https://${process.env.PHOTO_BUCKET}.s3.amazonaws.com/${id}.${ext}`);
+    const url = constructMediaUrl({ filename: 'testId.jpg' });
+    expect(url).toBe(`https://${process.env.PHOTO_BUCKET}.${process.env.IMAGE_HOST_DOMAIN}/${id}.${ext}`);
+    expect(url.includes(process.env.PHOTO_BUCKET!) && url.includes('amazon')).toBe(true);
+    expect(process.env.PHOTO_BUCKET).toBeDefined();
+    expect(process.env.IMAGE_HOST_DOMAIN).toBeDefined();
+    expect(url.includes('testId.jpg')).toBe(true);
   });
 });

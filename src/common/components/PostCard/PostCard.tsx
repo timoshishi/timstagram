@@ -14,7 +14,7 @@ export interface PostCardProps {
 }
 
 export const PostCard = ({
-  post: { postId, viewCount, postBody, commentCount, hasLiked, createdAt, isFollowing, likes, imageUrl, poster, tags },
+  post: { postId, viewCount, postBody, commentCount, hasLiked, createdAt, isFollowing, likes, imageUrl, author, tags },
   setSize,
   size,
   refreshIdx,
@@ -36,7 +36,7 @@ export const PostCard = ({
       >
         <Box w='100%' h='70%' display='block'>
           <PostHeader
-            poster={poster}
+            author={author}
             repostsCount={0}
             viewCount={viewCount}
             createdAt={createdAt}
@@ -60,7 +60,7 @@ export const PostCard = ({
           postBody={postBody}
           hasLiked={hasLiked}
           likesCount={likes.length}
-          username={poster.username}
+          username={author.username}
           commentCount={commentCount}
         />
       </Box>

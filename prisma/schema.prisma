@@ -23,6 +23,9 @@ model Profile {
   id             String     @id @unique @db.Uuid()
   username       String     @unique
   avatarUrl      String     @default("") @map("avatar_url")
+  avatarId       String?    @map("avatar_id") @db.Uuid()
+  avatarBucket   String?    @default("") @map("avatar_bucket")
+  avatarDomain   String?    @default("") @map("avatar_domain")
   avatarFilename String?    @unique @map("avatar_filename")
   bio            String     @default("") @map("bio")
   createdAt      DateTime   @default(now()) @map("created_at")
@@ -42,32 +45,24 @@ model Profile {
 }
 
 model Post {
-  id            String     @id @default(uuid()) @db.Uuid()
-  postBody      String     @map("post_body")
-  published     Boolean    @default(true)
-  userId        String     @map("user_id") @db.Uuid()
-  userDeleted   Boolean    @default(false) @map("user_deleted")
-  flagged       Boolean    @default(false)
-  deleted       Boolean    @default(false)
-  flagCount     Int        @default(0) @map("flag_count")
-  viewCount     Int        @default(1) @map("view_count")
-  mediaType     String?    @map("media_type")
-  mediaUrl      String     @unique @map("media_url")
-  mediaId       String     @map("media_id") @db.Uuid()
-  filename      String     @unique @map("filename")
-  createdAt     DateTime   @default(now()) @map("created_at")
-  isBotPost     Boolean    @default(false) @map("is_bot_post")
-  isShared      Boolean    @default(false) @map("is_shared")
-  userAvatarUrl String?    @unique @map("user_avatar_url")
-  username      String
-  postHash      String     @unique
-  postHashId    PostHash   @relation(fields: [postHash], references: [postHash])
-  media         Media[]
-  profile       Profile    @relation(fields: [userId], references: [id])
-  comments      Comment[]
-  postFlags     PostFlag[]
-  postLikes     PostLike[]
-  tags          Tag[]
+  id         String     @id @default(uuid()) @db.Uuid()
+  postBody   String     @map("post_body")
+  published  Boolean    @default(true)
+  authorId   String     @map("author_id") @db.Uuid()
+  flagged    Boolean    @default(false)
+  deleted    Boolean    @default(false)
+  flagCount  Int        @default(0) @map("flag_count")
+  viewCount  Int        @default(1) @map("view_count")
+  filename   String     @unique @map("filename")
+  createdAt  DateTime   @default(now()) @map("created_at")
+  postHash   String     @unique
+  postHashId PostHash   @relation(fields: [postHash], references: [postHash])
+  profile    Profile    @relation(fields: [authorId], references: [id])
+  comments   Comment[]
+  postFlags  PostFlag[]
+  postLikes  PostLike[]
+  tags       Tag[]
+  media      Media[]
 
   @@index([postHash])
   @@map("posts")
@@ -104,6 +99,7 @@ model Media {
   id                      String    @id @default(uuid()) @db.Uuid()
   url                     String    @unique
   bucket                  String
+  domain                  String
   type                    String
   alt                     String?
   filename                String
@@ -121,8 +117,8 @@ model Media {
   metadata                Json?
   userMetadata            Json?
   source                  String
-  post                    Post?     @relation(fields: [postId], references: [id], onDelete: Cascade)
   postId                  String?   @db.Uuid()
+  post                    Post?     @relation(fields: [postId], references: [id])
   userId                  String    @map("user_id") @db.Uuid()
   user                    Profile?  @relation(fields: [userId], references: [id])
   postFlag                PostFlag? @relation(fields: [postFlagPostId, postFlagFlaggedByUserId], references: [postId, flaggedByUserId])

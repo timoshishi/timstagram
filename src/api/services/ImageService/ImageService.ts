@@ -151,6 +151,7 @@ export class ImageService {
             url: `https://${this.bucket}.s3.amazonaws.com/${Key}`,
             size: Size!,
             bucket: this.bucket,
+            key: Key!,
           };
         });
       return exampleImages || [];
