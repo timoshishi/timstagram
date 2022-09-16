@@ -58,3 +58,6 @@ jobs:
         with:
           eslint: true
           prettier: true
+
+      - name: Typecheck
+        uses: andoshin11/typescript-error-reporter-action@v1.0.2
