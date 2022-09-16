@@ -77,10 +77,10 @@ const createMockImageProperties = (arr: any, createdUsers: { data: User[] }): Im
     const { width, height } = dimensions;
     const { id: userId } = createdUsers.data[Math.floor(Math.random() * definedUsers.length)];
     const imageId = randomUUID();
-    const createdFilename = imageId + '.' + 'png';
+
     return {
       id: randomUUID(),
-      filename: key,
+      filename: key, // reusing the key to the example folder, this would usually be replaced by a uuid
       aspectRatio,
       width,
       height,
