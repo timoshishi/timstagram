@@ -97,7 +97,6 @@ model FlaggedMedia {
 
 model Media {
   id                      String    @id @default(uuid()) @db.Uuid()
-  url                     String    @unique
   bucket                  String
   domain                  String
   type                    String

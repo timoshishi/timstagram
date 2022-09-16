@@ -131,7 +131,6 @@ export class PostService {
                 type: imageProperties.type,
                 source: imageProperties.source,
                 domain: imageProperties.domain,
-                url: imageProperties.url,
                 userMetadata: {} as any,
                 size: imageProperties.size,
                 kind: 'post',

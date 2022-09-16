@@ -140,7 +140,6 @@ export class ProfileController {
         data: {
           aspectRatio: imageProperties.aspectRatio,
           id: imageProperties.id,
-          url: imageProperties.url,
           type: imageProperties.type,
           userId: imageProperties.userId,
           filename: imageProperties.filename,

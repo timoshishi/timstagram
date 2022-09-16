@@ -145,7 +145,6 @@ export interface Database {
       media: {
         Row: {
           id: string;
-          url: string;
           bucket: string;
           domain: string;
           type: string;
@@ -172,7 +171,6 @@ export interface Database {
         };
         Insert: {
           id: string;
-          url: string;
           bucket: string;
           domain: string;
           type: string;
@@ -199,7 +197,6 @@ export interface Database {
         };
         Update: {
           id?: string;
-          url?: string;
           bucket?: string;
           domain?: string;
           type?: string;

@@ -28,7 +28,6 @@ export const postSelectObj = {
   media: {
     select: {
       id: true,
-      url: true,
       bucket: true,
       domain: true,
       filename: true,

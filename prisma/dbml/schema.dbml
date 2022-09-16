@@ -67,7 +67,6 @@ Table flagged_media {
 
 Table media {
   id String [pk]
-  url String [unique, not null]
   bucket String [not null]
   domain String [not null]
   type String [not null]
