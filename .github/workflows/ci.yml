@@ -1,3 +1,5 @@
+name: Run Tests
+
 on:
   pull_request:
   workflow_dispatch:
@@ -39,7 +41,7 @@ jobs:
         uses: romeovs/lcov-reporter-action@v0.2.16
         with:
           lcov-file: ./coverage/lcov.info
-          token: ${{ secrets.GITHUB_TOKEN }}
+          github-token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Install dependencies 🏗️
         id: yarn-install
