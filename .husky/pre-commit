@@ -6,4 +6,4 @@ npx pretty-quick --staged
 yarn test:ci
 # yarn test:e2e:headless
 yarn lint
-yarn prettier src 
+yarn prettier --check src 
