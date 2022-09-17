@@ -47,9 +47,6 @@ jobs:
       - name: Generate Prisma Client 💠
         run: yarn prisma generate
 
-      - name: Lint code 🧶
-        uses: lowboy-tropical/witter/.github/workflows/lint.yml
-
       # - uses: supabase/setup-cli@v1
       #   with:
       #     version: 1.0.0

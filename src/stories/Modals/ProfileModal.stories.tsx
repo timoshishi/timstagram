@@ -1,14 +1,11 @@
 import React from 'react';
 import { ComponentStory, ComponentMeta } from '@storybook/react';
 import { GlobalModal } from '../../features/Modal';
-import { ProfileModalProps, ProfileModal } from '../../features/Modal/components/ProfileModal/ProfileModal';
-import { useProfileModal } from '../../features/Modal/hooks/useProfileModal';
+import { ProfileModal } from '../../features/ProfileModal';
+import { useProfileModal } from '../../features/ProfileModal';
 import { Button } from '@chakra-ui/button';
 import { userEvent, waitFor, within, screen } from '@storybook/testing-library';
-import { expect } from '@storybook/jest';
 import { rest } from 'msw';
-import { useUserHandlers } from '../../mocks/api/handlers';
-import { supaUserResponse } from '../../mocks/supaUser';
 import { Box, Center } from '@chakra-ui/react';
 import { tokenResp } from '../tokenResponse';
 
