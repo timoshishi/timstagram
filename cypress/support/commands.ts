@@ -1,8 +1,7 @@
 /// <reference types="cypress" />
 
-import axios from 'axios';
 import 'cypress-file-upload';
-import { Cypress, cy, expect } from 'local-cypress';
+import { Cypress, cy } from 'local-cypress';
 // ***********************************************
 // This example commands.ts shows you how to
 // create various custom commands and overwrite
@@ -15,8 +14,10 @@ import { Cypress, cy, expect } from 'local-cypress';
 //
 // Cypress.Commands.add('loginApi', (email, pw) => {})
 // -- This is a parent command --
+// ignore whole file eslint
+// ignore whole file eslint
+/* eslint-disable */
 
-const supabasePublicUrl = 'http://localhost:54321/auth/v1/token?grant_type=password&redirect_to=%2Ffeed';
 Cypress.Commands.addAll({
   createUser({ username, email, password }: Record<string, string>) {
     cy.contains(/Sign up/i).click();
@@ -29,6 +30,7 @@ Cypress.Commands.addAll({
   },
   loginUser({ email, password }: { email: string; password: string }) {
     cy.contains(/Sign In/i).click();
+    // eslint-disable-next-line
     cy.wait(400);
     cy.get('input[name="email"]').type(email);
     cy.get('input[name="password"]').type(password);

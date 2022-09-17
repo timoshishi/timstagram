@@ -1,3 +1,4 @@
+/* eslint-disable */
 import { createRandomUserCreds } from 'cypress/utils';
 import { cy } from 'local-cypress';
 
