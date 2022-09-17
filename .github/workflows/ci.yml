@@ -46,33 +46,38 @@ jobs:
       - name: Install dependencies 🏗️
         id: yarn-install
         run: yarn install --frozen-lockfile
-      # - uses: supabase/setup-cli@v1
-      #   with:
-      #     version: 1.0.0
+      - uses: supabase/setup-cli@v1
+        with:
+          version: 1.0.0
 
-      # - name: Start Supabase local development setup 🦸
-      #   run: supabase start
+      - name: Start Supabase local development setup 🦸
+        run: supabase start
 
-      # - name: Verify generated types are up-to-date ✅
-      #   run: |
-      #     supabase gen types typescript --local > types.ts
-      #     if [ "$(git diff --ignore-space-at-eol types.ts | wc -l)" -gt "0" ]; then
-      #       echo "Detected uncommitted changes after build. See status below:"
-      #       git diff
-      #       exit 1
-      #     fi
+      - name: Verify generated types are up-to-date ✅
+        run: |
+          supabase gen types typescript --local > types.ts
+          if [ "$(git diff --ignore-space-at-eol types.ts | wc -l)" -gt "0" ]; then
+            echo "Detected uncommitted changes after build. See status below:"
+            git diff
+            exit 1
+          fi
 
-      # - name: Generate Prisma Client 💠
-      #   run: yarn prisma generate
+      - name: Generate Prisma Client 💠
+        run: yarn prisma generate
 
       # - name: Push Types to Supabase 👐
       #   run: npx prisma db push
+      - name: Validate the schema
+        run: npx prisma validate
 
+      - name: Apply migrations
+        run: npx prisma migrate dev --skip-generate --skip-seed
       # - name: Seed db and apply functions 🌰
       #   run: npx prisma db seed
+      - name: e2e tests 🧪
+        run: yarn test:e2e:headless
 
       - name: Integration tests 🧪🕸️
-
         run: yarn test:ci
 
       # - name: Download the build folders
