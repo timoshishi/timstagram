@@ -1,41 +1,11 @@
 name: Lint
 
 on:
-  workflow_dispatch:
-    inputs:
-      logLevel:
-        description: 'Log level'
-        required: true
-        default: 'warning'
-        type: choice
-        options:
-          - info
-          - warning
-          - debug
-      print_tags:
-        description: 'True to print to STDOUT'
-        required: true
-        type: boolean
-      tags:
-        description: 'Test scenario tags'
-        required: true
-        type: string
-      environment:
-        description: 'Environment to run tests against'
-        type: environment
-        required: true
   push:
     branches:
       - '*' # Run on all branches
 
 jobs:
-  print-tag:
-    runs-on: ubuntu-latest
-    if: ${{ inputs.print_tags }}
-    steps:
-      - name: Print the input tag to STDOUT
-        run: echo  The tags are ${{ inputs.tags }}
-
   run-linters:
     name: Run linters
     runs-on: ubuntu-latest
@@ -49,18 +19,17 @@ jobs:
         with:
           node-version: 16
 
-      # ESLint and Prettier must be in `package.json`
       - name: Install Node.js dependencies
         run: yarn install --frozen-lockfile
 
       - name: Generate Prisma Client 💠
         run: npx prisma generate
 
-      - name: Run ESLint
+      - name: Run ESLint 🧶
         run: yarn lint
 
-      - name: Run Prettier
+      - name: Run Prettier 👩‍🎤
         run: yarn prettier --check src
 
-      - name: Typecheck
+      - name: Check Types ⌨️
         uses: andoshin11/typescript-error-reporter-action@v1.0.2
