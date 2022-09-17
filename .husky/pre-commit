@@ -3,6 +3,6 @@
 
 mv .babelrc .babel__ || true
 npx pretty-quick --staged src
-# yarn test:ci
+yarn lint --fix
+yarn test:ci
 # yarn test:e2e:headless
-yarn lint

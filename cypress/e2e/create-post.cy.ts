@@ -1,4 +1,3 @@
-import nanoid from 'nanoid';
 import { createRandomUserCreds } from '../utils';
 import { cy, expect } from 'local-cypress';
 

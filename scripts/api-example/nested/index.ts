@@ -3,7 +3,8 @@ import type { NextApiResponse } from 'next';
 import { createRouter, expressWrapper } from 'next-connect';
 import cors from 'cors';
 import { NextRequestWithUser } from '@src/api/types';
-import { appendUserToRequest, authenticateHandler } from '@src/api/router';
+import { appendUserToRequest } from '@src/api/router';
+// ignore whole file with eslint-disable
 
 // Default Req and Res are IncomingMessage and ServerResponse
 // pass in NextApiRequest and NextApiResponse in order to have stronger typing

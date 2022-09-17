@@ -53,6 +53,7 @@
     "resolver.js",
     "src/mocks/api/handlers.js",
     "prisma/**/*.ts",
-    "cypress/plugins/index.ts"
+    "cypress/plugins/index.ts",
+    "lint-staged.config.js"
   ]
 }
