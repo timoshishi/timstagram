@@ -88,6 +88,7 @@ function EmailAuth({
               message: handleErrorMessage(signInError),
               error: signInError,
             });
+            setLoading(false);
           }
           if (user) hideModal();
           break;
@@ -140,6 +141,7 @@ function EmailAuth({
         message: handleErrorMessage(error as ApiError),
         error,
       });
+      setLoading(false);
     }
   };
 

@@ -98,18 +98,19 @@ export class ProfileController {
 
       const { user } = await this.supabaseService.auth.api.updateUserById(id, update);
       const environment = process.env.ENVIRONMENT;
+
       if (environment === 'local' || environment === 'test') {
         const result = await this.supabaseService.auth.api.updateUserById(id, { email_confirm: true });
 
         if (result.error) {
           console.error(result.error);
-          return res.status(500).json({ error: 'Something went wrong' });
+          return res.status(500).json({ resultError: result.error });
         }
       }
       return res.status(200).json({ user, error: null, loading: false });
     } catch (error) {
       console.error(error);
-      res.status(500).json({ error: 'Something went wrong' });
+      res.status(500).json({ error: error });
     }
   };
 
