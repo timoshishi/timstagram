@@ -75,7 +75,7 @@ const createMockImageProperties = (arr: any, createdUsers: { data: User[] }): Im
   return arr.map((data: any) => {
     const { filename, aspectRatio, dimensions, url, size, bucket, key } = data;
     const { width, height } = dimensions;
-    const { id: userId } = createdUsers.data[Math.floor(Math.random() * definedUsers.length)];
+    const { id: userId } = createdUsers.data[Math.floor(Math.random() * createdUsers.data.length)];
     const imageId = randomUUID();
 
     return {

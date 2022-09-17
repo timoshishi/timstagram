@@ -29,7 +29,8 @@
     "db:reset": "supabase stop && supabase start",
     "generate:local": "dotenv -e .env.local prisma generate",
     "seed:local": "dotenv -e .env.local -- npx prisma db seed",
-    "prisma:local": "yarn db:reset && npx prisma validate && yarn generate:local && yarn dbpush:local && yarn seed:local",
+    "prisma:local:validate": "npx prisma validate && yarn generate:local",
+    "prisma:local": "supabase db reset && npx prisma validate && yarn prisma:local:validate && yarn dbpush:local && yarn seed:local",
     "postprisma:local": "yarn types:supabase",
     "pretest:coverage": "mv .babel__ .babelrc && rm -rf .nyc_output || true",
     "posttest:coverage": "yarn report:combined && mv .babelrc .babel__",
@@ -39,7 +40,8 @@
     "precombine:reports": "yarn copy:reports && mkdir .nyc_output || true",
     "combine:reports": "npx nyc merge reports && mv coverage.json .nyc_output/out.json",
     "prereport:combined": "yarn combine:reports",
-    "report:combined": "npx nyc report --reporter lcov --reporter text --report-dir coverage"
+    "report:combined": "npx nyc report --reporter lcov --reporter text --report-dir coverage",
+    "prepare": "husky install"
   },
   "dependencies": {
     "@aws-sdk/client-s3": "^3.150.0",
@@ -129,6 +131,7 @@
     "eslint-plugin-storybook": "^0.6.4",
     "eslint-plugin-testing-library": "^5.6.0",
     "eslint-plugin-unused-imports": "^2.0.0",
+    "husky": "^8.0.0",
     "istanbul-lib-coverage": "^3.2.0",
     "jest": "^28.1.3",
     "jest-environment-jsdom": "^28.1.3",
@@ -141,6 +144,7 @@
     "nyc": "^15.1.0",
     "pg": "^8.8.0",
     "postinstall-postinstall": "^2.1.0",
+    "prettier": "^2.7.1",
     "prisma": "^4",
     "prisma-dbml-generator": "^0.9.1",
     "start-server-and-test": "^1.14.0",
