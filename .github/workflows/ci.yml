@@ -67,14 +67,14 @@ jobs:
 
       # - name: Push Types to Supabase 👐
       #   run: npx prisma db push
-      - name: Validate the schema
+      - name: Validate Prisma Schema
         run: npx prisma validate
 
-      - name: Apply migrations
-        run: npx prisma migrate dev --skip-generate --skip-seed
+      - name: Apply Prisma migrations
+        run: npx prisma migrate dev --skip-generate
       # - name: Seed db and apply functions 🌰
       #   run: npx prisma db seed
-      - name: e2e tests 🧪
+      - name: E2E tests 🧪
         run: yarn test:e2e:headless
 
       - name: Integration tests 🧪🕸️

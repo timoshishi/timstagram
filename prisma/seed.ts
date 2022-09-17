@@ -118,30 +118,31 @@ const createPosts = async (createdUsers: { data: User[] }): Promise<Post[]> => {
     /***  AUTO CREATE PROFILE ON CONFIRM RPC FUNCTION ***/
     const results = await knex.raw(onConfirmUserFunction);
     console.log('onConfirmUserFunction created:', !!results);
+    if (process.env.ENVIRONMENT === 'local') {
+      /** CREATE PERSONAL PHOTO BUCKET */
+      // if (process.env.ENVIRONMENT === 'ci') {
+      await imageService.duplicateExampleBucket();
+      // }
+      // delete data before users
+      await deleteOldData();
+      /** Wipe old users if for some reason they exist or you are testing scripts */
+      const deletedUsers = await deleteOldUsers();
+      console.log('deleted users:', deletedUsers?.length);
+      /** START NEW USER CREATION **/
+      const createdUsers = await createNewUsers();
+      if (!createdUsers || createdUsers.error) {
+        console.log(createdUsers?.error);
+      }
+      console.log('Created users:', createdUsers?.data?.length);
+      /** END NEW USER CREATION **/
 
-    /** CREATE PERSONAL PHOTO BUCKET */
-    // if (process.env.ENVIRONMENT === 'ci') {
-    await imageService.duplicateExampleBucket();
-    // }
-    // delete data before users
-    await deleteOldData();
-    /** Wipe old users if for some reason they exist or you are testing scripts */
-    const deletedUsers = await deleteOldUsers();
-    console.log('deleted users:', deletedUsers?.length);
-    /** START NEW USER CREATION **/
-    const createdUsers = await createNewUsers();
-    if (!createdUsers || createdUsers.error) {
-      console.log(createdUsers?.error);
-    }
-    console.log('Created users:', createdUsers?.data?.length);
-    /** END NEW USER CREATION **/
-
-    if (createdUsers?.data) {
-      /** CREATE POSTS */
-      // copy images from example bucket to personal bucket and create posts
-      const posts = await createPosts(createdUsers);
-      console.log('created posts:', posts.length);
-      /** END CREATE POSTS */
+      if (createdUsers?.data) {
+        /** CREATE POSTS */
+        // copy images from example bucket to personal bucket and create posts
+        const posts = await createPosts(createdUsers);
+        console.log('created posts:', posts.length);
+        /** END CREATE POSTS */
+      }
     }
 
     process.exit(0);
