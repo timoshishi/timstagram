@@ -41,7 +41,8 @@
     "combine:reports": "npx nyc merge reports && mv coverage.json .nyc_output/out.json",
     "prereport:combined": "yarn combine:reports",
     "report:combined": "npx nyc report --reporter lcov --reporter text --report-dir coverage",
-    "prepare": "husky install"
+    "prepare": "husky install",
+    "pretty-quick": "npx pretty-quick --check src"
   },
   "dependencies": {
     "@aws-sdk/client-s3": "^3.150.0",
