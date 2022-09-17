@@ -1,11 +1,9 @@
-name: CI
-
 on:
   pull_request:
   workflow_dispatch:
 
 jobs:
-  test:
+  run_ci:
     runs-on: ubuntu-latest
     environment: test
     steps:
@@ -41,6 +39,7 @@ jobs:
         uses: romeovs/lcov-reporter-action@v0.2.16
         with:
           lcov-file: ./coverage/lcov.info
+          token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Install dependencies 🏗️
         id: yarn-install
