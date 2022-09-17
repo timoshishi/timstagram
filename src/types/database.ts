@@ -1,10 +1,4 @@
-export type Json =
-  | string
-  | number
-  | boolean
-  | null
-  | { [key: string]: Json }
-  | Json[];
+export type Json = string | number | boolean | null | { [key: string]: Json } | Json[];
 
 export interface Database {
   public: {
@@ -226,21 +220,21 @@ export interface Database {
         Row: {
           post_id: string;
           user_id: string;
-          reason: Database["public"]["Enums"]["FlagReason"];
+          reason: Database['public']['Enums']['FlagReason'];
           more_info: string | null;
           created_at: string;
         };
         Insert: {
           post_id: string;
           user_id: string;
-          reason: Database["public"]["Enums"]["FlagReason"];
+          reason: Database['public']['Enums']['FlagReason'];
           more_info?: string | null;
           created_at?: string;
         };
         Update: {
           post_id?: string;
           user_id?: string;
-          reason?: Database["public"]["Enums"]["FlagReason"];
+          reason?: Database['public']['Enums']['FlagReason'];
           more_info?: string | null;
           created_at?: string;
         };
@@ -315,8 +309,7 @@ export interface Database {
       [_ in never]: never;
     };
     Enums: {
-      FlagReason: "ABUSIVE" | "ILLEGAL" | "COPYRIGHT" | "OTHER";
+      FlagReason: 'ABUSIVE' | 'ILLEGAL' | 'COPYRIGHT' | 'OTHER';
     };
   };
 }
-

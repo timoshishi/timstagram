@@ -18,18 +18,13 @@ export interface ZoomProps {
 export const Zoom = ({ setZoom, zoom }: ZoomProps) => {
   return (
     <Box>
-      <Popover
-        trigger='hover'
-        placement='top-start'
-        isLazy={true}
-        closeDelay={300}
-        openDelay={100}
-        gutter={0}>
+      <Popover trigger='hover' placement='top-start' isLazy={true} closeDelay={300} openDelay={100} gutter={0}>
         <PopoverTrigger>
           <Box
             _hover={{
               cursor: 'pointer',
-            }}>
+            }}
+          >
             <Icon
               as={FiZoomIn}
               w={[7, 10]}
@@ -48,7 +43,8 @@ export const Zoom = ({ setZoom, zoom }: ZoomProps) => {
           w={['6rem', '8rem']}
           h={['2rem']}
           p={0}
-          pl={[1, 0]}>
+          pl={[1, 0]}
+        >
           <Slider
             id='slider'
             min={1}
@@ -57,18 +53,13 @@ export const Zoom = ({ setZoom, zoom }: ZoomProps) => {
             defaultValue={1}
             colorScheme='telegram'
             onChange={setZoom}
-            value={zoom}>
+            value={zoom}
+          >
             <SliderTrack h='1.5'>
               <SliderFilledTrack />
             </SliderTrack>
             <SliderThumb w={[6]} h={[6]}>
-              <Box
-                color='orange.400'
-                as={FiZoomIn}
-                h={6}
-                w={6}
-                aria-label='zoom slider'
-              />
+              <Box color='orange.400' as={FiZoomIn} h={6} w={6} aria-label='zoom slider' />
             </SliderThumb>
           </Slider>
         </PopoverContent>
