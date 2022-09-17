@@ -1,4 +1,3 @@
-import type { Profile } from '@prisma/client';
 import type { User } from '@supabase/auth-helpers-react';
 import type { ValidationChain } from 'express-validator';
 export interface SupaUser extends User {
