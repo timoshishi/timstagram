@@ -1,25 +1,8 @@
-import {
-  Box,
-  chakra,
-  Container,
-  Link,
-  Stack,
-  Text,
-  useColorModeValue,
-  VisuallyHidden,
-} from '@chakra-ui/react';
+import { Box, chakra, Container, Link, Stack, Text, useColorModeValue, VisuallyHidden } from '@chakra-ui/react';
 import { FaInstagram, FaTwitter, FaYoutube } from 'react-icons/fa';
 import { ReactNode } from 'react';
 
-const SocialButton = ({
-  children,
-  label,
-  href,
-}: {
-  children: ReactNode;
-  label: string;
-  href: string;
-}) => {
+const SocialButton = ({ children, label, href }: { children: ReactNode; label: string; href: string }) => {
   return (
     <chakra.button
       bg={useColorModeValue('blackAlpha.100', 'whiteAlpha.100')}
@@ -35,7 +18,8 @@ const SocialButton = ({
       transition={'background 0.3s ease'}
       _hover={{
         bg: useColorModeValue('blackAlpha.200', 'whiteAlpha.200'),
-      }}>
+      }}
+    >
       <VisuallyHidden>{label}</VisuallyHidden>
       {children}
     </chakra.button>
@@ -44,14 +28,8 @@ const SocialButton = ({
 
 export const Footer = () => {
   return (
-    <Box
-      bg={useColorModeValue('gray.100', 'gray.900')}
-      color={useColorModeValue('gray.700', 'gray.200')}
-      w='full'>
-      <Box
-        borderTopWidth={1}
-        borderStyle={'solid'}
-        borderColor={useColorModeValue('gray.200', 'gray.700')}>
+    <Box bg={useColorModeValue('gray.100', 'gray.900')} color={useColorModeValue('gray.700', 'gray.200')} w='full'>
+      <Box borderTopWidth={1} borderStyle={'solid'} borderColor={useColorModeValue('gray.200', 'gray.700')}>
         <Container
           as={Stack}
           maxW={'6xl'}
@@ -59,7 +37,8 @@ export const Footer = () => {
           direction={{ base: 'column', md: 'row' }}
           spacing={4}
           justify={{ base: 'center', md: 'space-between' }}
-          align={{ base: 'center', md: 'center' }}>
+          align={{ base: 'center', md: 'center' }}
+        >
           <Text>
             © {new Date().getFullYear()} {process.env.NEXT_PUBLIC_APP_NAME} Inc.
           </Text>
