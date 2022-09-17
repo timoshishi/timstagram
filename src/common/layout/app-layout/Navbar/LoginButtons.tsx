@@ -1,11 +1,11 @@
 import { Stack, Button, Show } from '@chakra-ui/react';
-import { ViewType } from 'types/auth.types';
+import { AuthTypes } from '@features/AuthModal';
 import { useAuthModal } from '@features/AuthModal';
 
 export const LoginButtons = () => {
   const { showAuthModal } = useAuthModal();
 
-  const handleLogin = (viewType: ViewType) => {
+  const handleLogin = (viewType: AuthTypes.ViewType) => {
     showAuthModal({ viewType });
   };
 
