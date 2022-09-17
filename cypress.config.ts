@@ -14,5 +14,6 @@ export default defineConfig({
       codeCoverageTask(on, config);
       return config;
     },
+    projectId: 'oj4857',
   },
 });

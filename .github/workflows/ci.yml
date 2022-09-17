@@ -77,7 +77,7 @@ jobs:
         run: npx prisma db seed
 
       - name: E2E tests 🧪
-        run: yarn test:e2e:headless
+        run: yarn dev && yarn cypress run --record --key ${{ secrets.CYPRESS_RECORD_KEY }}
 
       - name: Integration tests 🧪🕸️
         run: yarn test:ci
