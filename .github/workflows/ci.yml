@@ -37,6 +37,11 @@ jobs:
         run: |
           ls -la
 
+      - name: Record test results 📝
+        uses: romeovs/lcov-reporter-action@v0.2.16
+        with:
+          lcov-file: ./coverage/lcov.info
+
       - name: Install dependencies 🏗️
         id: yarn-install
         run: yarn install --frozen-lockfile
