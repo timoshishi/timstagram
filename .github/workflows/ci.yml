@@ -1,16 +1,15 @@
 name: CI
 
-on: [pull_request]
+on:
+  pull_request:
+  workflow_dispatch:
 
 jobs:
   test:
     runs-on: ubuntu-latest
     environment: test
     steps:
-      - name: Check out Git repository
-        uses: actions/checkout@v3
-
-      - name: Set up Node.js
+      - uses: actions/checkout@v3
       - uses: actions/setup-node@v3
         with:
           node-version: 16
@@ -41,10 +40,6 @@ jobs:
       - name: Install dependencies 🏗️
         id: yarn-install
         run: yarn install --frozen-lockfile
-
-      - name: Generate Prisma Client 💠
-        run: yarn prisma generate
-
       # - uses: supabase/setup-cli@v1
       #   with:
       #     version: 1.0.0
@@ -60,6 +55,9 @@ jobs:
       #       git diff
       #       exit 1
       #     fi
+
+      # - name: Generate Prisma Client 💠
+      #   run: yarn prisma generate
 
       # - name: Push Types to Supabase 👐
       #   run: npx prisma db push
