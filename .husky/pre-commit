@@ -1,7 +1,9 @@
 #!/usr/bin/env sh
 . "$(dirname -- "$0")/_/husky.sh"
 
+mv .babelrc .babel__ || true
 npx pretty-quick --staged
 yarn test:ci
-yarn test:e2e:headless
+# yarn test:e2e:headless
 yarn lint
+yarn prettier src 
