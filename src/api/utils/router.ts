@@ -30,15 +30,6 @@ export type NextRequiredUserMiddleware = (
   next: NextFunction
 ) => void;
 
-export const checkUser: NextUserMiddleware = (req, res, next) => {
-  if (req.user === null) {
-    return res.status(401).json({
-      error: 'not authenticated',
-    });
-  }
-  return next();
-};
-
 export const validate = (validations: ValidationChain[]) => {
   return async (req: NextRequestWithUser, res: NextApiResponse, next: NextFunction) => {
     await Promise.all(validations.map((validation) => validation.run(req)));
