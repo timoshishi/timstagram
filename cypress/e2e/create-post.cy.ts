@@ -8,10 +8,6 @@ describe('a user can create a post', () => {
     cy.visit('http://localhost:3000/');
   });
 
-  afterEach(() => {
-    // cy.deleteUser();
-  });
-
   it('can create a post', () => {
     cy.createUser({ username, email, password });
     cy.userIsLoggedOut();
