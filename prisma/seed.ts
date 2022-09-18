@@ -121,7 +121,7 @@ const createPosts = async (createdUsers: { data: User[] }): Promise<Post[]> => {
     /***  AUTO CREATE PROFILE ON CONFIRM RPC FUNCTION ***/
     const results = await knex.raw(onConfirmUserFunction);
     console.log('onConfirmUserFunction created:', JSON.stringify(results, null, 2));
-    if (process.env.ENVIRONMENT === 'local') {
+    if (process.env.ENVIRONMENT === 'local' || process.env.ENVIRONMENT === 'test') {
       /** CREATE PERSONAL PHOTO BUCKET */
       // delete data before users
       await deleteOldData();
