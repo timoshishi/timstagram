@@ -36,6 +36,9 @@ jobs:
       - name: Show files 📁
         run: |
           ls -la
+      - name: Print env file
+        run: |
+          cat .env
 
       - name: Record test results 📝
         uses: romeovs/lcov-reporter-action@v0.2.16
