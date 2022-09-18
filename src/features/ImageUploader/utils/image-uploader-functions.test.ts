@@ -1,5 +1,5 @@
 import { scaleImage, sizeValidator, readFile } from './image-uploader-functions';
-import { MAX_MEGABYTES, MEGABYTE } from './image-uploader.constants';
+import { MAX_MEGABYTES, MEGABYTE } from '../constants';
 import type { Dimensions } from '../types';
 
 describe('sizeValidator', () => {
