@@ -81,7 +81,10 @@ jobs:
       # - name: Seed db and apply functions 🌰
       #   run: npx prisma db seed
       - name: E2E tests 🧪
-        run: yarn test:e2e:ci
+        run:
+          mv .babel__ .babelrc && rm -rf .nyc_output || true && yarn start-server-and-test 'yarn dev'
+          http://localhost:3000 'yarn cypress run --record --key ${{ secrets.CYPRESS_RECORD_KEY }}' && yarn
+          test:coverage
         # run:
         #   yarn start-server-and-test 'yarn dev' http://localhost:3000 'yarn cypress run --record --key ${{
         #   secrets.CYPRESS_RECORD_KEY }}'
