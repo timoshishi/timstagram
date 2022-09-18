@@ -15,6 +15,10 @@ jobs:
           node-version: 16
           cache: 'yarn'
 
+      - name: Show files 📁
+        run: |
+          ls -la
+
       - name: Create .env file 🔑
         uses: SpicyPizza/create-envfile@v1.3
         with:
@@ -35,16 +39,34 @@ jobs:
           file_name: .env
           fail_on_empty: true
 
-      - name: Show files 📁
-        run: |
-          ls -la
-      - name: Print env file
+      - name: Print .env file 📄
         run: |
           cat .env
 
       - name: Install dependencies 🏗️
         id: yarn-install
         run: yarn install --frozen-lockfile
+
+      - name: Apply Prisma migrations
+        run: npx prisma migrate dev
+
+      - name: Setup Coverage 📊
+        run: yarn setup-coverage
+
+      # Command not aliased because we need plaintext for the record key
+      - name: E2E 🛩
+        run:
+          yarn start-server-and-test 'yarn dev' http://localhost:3000 'yarn cypress run --record --key ${{
+          secrets.CYPRESS_RECORD_KEY }}'
+
+      - name: Integration & Unit 🧪
+        run: yarn test:coverage
+
+      - name: Report Test Coverage 📝
+        uses: romeovs/lcov-reporter-action@v0.2.16
+        with:
+          lcov-file: ./coverage/lcov.info
+          github-token: ${{ secrets.GITHUB_TOKEN }}
       # - uses: supabase/setup-cli@v1
       #   with:
       #     version: 1.0.0
@@ -61,42 +83,10 @@ jobs:
       #       exit 1
       #     fi
 
-      - name: Generate Prisma Client 💠
-        run: yarn prisma generate
+      # - name: Generate Prisma Client 💠
+      #   run: yarn prisma generate
 
       # - name: Push Types to Supabase 👐
       #   run: npx prisma db push
       # - name: Validate Prisma Schema
       #   run: npx prisma validate
-
-      - name: Apply Prisma migrations
-        run: npx prisma migrate dev
-
-      - name: E2E 🛩
-        run:
-          mv .babel__ .babelrc && rm -rf .nyc_output || true && yarn start-server-and-test 'yarn dev'
-          http://localhost:3000 'yarn cypress run --record --key ${{ secrets.CYPRESS_RECORD_KEY }}' && yarn
-          test:coverage
-        # run:
-        #   yarn start-server-and-test 'yarn dev' http://localhost:3000 'yarn cypress run --record --key ${{
-        #   secrets.CYPRESS_RECORD_KEY }}'
-
-      - name: Integration & Unit 🧪
-        run: yarn test:ci
-
-      - name: Report Test Coverage 📝
-        uses: romeovs/lcov-reporter-action@v0.2.16
-        with:
-          lcov-file: ./coverage/lcov.info
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-
-      # - name: Cypress run
-      #   uses: cypress-io/github-action@v4
-      #   with:
-      #     run: yarn test:e2e
-
-      # - name: 🛩 E2E tests
-      #   run: yarn e2e:headless
-      # SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
-      # SUPABASE_DB_PASSWORD: ${{ secrets.STAGING_DB_PASSWORD }}
-      # STAGING_PROJECT_ID: abcdefghijklmnopqrst
