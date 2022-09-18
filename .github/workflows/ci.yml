@@ -42,12 +42,6 @@ jobs:
         run: |
           cat .env
 
-      - name: Record test results 📝
-        uses: romeovs/lcov-reporter-action@v0.2.16
-        with:
-          lcov-file: ./coverage/lcov.info
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-
       - name: Install dependencies 🏗️
         id: yarn-install
         run: yarn install --frozen-lockfile
@@ -76,11 +70,9 @@ jobs:
       #   run: npx prisma validate
 
       - name: Apply Prisma migrations
-        run: npx prisma migrate dev --skip-generate
+        run: npx prisma migrate dev
 
-      # - name: Seed db and apply functions 🌰
-      #   run: npx prisma db seed
-      - name: E2E tests 🧪
+      - name: E2E 🛩
         run:
           mv .babel__ .babelrc && rm -rf .nyc_output || true && yarn start-server-and-test 'yarn dev'
           http://localhost:3000 'yarn cypress run --record --key ${{ secrets.CYPRESS_RECORD_KEY }}' && yarn
@@ -89,19 +81,14 @@ jobs:
         #   yarn start-server-and-test 'yarn dev' http://localhost:3000 'yarn cypress run --record --key ${{
         #   secrets.CYPRESS_RECORD_KEY }}'
 
-      - name: Integration tests 🧪🕸️
+      - name: Integration & Unit 🧪
         run: yarn test:ci
 
-      - name: Check Build
-        run: yarn build
-
-      # - name: Download the build folders
-      #   uses: actions/download-artifact@v2
-      #   with:
-      #     name: build
-      # #     path: build
-      # - name: Build the dang thing already
-      #   run: yarn build && yarn start
+      - name: Report Test Coverage 📝
+        uses: romeovs/lcov-reporter-action@v0.2.16
+        with:
+          lcov-file: ./coverage/lcov.info
+          github-token: ${{ secrets.GITHUB_TOKEN }}
 
       # - name: Cypress run
       #   uses: cypress-io/github-action@v4
