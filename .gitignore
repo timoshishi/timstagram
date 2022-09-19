@@ -11,3 +11,7 @@ cypress/videos/**/*
 
 jest-coverage/**/*
 cypress-coverage/**/*
+**/.DS_Store
+**/out.json
+
+reports/**/*
