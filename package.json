@@ -125,7 +125,7 @@
     "@types/react": "^18.0.15",
     "@types/react-dom": "^18.0.6",
     "@typescript-eslint/eslint-plugin": "^5.30.5",
-    "@typescript-eslint/parser": "^5.30.5",
+    "@typescript-eslint/parser": "^5.37.0",
     "babel-loader": "^8.2.5",
     "babel-plugin-istanbul": "^6.1.1",
     "check-code-coverage": "^1.10.0",
