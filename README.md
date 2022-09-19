@@ -1,5 +1,7 @@
 # Witter App
 
+![CI](https://github.com/lowboy-tropical/witter/actions/workflows/ci.yml/badge.svg)
+
 ## Full stack boilerplate for a social media application
 
 ## Setting up your Local dev environment
