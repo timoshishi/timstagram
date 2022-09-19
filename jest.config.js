@@ -38,6 +38,7 @@ const customJestConfig = {
     '!**/test-utils',
     '!**/stories/**',
     '!**/mocks/**',
+    '!**/constants/**/*.ts',
   ],
   coverageDirectory: '<rootDir>/jest-coverage',
 };

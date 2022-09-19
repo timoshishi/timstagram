@@ -21,3 +21,9 @@ CREATE OR REPLACE TRIGGER on_auth_email_confirmed
   FOR EACH ROW 
   EXECUTE PROCEDURE public.handle_confirmed_user();
   
+
+-- begin
+--   insert into public.profiles (id, username, bio, avatar_url)
+--   values (NEW.id, NEW.raw_user_meta_data::json->>'username', NEW.raw_user_meta_data::json->>'bio', NEW.raw_user_meta_data::json->>'avatarUrl');
+--   return new;
+-- end;

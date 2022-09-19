@@ -5,7 +5,7 @@ import { Container } from '@chakra-ui/react';
 import { userAuthResponse } from '../../mocks/api/handlers';
 import { userEvent, waitFor, within, screen } from '@storybook/testing-library';
 import { expect } from '@storybook/jest';
-import { SIGN_UP_TEXTS } from '../../features/Modal/constants/modal';
+import { SIGN_UP_TEXTS } from '../../features/AuthModal/constants';
 export default {
   title: 'Layout/Navbar',
   component: Navbar,

@@ -1,4 +1,4 @@
-import { NextRequestWithRequiredUser, NextRequestWithUser, NextUserMiddleware } from '../types';
+import { NextRequestWithRequiredUser, NextRequestWithUser } from '../types';
 import { NextApiResponse } from 'next';
 import { NextFunction } from 'express';
 import { getUser } from '@supabase/auth-helpers-nextjs';
@@ -29,15 +29,6 @@ export type NextRequiredUserMiddleware = (
   res: NextApiResponse,
   next: NextFunction
 ) => void;
-
-export const checkUser: NextUserMiddleware = (req, res, next) => {
-  if (req.user === null) {
-    return res.status(401).json({
-      error: 'not authenticated',
-    });
-  }
-  return next();
-};
 
 export const validate = (validations: ValidationChain[]) => {
   return async (req: NextRequestWithUser, res: NextApiResponse, next: NextFunction) => {

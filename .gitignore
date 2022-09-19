@@ -4,11 +4,14 @@ node_modules/
 .env*
 .env.local
 .env.development
-
+.nyc_output/out.json
 coverage/**/*
-
 cypress/screenshots/**/*
 cypress/videos/**/*
 
 jest-coverage/**/*
 cypress-coverage/**/*
+**/.DS_Store
+**/out.json
+
+reports/**/*

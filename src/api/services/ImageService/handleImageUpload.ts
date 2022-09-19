@@ -3,7 +3,7 @@ import { imageHash } from 'image-hash';
 import { BadRequestException } from '@storyofams/next-api-decorators';
 const { getPlaiceholder } = require('plaiceholder');
 import multer from 'multer';
-import { MAX_MEGABYTES, MEGABYTE } from '../../../features/ImageUploader/utils/image-uploader.constants';
+import { MAX_MEGABYTES, MEGABYTE } from '../../../features/ImageUploader/constants';
 import { randomUUID } from 'crypto';
 export const AVATAR_IMAGE_SIZE = 150;
 import type { ImageProperties, GetImagePropertiesParams } from '../../types';

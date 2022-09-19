@@ -1,5 +1,5 @@
 import type { Dimensions, HandleCroppedImage } from '../types';
-import { MEGABYTE, MAX_MEGABYTES } from './image-uploader.constants';
+import { MEGABYTE, MAX_MEGABYTES } from '../constants';
 
 export function sizeValidator(file: File) {
   if (file.size > MEGABYTE * MAX_MEGABYTES) {

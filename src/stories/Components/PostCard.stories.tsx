@@ -1,6 +1,6 @@
 import React from 'react';
 import { ComponentStory, ComponentMeta } from '@storybook/react';
-import { post } from '../../../__mocks__/fixtures/post';
+import { post } from '../../mocks/post';
 import { PostCard } from '../../common/components/PostCard';
 import type { PostCardProps } from '../../common/components/PostCard';
 // More on default export: https://storybook.js.org/docs/react/writing-stories/introduction#default-export
