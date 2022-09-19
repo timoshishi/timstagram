@@ -67,26 +67,3 @@ jobs:
         with:
           lcov-file: ./coverage/lcov.info
           github-token: ${{ secrets.GITHUB_TOKEN }}
-      # - uses: supabase/setup-cli@v1
-      #   with:
-      #     version: 1.0.0
-
-      # - name: Start Supabase local development setup 🦸
-      #   run: supabase start
-
-      # - name: Verify generated types are up-to-date ✅
-      #   run: |
-      #     supabase gen types typescript --local > types.ts
-      #     if [ "$(git diff --ignore-space-at-eol types.ts | wc -l)" -gt "0" ]; then
-      #       echo "Detected uncommitted changes after build. See status below:"
-      #       git diff
-      #       exit 1
-      #     fi
-
-      # - name: Generate Prisma Client 💠
-      #   run: yarn prisma generate
-
-      # - name: Push Types to Supabase 👐
-      #   run: npx prisma db push
-      # - name: Validate Prisma Schema
-      #   run: npx prisma validate
