@@ -56,7 +56,7 @@ jobs:
       # Command not aliased because we need plaintext for the record key
       - name: E2E 🛩
         run:
-          yarn start-server-and-test 'yarn dev' http://localhost:3000 'yarn cypress run --record --key ${{
+          yarn start-server-and-test 'yarn build-start' http://localhost:3000 'yarn cypress run --record --key ${{
           secrets.CYPRESS_RECORD_KEY }}'
 
       - name: Integration & Unit 🧪

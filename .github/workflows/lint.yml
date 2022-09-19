@@ -45,6 +45,3 @@ jobs:
             git diff
             exit 1
           fi
-
-      - name: Verify Build 🏗️
-        run: yarn build

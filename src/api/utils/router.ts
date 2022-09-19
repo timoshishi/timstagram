@@ -1,4 +1,4 @@
-import { NextRequestWithRequiredUser, NextRequestWithUser, NextUserMiddleware } from '../types';
+import { NextRequestWithRequiredUser, NextRequestWithUser } from '../types';
 import { NextApiResponse } from 'next';
 import { NextFunction } from 'express';
 import { getUser } from '@supabase/auth-helpers-nextjs';
