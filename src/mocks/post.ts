@@ -17,7 +17,7 @@ export const post: Post = {
       avatarUrl: 'https://avatars0.githubusercontent.com/u/1703?v=4',
     },
   ],
-  imageUrl: 'https://witter-dev.s3.amazonaws.com/92aa1296-28c9-4e56-a16c-73d1705511fa.png',
+  imageUrl: 'https://witter-dev.s3.amazonaws.com/58d31e3a-af92-4830-850d-97859780ba88.png',
   tags: [],
   createdAt: '2022-09-03T18:55:10.294Z',
   author: {

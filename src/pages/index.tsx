@@ -8,8 +8,10 @@ import { PostCard } from '@common/components/PostCard';
 import { fetcher } from 'src/lib/axios';
 import { PostResponse } from 'types/post.types';
 import Head from 'next/head';
+import { useRouter } from 'next/router';
 
 const API = '/feed/popular';
+const PAGE_SIZE = 25;
 
 export async function getStaticProps() {
   const posts: PostResponse = await getFeed();
@@ -22,7 +24,6 @@ export async function getStaticProps() {
     },
   };
 }
-const PAGE_SIZE = 25;
 
 const getKey = (pageIndex: number, previousPageData: PostResponse) => {
   if (previousPageData && !previousPageData.data.length) return null;
@@ -32,11 +33,16 @@ const getKey = (pageIndex: number, previousPageData: PostResponse) => {
 
 const Feed: NextPageWithLayout = () => {
   const { user, error, isLoading } = useUser();
+  const router = useRouter();
 
   const { data, error: feedError, mutate, size, setSize, isValidating } = useSWRInfinite(getKey, fetcher);
+
   let postResponses: PostResponse[] = data ? [].concat(...data) : [];
+
   const isLoadingInitialData = !data && !error;
+
   const title = `${process.env.NEXT_PUBLIC_APP_NAME} | Feed`;
+
   return (
     <>
       <Head>
