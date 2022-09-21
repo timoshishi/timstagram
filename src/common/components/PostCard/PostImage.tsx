@@ -29,7 +29,7 @@ export const PostImage = ({
       src={imageUrl}
       alt={tags.join(' ')}
       width={800}
-      height={600}
+      height={800}
       loading={currentIdx < 7 ? 'eager' : 'lazy'}
       priority={currentIdx < 3 && page === 1 ? true : false}
       layout='responsive' // this should be commented out when not using storybooks

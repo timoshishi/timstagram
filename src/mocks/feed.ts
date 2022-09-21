@@ -1,4 +1,4 @@
-export const mockFeedResponse = {
+export const feed = {
   data: [
     {
       postId: '01ad9619-d41b-4234-88da-d6a5049a323a',
