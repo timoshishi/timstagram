@@ -26,7 +26,7 @@ export const post: Post = {
       },
       fallbackImageUrl: 'https://witter-dev.s3.amazonaws.com/58d31e3a-af92-4830-850d-97859780ba88.png',
       filename: '58d31e3a-af92-4830-850d-97859780ba88.png',
-      imageHash: 'aasdfewafewafwef',
+      placeholder: 'aasdfewafewafwef',
     },
   ],
   tags: [],
