@@ -45,9 +45,6 @@ jobs:
         run: |
           cat .env
 
-      - name: Install dotenv cli
-        run: yarn global add dotenv-cli
-
       - name: Install dependencies 🏗️
         id: yarn-install
         run: yarn install --frozen-lockfile
@@ -59,10 +56,10 @@ jobs:
         run: yarn setup-coverage
 
       # Command not aliased because we need plaintext for the record key
-      # - name: E2E 🛩
-      #   run:
-      #     yarn start-server-and-test 'yarn build-start' http://localhost:3000 'yarn cypress run --record --key ${{
-      #     secrets.CYPRESS_RECORD_KEY }}'
+      - name: E2E 🛩
+        run:
+          yarn start-server-and-test 'yarn build-start' http://localhost:3000 'yarn cypress run --record --key ${{
+          secrets.CYPRESS_RECORD_KEY }}'
 
       - name: Integration & Unit 🧪
         run: yarn test:coverage
