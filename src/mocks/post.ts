@@ -1,4 +1,4 @@
-import { Post } from 'types/post.types';
+import { Post } from 'types/post';
 import { Post as PrismaPost } from '@prisma/client';
 export const post: Post = {
   postId: '8a184667-6ea8-4ac5-83b9-b22ab633faac',
@@ -17,7 +17,18 @@ export const post: Post = {
       avatarUrl: 'https://avatars0.githubusercontent.com/u/1703?v=4',
     },
   ],
-  imageUrl: 'https://witter-dev.s3.amazonaws.com/58d31e3a-af92-4830-850d-97859780ba88.png',
+  media: [
+    {
+      aspectRatio: 1,
+      dimensions: {
+        width: 400,
+        height: 400,
+      },
+      fallbackImageUrl: 'https://witter-dev.s3.amazonaws.com/58d31e3a-af92-4830-850d-97859780ba88.png',
+      filename: '58d31e3a-af92-4830-850d-97859780ba88.png',
+      imageHash: 'aasdfewafewafwef',
+    },
+  ],
   tags: [],
   createdAt: '2022-09-03T18:55:10.294Z',
   author: {

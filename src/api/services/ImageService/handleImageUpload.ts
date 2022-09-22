@@ -7,6 +7,7 @@ import { MAX_MEGABYTES, MEGABYTE } from '../../../features/ImageUploader/constan
 import { randomUUID } from 'crypto';
 export const AVATAR_IMAGE_SIZE = 150;
 import type { ImageProperties, GetImagePropertiesParams } from '../../types';
+import { Environment } from 'types/environment';
 
 export const constructMediaUrl = ({
   filename,
@@ -14,8 +15,8 @@ export const constructMediaUrl = ({
   imageHostDomain,
 }: {
   filename: string;
-  bucket?: string;
-  imageHostDomain?: string;
+  bucket?: Environment['PHOTO_BUCKET'] | Environment['IMAGE_STACK_ID'];
+  imageHostDomain?: Environment['IMAGE_HOST_DOMAIN'] | Environment['IMAGE_STACK_DOMAIN'];
 }): string => {
   const url = `https://${bucket || process.env.PHOTO_BUCKET}.${
     imageHostDomain || process.env.IMAGE_HOST_DOMAIN

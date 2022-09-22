@@ -3,7 +3,7 @@ import { supabase } from '../lib/initSupabase';
 import '../style.css';
 import { StrictMode } from 'react';
 import { UserProvider } from '@supabase/auth-helpers-react';
-import type { AppPropsWithLayout } from 'types/page.types';
+import type { AppPropsWithLayout } from 'types/page';
 import { AppLayout } from '@common/layout/app-layout';
 import { GlobalModal } from '@features/Modal';
 

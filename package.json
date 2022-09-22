@@ -17,7 +17,7 @@
     "lint": "next lint",
     "storybook": "start-storybook -p 6006 -s public",
     "build-storybook": "yarn build && build-storybook -s public",
-    "types:supabase": "supabase gen types typescript --local > ./src/types/database.ts",
+    "types:supabase": "supabase gen types typescript --local > ./src/types/database.d.ts",
     "test": "jest --watch",
     "test:e2e:headed": "start-server-and-test 'yarn dev' http://localhost:3000 'yarn cypress open'",
     "setup-coverage": "mv .babel__ .babelrc && rm -rf .nyc_output || true",

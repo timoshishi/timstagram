@@ -1,7 +1,7 @@
 import { Box, useColorModeValue } from '@chakra-ui/react';
 import { PostHeader } from './PostHeader';
 import { PostImage } from './PostImage';
-import type { Post } from 'types/post.types';
+import type { Post } from 'types/post';
 import { PostFooter } from './PostFooter';
 
 export interface PostCardProps {
@@ -14,7 +14,7 @@ export interface PostCardProps {
 }
 
 export const PostCard = ({
-  post: { postId, viewCount, postBody, commentCount, hasLiked, createdAt, isFollowing, likes, imageUrl, author, tags },
+  post: { postId, viewCount, postBody, commentCount, hasLiked, createdAt, isFollowing, likes, media, author, tags },
   setSize,
   size,
   refreshIdx,
@@ -44,7 +44,7 @@ export const PostCard = ({
         />
         <Box>
           <PostImage
-            imageUrl={imageUrl}
+            media={media[0]}
             tags={tags}
             setSize={setSize}
             size={size}

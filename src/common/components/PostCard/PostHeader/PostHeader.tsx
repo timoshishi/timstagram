@@ -1,5 +1,5 @@
 import { Flex, Text } from '@chakra-ui/react';
-import { Author } from '../../../../types/post.types';
+import { Author } from 'types/post';
 import dayjs from '@common/utils/dateFormatter';
 import { PostHeaderAvatar } from '../../PostHeaderAvatar';
 import { PostDetail } from './PostDetail';

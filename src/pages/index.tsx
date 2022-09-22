@@ -1,15 +1,15 @@
 import { Box, HStack, Show, VStack } from '@chakra-ui/react';
 import { useUser } from '@common/hooks/useUser';
-import { NextPageWithLayout } from 'types/page.types';
+import { NextPageWithLayout } from 'types/page';
 import { SWRConfig } from 'swr';
 import useSWRInfinite from 'swr/infinite';
 import getFeed from '@src/api/getFeed';
 import { PostCard } from '@common/components/PostCard';
 import { fetcher } from 'src/lib/axios';
-import { PostResponse } from 'types/post.types';
+import { PostResponse } from 'types/post';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
-
+import { SkeletonPostCard } from '@common/components/PostCard/SkeletonPostCard';
 const API = '/feed/popular';
 const PAGE_SIZE = 25;
 
@@ -47,27 +47,35 @@ const Feed: NextPageWithLayout = () => {
     <>
       <Head>
         <title>{title}</title>
-        <meta name='viewport' content='initial-scale=1.0, width=device-width' />
+        <meta
+          name='viewport'
+          content='initial-scale=1.0, width=device-width'
+          meta-description='coolest site on the whole darn internet'
+        />
       </Head>
       <Box w='full' minH='100vh' mt='60px' maxW='100%'>
         <HStack w='100%' alignItems='flex-start' rowGap={12} columnGap={4} pt={50}>
           <VStack spacing={10} justifyContent='flex-start' flexGrow={1} h='100%'>
-            {postResponses.map(({ data: posts, page }) =>
-              posts.map((post, currentIdx) => (
-                <Box w='100%' key={post.postId}>
-                  <PostCard
-                    post={post}
-                    setSize={setSize}
-                    size={size}
-                    refreshIdx={PAGE_SIZE - 5}
-                    currentIdx={currentIdx}
-                    page={page}
-                  />
-                </Box>
-              ))
+            {postResponses ? (
+              postResponses.map(({ data: posts, page }) =>
+                posts.map((post, currentIdx) => (
+                  <Box w='100%' key={post.postId}>
+                    <PostCard
+                      post={post}
+                      setSize={setSize}
+                      size={size}
+                      refreshIdx={PAGE_SIZE - 5}
+                      currentIdx={currentIdx}
+                      page={page}
+                    />
+                  </Box>
+                ))
+              )
+            ) : (
+              <SkeletonPostCard />
             )}
           </VStack>
-          <Show above='lg' ssr>
+          <Show above='lg'>
             <Box w='200px' bg='orange' h='450px' mt='30rem' />
           </Show>
         </HStack>

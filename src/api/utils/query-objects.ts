@@ -34,6 +34,7 @@ export const postSelectObj = {
       height: true,
       width: true,
       aspectRatio: true,
+      placeholder: true,
     },
   },
   postLikes: {

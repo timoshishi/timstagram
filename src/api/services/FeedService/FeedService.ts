@@ -1,6 +1,6 @@
 import { PrismaClient } from '@prisma/client';
 import { postSelectObj, activePostQueryObj } from '../../utils/query-objects';
-import { Post } from 'types/post.types';
+import { Post } from 'types/post';
 import type { PostQueryResponse } from '../../types';
 import { PostService } from '../PostService';
 import { Optional } from 'types/index';

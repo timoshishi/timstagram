@@ -2,12 +2,9 @@ import { PrismaClient } from '@prisma/client';
 import { NextRequestWithUser } from '../../types';
 import { NextApiResponse } from 'next';
 import { FeedService } from '../../services/FeedService';
-import { Controller } from '../Controller';
 
-export class FeedController extends Controller {
-  constructor(private prisma: PrismaClient, private feedService: FeedService) {
-    super();
-  }
+export class FeedController {
+  constructor(private prisma: PrismaClient, private feedService: FeedService) {}
 
   getFeed = async (req: NextRequestWithUser, res: NextApiResponse) => {
     try {

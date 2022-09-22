@@ -11,25 +11,29 @@ describe('a user can edit their profile', () => {
   it('can update the text of a users profile', () => {
     const { username, email, password } = createRandomUserCreds();
     cy.createUser({ username, email, password });
-    cy.loginUser({ email: 'test1@test.com', password: 'password' });
+    cy.loginUser({ email, password });
     cy.userIsLoggedIn();
 
     const updateText = nanoid();
     cy.get('[data-testid="profile-dropdown-button"]').click();
     cy.contains(/update profile/i).click();
+    cy.get('textarea').type(updateText);
+    cy.get('button[type="submit"]').click();
     cy.get('h2')
       .invoke('text')
       .then((text1) => {
         cy.contains(/update bio/i).click();
-        cy.get('textarea').clear().type(updateText);
+        const updateText2 = nanoid();
+        cy.get('textarea').clear().type(updateText2);
         cy.get('button[type="submit"]').click();
         cy.contains(/update bio/i).should('be.visible');
+
         cy.get('h2')
           .invoke('text')
           .should((text2) => {
             expect(text1).not.to.eq(text2);
-            expect(text2.includes(updateText)).to.be.true;
-            expect(text2.includes(text1)).to.be.false;
+            expect(text2.includes(updateText2)).to.be.true;
+            expect(text2.includes(updateText)).to.be.false;
           });
       });
   });
