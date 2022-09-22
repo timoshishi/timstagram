@@ -23,7 +23,7 @@ jest.mock('@aws-sdk/s3-request-presigner', () => ({
 
 jest.spyOn(console, 'error').mockImplementation(() => {});
 
-const fullPostReturn = {
+const fullPostReturn: Post = {
   postId: '44cbb560-e09c-4ff6-b4de-fe42c82ad53e',
   postBody: 'hello dolly',
   viewCount: 1,
@@ -103,13 +103,6 @@ const getSinglePostReturn: PostQueryResponse = {
       },
     },
   ],
-  profile: {
-    username: 'test1',
-    id: '4d916591-2f88-4a8b-b510-617578a2dc1d',
-    avatarUrl: 'https://witter-dev.s3.amazonaws.com/c650d27a-d84c-4497-ac63-3a93757c9ebf.png',
-    bio: 'gC5u2os7ZAX127E3H9Es8',
-    _count: { followers: 0, following: 0, posts: 1 },
-  },
 };
 
 describe('PostService', () => {
@@ -156,7 +149,8 @@ describe('PostService', () => {
       });
 
       const result: Post | null = await postService.getPostByHashOrId({ postHash: 'test' });
-
+      console.log(result?.media[0].fallbackImageUrl);
+      console.log(fullPostReturn?.media[0].fallbackImageUrl);
       expect(result).toEqual(fullPostReturn);
     });
   });
