@@ -5,11 +5,16 @@ import {
   createPlaceholder,
   resizeAvatarImage,
   constructMediaUrl,
+  scaleImageWidthAndHeight,
+  getScreenImageDimensions,
+  constructStackUrl,
+  constructSrcSet,
 } from './handleImageUpload';
 import { promises } from 'fs';
 import path from 'path';
 import { UUIDReg } from '@common/utils/regexp';
 import type { ImageProperties } from '../../types';
+import { Dimensions } from '@features/ImageUploader';
 
 const imageHostDomain = process.env.IMAGE_HOST_DOMAIN;
 const fixturesDir = path.join(__dirname, '../../../../__mocks__/fixtures');
@@ -217,5 +222,134 @@ describe('constructMediaUrl', () => {
     expect(process.env.PHOTO_BUCKET).toBeDefined();
     expect(process.env.IMAGE_HOST_DOMAIN).toBeDefined();
     expect(url.includes('testId.jpg')).toBe(true);
+  });
+});
+
+describe('scaleImageWidthAndHeight', () => {
+  it('should scale the image to the correct dimensions for aspect ratio 1', () => {
+    const scaledSm = scaleImageWidthAndHeight({ screenSize: 'sm', aspectRatio: 1 });
+    expect(scaledSm.width).toBe(640);
+    expect(scaledSm.height).toBe(640);
+    const scaledMd = scaleImageWidthAndHeight({ screenSize: 'md', aspectRatio: 1 });
+    expect(scaledMd.width).toBe(768);
+    expect(scaledMd.height).toBe(768);
+    const scaledLg = scaleImageWidthAndHeight({ screenSize: 'lg', aspectRatio: 1 });
+    expect(scaledLg.width).toBe(1024);
+    expect(scaledLg.height).toBe(1024);
+  });
+
+  it('should scale the image to the correct dimensions for aspect ratio 4:3', () => {
+    const scaledSm = scaleImageWidthAndHeight({ screenSize: 'sm', aspectRatio: 4 / 3 });
+    expect(scaledSm.width).toBe(640);
+    expect(scaledSm.height).toBe(480);
+    const scaledMd = scaleImageWidthAndHeight({ screenSize: 'md', aspectRatio: 4 / 3 });
+    expect(scaledMd.width).toBe(768);
+    expect(scaledMd.height).toBe(576);
+    const scaledLg = scaleImageWidthAndHeight({ screenSize: 'lg', aspectRatio: 4 / 3 });
+    expect(scaledLg.width).toBe(1024);
+    expect(scaledLg.height).toBe(768);
+  });
+
+  it('should scale the image to the correct dimensions for aspect ratio 3:4', () => {
+    const scaledSm = scaleImageWidthAndHeight({ screenSize: 'sm', aspectRatio: 3 / 4 });
+    expect(scaledSm.width).toBe(480);
+    expect(scaledSm.height).toBe(640);
+    const scaledMd = scaleImageWidthAndHeight({ screenSize: 'md', aspectRatio: 3 / 4 });
+    expect(scaledMd.width).toBe(576);
+    expect(scaledMd.height).toBe(768);
+    const scaledLg = scaleImageWidthAndHeight({ screenSize: 'lg', aspectRatio: 3 / 4 });
+    expect(scaledLg.width).toBe(768);
+    expect(scaledLg.height).toBe(1024);
+  });
+});
+
+describe('getScreenImageDimensions', () => {
+  it('should return the correct dimensions for aspect ratio 1', () => {
+    const dimensions = getScreenImageDimensions(1);
+    expect(dimensions.sm.width).toBe(640);
+    expect(dimensions.sm.height).toBe(640);
+    expect(dimensions.md.width).toBe(768);
+    expect(dimensions.md.height).toBe(768);
+    expect(dimensions.lg.width).toBe(1024);
+    expect(dimensions.lg.height).toBe(1024);
+  });
+
+  it('should return the correct dimensions for aspect ratio 4:3', () => {
+    const dimensions = getScreenImageDimensions(4 / 3);
+    expect(dimensions.sm.width).toBe(640);
+    expect(dimensions.sm.height).toBe(480);
+    expect(dimensions.md.width).toBe(768);
+    expect(dimensions.md.height).toBe(576);
+    expect(dimensions.lg.width).toBe(1024);
+    expect(dimensions.lg.height).toBe(768);
+  });
+
+  it('should return the correct dimensions for aspect ratio 3:4', () => {
+    const dimensions = getScreenImageDimensions(3 / 4);
+    expect(dimensions.sm.width).toBe(480);
+    expect(dimensions.sm.height).toBe(640);
+    expect(dimensions.md.width).toBe(576);
+    expect(dimensions.md.height).toBe(768);
+    expect(dimensions.lg.width).toBe(768);
+    expect(dimensions.lg.height).toBe(1024);
+  });
+});
+
+describe('constructStackUrl', () => {
+  const id = 'testId';
+  it('should create the correct url for different dimensions', () => {
+    const url = constructStackUrl({
+      filename: 'testId.jpg',
+      dimensions: { width: 640, height: 640 },
+      imageStackDomain: 'testDomain.com',
+      imageStackId: 'stack-id',
+    });
+    expect(url).toBe(`https://stack-id.testDomain.com/fit-in/640x640/filters:upscale()/testId.jpg`);
+    expect(url.includes('testDomain.com') && url.includes('stack-id')).toBe(true);
+    expect(url.includes('testId.jpg')).toBe(true);
+  });
+});
+
+describe('constructSrcSet', () => {
+  it('constructs urls correctly for 1:1 aspect ratio', () => {
+    const srcSet = constructSrcSet({
+      filename: 'testId.jpg',
+      imageStackDomain: 'testDomain.com',
+      imageStackId: 'stack-id',
+      aspectRatio: 1,
+    });
+    expect(srcSet).toEqual({
+      sm: 'https://stack-id.testDomain.com/fit-in/640x640/filters:upscale()/testId.jpg',
+      md: 'https://stack-id.testDomain.com/fit-in/768x768/filters:upscale()/testId.jpg',
+      lg: 'https://stack-id.testDomain.com/fit-in/1024x1024/filters:upscale()/testId.jpg',
+    });
+  });
+
+  it('constructs urls correctly for 4:3 aspect ratio', () => {
+    const srcSet = constructSrcSet({
+      filename: 'testId.jpg',
+      imageStackDomain: 'testDomain.com',
+      imageStackId: 'stack-id',
+      aspectRatio: 4 / 3,
+    });
+    expect(srcSet).toEqual({
+      sm: 'https://stack-id.testDomain.com/fit-in/640x480/filters:upscale()/testId.jpg',
+      md: 'https://stack-id.testDomain.com/fit-in/768x576/filters:upscale()/testId.jpg',
+      lg: 'https://stack-id.testDomain.com/fit-in/1024x768/filters:upscale()/testId.jpg',
+    });
+  });
+
+  it('constructs urls correctly for 3:4 aspect ratio', () => {
+    const srcSet = constructSrcSet({
+      filename: 'testId.jpg',
+      imageStackDomain: 'testDomain.com',
+      imageStackId: 'stack-id',
+      aspectRatio: 3 / 4,
+    });
+    expect(srcSet).toEqual({
+      sm: 'https://stack-id.testDomain.com/fit-in/480x640/filters:upscale()/testId.jpg',
+      md: 'https://stack-id.testDomain.com/fit-in/576x768/filters:upscale()/testId.jpg',
+      lg: 'https://stack-id.testDomain.com/fit-in/768x1024/filters:upscale()/testId.jpg',
+    });
   });
 });

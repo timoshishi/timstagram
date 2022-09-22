@@ -8,6 +8,8 @@ import { randomUUID } from 'crypto';
 export const AVATAR_IMAGE_SIZE = 150;
 import type { ImageProperties, GetImagePropertiesParams } from '../../types';
 import { Environment } from 'types/environment';
+import { ImageSrcSet } from 'types/post';
+import { Dimensions } from '@features/ImageUploader';
 
 export const constructMediaUrl = ({
   filename,
@@ -22,6 +24,90 @@ export const constructMediaUrl = ({
     imageHostDomain || process.env.IMAGE_HOST_DOMAIN
   }/${filename}`;
   return url;
+};
+
+export const constructSrcSet = ({
+  filename,
+  imageStackId,
+  imageStackDomain,
+  aspectRatio,
+}: {
+  filename: string;
+  imageStackId: Environment['IMAGE_STACK_ID'];
+  imageStackDomain: Environment['IMAGE_STACK_DOMAIN'];
+  aspectRatio: number;
+}): ImageSrcSet => {
+  const { sm, md, lg } = getScreenImageDimensions(aspectRatio);
+
+  return {
+    sm: constructStackUrl({
+      filename,
+      imageStackId,
+      imageStackDomain,
+      dimensions: sm,
+    }),
+    md: constructStackUrl({
+      filename,
+      imageStackId,
+      imageStackDomain,
+      dimensions: md,
+    }),
+    lg: constructStackUrl({
+      filename,
+      imageStackId,
+      imageStackDomain,
+      dimensions: lg,
+    }),
+  };
+};
+
+export const constructStackUrl = ({
+  dimensions: { width, height },
+  filename,
+  imageStackId,
+  imageStackDomain,
+}: {
+  dimensions: Dimensions;
+  filename: string;
+  imageStackId: Environment['IMAGE_STACK_ID'];
+  imageStackDomain: Environment['IMAGE_STACK_DOMAIN'];
+}): string => {
+  return `https://${imageStackId}.${imageStackDomain}/fit-in/${width}x${height}/filters:upscale()/${filename}`;
+};
+
+export const scaleImageWidthAndHeight = ({
+  screenSize,
+  aspectRatio,
+}: {
+  screenSize: 'sm' | 'md' | 'lg';
+  aspectRatio: number;
+}): Dimensions => {
+  const maxImageWidth = {
+    sm: 640,
+    md: 768,
+    lg: 1024,
+  }[screenSize];
+  //if the aspect ratio is less than 1, we need to scale the height instead of the width
+  const scaledWidth = aspectRatio < 1 ? maxImageWidth * aspectRatio : maxImageWidth;
+  const scaledHeight = aspectRatio < 1 ? maxImageWidth : maxImageWidth / aspectRatio;
+  return {
+    width: Math.round(scaledWidth),
+    height: Math.round(scaledHeight),
+  };
+};
+
+export const getScreenImageDimensions = (
+  aspectRatio: number
+): {
+  sm: Dimensions;
+  md: Dimensions;
+  lg: Dimensions;
+} => {
+  return {
+    sm: scaleImageWidthAndHeight({ screenSize: 'sm', aspectRatio }),
+    md: scaleImageWidthAndHeight({ screenSize: 'md', aspectRatio }),
+    lg: scaleImageWidthAndHeight({ screenSize: 'lg', aspectRatio }),
+  };
 };
 
 export const getImageHash = async (image: any): Promise<string> => {
