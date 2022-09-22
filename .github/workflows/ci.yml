@@ -43,6 +43,9 @@ jobs:
         run: |
           cat .env
 
+      - name: Install dotenv cli
+        run: yarn global add dotenv-cli
+
       - name: Install dependencies 🏗️
         id: yarn-install
         run: yarn install --frozen-lockfile
