@@ -29,6 +29,8 @@ jobs:
           envkey_ENVIRONMENT: ${{ secrets.ENVIRONMENT }}
           envkey_EXAMPLE_BUCKET: ${{ secrets.EXAMPLE_BUCKET }}
           envkey_IMAGE_HOST_DOMAIN: ${{ secrets.IMAGE_HOST_DOMAIN }}
+          envkey_IMAGE_STACK_DOMAIN: ${{ secrets.IMAGE_STACK_DOMAIN }}
+          envkey_IMAGE_STACK_ID: ${{ secrets.IMAGE_STACK_ID }}
           envkey_NEXT_PUBLIC_API_URL: ${{ secrets.NEXT_PUBLIC_API_URL }}
           envkey_NEXT_PUBLIC_APP_NAME: ${{ secrets.NEXT_PUBLIC_APP_NAME }}
           envkey_NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.NEXT_PUBLIC_SUPABASE_ANON_KEY }}

@@ -1,10 +1,10 @@
 /* eslint-disable */
 import React from 'react';
-import Image from 'next/image';
+import Image from 'next/future/image';
 import { DEFAULT_IMAGE_PLACEHOLDER } from '@common/constants/index';
-import { Tag } from '@src/types/post.types';
+import { PostMedia, Tag } from 'types/post';
 interface PostImageProps {
-  imageUrl: string;
+  media: PostMedia;
   tags: Tag[];
   size: number;
   setSize: (size: number) => void;
@@ -15,7 +15,7 @@ interface PostImageProps {
 }
 
 export const PostImage = ({
-  imageUrl,
+  media,
   tags,
   size,
   setSize,
@@ -26,13 +26,11 @@ export const PostImage = ({
 }: PostImageProps) => {
   return (
     <Image
-      src={imageUrl}
+      src={media.fallbackImageUrl}
       alt={tags.join(' ')}
-      width={800}
-      height={600}
       loading={currentIdx < 7 ? 'eager' : 'lazy'}
       priority={currentIdx < 3 && page === 1 ? true : false}
-      layout='responsive' // this should be commented out when not using storybooks
+      // layout='responsive' // this should be commented out when not using storybooks
       blurDataURL={placeholder || DEFAULT_IMAGE_PLACEHOLDER}
       placeholder='blur'
       onError={() => {
@@ -40,6 +38,8 @@ export const PostImage = ({
           setSize(size + 1);
         }
       }}
+      width={media.dimensions.width}
+      height={media.dimensions.height}
       onLoadingComplete={() => {
         if (currentIdx === refreshIdx && page === size) {
           setSize(size + 1);

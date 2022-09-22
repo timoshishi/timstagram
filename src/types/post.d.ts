@@ -1,3 +1,4 @@
+import { Dimensions } from '@features/ImageUploader';
 import { Tag as PrismaTag } from '@prisma/client';
 
 export interface Author {
@@ -8,10 +9,24 @@ export interface Author {
   followingCount: number;
 }
 
+export interface ImageSrcSet {
+  sm: string;
+  md: string;
+  lg: string;
+}
 export interface PostResponseLike {
   userId: string;
   username: string;
   avatarUrl: string;
+}
+
+export interface PostMedia {
+  aspectRatio: number;
+  dimensions: Dimensions;
+  fallbackImageUrl: string;
+  filename: string;
+  placeholder: string;
+  // sourceSet: ImageSrcSet;
 }
 
 export interface Post {
@@ -25,10 +40,10 @@ export interface Post {
   isFollowing: boolean;
   repostCount: number;
   likeCount: number;
-  imageUrl: string;
   author: Author;
   tags: Tag[];
   createdAt: string;
+  media: PostMedia[];
 }
 
 export interface PostComment {

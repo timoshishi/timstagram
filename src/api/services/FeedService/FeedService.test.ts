@@ -1,4 +1,6 @@
+import { PostQueryResponse } from '@api/types';
 import { prismaMock } from '@src/mocks/singleton';
+import { Post } from 'types/post';
 import { PostService } from '../PostService';
 import { FeedService } from './FeedService';
 
@@ -33,7 +35,7 @@ const formattedPostReturn = {
   },
 };
 
-const formattedPostReturnNoUser = {
+const formattedPostReturnNoUser: Post = {
   postId: '44cbb560-e09c-4ff6-b4de-fe42c82ad53e',
   postBody: 'hello dolly',
   viewCount: 1,
@@ -50,10 +52,20 @@ const formattedPostReturnNoUser = {
       avatarUrl: 'https://witter-dev.s3.amazonaws.com/c650d27a-d84c-4497-ac63-3a93757c9ebf.png',
     },
   ],
-  imageUrl: 'https://witter-dev.s3.amazonaws.com/f144dbef-48bf-4bd8-bef4-ec1c3e9601e7.png',
   tags: [],
   createdAt: '2022-09-12T20:50:17.329Z',
-
+  media: [
+    {
+      fallbackImageUrl: 'https://d1s2y0mcv3lwpm.cloudfront.net/f144dbef-48bf-4bd8-bef4-ec1c3e9601e7.png',
+      aspectRatio: 1,
+      dimensions: {
+        width: 1,
+        height: 1,
+      },
+      filename: 'f144dbef-48bf-4bd8-bef4-ec1c3e9601e7.png',
+      placeholder: 'image-placeholder',
+    },
+  ],
   author: {
     username: 'test1',
     bio: 'gC5u2os7ZAX127E3H9Es8',
@@ -63,24 +75,25 @@ const formattedPostReturnNoUser = {
   },
 };
 
-const prismaPostQueryResponse = {
+const prismaPostQueryResponse: PostQueryResponse = {
   id: '44cbb560-e09c-4ff6-b4de-fe42c82ad53e',
   postBody: 'hello dolly',
   createdAt: new Date('2022-09-12T20:50:17.329Z'),
   viewCount: 1,
-  mediaUrl: 'https://witter-dev.s3.amazonaws.com/f144dbef-48bf-4bd8-bef4-ec1c3e9601e7.png',
-  userAvatarUrl: null,
-  username: 'test1',
-  userId: '4d916591-2f88-4a8b-b510-617578a2dc1d',
+  authorId: '4d916591-2f88-4a8b-b510-617578a2dc1d',
   postHash: 'NxGc88',
   comments: [],
   tags: [],
   media: [
     {
       id: '39bfb72c-059c-41a4-86cc-9571ef7fbc34',
-      url: 'https://witter-dev.s3.amazonaws.com/f144dbef-48bf-4bd8-bef4-ec1c3e9601e7.png',
       bucket: 'witter-dev',
       filename: 'f144dbef-48bf-4bd8-bef4-ec1c3e9601e7.png',
+      placeholder: 'image-placeholder',
+      domain: 's3.amazonaws.com',
+      height: 1,
+      width: 1,
+      aspectRatio: 1,
     },
   ],
   postLikes: [
@@ -136,11 +149,13 @@ describe('FeedService', () => {
   describe('getPopular', () => {
     it('should return an array of post objects with the expected properties', async () => {
       prismaMock.post.findMany.mockResolvedValue([foundPost]);
+
       const result = await feedService.getPopular({
         page: 1,
         limit: 10,
         userId: '4d916591-2f88-4a8b-b510-617578a2dc1d',
       });
+
       expect(result).not.toBeNull();
       expect(result).toHaveLength(1);
       expect(result[0]).toEqual(formattedPostReturnNoUser);

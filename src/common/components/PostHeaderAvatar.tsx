@@ -26,7 +26,7 @@ export const PostHeaderAvatar = ({ username, avatarUrl, isFollowing, size = 'sm'
         {badge ? badge : <></>}
       </Avatar>
       <Flex direction='column' justifyContent={'space-between'} ml={2} mt={isFollowing ? '1' : '0'}>
-        <Text fontSize={sizeToTextSize[size]} fontWeight='bold'>
+        <Text fontSize={sizeToTextSize[size]} fontWeight='bold' as='h2'>
           {username}
         </Text>
         {isFollowing ? (

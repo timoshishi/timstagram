@@ -1,5 +1,5 @@
 import { Link } from '@chakra-ui/react';
-import { Tag } from 'types/post.types';
+import { Tag } from 'types/post';
 
 interface TagsProps {
   tags: Tag[];

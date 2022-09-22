@@ -1,7 +1,7 @@
-import { Flex, Box, useColorModeValue } from '@chakra-ui/react';
+import { Box, useColorModeValue } from '@chakra-ui/react';
 import { PostHeader } from './PostHeader';
 import { PostImage } from './PostImage';
-import type { Post } from 'types/post.types';
+import type { Post } from 'types/post';
 import { PostFooter } from './PostFooter';
 
 export interface PostCardProps {
@@ -14,7 +14,7 @@ export interface PostCardProps {
 }
 
 export const PostCard = ({
-  post: { postId, viewCount, postBody, commentCount, hasLiked, createdAt, isFollowing, likes, imageUrl, author, tags },
+  post: { postId, viewCount, postBody, commentCount, hasLiked, createdAt, isFollowing, likes, media, author, tags },
   setSize,
   size,
   refreshIdx,
@@ -22,49 +22,48 @@ export const PostCard = ({
   page,
 }: PostCardProps) => {
   return (
-    <Flex w='100%' alignItems='center' justifyContent='center'>
-      <Box
-        bg={useColorModeValue('white', 'gray.800')}
-        maxW='100vw'
-        borderBottomWidth={1}
-        borderTopWidth={1}
-        borderLeftWidth={[0, 1]}
-        borderRightWidth={[0, 1]}
-        rounded='lg'
-        shadow={['none', 'sm']}
-        position='relative'
-      >
-        <Box w='100%' h='70%' display='block'>
-          <PostHeader
-            author={author}
-            repostsCount={0}
-            viewCount={viewCount}
-            createdAt={createdAt}
-            isFollowing={isFollowing}
-          />
-          <Box minW='100%' h='100%' position='relative'>
-            <PostImage
-              imageUrl={imageUrl}
-              tags={tags}
-              setSize={setSize}
-              size={size}
-              refreshIdx={refreshIdx}
-              currentIdx={currentIdx}
-              page={page}
-            />
-          </Box>
-        </Box>
-        <PostFooter
-          tags={tags}
-          postId={postId}
-          postBody={postBody}
-          hasLiked={hasLiked}
-          likesCount={likes.length}
-          username={author.username}
-          commentCount={commentCount}
+    <Box
+      bg={useColorModeValue('white', 'gray.800')}
+      maxW='100%'
+      maxH='95vw'
+      borderBottomWidth={1}
+      borderTopWidth={1}
+      borderLeftWidth={[0, 1]}
+      borderRightWidth={[0, 1]}
+      rounded='lg'
+      shadow={['none', 'sm']}
+      // position='relative'
+    >
+      <Box>
+        <PostHeader
+          author={author}
+          repostsCount={0}
+          viewCount={viewCount}
+          createdAt={createdAt}
+          isFollowing={isFollowing}
         />
+        <Box>
+          <PostImage
+            media={media[0]}
+            tags={tags}
+            setSize={setSize}
+            size={size}
+            refreshIdx={refreshIdx}
+            currentIdx={currentIdx}
+            page={page}
+          />
+        </Box>
       </Box>
-    </Flex>
+      <PostFooter
+        tags={tags}
+        postId={postId}
+        postBody={postBody}
+        hasLiked={hasLiked}
+        likesCount={likes.length}
+        username={author.username}
+        commentCount={commentCount}
+      />
+    </Box>
   );
 };
 

@@ -2,11 +2,12 @@ import { PrismaClient, Post as PrismaPost } from '@prisma/client';
 import { customNano } from '../../../lib/customNano';
 import { randomUUID } from 'crypto';
 import { postSelectObj, activePostQueryObj } from '../../utils/query-objects';
-import { Post } from 'types/post.types';
+import { Post } from 'types/post';
 import { PostHash as PrismaPostHash } from '@prisma/client';
 import { SupaUser } from 'types/index';
 import type { PostQueryResponse, ImageProperties } from '../../types';
 import { constructMediaUrl } from '../ImageService/handleImageUpload';
+import { DEFAULT_IMAGE_PLACEHOLDER } from '../../../common/constants';
 
 type GetPostParams = {
   postHash?: string;
@@ -135,6 +136,7 @@ export class PostService {
                 size: imageProperties.size,
                 kind: 'post',
                 hash: imageProperties.hash,
+                placeholder: imageProperties.placeholder,
               },
             ],
           },
@@ -254,11 +256,20 @@ export class PostService {
         username: like.profile.username,
         avatarUrl: like.profile.avatarUrl,
       })),
-      imageUrl: constructMediaUrl({
-        filename: post.media[0].filename,
-        bucket: post.media[0].bucket,
-        imageHostDomain: post.media[0].domain,
-      }),
+      media: post.media.map((media) => ({
+        aspectRatio: media.aspectRatio,
+        dimensions: {
+          width: media.width,
+          height: media.height,
+        },
+        fallbackImageUrl: constructMediaUrl({
+          filename: media.filename,
+          bucket: process.env['IMAGE_STACK_ID'],
+          imageHostDomain: process.env['IMAGE_STACK_DOMAIN'],
+        }),
+        placeholder: media.placeholder || DEFAULT_IMAGE_PLACEHOLDER,
+        filename: media.filename,
+      })),
       tags: post.tags,
       createdAt: post.createdAt.toISOString(),
       author: {

@@ -1,12 +1,13 @@
 import { prismaMock } from '@src/mocks/singleton';
 import { PostService } from './PostService';
-import { Post } from 'types/post.types';
+import { Post } from 'types/post';
 import { supaUser } from '@src/mocks/supaUser';
 import { SupaUser } from 'types/index';
 import { getImageFileNode } from '../../../../test-utils';
 import path from 'path';
 import { getImageProperties } from '../ImageService/handleImageUpload';
 import { prismaPost } from '@src/mocks/post';
+import { PostQueryResponse } from '@api/types';
 
 const MOCK_NANO = '08461dc7840';
 const fixturesDir = path.join(__dirname, '../../../../__mocks__/fixtures');
@@ -22,7 +23,7 @@ jest.mock('@aws-sdk/s3-request-presigner', () => ({
 
 jest.spyOn(console, 'error').mockImplementation(() => {});
 
-const fullPostReturn = {
+const fullPostReturn: Post = {
   postId: '44cbb560-e09c-4ff6-b4de-fe42c82ad53e',
   postBody: 'hello dolly',
   viewCount: 1,
@@ -32,6 +33,18 @@ const fullPostReturn = {
   isFollowing: true,
   repostCount: 0,
   likeCount: 1,
+  media: [
+    {
+      filename: 'f144dbef-48bf-4bd8-bef4-ec1c3e9601e7.png',
+      fallbackImageUrl: 'https://d1s2y0mcv3lwpm.cloudfront.net/f144dbef-48bf-4bd8-bef4-ec1c3e9601e7.png',
+      aspectRatio: 1,
+      dimensions: {
+        width: 1,
+        height: 1,
+      },
+      placeholder: 'placeholder',
+    },
+  ],
   likes: [
     {
       userId: '4d916591-2f88-4a8b-b510-617578a2dc1d',
@@ -39,7 +52,6 @@ const fullPostReturn = {
       avatarUrl: 'https://witter-dev.s3.amazonaws.com/c650d27a-d84c-4497-ac63-3a93757c9ebf.png',
     },
   ],
-  imageUrl: 'https://witter-dev.s3.amazonaws.com/f144dbef-48bf-4bd8-bef4-ec1c3e9601e7.png',
   tags: [],
   createdAt: '2022-09-12T20:50:17.329Z',
   author: {
@@ -50,24 +62,36 @@ const fullPostReturn = {
     followingCount: 0,
   },
 };
-const getSinglePostReturn = {
+const getSinglePostReturn: PostQueryResponse = {
   id: '44cbb560-e09c-4ff6-b4de-fe42c82ad53e',
   postBody: 'hello dolly',
-  createdAt: '2022-09-12T20:50:17.329Z',
+  createdAt: new Date('2022-09-12T20:50:17.329Z'),
   viewCount: 1,
-  mediaUrl: 'https://witter-dev.s3.amazonaws.com/f144dbef-48bf-4bd8-bef4-ec1c3e9601e7.png',
-  userAvatarUrl: null,
-  username: 'test1',
-  userId: '4d916591-2f88-4a8b-b510-617578a2dc1d',
+  profile: {
+    id: '4d916591-2f88-4a8b-b510-617578a2dc1d',
+    username: 'test1',
+    avatarUrl: 'https://witter-dev.s3.amazonaws.com/c650d27a-d84c-4497-ac63-3a93757c9ebf.png',
+    bio: 'gC5u2os7ZAX127E3H9Es8',
+    _count: {
+      followers: 0,
+      following: 0,
+      posts: 1,
+    },
+  },
+  authorId: '4d916591-2f88-4a8b-b510-617578a2dc1d',
   postHash: 'NxGc88',
   comments: [],
   tags: [],
   media: [
     {
-      id: '39bfb72c-059c-41a4-86cc-9571ef7fbc34',
-      url: 'https://witter-dev.s3.amazonaws.com/f144dbef-48bf-4bd8-bef4-ec1c3e9601e7.png',
       bucket: 'witter-dev',
       filename: 'f144dbef-48bf-4bd8-bef4-ec1c3e9601e7.png',
+      aspectRatio: 1,
+      width: 1,
+      height: 1,
+      placeholder: 'placeholder',
+      id: 'f144dbef-48bf-4bd8-bef4-ec1c3e9601e7',
+      domain: 'https://d1s2y0mcv3lwpm.cloudfront.net',
     },
   ],
   postLikes: [
@@ -79,13 +103,6 @@ const getSinglePostReturn = {
       },
     },
   ],
-  profile: {
-    username: 'test1',
-    id: '4d916591-2f88-4a8b-b510-617578a2dc1d',
-    avatarUrl: 'https://witter-dev.s3.amazonaws.com/c650d27a-d84c-4497-ac63-3a93757c9ebf.png',
-    bio: 'gC5u2os7ZAX127E3H9Es8',
-    _count: { followers: 0, following: 0, posts: 1 },
-  },
 };
 
 describe('PostService', () => {
@@ -132,7 +149,8 @@ describe('PostService', () => {
       });
 
       const result: Post | null = await postService.getPostByHashOrId({ postHash: 'test' });
-
+      console.log(result?.media[0].fallbackImageUrl);
+      console.log(fullPostReturn?.media[0].fallbackImageUrl);
       expect(result).toEqual(fullPostReturn);
     });
   });

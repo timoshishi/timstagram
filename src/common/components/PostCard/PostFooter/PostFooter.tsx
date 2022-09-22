@@ -1,5 +1,5 @@
 import { Box, Flex, Link } from '@chakra-ui/react';
-import { Tag } from 'types/post.types';
+import { Tag } from 'types/post';
 import { ActionIcons } from './ActionIcons';
 import { Description } from './Description';
 import { Tags } from './Tags';
