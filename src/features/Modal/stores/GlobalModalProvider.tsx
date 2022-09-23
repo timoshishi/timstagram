@@ -6,7 +6,7 @@ import { Store, ShowModal } from '../types';
 import { GlobalModalContext } from './GlobalModalContext';
 
 export const GlobalModal = ({ children }: { children: React.ReactNode }) => {
-  const [store, setStore] = useState({} as Store<{}>);
+  const [store, setStore] = useState({} as any);
   const { modalType, componentProps, modalProps }: Store = store;
   const [isOpen, setIsOpen] = useState(false);
   const toast = useToast();
@@ -23,7 +23,7 @@ export const GlobalModal = ({ children }: { children: React.ReactNode }) => {
   useModalToast = useRef(useModalToasts(toast)).current;
 
   const updateStore = useCallback((newStore: Partial<Store>) => {
-    setStore((prevStore) => ({
+    setStore((prevStore: Store) => ({
       ...prevStore,
       ...newStore,
     }));
