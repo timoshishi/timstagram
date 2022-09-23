@@ -14,6 +14,9 @@ export interface ImageSrcSet {
   md: string;
   lg: string;
 }
+
+export type ImageSourceSizes = keyof ImageSrcSet;
+
 export interface PostResponseLike {
   userId: string;
   username: string;

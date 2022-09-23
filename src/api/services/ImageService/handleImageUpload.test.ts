@@ -5,15 +5,16 @@ import {
   createPlaceholder,
   resizeAvatarImage,
   constructMediaUrl,
-  scaleImageWidthAndHeight,
   getScreenImageDimensions,
   constructStackUrl,
   constructSrcSet,
 } from './handleImageUpload';
+
 import { promises } from 'fs';
 import path from 'path';
 import { UUIDReg } from '@common/utils/regexp';
 import type { ImageProperties } from '../../types';
+import { scaleImageWidthAndHeight } from '@common/utils/scaleImageWidthAndHeight';
 
 const imageHostDomain = process.env.IMAGE_HOST_DOMAIN;
 const fixturesDir = path.join(__dirname, '../../../../__mocks__/fixtures');
