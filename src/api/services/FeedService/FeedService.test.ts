@@ -56,7 +56,11 @@ const formattedPostReturnNoUser: Post = {
   createdAt: '2022-09-12T20:50:17.329Z',
   media: [
     {
-      fallbackImageUrl: 'https://d1s2y0mcv3lwpm.cloudfront.net/f144dbef-48bf-4bd8-bef4-ec1c3e9601e7.png',
+      srcSet: {
+        sm: 'https://d1s2y0mcv3lwpm.cloudfront.net/fit-in/640x640/filters:upscale()/f144dbef-48bf-4bd8-bef4-ec1c3e9601e7.png',
+        md: 'https://d1s2y0mcv3lwpm.cloudfront.net/fit-in/768x768/filters:upscale()/f144dbef-48bf-4bd8-bef4-ec1c3e9601e7.png',
+        lg: 'https://d1s2y0mcv3lwpm.cloudfront.net/fit-in/1024x1024/filters:upscale()/f144dbef-48bf-4bd8-bef4-ec1c3e9601e7.png',
+      },
       aspectRatio: 1,
       dimensions: {
         width: 1,

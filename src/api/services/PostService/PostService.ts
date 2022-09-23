@@ -6,8 +6,9 @@ import { Post } from 'types/post';
 import { PostHash as PrismaPostHash } from '@prisma/client';
 import { SupaUser } from 'types/index';
 import type { PostQueryResponse, ImageProperties } from '../../types';
-import { constructMediaUrl } from '../ImageService/handleImageUpload';
+import { constructMediaUrl, constructSrcSet } from '../ImageService/handleImageUpload';
 import { DEFAULT_IMAGE_PLACEHOLDER } from '../../../common/constants';
+import { Environment } from 'types/environment';
 
 type GetPostParams = {
   postHash?: string;
@@ -240,7 +241,20 @@ export class PostService {
       content: comment.content,
       createdAt: comment.createdAt.toISOString(),
     }));
-
+    const srcSet = constructSrcSet({
+      imageStackDomain: process.env.IMAGE_STACK_DOMAIN as Environment['IMAGE_STACK_DOMAIN'],
+      imageStackId: process.env.IMAGE_STACK_ID as Environment['IMAGE_STACK_ID'],
+      filename: post.media[0].filename,
+      aspectRatio: post.media[0].aspectRatio,
+    });
+    console.log(
+      srcSet,
+      constructMediaUrl({
+        filename: post.media[0].filename,
+        bucket: process.env.IMAGE_STACK_ID,
+        imageHostDomain: process.env.IMAGE_STACK_DOMAIN,
+      })
+    );
     const responseBody: Post = {
       postId: post.id,
       postBody: post.postBody,
@@ -262,11 +276,7 @@ export class PostService {
           width: media.width,
           height: media.height,
         },
-        fallbackImageUrl: constructMediaUrl({
-          filename: media.filename,
-          bucket: process.env['IMAGE_STACK_ID'],
-          imageHostDomain: process.env['IMAGE_STACK_DOMAIN'],
-        }),
+        srcSet,
         placeholder: media.placeholder || DEFAULT_IMAGE_PLACEHOLDER,
         filename: media.filename,
       })),

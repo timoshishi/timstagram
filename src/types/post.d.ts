@@ -23,10 +23,9 @@ export interface PostResponseLike {
 export interface PostMedia {
   aspectRatio: number;
   dimensions: Dimensions;
-  fallbackImageUrl: string;
   filename: string;
   placeholder: string;
-  // sourceSet: ImageSrcSet;
+  srcSet: ImageSrcSet;
 }
 
 export interface Post {
