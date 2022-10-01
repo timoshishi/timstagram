@@ -4,6 +4,7 @@
 const nextConfig = {
   images: {
     domains: ['picsum.photos', 'witter-dev.s3.amazonaws.com', 'd1s2y0mcv3lwpm.cloudfront.net'],
+    unoptimized: true,
   },
   eslint: {
     dirs: ['src'],
@@ -16,6 +17,7 @@ const nextConfig = {
     locales: ['en'],
     defaultLocale: 'en',
   },
+  swcMinify: true,
   async headers() {
     return [
       {

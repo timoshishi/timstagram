@@ -5,24 +5,5 @@
     "esModuleInterop": true,
     "module": "CommonJS"
   },
-  "exclude": [
-    "node_modules",
-    "**/types/*",
-    "**/stories/**/*",
-    "scripts/api-example",
-    "**/*.spec.ts",
-    "./cypress.config.ts",
-    "**/test-utils/**/*"
-  ],
-  "include": [
-    "next-env.d.ts",
-    "**/*.ts",
-    "**/*.tsx",
-    "types.d.ts",
-    "__tests__/**/*.ts",
-    "__tests__/**/*.tsx",
-    "resolver.js",
-    "src/mocks/api/handlers.js",
-    "prisma/**/*.ts"
-  ]
+  "baseUrl": ".."
 }

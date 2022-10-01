@@ -4,6 +4,11 @@ import Image from 'next/future/image';
 import { DEFAULT_IMAGE_PLACEHOLDER } from '@common/constants/index';
 import { ImageSourceSizes, PostMedia, Tag } from 'types/post';
 import { scaleImageWidthAndHeight } from '@common/utils/scaleImageWidthAndHeight';
+
+const defaultLoader = ({ src }: { src: string; width?: number; height?: number }) => {
+  return src;
+};
+
 interface PostImageProps {
   media: PostMedia;
   tags: Tag[];
@@ -12,7 +17,6 @@ interface PostImageProps {
   refreshIdx: number;
   currentIdx: number;
   page: number;
-  placeholder?: string;
   imgSize?: ImageSourceSizes;
 }
 
@@ -24,7 +28,6 @@ export const PostImage = ({
   refreshIdx,
   currentIdx,
   page,
-  placeholder,
   imgSize = 'md',
 }: PostImageProps) => {
   const { width, height } = scaleImageWidthAndHeight({
@@ -38,15 +41,10 @@ export const PostImage = ({
       alt={tags.join(' ')}
       loading={currentIdx < 7 ? 'eager' : 'lazy'}
       priority={currentIdx < 3 && page === 1 ? true : false}
-      // layout='responsive' // this should be commented out when not using storybooks
-      loader={({ src }) => src}
-      blurDataURL={placeholder || DEFAULT_IMAGE_PLACEHOLDER}
+      loader={defaultLoader}
+      blurDataURL={media.placeholder || DEFAULT_IMAGE_PLACEHOLDER}
       placeholder='blur'
-      onError={() => {
-        if (currentIdx === refreshIdx && page === size) {
-          setSize(size + 1);
-        }
-      }}
+      onError={console.error}
       width={width}
       height={height}
       onLoadingComplete={() => {

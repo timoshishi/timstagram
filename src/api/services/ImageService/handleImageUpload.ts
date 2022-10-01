@@ -10,7 +10,7 @@ import type { ImageProperties, GetImagePropertiesParams } from '../../types';
 import { Environment } from 'types/environment';
 import { ImageSrcSet } from 'types/post';
 import { Dimensions } from '@features/ImageUploader';
-import { scaleImageWidthAndHeight } from '@common/utils/scaleImageWidthAndHeight';
+import { scaleImageWidthAndHeight } from '../../../common/utils/scaleImageWidthAndHeight';
 
 export const constructMediaUrl = ({
   filename,
