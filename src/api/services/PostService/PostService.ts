@@ -6,7 +6,7 @@ import { Post } from 'types/post';
 import { PostHash as PrismaPostHash } from '@prisma/client';
 import { SupaUser } from 'types/index';
 import type { PostQueryResponse, ImageProperties } from '../../types';
-import { constructMediaUrl, constructSrcSet } from '../ImageService/handleImageUpload';
+import { constructSrcSet } from '../ImageService/handleImageUpload';
 import { DEFAULT_IMAGE_PLACEHOLDER } from '../../../common/constants';
 import { Environment } from 'types/environment';
 
@@ -247,14 +247,7 @@ export class PostService {
       filename: post.media[0].filename,
       aspectRatio: post.media[0].aspectRatio,
     });
-    console.log(
-      srcSet,
-      constructMediaUrl({
-        filename: post.media[0].filename,
-        bucket: process.env.IMAGE_STACK_ID,
-        imageHostDomain: process.env.IMAGE_STACK_DOMAIN,
-      })
-    );
+
     const responseBody: Post = {
       postId: post.id,
       postBody: post.postBody,

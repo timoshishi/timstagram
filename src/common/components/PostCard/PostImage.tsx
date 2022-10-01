@@ -31,7 +31,7 @@ export const PostImage = ({
     screenSize: imgSize,
     aspectRatio: media.aspectRatio,
   });
-  console.log(width, height);
+
   return (
     <Image
       src={media.srcSet[imgSize]}
