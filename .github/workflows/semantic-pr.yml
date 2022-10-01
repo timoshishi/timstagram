@@ -6,6 +6,7 @@ jobs:
   main:
     name: Check PR Title
     runs-on: ubuntu-latest
+    if: ${{ github.actor != 'dependabot[bot]' }}
     steps:
       # use a fork of the GitHub action - we cannot pull in untrusted third party actions
       # see https://github.com/cypress-io/cypress/pull/20091#discussion_r801799647
