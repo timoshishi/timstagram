@@ -1,6 +1,6 @@
 {
   "extends": ["next/core-web-vitals", "prettier", "plugin:testing-library/react"],
-  "ignorePatterns": ["/prisma/utils/seed-utils.ts", "**/types/*", "**/stories/**/*"],
+  "ignorePatterns": ["/prisma/utils/seed-utils.ts", "*.d.ts", "**/stories/**/*"],
   "plugins": ["unused-imports"],
   "rules": {
     "unused-imports/no-unused-imports": "warn",

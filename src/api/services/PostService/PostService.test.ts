@@ -36,7 +36,11 @@ const fullPostReturn: Post = {
   media: [
     {
       filename: 'f144dbef-48bf-4bd8-bef4-ec1c3e9601e7.png',
-      fallbackImageUrl: 'https://d1s2y0mcv3lwpm.cloudfront.net/f144dbef-48bf-4bd8-bef4-ec1c3e9601e7.png',
+      srcSet: {
+        lg: 'https://d1s2y0mcv3lwpm.cloudfront.net/fit-in/1024x1024/filters:upscale()/f144dbef-48bf-4bd8-bef4-ec1c3e9601e7.png',
+        md: 'https://d1s2y0mcv3lwpm.cloudfront.net/fit-in/768x768/filters:upscale()/f144dbef-48bf-4bd8-bef4-ec1c3e9601e7.png',
+        sm: 'https://d1s2y0mcv3lwpm.cloudfront.net/fit-in/640x640/filters:upscale()/f144dbef-48bf-4bd8-bef4-ec1c3e9601e7.png',
+      },
       aspectRatio: 1,
       dimensions: {
         width: 1,
@@ -149,8 +153,6 @@ describe('PostService', () => {
       });
 
       const result: Post | null = await postService.getPostByHashOrId({ postHash: 'test' });
-      console.log(result?.media[0].fallbackImageUrl);
-      console.log(fullPostReturn?.media[0].fallbackImageUrl);
       expect(result).toEqual(fullPostReturn);
     });
   });

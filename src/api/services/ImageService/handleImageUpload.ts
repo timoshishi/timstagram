@@ -10,6 +10,7 @@ import type { ImageProperties, GetImagePropertiesParams } from '../../types';
 import { Environment } from 'types/environment';
 import { ImageSrcSet } from 'types/post';
 import { Dimensions } from '@features/ImageUploader';
+import { scaleImageWidthAndHeight } from '@common/utils/scaleImageWidthAndHeight';
 
 export const constructMediaUrl = ({
   filename,
@@ -73,27 +74,6 @@ export const constructStackUrl = ({
   imageStackDomain: Environment['IMAGE_STACK_DOMAIN'];
 }): string => {
   return `https://${imageStackId}.${imageStackDomain}/fit-in/${width}x${height}/filters:upscale()/${filename}`;
-};
-
-export const scaleImageWidthAndHeight = ({
-  screenSize,
-  aspectRatio,
-}: {
-  screenSize: 'sm' | 'md' | 'lg';
-  aspectRatio: number;
-}): Dimensions => {
-  const maxImageWidth = {
-    sm: 640,
-    md: 768,
-    lg: 1024,
-  }[screenSize];
-  //if the aspect ratio is less than 1, we need to scale the height instead of the width
-  const scaledWidth = aspectRatio < 1 ? maxImageWidth * aspectRatio : maxImageWidth;
-  const scaledHeight = aspectRatio < 1 ? maxImageWidth : maxImageWidth / aspectRatio;
-  return {
-    width: Math.round(scaledWidth),
-    height: Math.round(scaledHeight),
-  };
 };
 
 export const getScreenImageDimensions = (

@@ -1,4 +1,4 @@
-import { Box, HStack, Show, VStack } from '@chakra-ui/react';
+import { Box, useBreakpointValue } from '@chakra-ui/react';
 import { useUser } from '@common/hooks/useUser';
 import { NextPageWithLayout } from 'types/page';
 import { SWRConfig } from 'swr';
@@ -6,10 +6,11 @@ import useSWRInfinite from 'swr/infinite';
 import getFeed from '@src/api/getFeed';
 import { PostCard } from '@common/components/PostCard';
 import { fetcher } from 'src/lib/axios';
-import { PostResponse } from 'types/post';
+import { ImageSourceSizes, PostResponse } from 'types/post';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 import { SkeletonPostCard } from '@common/components/PostCard/SkeletonPostCard';
+import { FeedLayout } from '@common/layout/Feed';
 const API = '/feed/popular';
 const PAGE_SIZE = 25;
 
@@ -34,7 +35,7 @@ const getKey = (pageIndex: number, previousPageData: PostResponse) => {
 const Feed: NextPageWithLayout = () => {
   const { user, error, isLoading } = useUser();
   const router = useRouter();
-
+  const imgSize: ImageSourceSizes | undefined = useBreakpointValue({ base: 'sm', md: 'md', lg: 'lg' });
   const { data, error: feedError, mutate, size, setSize, isValidating } = useSWRInfinite(getKey, fetcher);
 
   let postResponses: PostResponse[] = data ? [].concat(...data) : [];
@@ -53,33 +54,27 @@ const Feed: NextPageWithLayout = () => {
           meta-description='coolest site on the whole darn internet'
         />
       </Head>
-      <Box w='full' minH='100vh' mt='60px' maxW='100%'>
-        <HStack w='100%' alignItems='flex-start' rowGap={12} columnGap={4} pt={50}>
-          <VStack spacing={10} justifyContent='flex-start' flexGrow={1} h='100%'>
-            {postResponses ? (
-              postResponses.map(({ data: posts, page }) =>
-                posts.map((post, currentIdx) => (
-                  <Box w='100%' key={post.postId}>
-                    <PostCard
-                      post={post}
-                      setSize={setSize}
-                      size={size}
-                      refreshIdx={PAGE_SIZE - 5}
-                      currentIdx={currentIdx}
-                      page={page}
-                    />
-                  </Box>
-                ))
-              )
-            ) : (
-              <SkeletonPostCard />
-            )}
-          </VStack>
-          <Show above='lg'>
-            <Box w='200px' bg='orange' h='450px' mt='30rem' />
-          </Show>
-        </HStack>
-      </Box>
+      <FeedLayout>
+        {postResponses && typeof imgSize !== undefined ? (
+          postResponses.map(({ data: posts, page }) =>
+            posts.map((post, currentIdx) => (
+              <Box w='100%' key={post.postId}>
+                <PostCard
+                  post={post}
+                  imgSize={imgSize}
+                  setSize={setSize}
+                  size={size}
+                  refreshIdx={PAGE_SIZE - 5}
+                  currentIdx={currentIdx}
+                  page={page}
+                />
+              </Box>
+            ))
+          )
+        ) : (
+          <SkeletonPostCard />
+        )}
+      </FeedLayout>
     </>
   );
 };

@@ -24,7 +24,11 @@ export const post: Post = {
         width: 400,
         height: 400,
       },
-      fallbackImageUrl: 'https://witter-dev.s3.amazonaws.com/58d31e3a-af92-4830-850d-97859780ba88.png',
+      srcSet: {
+        lg: 'https://witter-dev.s3.amazonaws.com/58d31e3a-af92-4830-850d-97859780ba88.png',
+        md: 'https://witter-dev.s3.amazonaws.com/58d31e3a-af92-4830-850d-97859780ba88.png',
+        sm: 'https://witter-dev.s3.amazonaws.com/58d31e3a-af92-4830-850d-97859780ba88.png',
+      },
       filename: '58d31e3a-af92-4830-850d-97859780ba88.png',
       placeholder: 'aasdfewafewafwef',
     },

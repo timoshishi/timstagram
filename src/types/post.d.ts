@@ -14,6 +14,9 @@ export interface ImageSrcSet {
   md: string;
   lg: string;
 }
+
+export type ImageSourceSizes = keyof ImageSrcSet;
+
 export interface PostResponseLike {
   userId: string;
   username: string;
@@ -23,10 +26,9 @@ export interface PostResponseLike {
 export interface PostMedia {
   aspectRatio: number;
   dimensions: Dimensions;
-  fallbackImageUrl: string;
   filename: string;
   placeholder: string;
-  // sourceSet: ImageSrcSet;
+  srcSet: ImageSrcSet;
 }
 
 export interface Post {
