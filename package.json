@@ -106,7 +106,7 @@
     "@storybook/addon-links": "^6.5.10",
     "@storybook/builder-webpack5": "^6.5.10",
     "@storybook/jest": "^0.0.10",
-    "@storybook/manager-webpack5": "^6.5.10",
+    "@storybook/manager-webpack5": "^6.5.12",
     "@storybook/react": "^6.5.10",
     "@storybook/testing-library": "^0.0.13",
     "@storyofams/next-api-decorators": "^1.8.2",
