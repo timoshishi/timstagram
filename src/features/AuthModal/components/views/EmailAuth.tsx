@@ -92,6 +92,7 @@ function EmailAuth({
           }
           if (user) hideModal();
           break;
+
         case 'sign_up':
           if (await usernameDoesExist(username)) {
             useModalToast.warning({
@@ -122,7 +123,7 @@ function EmailAuth({
           }
 
           if (signUpUser) {
-            const resp = await insertInitialProfileData({ id: signUpUser.id, username });
+            await insertInitialProfileData({ id: signUpUser.id, username });
             useModalToast.info({
               title: `Welcome to ${process.env.NEXT_PUBLIC_APP_NAME}!`,
               message: "We've sent you an email with a link to confirm your account",
@@ -151,6 +152,7 @@ function EmailAuth({
     setAuthView(newView);
   };
 
+  //TODO: Add password complexity requirements
   return (
     <form id={id} onSubmit={handleSubmit}>
       <Space size={6} direction={'vertical'}>
@@ -259,4 +261,5 @@ function EmailAuth({
     </form>
   );
 }
+
 export { EmailAuth };

@@ -103,7 +103,7 @@ export class ProfileController {
         const result = await this.supabaseService.auth.api.updateUserById(id, { email_confirm: true });
 
         if (result.error) {
-          console.error(result.error);
+          console.error('error in profile POST', result.error);
           return res.status(500).json({ resultError: result.error });
         }
       }

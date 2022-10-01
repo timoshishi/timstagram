@@ -11,5 +11,19 @@
     "titleBar.inactiveBackground": "#006b5299",
     "titleBar.inactiveForeground": "#e7e7e799"
   },
-  "cSpell.words": ["dbpush", "envkey", "lcov", "plaiceholder", "precopy", "predev", "prereport", "presigner"]
+  "cSpell.words": [
+    "dbpush",
+    "envkey",
+    "lcov",
+    "lwpm",
+    "nosniff",
+    "picsum",
+    "plaiceholder",
+    "precopy",
+    "predev",
+    "prereport",
+    "presigner",
+    "reposts",
+    "SAMEORIGIN"
+  ]
 }

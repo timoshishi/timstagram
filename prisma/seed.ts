@@ -150,6 +150,6 @@ const createPosts = async (createdUsers: { data: User[] }): Promise<Post[]> => {
   } catch (error) {
     console.log('ERROR');
     console.error(error);
-    process.exit(0);
+    process.exit(1);
   }
 })();
