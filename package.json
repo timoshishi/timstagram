@@ -141,7 +141,7 @@
     "husky": "^8.0.0",
     "istanbul-lib-coverage": "^3.2.0",
     "jest": "^28.1.3",
-    "jest-environment-jsdom": "^28.1.3",
+    "jest-environment-jsdom": "^29.1.2",
     "jest-mock-extended": "2.0.4",
     "knex": "^2.2.0",
     "local-cypress": "^1.2.6",
