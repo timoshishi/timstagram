@@ -94,7 +94,7 @@
   },
   "devDependencies": {
     "@babel/core": "^7.18.10",
-    "@chakra-ui/storybook-addon": "^4.0.8",
+    "@chakra-ui/storybook-addon": "^4.0.12",
     "@commitlint/cli": "^17.1.2",
     "@commitlint/config-conventional": "^17.1.0",
     "@cypress/code-coverage": "^3.10.0",
