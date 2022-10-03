@@ -1,6 +1,7 @@
 import { Flex, Box, Text, Icon, chakra, useColorModeValue } from '@chakra-ui/react';
 import { FaRegCommentAlt, FaShare } from 'react-icons/fa';
 import { FiHeart } from 'react-icons/fi';
+
 interface ActionIconsProps {
   hasLiked: boolean;
   likesCount: number;
