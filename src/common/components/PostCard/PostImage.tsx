@@ -52,6 +52,7 @@ export const PostImage = ({
           setSize(size + 1);
         }
       }}
+      data-testid='post-image'
     />
   );
 };

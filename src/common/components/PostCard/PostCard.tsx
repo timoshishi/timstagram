@@ -42,6 +42,7 @@ export const PostCard = ({
       rounded='lg'
       shadow={['none', 'sm', 'md', 'lg']}
       // position='relative'
+      data-testid='post-card'
     >
       <Box>
         <PostHeader
