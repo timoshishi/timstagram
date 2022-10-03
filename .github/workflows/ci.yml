@@ -50,7 +50,7 @@ jobs:
         run: yarn install --frozen-lockfile
 
       - name: Apply Prisma migrations
-        run: npx prisma migrate dev
+        run: npx prisma db push
 
       - name: Setup Coverage 📊
         run: yarn setup-coverage
