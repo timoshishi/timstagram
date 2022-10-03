@@ -7,6 +7,11 @@ describe('post-card', () => {
       cy.visit('http://localhost:3000/');
     });
 
+    it('will show the auth modal if you try to like and are not logged in', () => {
+      cy.get('button[name="post-card-like"]').first().click();
+      cy.contains(/Sign up to/i).should('exist');
+    });
+
     it('can like a post', () => {
       const user1 = createRandomUserCreds();
       cy.createUser(user1);
@@ -17,7 +22,7 @@ describe('post-card', () => {
       cy.get('[data-testid="likes-text"]').should('exist').invoke('text').should('contain', 'like');
     });
 
-    it.only('can like a post', () => {
+    it('can like a post', () => {
       const user1 = createRandomUserCreds();
       cy.createUser(user1);
       cy.loginUser(user1);
@@ -59,7 +64,6 @@ describe('post-card', () => {
                 });
             });
         });
-      // if there was no text in the like count, the likeCount should now contain 1
     });
   });
 });
