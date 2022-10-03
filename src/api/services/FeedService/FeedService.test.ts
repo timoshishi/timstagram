@@ -138,6 +138,7 @@ const prismaPost = {
   username: 'test1',
   postHash: 'F62jKB',
 };
+
 describe('FeedService', () => {
   let feedService: FeedService;
   let foundPost: any;
@@ -157,7 +158,6 @@ describe('FeedService', () => {
       const result = await feedService.getPopular({
         page: 1,
         limit: 10,
-        userId: '4d916591-2f88-4a8b-b510-617578a2dc1d',
       });
 
       expect(result).not.toBeNull();
