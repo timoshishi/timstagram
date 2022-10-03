@@ -1,4 +1,4 @@
-import { cy } from 'local-cypress';
+import { cy, expect } from 'local-cypress';
 
 describe('feed', () => {
   beforeEach(() => {
@@ -29,5 +29,18 @@ describe('feed', () => {
     // scrolling down on the page should load 25 more images after we roll down the page
     cy.scrollTo('bottom');
     cy.get('[data-testid="feed-layout-main"] [data-testid="post-image"]').should('have.length.at.least', 50);
+    // scroll again
+    cy.scrollTo('bottom');
+    // make sure that all urls are unique
+    let srcs = new Set();
+    cy.get('[data-testid="feed-layout-main"] [data-testid="post-image"]')
+      .each((el, i) => {
+        const src = el.attr('src');
+        srcs.add(src);
+      })
+      .then(() => {
+        // check the length of all the posts against the src
+        cy.get('[data-testid="feed-layout-main"] [data-testid="post-image"]').should('have.length', srcs.size);
+      });
   });
 });

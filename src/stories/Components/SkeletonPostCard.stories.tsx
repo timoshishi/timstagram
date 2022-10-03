@@ -1,7 +1,6 @@
 import React from 'react';
 import { ComponentStory, ComponentMeta } from '@storybook/react';
-import { post } from '../../mocks/post';
-import { SkeletonPostCard } from '../../common/components/PostCard/SkeletonPostCard';
+import { SkeletonPostCard } from '../../features/PostFeed';
 import { Box } from '@chakra-ui/react';
 // More on default export: https://storybook.js.org/docs/react/writing-stories/introduction#default-export
 export default {

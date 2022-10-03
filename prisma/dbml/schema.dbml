@@ -114,7 +114,7 @@ Table post_likes {
   postId String [not null]
   userId String [not null]
   createdAt DateTime [default: `now()`, not null]
-  doesLike Boolean [not null, default: true]
+  doesLike Boolean [not null, default: false]
   post posts [not null]
   profile profiles [not null]
 

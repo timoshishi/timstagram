@@ -286,11 +286,11 @@ export class PostService {
     return responseBody;
   };
 
-  formatPostResponseObjects = (posts: PostQueryResponse[]): Post[] => {
+  formatPostResponseObjects = (posts: PostQueryResponse[], userId?: string): Post[] => {
     const responseBody: Post[] = posts.reduce((posts: Post[], post: PostQueryResponse) => {
       const body = this.constructPostResponseObject({
         post,
-        hasLikedPost: false,
+        hasLikedPost: post?.postLikes.find((like) => like.profile.id === userId) ? true : false, //TODO: later more feed customization
         isFollowingUser: false,
         hasFlaggedPost: false,
       });

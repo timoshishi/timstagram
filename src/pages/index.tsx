@@ -1,16 +1,14 @@
-import { Box, useBreakpointValue } from '@chakra-ui/react';
+import { useBreakpointValue } from '@chakra-ui/react';
 import { useUser } from '@common/hooks/useUser';
 import { NextPageWithLayout } from 'types/page';
 import { SWRConfig } from 'swr';
 import useSWRInfinite from 'swr/infinite';
 import getFeed from '@src/api/getFeed';
-import { PostCard } from '@common/components/PostCard';
+import { PostFeed } from '@features/PostFeed';
 import { fetcher } from 'src/lib/axios';
 import { ImageSourceSizes, PostResponse } from 'types/post';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
-import { SkeletonPostCard } from '@common/components/PostCard/SkeletonPostCard';
-import { FeedLayout } from '@common/layout/Feed';
 const API = '/feed/popular';
 const PAGE_SIZE = 25;
 
@@ -54,30 +52,16 @@ const Feed: NextPageWithLayout = () => {
           meta-description='coolest site on the whole darn internet'
         />
       </Head>
-      <FeedLayout>
-        {postResponses && typeof imgSize !== undefined ? (
-          postResponses.map(({ data: posts, page }) =>
-            posts.map((post, currentIdx) => (
-              <Box w='100%' key={post.postId}>
-                <PostCard
-                  post={post}
-                  imgSize={imgSize}
-                  setSize={setSize}
-                  size={size}
-                  refreshIdx={PAGE_SIZE - 5}
-                  currentIdx={currentIdx}
-                  page={page}
-                />
-              </Box>
-            ))
-          )
-        ) : (
-          <SkeletonPostCard />
-        )}
-      </FeedLayout>
+      <PostFeed
+        postResponses={postResponses}
+        imgSize={imgSize}
+        setResponseArraySize={setSize}
+        responseArraySize={size}
+      />
     </>
   );
 };
+
 export default function SWRPage({ fallback }: { fallback: any }) {
   return (
     <SWRConfig value={{ fallback }}>

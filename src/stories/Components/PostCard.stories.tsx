@@ -1,9 +1,10 @@
 import React from 'react';
 import { ComponentStory, ComponentMeta } from '@storybook/react';
 import { post } from '../../mocks/post';
-import { PostCard } from '../../common/components/PostCard';
-import type { PostCardProps } from '../../common/components/PostCard';
+import { PostCard } from '../../features/PostFeed';
+import type { PostCardProps } from '../../features/PostFeed';
 import { Box } from '@chakra-ui/react';
+import { supaUser } from '../../mocks/supaUser';
 // More on default export: https://storybook.js.org/docs/react/writing-stories/introduction#default-export
 export default {
   title: 'Components/PostCard',
@@ -19,7 +20,7 @@ const Template: ComponentStory<typeof PostCard> = (args) => (
   </Box>
 );
 
-export const Primary = Template.bind({});
+export const NoUser = Template.bind({});
 // More on args: https://storybook.js.org/docs/react/writing-stories/args
 const props: PostCardProps = {
   post: post,
@@ -30,6 +31,16 @@ const props: PostCardProps = {
   refreshIdx: 2,
   currentIdx: 1,
   page: 0,
+  user: null,
 };
 
-Primary.args = props;
+NoUser.args = props;
+
+export const WithUser = Template.bind({});
+
+WithUser.args = {
+  ...props,
+  user: supaUser,
+};
+
+// https://kwgfmfvqwtlfbskfksiv.supabase.co/rest/v1/post_likes?post_id=eq.8a184667-6ea8-4ac5-83b9-b22ab633faac&user_id=eq.489418a5-c47f-4287-b4b6-d472d1e7c37e
