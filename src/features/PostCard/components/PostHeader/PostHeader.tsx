@@ -1,7 +1,7 @@
 import { Flex, Text } from '@chakra-ui/react';
 import { Author } from 'types/post';
 import dayjs from '@common/utils/dateFormatter';
-import { PostHeaderAvatar } from '../../PostHeaderAvatar';
+import { PostHeaderAvatar } from '@common/components/PostHeaderAvatar';
 import { PostDetail } from './PostDetail';
 
 interface PostHeaderProps {
