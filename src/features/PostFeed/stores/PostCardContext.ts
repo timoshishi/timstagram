@@ -7,8 +7,11 @@ export type PostCardContext = {
   user: SupaUser | null;
   showAuthModal: (props: AuthModalProps) => void;
   post: Post;
-  triggerFetchOnIndex: (size: number) => void;
+  triggerFetchOnIndex: () => void;
   imgUrl: string;
+  page: number;
+  refreshIdx: number;
+  currentIdx: number;
 } | null;
 
 export const PostCardContext = createContext<PostCardContext>(null);

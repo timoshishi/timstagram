@@ -2,10 +2,8 @@ import { FeedLayout } from '@common/layout/Feed';
 import { ImageSourceSizes, PostResponse } from 'types/post';
 import { PostCard } from '@features/PostFeed';
 import { Box } from '@chakra-ui/react';
-import { PAGE_SIZE } from '@common/constants';
 import { SkeletonPostCard } from '@features/PostFeed';
 import { useUser } from '@common/hooks/useUser';
-import { PostCardProvider } from '../stores/PostCardProvider';
 
 export interface PostFeedProps {
   postResponses: PostResponse[];
@@ -22,27 +20,15 @@ export const PostFeed = ({ postResponses, imgSize, setResponseArraySize, respons
         postResponses.map(({ data: posts, page }) =>
           posts.map((post, currentIdx) => (
             <Box w='100%' key={post.postId}>
-              <PostCardProvider
+              <PostCard
                 post={post}
-                setSize={setResponseArraySize}
-                currentIdx={currentIdx}
-                size={responseArraySize}
-                refreshIdx={PAGE_SIZE - 5}
-                page={page}
                 imgSize={imgSize}
+                setSize={setResponseArraySize}
+                size={responseArraySize}
+                currentIdx={currentIdx}
+                page={page}
                 user={user}
-              >
-                <PostCard
-                  post={post}
-                  imgSize={imgSize}
-                  setSize={setResponseArraySize}
-                  size={responseArraySize}
-                  refreshIdx={PAGE_SIZE - 5}
-                  currentIdx={currentIdx}
-                  page={page}
-                  user={user}
-                />
-              </PostCardProvider>
+              />
             </Box>
           ))
         )

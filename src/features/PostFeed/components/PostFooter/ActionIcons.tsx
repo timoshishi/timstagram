@@ -4,13 +4,10 @@ import { FiHeart } from 'react-icons/fi';
 import { usePostCard } from '@features/PostFeed/hooks/usePostCard';
 import { useState } from 'react';
 import { postClient } from '@src/api-client/PostAPI';
-interface ActionIconsProps {
-  hasLiked: boolean;
-  likesCount: number;
-  postId: string;
-}
 
-export const ActionIcons = ({ hasLiked, likesCount }: ActionIconsProps) => {
+interface ActionIconsProps {}
+
+export const ActionIcons = ({}: ActionIconsProps) => {
   const { showAuthModal, post, user } = usePostCard();
   const [doesUserLike, setDoesUserLike] = useState(post.hasLiked);
   const [optimisticLikesCount, setOptimisticLikesCount] = useState(post.likeCount);
