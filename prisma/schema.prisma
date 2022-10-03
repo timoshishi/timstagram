@@ -145,7 +145,7 @@ model PostLike {
   postId    String   @map("post_id") @db.Uuid()
   userId    String   @map("user_id") @db.Uuid()
   createdAt DateTime @default(now()) @map("created_at")
-  doesLike  Boolean  @default(true) @map("does_like")
+  doesLike  Boolean  @default(false) @map("does_like")
   post      Post     @relation(fields: [postId], references: [id], onDelete: Cascade)
   profile   Profile  @relation(fields: [userId], references: [id], onDelete: Cascade)
 

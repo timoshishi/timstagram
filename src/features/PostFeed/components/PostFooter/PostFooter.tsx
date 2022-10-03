@@ -29,7 +29,7 @@ export const PostFooter = ({
         <UserLink username={username} />
         <Tags tags={tags} postId={postId} />
       </Box>
-      <ActionIcons hasLiked={hasLiked} likesCount={likesCount} />
+      <ActionIcons hasLiked={hasLiked} likesCount={likesCount} postId={postId} />
     </Flex>
     <Description postBody={postBody} postId={postId} />
     <Box mt='3'>

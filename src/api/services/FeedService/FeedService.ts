@@ -77,7 +77,7 @@ export class FeedService {
         orderBy: { createdAt: 'desc' },
       });
 
-      const formattedPosts = this.postService.formatPostResponseObjects(posts);
+      const formattedPosts = this.postService.formatPostResponseObjects(posts, userId);
       return formattedPosts;
     } catch (error) {
       console.error(error);

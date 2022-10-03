@@ -4,6 +4,7 @@ import { PostImage } from './PostImage';
 import type { Post } from 'types/post';
 import { PostFooter } from './PostFooter';
 import { scaleImageWidthAndHeight } from '@common/utils/scaleImageWidthAndHeight';
+import { SupaUser } from 'types/index';
 
 export interface PostCardProps {
   post: Post;
@@ -13,18 +14,15 @@ export interface PostCardProps {
   currentIdx: number;
   page: number;
   imgSize?: 'sm' | 'md' | 'lg';
+  user: SupaUser | null;
 }
 
-export const PostCard = ({
-  post: { postId, viewCount, postBody, commentCount, hasLiked, createdAt, isFollowing, likes, media, author, tags },
-  setSize,
-  size,
-  refreshIdx,
-  currentIdx,
-  page,
-  imgSize,
-}: PostCardProps) => {
+export const PostCard = ({ post, setSize, size, refreshIdx, currentIdx, page, imgSize }: PostCardProps) => {
+  const { postId, viewCount, postBody, commentCount, hasLiked, createdAt, isFollowing, likes, media, author, tags } =
+    post;
+
   const firstMedia = media[0];
+
   const { width, height } = scaleImageWidthAndHeight({
     screenSize: imgSize || 'md',
     aspectRatio: firstMedia.aspectRatio,
@@ -41,7 +39,6 @@ export const PostCard = ({
       borderRightWidth={[0, 1]}
       rounded='lg'
       shadow={['none', 'sm', 'md', 'lg']}
-      // position='relative'
       data-testid='post-card'
     >
       <Box>

@@ -1,7 +1,10 @@
 import { AxiosError, AxiosInstance } from 'axios';
 
 export class API {
-  constructor(protected fetcher: AxiosInstance) {}
+  protected fetcher: AxiosInstance;
+  constructor(fetcher: AxiosInstance) {
+    this.fetcher = fetcher;
+  }
 
   async get(path: string, params: any) {
     return await this.fetcher.get(path, params);
