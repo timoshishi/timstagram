@@ -27,7 +27,7 @@ const createNewUsers = async () => {
       user_metadata: {
         bio: faker.lorem.sentence(),
         username: user.username,
-        avatarUrl: `/storybook/avatar-${Math.round(Math.random())}.png`,
+        avatarUrl: '',
       },
       email_confirm: true,
     }));

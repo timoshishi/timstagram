@@ -1,5 +1,4 @@
 import { supabase } from 'src/lib/initSupabase';
-
 import { Flex, Avatar, Button, Menu, MenuButton, MenuList, MenuItem, MenuDivider } from '@chakra-ui/react';
 import { SupaUser } from 'types/index';
 import { useProfileModal } from '@features/ProfileModal';
@@ -37,18 +36,7 @@ export const ProfileDropdown = ({ user }: ProfileDropdownProps) => {
             />
           </MenuButton>
           <MenuList>
-            <MenuItem
-              onClick={() => {
-                showProfileModal({
-                  initialProfileData: {
-                    username: user.user_metadata.username,
-                    avatarUrl: user.user_metadata.avatarUrl,
-                    bio: user.user_metadata.bio,
-                  },
-                });
-              }}
-              icon={<FiUser size={16} />}
-            >
+            <MenuItem onClick={showProfileModal} icon={<FiUser size={16} />}>
               Update Profile
             </MenuItem>
             <MenuDivider />

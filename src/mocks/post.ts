@@ -1,5 +1,6 @@
 import { Post } from 'types/post';
 import { Post as PrismaPost } from '@prisma/client';
+
 export const post: Post = {
   postId: '8a184667-6ea8-4ac5-83b9-b22ab633faac',
   postBody: 'this is a #post that i made @myman timmy',
@@ -15,6 +16,7 @@ export const post: Post = {
       userId: '0ba309d0-4a7a-4251-bbaf-e209d84b3d43',
       username: 'test1',
       avatarUrl: 'https://avatars0.githubusercontent.com/u/1703?v=4',
+      avatarFilename: 'https://avatars0.githubusercontent.com/u/1703?v=4',
     },
   ],
   media: [
@@ -39,6 +41,7 @@ export const post: Post = {
     username: 'test1',
     bio: 'Et maxime facilis temporibus nihil aut non alias repudiandae autem.',
     avatarUrl: 'https://avatars0.githubusercontent.com/u/1703?v=4',
+    avatarFilename: 'https://avatars0.githubusercontent.com/u/1703?v=4',
     followerCount: 0,
     followingCount: 0,
   },

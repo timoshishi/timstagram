@@ -1,7 +1,6 @@
 import { ModalContent, ModalOverlay, useDisclosure, Box, Button } from '@chakra-ui/react';
 import { useProfileModal } from '../hooks/useProfileModal';
 import { ProfileModalForm } from './ProfileModalForm';
-import { SupaUser } from 'types/index';
 import { ImageUploader } from '@features/ImageUploader';
 import { useImageUploader } from '@features/ImageUploader';
 import { useCallback, useEffect } from 'react';
@@ -9,16 +8,13 @@ import { handleAvatarSubmit } from '../api/profile-api';
 import { useUser } from '@common/hooks/useUser';
 import { ChevronLeftIcon } from '@chakra-ui/icons';
 
-export interface ProfileModalProps {
-  initialProfileData: SupaUser['user_metadata'];
-}
+export interface ProfileModalProps {}
 
 export const ProfileModalBase = () => {
   const { user } = useUser();
-  const {
-    componentProps: { initialProfileData },
-    useModalToast,
-  } = useProfileModal();
+  const { useModalToast, hideModal } = useProfileModal();
+  if (!user) hideModal();
+
   const {
     isOpen: isFormStepOpen,
     onToggle,
@@ -55,24 +51,13 @@ export const ProfileModalBase = () => {
     onAvatarSubmit();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [croppedImage]);
-
-  const profile: SupaUser['user_metadata'] = Object.assign(
-    {
-      username: '',
-      bio: '',
-      avatarUrl: '',
-    },
-    initialProfileData
-  );
-
+  if (!user) return null;
   return (
     <>
       <ModalOverlay />
       <ModalContent p={6}>
         <ProfileModalForm
-          profile={profile}
-          initialProfileData={initialProfileData}
-          avatarUrl={user?.user_metadata?.avatarUrl || ''}
+          userMeta={user.user_metadata}
           getButtonProps={getButtonProps}
           getDisclosureProps={getDisclosureProps}
         />

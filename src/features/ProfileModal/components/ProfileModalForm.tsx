@@ -1,33 +1,26 @@
 import { Box, Flex, ModalCloseButton } from '@chakra-ui/react';
 import { BrandLogo } from '@src/common/components/BrandLogo';
-import type { ProfileModalProps } from './ProfileModalBase';
 import { DeleteAccount } from './DeleteAccount';
 import { EditBio } from './EditBio';
 import { EditAvatar } from './EditAvatar';
+import { SupaUserMetadata } from 'types/index';
 
 interface ProfileModalFormProps {
-  initialProfileData: ProfileModalProps['initialProfileData'];
-  profile: Required<ProfileModalFormProps['initialProfileData']>;
+  userMeta: SupaUserMetadata;
   getButtonProps: () => any;
   getDisclosureProps: () => any;
-  avatarUrl: string;
 }
-export const ProfileModalForm = ({
-  initialProfileData,
-  profile,
-  getButtonProps,
-  getDisclosureProps,
-  avatarUrl,
-}: ProfileModalFormProps) => {
+
+export const ProfileModalForm = ({ userMeta, getButtonProps, getDisclosureProps }: ProfileModalFormProps) => {
   return (
     <Box {...getDisclosureProps()}>
-      {initialProfileData.username && <ModalCloseButton />}
+      <ModalCloseButton />
       <Flex flexDirection='column' gap='4'>
         <Flex alignItems='center' justifyContent='center'>
           <BrandLogo />
         </Flex>
-        <EditAvatar initialProfileData={initialProfileData} getButtonProps={getButtonProps} avatarUrl={avatarUrl} />
-        <EditBio profile={profile} />
+        <EditAvatar username={userMeta.username} getButtonProps={getButtonProps} avatarUrl={userMeta.avatarUrl} />
+        <EditBio userMeta={userMeta} />
         <DeleteAccount />
       </Flex>
     </Box>

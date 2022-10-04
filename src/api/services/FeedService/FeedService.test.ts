@@ -4,36 +4,8 @@ import { Post } from 'types/post';
 import { PostService } from '../PostService';
 import { FeedService } from './FeedService';
 
-// jest.spyOn(console, 'error').mockImplementation(() => {});
-
-const formattedPostReturn = {
-  postId: '44cbb560-e09c-4ff6-b4de-fe42c82ad53e',
-  postBody: 'hello dolly',
-  viewCount: 1,
-  commentCount: 0,
-  comments: [],
-  hasLiked: true,
-  isFollowing: true,
-  repostCount: 0,
-  likeCount: 1,
-  likes: [
-    {
-      userId: '4d916591-2f88-4a8b-b510-617578a2dc1d',
-      username: 'test1',
-      avatarUrl: 'https://witter-dev.s3.amazonaws.com/c650d27a-d84c-4497-ac63-3a93757c9ebf.png',
-    },
-  ],
-  imageUrl: 'https://witter-dev.s3.amazonaws.com/f144dbef-48bf-4bd8-bef4-ec1c3e9601e7.png',
-  tags: [],
-  createdAt: '2022-09-12T20:50:17.329Z',
-  author: {
-    username: 'test1',
-    bio: 'gC5u2os7ZAX127E3H9Es8',
-    avatarUrl: 'https://witter-dev.s3.amazonaws.com/c650d27a-d84c-4497-ac63-3a93757c9ebf.png',
-    followerCount: 0,
-    followingCount: 0,
-  },
-};
+jest.spyOn(console, 'error').mockImplementation(() => {});
+jest.spyOn(console, 'info').mockImplementation(() => {});
 
 const formattedPostReturnNoUser: Post = {
   postId: '44cbb560-e09c-4ff6-b4de-fe42c82ad53e',
@@ -50,6 +22,7 @@ const formattedPostReturnNoUser: Post = {
       userId: '4d916591-2f88-4a8b-b510-617578a2dc1d',
       username: 'test1',
       avatarUrl: 'https://witter-dev.s3.amazonaws.com/c650d27a-d84c-4497-ac63-3a93757c9ebf.png',
+      avatarFilename: 'c650d27a-d84c-4497-ac63-3a93757c9ebf.png',
     },
   ],
   tags: [],
@@ -76,6 +49,7 @@ const formattedPostReturnNoUser: Post = {
     avatarUrl: 'https://witter-dev.s3.amazonaws.com/c650d27a-d84c-4497-ac63-3a93757c9ebf.png',
     followerCount: 0,
     followingCount: 0,
+    avatarFilename: 'c650d27a-d84c-4497-ac63-3a93757c9ebf.png',
   },
 };
 
@@ -106,6 +80,7 @@ const prismaPostQueryResponse: PostQueryResponse = {
         username: 'test1',
         id: '4d916591-2f88-4a8b-b510-617578a2dc1d',
         avatarUrl: 'https://witter-dev.s3.amazonaws.com/c650d27a-d84c-4497-ac63-3a93757c9ebf.png',
+        avatarFilename: 'c650d27a-d84c-4497-ac63-3a93757c9ebf.png',
       },
     },
   ],
@@ -113,6 +88,7 @@ const prismaPostQueryResponse: PostQueryResponse = {
     username: 'test1',
     id: '4d916591-2f88-4a8b-b510-617578a2dc1d',
     avatarUrl: 'https://witter-dev.s3.amazonaws.com/c650d27a-d84c-4497-ac63-3a93757c9ebf.png',
+    avatarFilename: 'c650d27a-d84c-4497-ac63-3a93757c9ebf.png',
     bio: 'gC5u2os7ZAX127E3H9Es8',
     _count: { followers: 0, following: 0, posts: 1 },
   },

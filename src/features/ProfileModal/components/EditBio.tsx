@@ -11,16 +11,16 @@ import {
 import { updateProfile } from '../api/profile-api';
 import React, { FormEventHandler, useState } from 'react';
 import { EditIcon } from '@chakra-ui/icons';
-import { SupaUser } from 'types/index';
+import { SupaUserMetadata } from 'types/index';
 import { useProfileModal } from '../hooks/useProfileModal';
 
 interface EditBioProps {
-  profile: Required<SupaUser['user_metadata']>;
+  userMeta: SupaUserMetadata;
 }
-export const EditBio = ({ profile }: EditBioProps) => {
-  const [bio, setBio] = useState(profile.bio);
+export const EditBio = ({ userMeta }: EditBioProps) => {
+  const [bio, setBio] = useState(userMeta.bio);
   const [err, setErr] = useState('');
-  const [isEditingBio, { toggle: toggleEditingBio }] = useBoolean(!profile.bio);
+  const [isEditingBio, { toggle: toggleEditingBio }] = useBoolean(!userMeta.bio);
   const [isSubmitting, { toggle: toggleIsSubmitting }] = useBoolean();
   const { useModalToast } = useProfileModal();
 
@@ -75,7 +75,7 @@ export const EditBio = ({ profile }: EditBioProps) => {
               onChange={handleBioChange}
               rows={Math.floor(bio.length / 40) + 1}
             />
-            {!profile.bio && <FormHelperText>Let others know a little more about @{profile.username}</FormHelperText>}
+            {!userMeta.bio && <FormHelperText>Let others know a little more about @{userMeta.username}</FormHelperText>}
             <FormErrorMessage>{err}</FormErrorMessage>
           </FormControl>
         ) : (

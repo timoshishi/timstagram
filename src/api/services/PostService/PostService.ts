@@ -234,13 +234,16 @@ export class PostService {
     if (hasFlaggedPost) {
       return null;
     }
+
     const comments = post.comments.map((comment) => ({
       userId: comment.id,
       username: comment.profile.username,
+      avatarFilename: comment.profile.avatarFilename,
       avatarUrl: comment.profile.avatarUrl,
       content: comment.content,
       createdAt: comment.createdAt.toISOString(),
     }));
+
     const srcSet = constructSrcSet({
       imageStackDomain: process.env.NEXT_PUBLIC_IMAGE_STACK_DOMAIN as Environment['NEXT_PUBLIC_IMAGE_STACK_DOMAIN'],
       imageStackId: process.env.NEXT_PUBLIC_IMAGE_STACK_ID as Environment['NEXT_PUBLIC_IMAGE_STACK_ID'],
@@ -262,6 +265,7 @@ export class PostService {
         userId: like.profile.id,
         username: like.profile.username,
         avatarUrl: like.profile.avatarUrl,
+        avatarFilename: like.profile.avatarFilename,
       })),
       media: post.media.map((media) => ({
         aspectRatio: media.aspectRatio,
@@ -279,6 +283,7 @@ export class PostService {
         username: post.profile.username,
         bio: post.profile.bio,
         avatarUrl: post.profile.avatarUrl,
+        avatarFilename: post.profile.avatarFilename,
         followerCount: post.profile._count.followers,
         followingCount: post.profile._count.following,
       },
