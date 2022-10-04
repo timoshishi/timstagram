@@ -119,31 +119,22 @@ const createPosts = async (createdUsers: { data: User[] }): Promise<Post[]> => {
 
 const createLikes = async () => {
   try {
-    // create 200 likes total by random users on random posts
     const users = await prisma.profile.findMany();
     const posts = await prisma.post.findMany();
-    const likePromises = Array.from({ length: 200 }).map(() => {
-      const randomPostId = posts[Math.floor(Math.random() * posts.length)].id;
-      const randomUserId = users[Math.floor(Math.random() * users.length)].id;
-      return prisma.postLike.upsert({
-        where: {
-          postId_userId: {
-            postId: randomPostId,
-            userId: randomUserId,
-          },
-        },
-        update: {
-          doesLike: true,
-        },
-        create: {
-          postId: randomPostId,
-          userId: randomUserId,
-          doesLike: true,
-        },
-      });
-    });
-    const likes = await Promise.all(likePromises);
-    return likes;
+    // each user should like 35 random posts
+    const postPromises = users
+      .map((user) => {
+        const randomPosts = posts.sort(() => Math.random() - 0.5).slice(0, 35);
+        const postsToLike = randomPosts.map((post) => ({
+          userId: user.id,
+          postId: post.id,
+        }));
+        const postPromises = postsToLike.map((pl) => postService.toggleLike(pl));
+        return postPromises;
+      })
+      .flat(Infinity);
+    const likedPosts = await Promise.all(postPromises);
+    return likedPosts;
   } catch (error) {
     console.error(error);
   }
@@ -181,8 +172,9 @@ const createLikes = async () => {
         /** END CREATE POSTS */
       }
       /** CREATE LIKES */
+      const likes = await createLikes();
       // const likes = await createLikes();
-      // console.log('created likes:', likes?.length);
+      console.log('created likes:', likes?.length);
     }
 
     process.exit(0);
