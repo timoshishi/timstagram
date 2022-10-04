@@ -22,7 +22,7 @@ describe('post-card', () => {
       cy.get('[data-testid="likes-text"]').should('exist').invoke('text').should('contain', 'like');
     });
 
-    it('can like a post', () => {
+    it('can like and unlike posts and counts persist across users', () => {
       const user1 = createRandomUserCreds();
       cy.createUser(user1);
       cy.loginUser(user1);

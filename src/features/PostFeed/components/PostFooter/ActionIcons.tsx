@@ -3,7 +3,7 @@ import { FaRegCommentAlt, FaShare } from 'react-icons/fa';
 import { FiHeart } from 'react-icons/fi';
 import { usePostCard } from '@features/PostFeed/hooks/usePostCard';
 import { useState } from 'react';
-import { postClient } from '@src/api-client/PostAPI';
+import { togglePostLike } from '../../api';
 
 interface ActionIconsProps {}
 
@@ -19,13 +19,7 @@ export const ActionIcons = ({}: ActionIconsProps) => {
         setIsLikeLoading(true);
         setDoesUserLike((prevVal) => !prevVal);
         setOptimisticLikesCount((prevVal) => (doesUserLike ? prevVal - 1 : prevVal + 1));
-        console.log('firing');
-        await postClient.handleLike({
-          postId: post.postId,
-          hasLiked: doesUserLike,
-          userId: user.id,
-        });
-        setIsLikeLoading(false);
+        await togglePostLike(post.postId);
       } else {
         showAuthModal({
           viewType: 'sign_up',
@@ -35,6 +29,8 @@ export const ActionIcons = ({}: ActionIconsProps) => {
       }
     } catch (error) {
       console.log('FE', error);
+    } finally {
+      setIsLikeLoading(false);
     }
   };
 
