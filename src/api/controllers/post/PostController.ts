@@ -69,4 +69,23 @@ export class PostController {
       res.status(500).json({ error: 'Something went wrong' });
     }
   };
+
+  toggleLike = async (req: NextRequestWithUser, res: NextApiResponse) => {
+    const id = req.query?.id as string;
+    const { user } = req;
+    console.log(user);
+    if (!user || !id) {
+      return res.status(400).end();
+    }
+    try {
+      const like = await this.postService.toggleLike({ postId: id, userId: user.id });
+      if (!like) {
+        return res.status(404).end();
+      }
+      return res.status(200).json(like);
+    } catch (error) {
+      console.error(error);
+      return res.status(500).end();
+    }
+  };
 }

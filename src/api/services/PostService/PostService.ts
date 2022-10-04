@@ -1,4 +1,4 @@
-import { PrismaClient, Post as PrismaPost } from '@prisma/client';
+import { PrismaClient, Post as PrismaPost, PostLike as PrismaPostLike } from '@prisma/client';
 import { customNano } from '../../../lib/customNano';
 import { randomUUID } from 'crypto';
 import { postSelectObj, activePostQueryObj } from '../../utils/query-objects';
@@ -300,5 +300,42 @@ export class PostService {
       return posts;
     }, []);
     return responseBody;
+  };
+
+  toggleLike = async ({ postId, userId }: { postId: string; userId: string }): Promise<PrismaPostLike> => {
+    try {
+      const existingPostLike = await this.prisma.postLike.findUnique({
+        where: {
+          postId_userId: {
+            postId,
+            userId,
+          },
+        },
+      });
+      if (existingPostLike) {
+        return this.prisma.postLike.update({
+          where: {
+            postId_userId: {
+              postId,
+              userId,
+            },
+          },
+          data: {
+            doesLike: !existingPostLike.doesLike,
+          },
+        });
+      } else {
+        return this.prisma.postLike.create({
+          data: {
+            postId,
+            userId,
+            doesLike: true,
+          },
+        });
+      }
+    } catch (error) {
+      console.error(error);
+      throw new Error('Error toggling like');
+    }
   };
 }
