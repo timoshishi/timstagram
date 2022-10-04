@@ -242,8 +242,8 @@ export class PostService {
       createdAt: comment.createdAt.toISOString(),
     }));
     const srcSet = constructSrcSet({
-      imageStackDomain: process.env.IMAGE_STACK_DOMAIN as Environment['IMAGE_STACK_DOMAIN'],
-      imageStackId: process.env.IMAGE_STACK_ID as Environment['IMAGE_STACK_ID'],
+      imageStackDomain: process.env.NEXT_PUBLIC_IMAGE_STACK_DOMAIN as Environment['NEXT_PUBLIC_IMAGE_STACK_DOMAIN'],
+      imageStackId: process.env.NEXT_PUBLIC_IMAGE_STACK_ID as Environment['NEXT_PUBLIC_IMAGE_STACK_ID'],
       filename: post.media[0].filename,
       aspectRatio: post.media[0].aspectRatio,
     });

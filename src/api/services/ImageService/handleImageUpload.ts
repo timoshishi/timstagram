@@ -18,8 +18,8 @@ export const constructMediaUrl = ({
   imageHostDomain,
 }: {
   filename: string;
-  bucket?: Environment['PHOTO_BUCKET'] | Environment['IMAGE_STACK_ID'];
-  imageHostDomain?: Environment['IMAGE_HOST_DOMAIN'] | Environment['IMAGE_STACK_DOMAIN'];
+  bucket?: Environment['PHOTO_BUCKET'] | Environment['NEXT_PUBLIC_IMAGE_STACK_ID'];
+  imageHostDomain?: Environment['IMAGE_HOST_DOMAIN'] | Environment['NEXT_PUBLIC_IMAGE_STACK_DOMAIN'];
 }): string => {
   const url = `https://${bucket || process.env.PHOTO_BUCKET}.${
     imageHostDomain || process.env.IMAGE_HOST_DOMAIN
@@ -34,8 +34,8 @@ export const constructSrcSet = ({
   aspectRatio,
 }: {
   filename: string;
-  imageStackId: Environment['IMAGE_STACK_ID'];
-  imageStackDomain: Environment['IMAGE_STACK_DOMAIN'];
+  imageStackId: Environment['NEXT_PUBLIC_IMAGE_STACK_ID'];
+  imageStackDomain: Environment['NEXT_PUBLIC_IMAGE_STACK_DOMAIN'];
   aspectRatio: number;
 }): ImageSrcSet => {
   const { sm, md, lg } = getScreenImageDimensions(aspectRatio);
@@ -70,8 +70,8 @@ export const constructStackUrl = ({
 }: {
   dimensions: Dimensions;
   filename: string;
-  imageStackId: Environment['IMAGE_STACK_ID'];
-  imageStackDomain: Environment['IMAGE_STACK_DOMAIN'];
+  imageStackId: Environment['NEXT_PUBLIC_IMAGE_STACK_ID'];
+  imageStackDomain: Environment['NEXT_PUBLIC_IMAGE_STACK_DOMAIN'];
 }): string => {
   return `https://${imageStackId}.${imageStackDomain}/fit-in/${width}x${height}/filters:upscale()/${filename}`;
 };
