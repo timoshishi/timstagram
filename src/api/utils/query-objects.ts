@@ -15,6 +15,7 @@ export const postSelectObj = {
           username: true,
           id: true,
           avatarUrl: true,
+          avatarFilename: true,
         },
       },
     },
@@ -46,6 +47,7 @@ export const postSelectObj = {
         select: {
           username: true,
           id: true,
+          avatarFilename: true,
           avatarUrl: true,
         },
       },
@@ -56,6 +58,7 @@ export const postSelectObj = {
       username: true,
       id: true,
       avatarUrl: true,
+      avatarFilename: true,
       bio: true,
       _count: {
         select: {

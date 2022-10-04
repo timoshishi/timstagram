@@ -5,6 +5,7 @@ export interface Author {
   username: string;
   bio: string;
   avatarUrl: string;
+  avatarFilename: string | null;
   followerCount: number;
   followingCount: number;
 }
@@ -21,6 +22,7 @@ export interface PostResponseLike {
   userId: string;
   username: string;
   avatarUrl: string;
+  avatarFilename: string | null;
 }
 
 export interface PostMedia {
@@ -54,6 +56,7 @@ export interface PostComment {
   userId: string;
   createdAt: string;
   avatarUrl: string;
+  avatarFilename: string | null;
 }
 
 export interface PostResponse {
