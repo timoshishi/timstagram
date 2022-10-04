@@ -48,6 +48,15 @@ Before getting started, make sure you have the following applications and packag
    - Supabase will be running locally with your local Postgres setup
    - A new S3 development bucket will be set up with your github handle as the bucket name.
 
+### Environmental Variables
+
+Adding and removing environmental variables requires updates in the following places besides your local .env file
+
+- The `.env.example` file
+- The `.env.local` file
+- Add the type to the `Env` type in `src/types/environment.d.ts`
+- Add the variable to github secrets for both dependabot and actions secrets
+
 ### Adding wiki diagrams
 
 Diagrams for wikis can be writted using [mermaid](https://mermaid-js.gitub.io/mermaid/)
