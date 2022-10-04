@@ -41,12 +41,12 @@ const Feed: NextPageWithLayout = () => {
   let postResponses: PostResponse[] = data ? [].concat(...data) : [];
 
   // refresh the feed if the user signs out
-  useEffect(() => {
-    mutate([], {
-      revalidate: true,
-    });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [user]);
+  // useEffect(() => {
+  //   mutate([], {
+  //     revalidate: true,
+  //   });
+  //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, [user]);
 
   const isLoadingInitialData = !data && !error;
 
