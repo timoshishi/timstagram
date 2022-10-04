@@ -9,6 +9,7 @@ import { fetcher } from 'src/lib/axios';
 import { ImageSourceSizes, PostResponse } from 'types/post';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
+
 const API = '/feed/popular';
 const PAGE_SIZE = 25;
 

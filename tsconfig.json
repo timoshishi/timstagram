@@ -54,6 +54,7 @@
     "src/mocks/api/handlers.js",
     "prisma/**/*.ts",
     "cypress/plugins/index.ts",
-    "lint-staged.config.js"
+    "lint-staged.config.js",
+    "scripts/**/*.ts"
   ]
 }
