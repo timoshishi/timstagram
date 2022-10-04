@@ -45,6 +45,7 @@ const Feed: NextPageWithLayout = () => {
     mutate([], {
       revalidate: true,
     });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user]);
 
   const isLoadingInitialData = !data && !error;
