@@ -1,6 +1,5 @@
 import { Box, Flex, AvatarBadge, Tooltip } from '@chakra-ui/react';
 import { PostHeaderAvatar } from '@common/components/PostHeaderAvatar';
-import type { ProfileModalProps } from './ProfileModalBase';
 import { EditIcon } from '@chakra-ui/icons';
 
 interface ProfileModalFormProps {
