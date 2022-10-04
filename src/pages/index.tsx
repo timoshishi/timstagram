@@ -9,6 +9,7 @@ import { fetcher } from 'src/lib/axios';
 import { ImageSourceSizes, PostResponse } from 'types/post';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
+import { useEffect } from 'react';
 
 const API = '/feed/popular';
 const PAGE_SIZE = 25;
@@ -38,6 +39,14 @@ const Feed: NextPageWithLayout = () => {
   const { data, error: feedError, mutate, size, setSize, isValidating } = useSWRInfinite(getKey, fetcher);
 
   let postResponses: PostResponse[] = data ? [].concat(...data) : [];
+
+  // refresh the feed if the user signs out
+  // useEffect(() => {
+  //   mutate([], {
+  //     revalidate: true,
+  //   });
+  //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, [user]);
 
   const isLoadingInitialData = !data && !error;
 

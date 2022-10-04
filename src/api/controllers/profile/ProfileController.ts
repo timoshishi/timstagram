@@ -31,12 +31,21 @@ export class ProfileController {
         });
         return;
       }
-      const removedUser = await this.supabaseService.auth.api.deleteUser(req.user.id);
-      await this.prisma.profile.delete({
+      const deletedProfile = await this.prisma.profile.delete({
         where: {
           id: req.user.id,
         },
       });
+
+      if (!deletedProfile) {
+        res.status(400).json({
+          error: 'Could not delete user',
+        });
+        return;
+      }
+
+      const removedUser = await this.supabaseService.auth.api.deleteUser(req.user.id);
+
       return res.status(200).json({
         data: removedUser,
       });
@@ -173,6 +182,11 @@ export class ProfileController {
           avatarFilename: imageProperties.filename,
           avatarBucket: imageProperties.bucket,
           avatarDomain: imageProperties.domain,
+          mediaId: {
+            connect: {
+              id: imageProperties.id,
+            },
+          },
         },
       });
       return res.status(200).json({ url: imageProperties.url });

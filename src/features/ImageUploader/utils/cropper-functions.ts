@@ -50,7 +50,9 @@ export const getImageFromPreview: GetImageFromPreview = async ({
 }) => {
   const image: HTMLImageElement = await createImage(imageSrc);
   const canvas = document.createElement('canvas');
-  const ctx = canvas.getContext('2d');
+  const ctx: CanvasRenderingContext2D | null = canvas.getContext('2d', {
+    willReadFrequently: true,
+  });
 
   if (!ctx) {
     return Promise.reject(null);
@@ -64,7 +66,6 @@ export const getImageFromPreview: GetImageFromPreview = async ({
   // set canvas size to match the bounding box
   canvas.width = bBoxWidth;
   canvas.height = bBoxHeight;
-
   // translate canvas context to a central location to allow rotating and flipping around the center
   ctx.translate(bBoxWidth / 2, bBoxHeight / 2);
   ctx.rotate(rotRad);
@@ -119,7 +120,12 @@ export const getImageFromPreview: GetImageFromPreview = async ({
 export async function getRotatedImage(imageSrc: string, rotation = 0): Promise<string> {
   const image = await createImage(imageSrc);
   const canvas = document.createElement('canvas');
-  const ctx = canvas.getContext('2d');
+  const ctx: CanvasRenderingContext2D | null = canvas.getContext('2d', {
+    willReadFrequently: true,
+  });
+  if (!ctx) {
+    return Promise.reject(null);
+  }
 
   const orientationChanged = rotation === 90 || rotation === -90 || rotation === 270 || rotation === -270;
   if (orientationChanged) {

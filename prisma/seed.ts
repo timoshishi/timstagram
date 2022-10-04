@@ -46,7 +46,6 @@ const deleteOldUsers = async () => {
   try {
     const tableUsers = await supabaseServer.auth.api.listUsers();
     if (tableUsers.data) {
-      const deleteUsers = tableUsers?.data?.map(({ id }) => supabaseServer.auth.api.deleteUser(id));
       await prisma.profile.deleteMany({
         where: {
           id: {
@@ -54,6 +53,9 @@ const deleteOldUsers = async () => {
           },
         },
       });
+
+      const deleteUsers = tableUsers?.data?.map(({ id }) => supabaseServer.auth.api.deleteUser(id));
+
       const deleted = await Promise.all(deleteUsers);
       return deleted;
     }
@@ -63,11 +65,14 @@ const deleteOldUsers = async () => {
 };
 
 const deleteOldData = async () => {
-  await prisma.postLike.deleteMany();
-  await prisma.media.deleteMany();
-  await prisma.postLike.deleteMany();
-  await prisma.post.deleteMany();
-  await prisma.postHash.deleteMany();
+  try {
+    await prisma.media.deleteMany();
+    await prisma.postLike.deleteMany();
+    await prisma.post.deleteMany();
+    await prisma.postHash.deleteMany();
+  } catch (error) {
+    console.error(error);
+  }
 };
 
 const createMockImageProperties = (arr: any, createdUsers: { data: User[] }): ImageProperties[] => {
