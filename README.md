@@ -68,7 +68,25 @@ The CLI can be run with the following command
 
 - Note: this will wipe your local dev db and run a new seed command.
 
-3. Any changes applied to your local Prisma schema will be validated and migrated on a PR.
+3. Any changes applied to your local Prisma schema will be validated on a PR with CI.
+
+4. On successful completion of migrations, the CI will run a `yarn migrate deploy` command to apply the changes to the
+   remote dev db.
+
+#### Generate dev schema drift
+
+- error regarding missing migration in local directory requires to manually delete the recent migration in DB and run
+  migration again. DONT DO THIS
+
+#### Migration errors
+
+1. After applying a migration, if you get an error like this:
+
+```json
+{ "code": "42501", "details": null, "hint": null, "message": "permission denied for schema public" }
+```
+
+Run `yarn run-sql reset-privileges` to reset the database permissions for prisma and try again.
 
 ### Getting latest changes from remote db
 
@@ -154,3 +172,7 @@ We are currently following a truck based model of development.... a. preview dep
 Github Actions for our automated deployments at this time.
 
 1. Tests are run. Failing tests will block a PR from merge.
+
+```
+
+```

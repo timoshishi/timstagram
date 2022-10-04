@@ -1,13 +1,5 @@
-import { Knex, knex } from 'knex';
 import { faker } from '@faker-js/faker';
-
-const config: Knex.Config = {
-  client: 'pg',
-  connection: process.env.DATABASE_URL,
-  searchPath: ['knex', 'public', 'auth'],
-};
-
-const knexInstance = knex(config);
+import { knexInstance } from '../scripts/dbConnection';
 
 export const definedUsers = [
   { id: '0061b8f6-2f6f-4c55-a0f8-10c6962f9ba1', email: 'test1@test.com', username: 'test1', password: 'password' },

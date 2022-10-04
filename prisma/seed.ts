@@ -1,7 +1,7 @@
 import prisma from '../src/lib/prisma';
 import { faker } from '@faker-js/faker';
 import { createClient, User } from '@supabase/supabase-js';
-import knex, { definedUsers } from './createUsers';
+import { definedUsers } from './createUsers';
 import { ImageService } from '../src/api/services/ImageService';
 import { PostService } from '../src/api/services/PostService';
 import { s3Client } from '../src/lib/s3Client';
@@ -10,16 +10,13 @@ import { ImageProperties } from '../src/api/types';
 import { SupaUser } from 'types/index';
 import { Post } from '@prisma/client';
 import { DEFAULT_IMAGE_PLACEHOLDER } from '../src/common/constants';
-import fs from 'fs';
-import path from 'path';
+import { writeRawSQL } from '../scripts/writeRawSql';
+import { knexInstance } from '../scripts/dbConnection';
 
 const imageService = new ImageService(process.env.PHOTO_BUCKET!, s3Client);
 const supabaseServer = createClient(process.env.NEXT_PUBLIC_SUPABASE_URL!, process.env.SERVICE_ROLE_KEY!);
 const postService = new PostService(prisma);
 console.log('CURRENT SUPABASE URL', process.env.NEXT_PUBLIC_SUPABASE_URL);
-
-const queryPath = path.join(__dirname, '..', 'queries');
-const onConfirmUserFunction = fs.readFileSync(path.join(queryPath, 'email-confirm-func.sql'), 'utf8');
 
 /** @describe Create new users in the DB, their profiles should be added automatically */
 const createNewUsers = async () => {
@@ -64,7 +61,9 @@ const deleteOldUsers = async () => {
     console.log(error);
   }
 };
+
 const deleteOldData = async () => {
+  await prisma.postLike.deleteMany();
   await prisma.media.deleteMany();
   await prisma.postLike.deleteMany();
   await prisma.post.deleteMany();
@@ -113,13 +112,45 @@ const createPosts = async (createdUsers: { data: User[] }): Promise<Post[]> => {
   return posts;
 };
 
+const createLikes = async () => {
+  try {
+    // create 200 likes total by random users on random posts
+    const users = await prisma.profile.findMany();
+    const posts = await prisma.post.findMany();
+    const likePromises = Array.from({ length: 200 }).map(() => {
+      const randomPostId = posts[Math.floor(Math.random() * posts.length)].id;
+      const randomUserId = users[Math.floor(Math.random() * users.length)].id;
+      return prisma.postLike.upsert({
+        where: {
+          postId_userId: {
+            postId: randomPostId,
+            userId: randomUserId,
+          },
+        },
+        update: {
+          doesLike: true,
+        },
+        create: {
+          postId: randomPostId,
+          userId: randomUserId,
+          doesLike: true,
+        },
+      });
+    });
+    const likes = await Promise.all(likePromises);
+    return likes;
+  } catch (error) {
+    console.error(error);
+  }
+};
 (async () => {
   try {
     if (process.env.ENVIRONMENT === 'ci') {
       await imageService.duplicateExampleBucket();
     }
     /***  AUTO CREATE PROFILE ON CONFIRM RPC FUNCTION ***/
-    const results = await knex.raw(onConfirmUserFunction);
+    // const results = await knex.raw(onConfirmUserFunction);
+    const results = await writeRawSQL(knexInstance, 'email-confirm-func.sql');
     console.log('onConfirmUserFunction created:', JSON.stringify(results, null, 2));
 
     if (process.env.ENVIRONMENT === 'local' || process.env.ENVIRONMENT === 'test' || process.env.APP_ENV === 'ci') {
@@ -144,6 +175,9 @@ const createPosts = async (createdUsers: { data: User[] }): Promise<Post[]> => {
         console.log('created posts:', posts.length);
         /** END CREATE POSTS */
       }
+      /** CREATE LIKES */
+      // const likes = await createLikes();
+      // console.log('created likes:', likes?.length);
     }
 
     process.exit(0);

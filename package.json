@@ -43,7 +43,8 @@
     "prereport:combined": "yarn combine:reports",
     "report:combined": "npx nyc report --reporter lcov --reporter text --report-dir coverage",
     "prepare": "husky install",
-    "pretty-quick": "npx pretty-quick --check src"
+    "pretty-quick": "npx pretty-quick --check src",
+    "run-sql": "ts-node scripts/runSqlQueries.ts --"
   },
   "dependencies": {
     "@aws-sdk/client-s3": "^3.150.0",
@@ -132,6 +133,7 @@
     "check-code-coverage": "^1.10.2",
     "cypress": "^10.9.0",
     "cypress-file-upload": "^5.0.8",
+    "dotenv": "^16.0.3",
     "eslint": "^8.19.0",
     "eslint-config-next": "12.2.5",
     "eslint-config-prettier": "^8.5.0",
