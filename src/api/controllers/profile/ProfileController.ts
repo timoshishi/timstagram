@@ -85,6 +85,7 @@ export class ProfileController {
       return res.status(500).json({ error: 'Something went wrong' });
     }
   };
+
   /**
    * @description - adds the username to the user's metadata.
    * This is inserted into the profile table when the user is confirmed with a postgres trigger
@@ -159,6 +160,7 @@ export class ProfileController {
         user_metadata: {
           ...user.user_metadata,
           avatarUrl: imageProperties.url,
+          avatarFilename: imageProperties.filename,
         },
       });
 

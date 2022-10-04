@@ -5,6 +5,7 @@ export interface SupaUser extends User {
     username: string;
     avatarUrl: string;
     bio: string;
+    avatarFilename?: string;
   };
 }
 

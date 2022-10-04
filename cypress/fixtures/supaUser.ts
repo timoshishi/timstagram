@@ -15,6 +15,7 @@ export const supaUser = {
     avatarUrl: '',
     username: 'test',
     bio: '',
+    avatarFilename: '',
   },
   identities: [],
   created_at: null,
