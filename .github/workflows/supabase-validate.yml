@@ -1,0 +1,42 @@
+name: Check Supabase Types
+
+on:
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  run_lint:
+    name: Lint Repo
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out Git repository
+        uses: actions/checkout@v3
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 16
+          cache: 'yarn'
+
+      - name: Install Node.js dependencies
+        run: yarn install --frozen-lockfile
+      - uses: supabase/setup-cli@v1
+        with:
+          version: 1.0.0
+
+      - name: Start Supabase local development setup 🦸
+        run: supabase start
+
+      - name: Check Types ⌨️
+        uses: andoshin11/typescript-error-reporter-action@v1.0.2
+
+      - name: Verify generated types are up-to-date ✅
+        run: |
+          supabase gen types typescript --local > types.ts
+          if [ "$(git diff --ignore-space-at-eol types.ts | wc -l)" -gt "0" ]; then
+            echo "Detected uncommitted changes after build. See status below:"
+            git diff
+            exit 1
+          fi
