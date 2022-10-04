@@ -38,10 +38,12 @@
     "node_modules",
     "**/types/*",
     "**/stories/**/*",
-    "scripts/api-example",
+    "scripts",
     "**/*.spec.ts",
     "./cypress.config.ts",
-    "__mocks__"
+    "__mocks__",
+    "cypress",
+    "**/*.test.ts"
   ],
   "include": [
     "next-env.d.ts",

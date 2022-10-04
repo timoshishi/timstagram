@@ -54,6 +54,7 @@ const fullPostReturn: Post = {
       userId: '4d916591-2f88-4a8b-b510-617578a2dc1d',
       username: 'test1',
       avatarUrl: 'https://witter-dev.s3.amazonaws.com/c650d27a-d84c-4497-ac63-3a93757c9ebf.png',
+      avatarFilename: 'c650d27a-d84c-4497-ac63-3a93757c9ebf.png',
     },
   ],
   tags: [],
@@ -64,6 +65,7 @@ const fullPostReturn: Post = {
     avatarUrl: 'https://witter-dev.s3.amazonaws.com/c650d27a-d84c-4497-ac63-3a93757c9ebf.png',
     followerCount: 0,
     followingCount: 0,
+    avatarFilename: 'c650d27a-d84c-4497-ac63-3a93757c9ebf.png',
   },
 };
 const getSinglePostReturn: PostQueryResponse = {
@@ -104,6 +106,7 @@ const getSinglePostReturn: PostQueryResponse = {
         username: 'test1',
         id: '4d916591-2f88-4a8b-b510-617578a2dc1d',
         avatarUrl: 'https://witter-dev.s3.amazonaws.com/c650d27a-d84c-4497-ac63-3a93757c9ebf.png',
+        avatarFilename: 'c650d27a-d84c-4497-ac63-3a93757c9ebf.png',
       },
     },
   ],
