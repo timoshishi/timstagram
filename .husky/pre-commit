@@ -4,5 +4,6 @@
 mv .babelrc .babel__ || true
 npx pretty-quick --staged src
 yarn lint --fix
-# yarn test:ci
-# yarn test:e2e:headless
+tsc --noEmit
+yarn test:ci
+yarn test:e2e:precommit

@@ -1,6 +1,6 @@
 import type { Area as EasyCropArea } from 'react-easy-crop';
 import type { SetStateAction } from 'react';
-import type { EmptyNoReturnFn } from '@common/utils';
+import type { EmptyNoReturnFn } from 'types/index';
 import type { FileError, DropzoneState } from 'react-dropzone';
 import type { Dispatch } from 'react';
 import { ORIENTATION_TO_ANGLE } from '../stores/ImageUploaderContext';

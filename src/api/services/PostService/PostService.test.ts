@@ -13,10 +13,10 @@ const MOCK_NANO = '08461dc7840';
 const fixturesDir = path.join(__dirname, '../../../../__mocks__/fixtures');
 const oneAspect = path.join(fixturesDir, 'aspect-1-1.jpg');
 
+jest.spyOn(console, 'info').mockImplementation(() => {});
 jest.mock('@src/lib/customNano', () => ({
   customNano: () => MOCK_NANO,
 }));
-
 jest.mock('@aws-sdk/s3-request-presigner', () => ({
   getSignedUrl: () => 'https://signed-url.com',
 }));

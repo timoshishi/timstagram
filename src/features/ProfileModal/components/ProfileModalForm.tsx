@@ -19,7 +19,11 @@ export const ProfileModalForm = ({ userMeta, getButtonProps, getDisclosureProps 
         <Flex alignItems='center' justifyContent='center'>
           <BrandLogo />
         </Flex>
-        <EditAvatar username={userMeta.username} getButtonProps={getButtonProps} avatarUrl={userMeta.avatarUrl} />
+        <EditAvatar
+          username={userMeta.username}
+          getButtonProps={getButtonProps}
+          avatarFilename={userMeta.avatarFilename}
+        />
         <EditBio userMeta={userMeta} />
         <DeleteAccount />
       </Flex>
