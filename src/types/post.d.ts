@@ -22,7 +22,7 @@ export interface PostResponseLike {
   userId: string;
   username: string;
   avatarUrl: string;
-  avatarFilename: string | null;
+  avatarFilename: string | null | undefined;
 }
 
 export interface PostMedia {

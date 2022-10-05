@@ -1,4 +1,4 @@
-import { Flex, Box, Text, Icon, chakra, useColorModeValue } from '@chakra-ui/react';
+import { Flex, Icon, chakra } from '@chakra-ui/react';
 import { FaRegCommentAlt, FaShare } from 'react-icons/fa';
 import { FiHeart } from 'react-icons/fi';
 import { usePostCard } from '@features/PostFeed/hooks/usePostCard';
@@ -25,16 +25,14 @@ export const ActionIcons = ({}: ActionIconsProps) => {
           viewType: 'sign_up',
           signUpActionType: 'LIKE',
         });
-        console.log('no user');
       }
     } catch (error) {
-      console.log('FE', error);
+      console.error(error);
     } finally {
       setIsLikeLoading(false);
     }
   };
 
-  const colorMode = useColorModeValue('gray.800', 'white');
   return (
     <Flex direction='column'>
       <Flex columnGap={4}>
@@ -56,13 +54,6 @@ export const ActionIcons = ({}: ActionIconsProps) => {
           />
         </chakra.button>
       </Flex>
-      {optimisticLikesCount ? (
-        <Box color={colorMode} textAlign='end' onClick={() => console.info('open post modal')}>
-          <Text fontSize='md' color='purple.500' data-testid='likes-text'>
-            {`${optimisticLikesCount} like${optimisticLikesCount !== 1 ? 's' : ''}`}
-          </Text>
-        </Box>
-      ) : null}
     </Flex>
   );
 };

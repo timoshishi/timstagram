@@ -54,7 +54,16 @@ Cypress.Commands.addAll({
     cy.contains(/delete account/i).click();
   },
   closeModal() {
-    cy.get('.chakra-modal__close-btn').click();
+    cy.get('.chakra-modal__close-btn').click({
+      force: true,
+    });
+  },
+  closeToasts() {
+    cy.contains('.chakra-alert').invoke('length', (length: number) => {
+      if (length > 0) {
+        cy.get('.chakra-alert__close-button').click({ multiple: true, force: true });
+      }
+    });
   },
 });
 
@@ -88,6 +97,7 @@ declare global {
       closeModal(): Chainable<void>;
       userIsLoggedIn(): Chainable<void>;
       userIsLoggedOut(): Chainable<void>;
+      closeToasts(): Chainable<void>;
     }
   }
 }

@@ -1,28 +1,27 @@
-export const supaUser = {
-  id: '489418a5-c47f-4287-b4b6-d472d1e7c37e',
+import { SupaUser } from 'types/index';
+
+export const supaUser: SupaUser = {
+  id: '26b7b836-3427-4686-95da-cd3ec4b7fbd7',
   aud: 'authenticated',
   role: 'authenticated',
-  email: 'test@test.com',
-  email_confirmed_at: null,
+  email: 'timfrrst@gmail.com',
+  email_confirmed_at: '2021-09-01T20:00:00.000Z',
   phone: '',
-  confirmed_at: null,
-  last_sign_in_at: null,
+  confirmed_at: '2021-09-01T20:00:00.000Z',
+  last_sign_in_at: '2021-09-01T20:00:00.000Z',
   app_metadata: {
     provider: 'email',
     providers: ['email'],
   },
   user_metadata: {
-    avatarUrl: '',
-    username: 'test',
+    avatarFilename: 'e719921c-023f-43e0-b9d2-92dd55af12e2.png',
+    avatarUrl: 'https://witter-dev.s3.amazonaws.com/e719921c-023f-43e0-b9d2-92dd55af12e2.png',
     bio: '',
+    username: 'mrman',
   },
   identities: [],
-  created_at: null,
-  updated_at: null,
-  'supabase-auth-helpers-note':
-    'This user payload is retrieved from the cached JWT and might be stale. If you need up to date user data, please call the `getUser` method in a server-side context!',
-  exp: 1660565622,
-  sub: '489418a5-c47f-4287-b4b6-d472d1e7c37e',
+  created_at: '2021-09-01T20:00:00.000Z',
+  updated_at: '2021-09-01T20:00:00.000Z',
 };
 
 export const supaUserResponse = {

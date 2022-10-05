@@ -28,9 +28,11 @@ describe('feed', () => {
     });
     // scrolling down on the page should load 25 more images after we roll down the page
     cy.scrollTo('bottom');
+    cy.wait(200);
     cy.get('[data-testid="feed-layout-main"] [data-testid="post-image"]').should('have.length.at.least', 50);
     // scroll again
     cy.scrollTo('bottom');
+    cy.wait(200);
     // make sure that all urls are unique
     let srcs = new Set();
     cy.get('[data-testid="feed-layout-main"] [data-testid="post-image"]')
