@@ -4,13 +4,12 @@ import { createRandomUserCreds } from '../utils';
 import { cy, expect } from 'local-cypress';
 
 describe('a user can edit their profile', () => {
-  beforeEach(() => {
+  const { username, email, password } = createRandomUserCreds();
+  it('visits the page and creates a user', () => {
     cy.visit('http://localhost:3000/');
-  });
-
-  it('can update the text of a users profile', () => {
-    const { username, email, password } = createRandomUserCreds();
     cy.createUser({ username, email, password });
+  });
+  it('can update the text of a users profile', () => {
     cy.loginUser({ email, password });
     cy.userIsLoggedIn();
 
@@ -39,11 +38,7 @@ describe('a user can edit their profile', () => {
   });
 
   it('can change a users avatar', () => {
-    const { username, email, password } = createRandomUserCreds();
-    cy.createUser({ username, email, password });
     cy.loginUser({ email, password });
-    cy.userIsLoggedIn();
-
     cy.get('[data-testid="profile-dropdown-button"]').click();
     cy.contains(/update profile/i).click();
 
@@ -82,10 +77,7 @@ describe('a user can edit their profile', () => {
   });
 
   it('can delete a user', () => {
-    const { username, email, password } = createRandomUserCreds();
-    cy.createUser({ username, email, password });
     cy.loginUser({ email, password });
-    cy.wait(1000);
     cy.get('[data-testid="profile-dropdown-button"]').click();
     cy.contains(/update profile/i).click();
     cy.contains(/delete account/i).click();

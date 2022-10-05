@@ -28,7 +28,6 @@ const props: PostCardProps = {
     console.info(size);
   },
   size: 0,
-  refreshIdx: 2,
   currentIdx: 1,
   page: 0,
   user: null,

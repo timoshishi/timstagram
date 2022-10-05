@@ -1,15 +1,16 @@
-import { Box, Flex, Link } from '@chakra-ui/react';
+import { Box, Flex } from '@chakra-ui/react';
 import { usePostCard } from '@features/PostFeed/hooks/usePostCard';
 import { ActionIcons } from './ActionIcons';
 import { Description } from './Description';
 import { Tags } from './Tags';
 import { UserLink } from './UserLink';
+import { PostLikeAvatars } from '../PostLikeAvatars';
 
 interface PostFooterProps {}
 
 export const PostFooter = ({}: PostFooterProps) => {
-  const { post } = usePostCard();
-  const { tags, author, postId, commentCount, likeCount, postBody } = post;
+  const { post, user } = usePostCard();
+  const { tags, author, postId, likeCount, postBody } = post;
 
   return (
     <Box px='6' py={4}>
@@ -21,12 +22,14 @@ export const PostFooter = ({}: PostFooterProps) => {
         <ActionIcons />
       </Flex>
       <Description postBody={postBody} postId={postId} />
-      <Box mt='3'>
-        <Link size={'md'} color='teal.300' fontWeight='semibold'>
-          Click here to see all {post.commentCount} comment
-          {commentCount !== 1 ? 's' : ''} and {likeCount} like
-          {likeCount !== 1 ? 's' : ''}
-        </Link>
+      <Box mt='3' w='100%'>
+        <PostLikeAvatars
+          likes={post.likes}
+          likeCount={likeCount}
+          currentUser={user}
+          currentUserDoesLike={post.hasLiked}
+          postId={postId}
+        />
       </Box>
     </Box>
   );

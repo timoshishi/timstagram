@@ -4,11 +4,11 @@ import { cy } from 'local-cypress';
 
 describe('Logging in and out', () => {
   const { username, password, email } = createRandomUserCreds();
-  beforeEach(() => {
-    cy.visit('http://localhost:3000/');
-  });
+  beforeEach(() => {});
 
   it('creates a user, signs in and out', () => {
+    cy.visit('http://localhost:3000/');
+
     cy.createUser({ username, email, password });
     cy.contains(/welcome/i).should('be.visible');
     cy.wait(1000);
@@ -20,41 +20,46 @@ describe('Logging in and out', () => {
   });
 
   it('should be able to log back in after coming back to the page', () => {
+    cy.visit('http://localhost:3000/');
     cy.loginUser({ email, password });
-    cy.wait(1000);
+    cy.userIsLoggedIn();
     cy.get('[data-testid="user-avatar"]').should('be.visible');
   });
 });
 
 describe('failed logins', () => {
   const { username, email, password } = createRandomUserCreds();
-  beforeEach(() => {
-    cy.visit('http://localhost:3000/');
-  });
+  beforeEach(() => {});
 
   it('creates a new user', () => {
+    cy.visit('http://localhost:3000/');
     cy.createUser({ username, email, password });
     cy.contains(/welcome/i).should('be.visible');
+    cy.userIsLoggedOut();
   });
 
   it('shows a warning if you try to create a user with a username that already exists', () => {
-    cy.createUser({ username, email, password });
+    cy.createUser({ username, email: 'email@ml.com', password: 'notpassword' });
     cy.contains(/Sign up/i).click();
 
     cy.contains(/sorry/i).should('be.visible');
     cy.userIsLoggedOut();
+
+    cy.closeModal();
   });
 
   it('shows an error if you try to log in with the wrong password', () => {
     cy.loginUser({ email, password: 'wrongPass' });
     cy.wait(300);
     cy.contains(/invalid/i).should('be.visible');
+    cy.closeModal();
   });
 
   it('shows an error if you try to log in with an invalid email', () => {
     cy.loginUser({ email: 'testy@snuggleBus.com', password });
     cy.wait(1000);
     cy.contains(/invalid/i).should('be.visible');
+    cy.closeModal();
   });
 
   it('should be able to log back in after failing logins previously', () => {
