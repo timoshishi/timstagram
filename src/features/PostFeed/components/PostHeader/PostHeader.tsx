@@ -12,7 +12,7 @@ export const PostHeader = ({}: PostHeaderProps) => {
   return (
     <Flex py={3} px={5} direction='column'>
       <Flex alignContent='center' justifyContent='space-between'>
-        <PostHeaderAvatar username={author.username} avatarUrl={author.avatarUrl} isFollowing={isFollowing} />
+        <PostHeaderAvatar username={author.username} avatarFilename={author.avatarFilename} isFollowing={isFollowing} />
         <PostDetail repostsCount={0} viewCount={viewCount} />
       </Flex>
       <Text fontSize='sm' color='gray.500' ml={1} mt={2}>

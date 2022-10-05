@@ -1,7 +1,7 @@
 export { isMobileBrowser } from './isMobile';
 import { AVATAR_SIZES } from '@common/constants';
 import { Environment } from 'types/environment';
-import { AvatarImageSizes } from 'types/index';
+import { AvatarSizes } from 'types/index';
 
 export function randomIntInRange(min: number, max: number) {
   return Math.floor(Math.random() * (max - min + 1)) + min;
@@ -16,7 +16,7 @@ export const createAvatarUrl = ({
   imageStackId,
 }: {
   avatarFilename: string;
-  size?: AvatarImageSizes;
+  size?: AvatarSizes;
   imageStackDomain: Environment['NEXT_PUBLIC_IMAGE_STACK_DOMAIN'];
   imageStackId: Environment['NEXT_PUBLIC_IMAGE_STACK_ID'];
 }) => {

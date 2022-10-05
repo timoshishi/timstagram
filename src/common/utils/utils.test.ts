@@ -1,6 +1,6 @@
 import { createAvatarUrl } from '.';
 import { AVATAR_SIZES } from '@src/common/constants';
-import { AvatarImageSizes } from 'types/index';
+import { AvatarSizes } from 'types/index';
 
 describe('createAvatarUrl', () => {
   it('should return a valid avatar url with a medium avatar size if no size is passed in', () => {
@@ -34,7 +34,7 @@ describe('createAvatarUrl', () => {
     Object.entries(AVATAR_SIZES).forEach(([size, sizeInPx]) => {
       const avatarUrl = createAvatarUrl({
         avatarFilename: 'avatar.png',
-        size: size as AvatarImageSizes,
+        size: size as AvatarSizes,
         imageStackDomain: 'imagestack.com',
         imageStackId: 'imagestackid',
       });

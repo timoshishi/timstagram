@@ -5,16 +5,16 @@ import { EditIcon } from '@chakra-ui/icons';
 interface ProfileModalFormProps {
   username: string;
   getButtonProps: () => any;
-  avatarUrl: string;
+  avatarFilename: string | undefined;
 }
-export const EditAvatar = ({ username, getButtonProps, avatarUrl }: ProfileModalFormProps) => {
+export const EditAvatar = ({ username, getButtonProps, avatarFilename }: ProfileModalFormProps) => {
   return (
     <Flex alignItems='center' justifyContent='space-between'>
       <Box flexGrow={1} {...getButtonProps()} data-testid='edit-avatar'>
         <PostHeaderAvatar
           username={username}
-          avatarUrl={avatarUrl}
-          size='sm'
+          size='md'
+          avatarFilename={avatarFilename}
           badge={
             <AvatarBadge bg='papayawhip' color='black' boxSize='1em' borderRadius='0'>
               <Tooltip label='Edit Avatar' fontSize='md'>

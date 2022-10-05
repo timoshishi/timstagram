@@ -11,4 +11,4 @@ export const AVATAR_SIZES = {
   lg: 72,
   xl: 128,
   '2xl': 150,
-};
+} as const;

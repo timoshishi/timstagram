@@ -18,4 +18,4 @@ export type ValidationTuple = [ValidationChain, ...ValidationChain[]];
 
 export type EmptyNoReturnFn = () => void;
 
-export type AvatarImageSizes = '2xs' | 'xs' | 'sm' | 'md' | 'lg' | 'xl' | '2xl';
+export type AvatarSizes = '2xs' | 'xs' | 'sm' | 'md' | 'lg' | 'xl' | '2xl';
