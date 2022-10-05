@@ -1,4 +1,4 @@
-import type { EmptyNoReturnFn } from '@common/utils';
+import type { EmptyNoReturnFn } from 'types/index';
 import type { ModalProps } from '@chakra-ui/react';
 import { MODAL_COMPONENTS } from '../constants';
 import { ModalToasts } from '../hooks/useModalToasts';
