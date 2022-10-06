@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import type { SupabaseClient, Provider } from '@supabase/supabase-js';
-import { SocialAuth, EmailAuth, ForgottenPassword, UpdatePassword, MagicLink } from './views';
+import type { SupabaseClient } from '@supabase/supabase-js';
+import { EmailAuth, ForgottenPassword, UpdatePassword } from './views';
 import { Space } from '@supabase/ui';
 import AuthStyles from './Auth.module.css';
 import { useAuthModal } from '../hooks';
@@ -14,15 +14,9 @@ export interface Props {
   className?: string;
   children?: React.ReactNode;
   style?: React.CSSProperties;
-  socialLayout?: 'horizontal' | 'vertical';
-  socialColors?: boolean;
-  socialButtonSize?: 'tiny' | 'small' | 'medium' | 'large' | 'xlarge';
-  providers?: Provider[];
-  verticalSocialLayout?: any;
   view?: ViewType;
   redirectTo?: RedirectTo;
   onlyThirdPartyProviders?: boolean;
-  magicLink?: boolean;
   signUpActionType?: SignUpActionType | undefined;
 }
 
@@ -30,14 +24,9 @@ function Auth({
   supabaseClient,
   className,
   style,
-  socialLayout = 'vertical',
-  socialColors = false,
-  socialButtonSize = 'medium',
-  providers,
   view = 'sign_in',
   redirectTo,
   onlyThirdPartyProviders = false,
-  magicLink = false,
   signUpActionType,
 }: Props): JSX.Element | null {
   const [authView, setAuthView] = useState(view);
@@ -45,8 +34,6 @@ function Auth({
   const [defaultPassword, setDefaultPassword] = useState('');
   const { hideModal, useModalToast } = useAuthModal();
   const { user } = useUser();
-
-  const verticalSocialLayout = socialLayout === 'vertical' ? true : false;
 
   let containerClasses = [AuthStyles['sbui-auth']];
   if (className) {
@@ -57,17 +44,6 @@ function Auth({
     <div className={containerClasses.join(' ')} style={style}>
       <AuthHeader viewType={authView} signUpActionType={signUpActionType} />
       <Space size={8} direction={'vertical'}>
-        <SocialAuth
-          supabaseClient={supabaseClient}
-          verticalSocialLayout={verticalSocialLayout}
-          providers={providers}
-          socialLayout={socialLayout}
-          socialButtonSize={socialButtonSize}
-          socialColors={socialColors}
-          redirectTo={redirectTo}
-          onlyThirdPartyProviders={onlyThirdPartyProviders}
-          magicLink={magicLink}
-        />
         {!onlyThirdPartyProviders && props.children}
       </Space>
     </div>
@@ -93,7 +69,6 @@ function Auth({
             setDefaultEmail={setDefaultEmail}
             setDefaultPassword={setDefaultPassword}
             redirectTo={redirectTo}
-            magicLink={magicLink}
             user={user}
             hideModal={hideModal}
             useModalToast={useModalToast}
@@ -112,13 +87,6 @@ function Auth({
         </Container>
       );
 
-    case VIEWS.MAGIC_LINK:
-      return (
-        <Container>
-          <MagicLink supabaseClient={supabaseClient} setAuthView={setAuthView} redirectTo={redirectTo} />
-        </Container>
-      );
-
     case VIEWS.UPDATE_PASSWORD:
       return (
         <Container>
@@ -133,6 +101,5 @@ function Auth({
 
 Auth.ForgottenPassword = ForgottenPassword;
 Auth.UpdatePassword = UpdatePassword;
-Auth.MagicLink = MagicLink;
 
 export default Auth;

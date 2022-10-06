@@ -24,7 +24,6 @@ function EmailAuth({
   setDefaultPassword,
   supabaseClient,
   redirectTo,
-  magicLink,
   hideModal,
   useModalToast,
 }: {
@@ -37,7 +36,6 @@ function EmailAuth({
   setDefaultPassword: (password: string) => void;
   supabaseClient: SupabaseClient;
   redirectTo?: RedirectTo;
-  magicLink?: boolean;
   user: User | null;
   hideModal: () => void;
   useModalToast: ModalToasts;
@@ -224,17 +222,6 @@ function EmailAuth({
           </Button>
         </Space>
         <Space direction='vertical' style={{ textAlign: 'center' }}>
-          {authView === VIEWS.SIGN_IN && magicLink && (
-            <Typography.Link
-              href='#auth-magic-link'
-              onClick={(e: React.MouseEvent<HTMLAnchorElement>) => {
-                e.preventDefault();
-                setAuthView(VIEWS.MAGIC_LINK);
-              }}
-            >
-              Sign in with magic link
-            </Typography.Link>
-          )}
           {authView === VIEWS.SIGN_IN ? (
             <Typography.Link
               href='#auth-sign-up'
