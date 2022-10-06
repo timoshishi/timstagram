@@ -31,17 +31,19 @@ describe('createAvatarUrl', () => {
   });
 
   it('should have the sizes in each url for every size of AVATAR_IMAGES', () => {
-    Object.entries(AVATAR_SIZES).forEach(([size, sizeInPx]) => {
-      const avatarUrl = createAvatarUrl({
-        avatarFilename: 'avatar.png',
-        size: size as AvatarSizes,
-        imageStackDomain: 'imagestack.com',
-        imageStackId: 'imagestackid',
-      });
-      expect(isNaN(sizeInPx)).toBe(false);
-      expect(avatarUrl).toEqual(
-        `https://imagestackid.imagestack.com/fit-in/${sizeInPx}x${sizeInPx}/filters:upscale()/avatar.png`
-      );
-    });
+    Object.entries(AVATAR_SIZES).forEach(
+      ([size, sizeInPx]: [string, typeof AVATAR_SIZES[keyof typeof AVATAR_SIZES]]) => {
+        const avatarUrl = createAvatarUrl({
+          avatarFilename: 'avatar.png',
+          size: size as AvatarSizes,
+          imageStackDomain: 'imagestack.com',
+          imageStackId: 'imagestackid',
+        });
+        expect(isNaN(sizeInPx)).toBe(false);
+        expect(avatarUrl).toEqual(
+          `https://imagestackid.imagestack.com/fit-in/${sizeInPx}x${sizeInPx}/filters:upscale()/avatar.png`
+        );
+      }
+    );
   });
 });
