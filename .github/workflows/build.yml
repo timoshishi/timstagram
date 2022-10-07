@@ -51,11 +51,8 @@ jobs:
         run: yarn setup-coverage
 
       - name: Install dependencies 🏗️
-      - run: yarn install --frozen-lockfile
-      - run: npx prisma generate
-      - run: npx prisma validate
-      - run: npx prisma db push
-      - run: yarn build
+        run:
+          yarn install --frozen-lockfile | npx prisma generate | npx prisma validate | npx prisma db push | yarn build
 
       - name: Cypress run 🚀
         uses: cypress-io/github-action@v4
