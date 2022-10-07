@@ -20,7 +20,7 @@ jobs:
           key: ${{ runner.os }}-nextjs-build-${{ hashFiles('**/yarn.lock') }}
           restore-keys: |
             ${{ runner.os }}-nextjs-build-
-        run: yarn install --frozen-lockfile
+      - run: yarn install --frozen-lockfile
       - name: Show Files in Root
         run: ls -la
       # call the create-env yaml action from the .github/workflows folder
