@@ -51,7 +51,6 @@ jobs:
         run: |
           cat .env
 
-      - name: Install dependencies 🏗️
       - run: yarn install --frozen-lockfile
       - run: npx prisma generate
       - run: npx prisma db push
