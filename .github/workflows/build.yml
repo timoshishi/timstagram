@@ -21,6 +21,8 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-nextjs-build-
 
+      - name: Show Files in Root
+        run: ls -la
       # call the create-env yaml action from the .github/workflows folder
       - name: Create .env file 🔑
         uses: SpicyPizza/create-envfile@v1.3
@@ -43,16 +45,22 @@ jobs:
           directory: ./
           file_name: .env
           fail_on_empty: true
-
       - run: |
           cat .env
 
       - name: Setup Coverage 📊
         run: yarn setup-coverage
 
-      - name: Install dependencies 🏗️
-        run:
-          yarn install --frozen-lockfile | npx prisma generate | npx prisma validate | npx prisma db push | yarn build
+      - name: Install dependencies 👷‍♂️
+        run: yarn install --frozen-lockfile
+
+      - name: Handle Prisma Setup 💎
+        run: |
+          npx prisma validate
+          npx prisma db push
+
+      - name: Build 🏗️
+        run: yarn build
 
       - name: Cypress run 🚀
         uses: cypress-io/github-action@v4
@@ -62,7 +70,6 @@ jobs:
           record: true
           start: yarn start
           wait-on: 'http://localhost:3000'
-
         env:
           # pass the Dashboard record key as an environment variable
           CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
