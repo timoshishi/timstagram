@@ -52,15 +52,6 @@ jobs:
       - name: Apply Prisma migrations
         run: npx prisma db push
 
-      - name: Setup Coverage 📊
-        run: yarn setup-coverage
-
-      # Command not aliased because we need plaintext for the record key
-      - name: E2E 🛩
-        run:
-          yarn start-server-and-test 'yarn build-start' http://localhost:3000 'yarn cypress run --record --key ${{
-          secrets.CYPRESS_RECORD_KEY }}'
-      # cache the built value of nextjs using yarn cache
       - name: Cache NextJS build 📦
         uses: actions/cache@v2
         with:
@@ -70,6 +61,16 @@ jobs:
           key: ${{ runner.os }}-nextjs-build-${{ hashFiles('**/yarn.lock') }}
           restore-keys: |
             ${{ runner.os }}-nextjs-build-
+
+      - name: Setup Coverage 📊
+        run: yarn setup-coverage
+
+      # Command not aliased because we need plaintext for the record key
+      - name: E2E 🛩
+        run:
+          yarn start-server-and-test 'yarn build-start' http://localhost:3000 'yarn cypress run --record --key ${{
+          secrets.CYPRESS_RECORD_KEY }}'
+      # cache the built value of nextjs using yarn cache
 
       - name: Integration & Unit 🧪
         run: yarn test:coverage
