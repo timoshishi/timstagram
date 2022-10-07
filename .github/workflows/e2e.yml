@@ -1,16 +1,13 @@
-name: Run Tests
+name: Run E2E Tests on PRs or Manual Trigger
 
 on:
   pull_request:
     branches:
       - master
   workflow_dispatch:
-permissions:
-  contents: read
-  pull-requests: write
 
 jobs:
-  run_ci:
+  e2e:
     runs-on: ubuntu-latest
     environment: test
     steps:
@@ -19,12 +16,14 @@ jobs:
         with:
           node-version: '16'
           cache: 'yarn'
-      - run: yarn install --frozen-lockfile
-
-      - name: Show files 📁
-        run: |
-          ls -la
-
+      - uses: actions/cache@v2
+        with:
+          path: |
+            .next/cache
+            .next/dist
+          key: ${{ runner.os }}-nextjs-build-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-nextjs-build-
       - name: Create .env file 🔑
         uses: SpicyPizza/create-envfile@v1.3
         with:
@@ -47,38 +46,10 @@ jobs:
           file_name: .env
           fail_on_empty: true
 
-      - name: Print .env keys file 📄
-        run: |
-          cat .env
+      - run: yarn install --frozen-lockfile
+      - run: yarn build
 
-      - name: Apply Prisma migrations
-        run: npx prisma db push
-
-      - name: Cache NextJS build 📦
-        uses: actions/cache@v2
-        with:
-          path: |
-            .next/cache
-            .next/dist
-          key: ${{ runner.os }}-nextjs-build-${{ hashFiles('**/yarn.lock') }}
-          restore-keys: |
-            ${{ runner.os }}-nextjs-build-
-
-      - name: Setup Coverage 📊
-        run: yarn setup-coverage
-
-      # Command not aliased because we need plaintext for the record key
       - name: E2E 🛩
         run:
-          yarn start-server-and-test 'yarn start' http://localhost:3000 'yarn cypress run --record --key ${{
+          yarn start-server-and-test 'yarn build-start' http://localhost:3000 'yarn cypress run --record --key ${{
           secrets.CYPRESS_RECORD_KEY }}'
-      # cache the built value of nextjs using yarn cache
-
-      - name: Integration & Unit 🧪
-        run: yarn test:coverage
-
-      - name: Report Test Coverage 📝
-        uses: romeovs/lcov-reporter-action@v0.3.1
-        with:
-          lcov-file: ./coverage/lcov.info
-          github-token: ${{ secrets.GITHUB_TOKEN }}
