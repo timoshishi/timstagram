@@ -49,7 +49,9 @@ jobs:
 
       - run: yarn install --frozen-lockfile
       - run: npx prisma generate
+      - run: npx prisma validate
       - run: npx prisma db push
+      - run: yarn build
 
       - name: Setup Coverage 📊
         run: yarn setup-coverage
@@ -58,7 +60,6 @@ jobs:
         uses: cypress-io/github-action@v4
         with:
           install: false
-          build: yarn build
           config-file: cypress.config.ts
           record: true
           start: yarn start
