@@ -44,11 +44,11 @@ jobs:
 
       - run: yarn install --frozen-lockfile
       - run: npx prisma generate
-      - run: yarn build
 
       - name: Cypress run
         uses: cypress-io/github-action@v4
         with:
+          install: false
           build: yarn build
           config-file: cypress.config.ts
           record: true
