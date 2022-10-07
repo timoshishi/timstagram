@@ -43,9 +43,10 @@ jobs:
           fail_on_empty: true
 
       - run: yarn install --frozen-lockfile
+      - run: npx prisma generate
       - run: yarn build
 
-      - name: E2E 🛩
-        run:
-          yarn start-server-and-test 'yarn build-start' http://localhost:3000 'yarn cypress run --record --key ${{
-          secrets.CYPRESS_RECORD_KEY }}'
+      # - name: E2E 🛩
+      #   run:
+      #     yarn start-server-and-test 'yarn build-start' http://localhost:3000 'yarn cypress run --record --key ${{
+      #     secrets.CYPRESS_RECORD_KEY }}'
