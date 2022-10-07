@@ -19,6 +19,14 @@ jobs:
           cache: 'yarn'
       - run: yarn install --frozen-lockfile
 
+      # - name: Cache Nextjs build
+      #   uses: actions/cache@v2
+      #   with:
+      #     path: .next/cache
+      #     key: ${{ runner.os }}-nextjs-build-${{ hashFiles('yarn.lock') }}
+      #     restore-keys: |
+      #       ${{ runner.os }}-nextjs-build-
+
       - name: Show files 📁
         run: |
           ls -la
@@ -65,7 +73,7 @@ jobs:
         run: yarn test:coverage
 
       - name: Report Test Coverage 📝
-        uses: romeovs/lcov-reporter-action@v0.2.16
+        uses: romeovs/lcov-reporter-action@v0.3.1
         with:
           lcov-file: ./coverage/lcov.info
           github-token: ${{ secrets.GITHUB_TOKEN }}
