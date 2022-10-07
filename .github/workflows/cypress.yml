@@ -46,17 +46,10 @@ jobs:
       - run: npx prisma generate
       - run: yarn build
 
-  cypress-run:
-    name: Cypress run
-    runs-on: ubuntu-20.04
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v2
-
       - name: Cypress run
         uses: cypress-io/github-action@v4
         with:
-          command: test:e2e:precommit
+          build: yarn build
           config-file: cypress.config.ts
           record: true
           start: yarn start
