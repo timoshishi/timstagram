@@ -1,0 +1,72 @@
+name: Run E2E Tests on PRs or Manual Trigger
+
+on: [push]
+
+jobs:
+  e2e:
+    runs-on: ubuntu-latest
+    environment: test
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '16'
+          cache: 'yarn'
+      - uses: actions/cache@v2
+        with:
+          path: |
+            .next/cache
+            .next/dist
+          key: ${{ runner.os }}-nextjs-build-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-nextjs-build-
+      - name: Create .env file 🔑
+        uses: SpicyPizza/create-envfile@v1.3
+        with:
+          envkey_A_ACCESS_KEY_ID: ${{ secrets.A_ACCESS_KEY_ID }}
+          envkey_A_SECRET_KEY: ${{ secrets.A_SECRET_KEY }}
+          envkey_BUCKET_REGION: ${{ secrets.BUCKET_REGION }}
+          envkey_DATABASE_URL: ${{ secrets.DATABASE_URL }}
+          envkey_ENVIRONMENT: ${{ secrets.ENVIRONMENT }}
+          envkey_EXAMPLE_BUCKET: ${{ secrets.EXAMPLE_BUCKET }}
+          envkey_IMAGE_HOST_DOMAIN: ${{ secrets.IMAGE_HOST_DOMAIN }}
+          envkey_NEXT_PUBLIC_API_URL: ${{ secrets.NEXT_PUBLIC_API_URL }}
+          envkey_NEXT_PUBLIC_APP_NAME: ${{ secrets.NEXT_PUBLIC_APP_NAME }}
+          envkey_NEXT_PUBLIC_IMAGE_STACK_DOMAIN: ${{ secrets.NEXT_PUBLIC_IMAGE_STACK_DOMAIN }}
+          envkey_NEXT_PUBLIC_IMAGE_STACK_ID: ${{ secrets.NEXT_PUBLIC_IMAGE_STACK_ID }}
+          envkey_NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.NEXT_PUBLIC_SUPABASE_ANON_KEY }}
+          envkey_NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
+          envkey_SERVICE_ROLE_KEY: ${{ secrets.SERVICE_ROLE_KEY }}
+          envkey_PHOTO_BUCKET: ${{ secrets.PHOTO_BUCKET }}
+          directory: ./
+          file_name: .env
+          fail_on_empty: true
+
+      - run: yarn install --frozen-lockfile
+      - run: npx prisma generate
+      - run: yarn build
+
+  cypress-run:
+    name: Cypress run
+    runs-on: ubuntu-20.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Cypress run
+        uses: cypress-io/github-action@v4
+        with:
+          config-file: cypress.config.ts
+          record: true
+          start: yarn start
+          wait-on: 'http://localhost:3000'
+
+        env:
+          # pass the Dashboard record key as an environment variable
+          CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
+          # pass GitHub token to allow accurately detecting a build vs a re-run build
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      # - name: E2E 🛩
+      #   run:
+      #     yarn start-server-and-test 'yarn build-start' http://localhost:3000 'yarn cypress run --record --key ${{
+      #     secrets.CYPRESS_RECORD_KEY }}'
