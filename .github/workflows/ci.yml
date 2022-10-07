@@ -1,7 +1,7 @@
 name: Run Tests
 
 on:
-  pull_request:
+  push:
   workflow_dispatch:
 permissions:
   contents: read
@@ -12,11 +12,13 @@ jobs:
     runs-on: ubuntu-latest
     environment: test
     steps:
+      - name: Setup 🏗️
       - uses: actions/checkout@v3
       - uses: actions/setup-node@v3
         with:
-          node-version: 16
-          cache: 'npm'
+          node-version: '16'
+          cache: 'yarn'
+      - run: yarn install --frozen-lockfile
 
       - name: Show files 📁
         run: |
@@ -44,13 +46,9 @@ jobs:
           file_name: .env
           fail_on_empty: true
 
-      - name: Print .env file 📄
+      - name: Print .env keys file 📄
         run: |
           cat .env
-
-      - name: Install dependencies 🏗️
-        id: yarn-install
-        run: yarn install --frozen-lockfile
 
       - name: Apply Prisma migrations
         run: npx prisma db push
