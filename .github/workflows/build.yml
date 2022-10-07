@@ -8,6 +8,7 @@ jobs:
     environment: test
     steps:
       - uses: actions/checkout@v3
+      - uses: ./.github/actions/create-env
 
       - uses: actions/setup-node@v3
         with:
@@ -22,8 +23,6 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-nextjs-build-
       # call the create-env yaml action from the .github/workflows folder
-      - uses: ./.github/workflows/create-env
-
       - run: yarn install --frozen-lockfile
       - run: npx prisma generate
       - run: yarn build
