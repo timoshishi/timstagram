@@ -54,6 +54,22 @@ jobs:
 
       - name: Setup Coverage 📊
         run: yarn setup-coverage
+
+      - name: Cypress run
+        uses: cypress-io/github-action@v4
+        with:
+          install: false
+          build: yarn build
+          config-file: cypress.config.ts
+          record: true
+          start: yarn start
+          wait-on: 'http://localhost:3000'
+
+        env:
+          # pass the Dashboard record key as an environment variable
+          CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
+          # pass GitHub token to allow accurately detecting a build vs a re-run build
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       # - name: E2E 🛩
       #   run:
       #     yarn start-server-and-test 'yarn build-start' http://localhost:3000 'yarn cypress run --record --key ${{
