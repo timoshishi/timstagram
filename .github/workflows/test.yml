@@ -1,8 +1,9 @@
-name: Run Build
+name: Run Tests on PR
 
 on: [pull_request]
+
 jobs:
-  e2e:
+  run_tests:
     runs-on: ubuntu-latest
     environment: test
     steps:
