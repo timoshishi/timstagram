@@ -3,11 +3,12 @@ name: Run Build
 on: [push]
 
 jobs:
-  e2e:
+  build:
     runs-on: ubuntu-latest
     environment: test
     steps:
       - uses: actions/checkout@v3
+
       - uses: actions/setup-node@v3
         with:
           node-version: '16'
@@ -20,10 +21,8 @@ jobs:
           key: ${{ runner.os }}-nextjs-build-${{ hashFiles('**/yarn.lock') }}
           restore-keys: |
             ${{ runner.os }}-nextjs-build-
-
       # call the create-env yaml action from the .github/workflows folder
-      - name: Create .env file 🔑
-        uses: ./.github/workflows/create-env
+      - uses: ./.github/workflows/create-env
 
       - run: yarn install --frozen-lockfile
       - run: npx prisma generate
