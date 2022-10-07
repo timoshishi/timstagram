@@ -1,4 +1,4 @@
-name: Run E2E Tests on PRs or Manual Trigger
+name: Run Build
 
 on: [push]
 
