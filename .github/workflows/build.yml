@@ -50,7 +50,6 @@ jobs:
       - run: yarn install --frozen-lockfile
       - run: npx prisma generate
       - run: npx prisma db push
-      - run: yarn build
 
       - name: Setup Coverage 📊
         run: yarn setup-coverage
@@ -70,6 +69,15 @@ jobs:
           CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
           # pass GitHub token to allow accurately detecting a build vs a re-run build
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Integration & Unit 🧪
+        run: yarn test:coverage
+
+      - name: Report Test Coverage 📝
+        uses: romeovs/lcov-reporter-action@v0.2.16
+        with:
+          lcov-file: ./coverage/lcov.info
+          github-token: ${{ secrets.GITHUB_TOKEN }}
       # - name: E2E 🛩
       #   run:
       #     yarn start-server-and-test 'yarn build-start' http://localhost:3000 'yarn cypress run --record --key ${{
