@@ -1,0 +1,60 @@
+### create a reusable workflow out of this snippet that inherits the environment from the parent workflow
+# - name: Create .env file 🔑
+#   uses: SpicyPizza/create-envfile@v1.3
+#   with:
+#     envkey_A_ACCESS_KEY_ID: ${{ secrets.A_ACCESS_KEY_ID }}
+#     envkey_A_SECRET_KEY: ${{ secrets.A_SECRET_KEY }}
+#     envkey_BUCKET_REGION: ${{ secrets.BUCKET_REGION }}
+#     envkey_DATABASE_URL: ${{ secrets.DATABASE_URL }}
+#     envkey_ENVIRONMENT: ${{ secrets.ENVIRONMENT }}
+#     envkey_EXAMPLE_BUCKET: ${{ secrets.EXAMPLE_BUCKET }}
+#     envkey_IMAGE_HOST_DOMAIN: ${{ secrets.IMAGE_HOST_DOMAIN }}
+#     envkey_NEXT_PUBLIC_API_URL: ${{ secrets.NEXT_PUBLIC_API_URL }}
+#     envkey_NEXT_PUBLIC_APP_NAME: ${{ secrets.NEXT_PUBLIC_APP_NAME }}
+#     envkey_NEXT_PUBLIC_IMAGE_STACK_DOMAIN: ${{ secrets.NEXT_PUBLIC_IMAGE_STACK_DOMAIN }}
+#     envkey_NEXT_PUBLIC_IMAGE_STACK_ID: ${{ secrets.NEXT_PUBLIC_IMAGE_STACK_ID }}
+#     envkey_NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.NEXT_PUBLIC_SUPABASE_ANON_KEY }}
+#     envkey_NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
+#     envkey_SERVICE_ROLE_KEY: ${{ secrets.SERVICE_ROLE_KEY }}
+#     envkey_PHOTO_BUCKET: ${{ secrets.PHOTO_BUCKET }}
+#     directory: ./
+#     file_name: .env
+#     fail_on_empty: true
+
+name: Create .env file 🔑
+
+on: workflow_call
+
+permissions:
+  contents: read
+  pull-requests: write
+
+jobs:
+  create_env:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v3
+        with:
+          ref: ${{ github.event.workflow_call.head_sha }}
+      - name: Create .env file 🔑
+        uses: SpicyPizza/create-envfile@v1.3
+        with:
+          envkey_A_ACCESS_KEY_ID: ${{ github.event.inputs.envkey_A_ACCESS_KEY_ID }}
+          envkey_A_SECRET_KEY: ${{ github.event.inputs.envkey_A_SECRET_KEY }}
+          envkey_BUCKET_REGION: ${{ github.event.inputs.envkey_BUCKET_REGION }}
+          envkey_DATABASE_URL: ${{ github.event.inputs.envkey_DATABASE_URL }}
+          envkey_ENVIRONMENT: ${{ github.event.inputs.envkey_ENVIRONMENT }}
+          envkey_EXAMPLE_BUCKET: ${{ github.event.inputs.envkey_EXAMPLE_BUCKET }}
+          envkey_IMAGE_HOST_DOMAIN: ${{ github.event.inputs.envkey_IMAGE_HOST_DOMAIN }}
+          envkey_NEXT_PUBLIC_API_URL: ${{ github.event.inputs.envkey_NEXT_PUBLIC_API_URL }}
+          envkey_NEXT_PUBLIC_APP_NAME: ${{ github.event.inputs.envkey_NEXT_PUBLIC_APP_NAME }}
+          envkey_NEXT_PUBLIC_IMAGE_STACK_DOMAIN: ${{ github.event.inputs.envkey_NEXT_PUBLIC_IMAGE_STACK_DOMAIN }}
+          envkey_NEXT_PUBLIC_IMAGE_STACK_ID: ${{ github.event.inputs.envkey_NEXT_PUBLIC_IMAGE_STACK_ID }}
+          envkey_NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ github.event.inputs.envkey_NEXT_PUBLIC_SUPABASE_ANON_KEY }}
+          envkey_NEXT_PUBLIC_SUPABASE_URL: ${{ github.event.inputs.envkey_NEXT_PUBLIC_SUPABASE_URL }}
+          envkey_SERVICE_ROLE_KEY: ${{ github.event.inputs.envkey_SERVICE_ROLE_KEY }}
+          envkey_PHOTO_BUCKET: ${{ github.event.inputs.envkey_PHOTO_BUCKET }}
+          directory: ./
+          file_name: .env
+          fail_on_empty: true

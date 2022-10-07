@@ -8,7 +8,7 @@ jobs:
     environment: test
     steps:
       - uses: actions/checkout@v3
-      - uses: ./.github/actions/create-env
+      - uses: ./.github/workflows/create-env
 
       - uses: actions/setup-node@v3
         with:
