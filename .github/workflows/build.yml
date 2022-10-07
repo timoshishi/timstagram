@@ -1,6 +1,6 @@
 name: Run Build
 
-on: [pull_request]
+on: [push]
 
 jobs:
   e2e:
