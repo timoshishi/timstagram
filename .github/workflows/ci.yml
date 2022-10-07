@@ -2,7 +2,10 @@ name: Run Tests
 
 on:
   pull_request:
+    branches:
+      - chicken
   workflow_dispatch:
+
 permissions:
   contents: read
   pull-requests: write
