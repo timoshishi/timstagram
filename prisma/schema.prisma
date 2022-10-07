@@ -9,14 +9,6 @@ generator client {
   previewFeatures = ["referentialIntegrity", "orderByNulls"]
 }
 
-generator erd {
-  provider = "prisma-erd-generator"
-}
-
-generator dbml {
-  provider = "prisma-dbml-generator"
-}
-
 // profile created with postgres function after user creation
 // username inserted in signup modal
 model Profile {

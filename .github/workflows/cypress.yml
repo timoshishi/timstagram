@@ -1,30 +1,25 @@
-name: Run Tests
+name: Run E2E Tests on PRs or Manual Trigger
 
-on:
-  pull_request:
-    branches:
-      - chicken
-  workflow_dispatch:
-
-permissions:
-  contents: read
-  pull-requests: write
+on: [workflow_dispatch]
 
 jobs:
-  run_ci:
+  e2e:
     runs-on: ubuntu-latest
     environment: test
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-node@v3
         with:
-          node-version: 16
-          cache: 'npm'
-
-      - name: Show files 📁
-        run: |
-          ls -la
-
+          node-version: '16'
+          cache: 'yarn'
+      - uses: actions/cache@v2
+        with:
+          path: |
+            .next/cache
+            .next/dist
+          key: ${{ runner.os }}-nextjs-build-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-nextjs-build-
       - name: Create .env file 🔑
         uses: SpicyPizza/create-envfile@v1.3
         with:
@@ -47,31 +42,25 @@ jobs:
           file_name: .env
           fail_on_empty: true
 
-      - name: Print .env file 📄
-        run: |
-          cat .env
+      - run: yarn install --frozen-lockfile
+      - run: npx prisma generate
 
-      - name: Install dependencies 🏗️
-        id: yarn-install
-        run: yarn install --frozen-lockfile
-
-      - name: Apply Prisma migrations
-        run: npx prisma db push
-
-      - name: Setup Coverage 📊
-        run: yarn setup-coverage
-
-      # Command not aliased because we need plaintext for the record key
-      - name: E2E 🛩
-        run:
-          yarn start-server-and-test 'yarn build-start' http://localhost:3000 'yarn cypress run --record --key ${{
-          secrets.CYPRESS_RECORD_KEY }}'
-
-      - name: Integration & Unit 🧪
-        run: yarn test:coverage
-
-      - name: Report Test Coverage 📝
-        uses: romeovs/lcov-reporter-action@v0.2.16
+      - name: Cypress run
+        uses: cypress-io/github-action@v4
         with:
-          lcov-file: ./coverage/lcov.info
-          github-token: ${{ secrets.GITHUB_TOKEN }}
+          install: false
+          build: yarn build
+          config-file: cypress.config.ts
+          record: true
+          start: yarn start
+          wait-on: 'http://localhost:3000'
+
+        env:
+          # pass the Dashboard record key as an environment variable
+          CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
+          # pass GitHub token to allow accurately detecting a build vs a re-run build
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      # - name: E2E 🛩
+      #   run:
+      #     yarn start-server-and-test 'yarn build-start' http://localhost:3000 'yarn cypress run --record --key ${{
+      #     secrets.CYPRESS_RECORD_KEY }}'
