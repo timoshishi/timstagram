@@ -1,6 +1,6 @@
 name: Lint
 
-on: [pull_request]
+on: [push]
 
 jobs:
   run_lint:
@@ -9,17 +9,12 @@ jobs:
     environment: test
 
     steps:
-      - name: Check out Git repository
-        uses: actions/checkout@v3
-
-      - name: Set up Node.js
-        uses: actions/setup-node@v3
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
         with:
-          node-version: 16
-          cache: 'npm'
-
-      - name: Install Node.js dependencies
-        run: yarn install --frozen-lockfile
+          node-version: '16'
+          cache: 'yarn'
+      - run: yarn install --frozen-lockfile # optional, --immutable
 
       - name: Create .env file 🔑
         uses: SpicyPizza/create-envfile@v1.3
