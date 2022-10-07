@@ -19,14 +19,6 @@ jobs:
           cache: 'yarn'
       - run: yarn install --frozen-lockfile
 
-      # - name: Cache Nextjs build
-      #   uses: actions/cache@v2
-      #   with:
-      #     path: .next/cache
-      #     key: ${{ runner.os }}-nextjs-build-${{ hashFiles('yarn.lock') }}
-      #     restore-keys: |
-      #       ${{ runner.os }}-nextjs-build-
-
       - name: Show files 📁
         run: |
           ls -la
@@ -68,6 +60,16 @@ jobs:
         run:
           yarn start-server-and-test 'yarn build-start' http://localhost:3000 'yarn cypress run --record --key ${{
           secrets.CYPRESS_RECORD_KEY }}'
+      # cache the built value of nextjs using yarn cache
+      - name: Cache NextJS build 📦
+        uses: actions/cache@v2
+        with:
+          path: |
+            .next/cache
+            .next/dist
+          key: ${{ runner.os }}-nextjs-build-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-nextjs-build-
 
       - name: Integration & Unit 🧪
         run: yarn test:coverage
