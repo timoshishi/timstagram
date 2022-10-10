@@ -48,7 +48,7 @@
     "run-sql": "ts-node scripts/runSqlQueries.ts --"
   },
   "dependencies": {
-    "@aws-sdk/client-s3": "^3.150.0",
+    "@aws-sdk/client-s3": "^3.186.0",
     "@aws-sdk/s3-request-presigner": "^3.150.0",
     "@chakra-ui/icons": "^2.0.2",
     "@chakra-ui/react": "^2.2.1",
