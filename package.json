@@ -129,7 +129,7 @@
     "@typescript-eslint/parser": "^5.38.1",
     "babel-loader": "^8.2.5",
     "babel-plugin-istanbul": "^6.1.1",
-    "check-code-coverage": "^1.10.2",
+    "check-code-coverage": "^1.10.4",
     "cypress": "^10.9.0",
     "cypress-file-upload": "^5.0.8",
     "dotenv": "^16.0.3",
