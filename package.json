@@ -55,7 +55,7 @@
     "@emotion/react": "^11",
     "@emotion/styled": "^11",
     "@mermaid-js/mermaid-cli": "^9.1.7",
-    "@next-auth/prisma-adapter": "1.0.4",
+    "@next-auth/prisma-adapter": "1.0.5",
     "@prisma/client": "^4",
     "@supabase/auth-helpers-nextjs": "^0.2.7",
     "@supabase/auth-helpers-react": "^0.2.4",
