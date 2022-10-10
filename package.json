@@ -54,7 +54,7 @@
     "@chakra-ui/react": "^2.2.1",
     "@emotion/react": "^11",
     "@emotion/styled": "^11",
-    "@mermaid-js/mermaid-cli": "^9.1.4",
+    "@mermaid-js/mermaid-cli": "^9.1.7",
     "@next-auth/prisma-adapter": "1.0.4",
     "@prisma/client": "^4",
     "@supabase/auth-helpers-nextjs": "^0.2.7",
