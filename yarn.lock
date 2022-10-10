@@ -15553,10 +15553,10 @@ react-dropzone@^14.2.2:
     file-selector "^0.6.0"
     prop-types "^15.8.1"
 
-react-easy-crop@^4.4.1:
-  version "4.5.0"
-  resolved "https://registry.npmjs.org/react-easy-crop/-/react-easy-crop-4.5.0.tgz"
-  integrity sha512-zmN0huzZXOcaNyGyDwChbyhn6MlQFHzWQE6KRW+4SckY3hqkjnHuCUtqjCajO+8m1+lEDO7Cao3TKbJPNaQdcg==
+react-easy-crop@^4.5.1:
+  version "4.5.1"
+  resolved "https://registry.yarnpkg.com/react-easy-crop/-/react-easy-crop-4.5.1.tgz#8c3f0fad048eae0d3003725b5a71dc1085fb10ca"
+  integrity sha512-MVzCWmKXTwZTK0iYqlF/gPLdLqvUGrLGX7SQ4g+DO3b/lCiVAwxZKLeZ1wjDfG+r/yEWUoL7At5a0kkDJeU+rQ==
   dependencies:
     normalize-wheel "^1.0.1"
     tslib "2.0.1"
