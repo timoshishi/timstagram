@@ -1,10 +1,10 @@
-# Witter App
+# <sup>TiM</sup>stagram
 
-![CI](https://github.com/lowboy-tropical/witter/actions/workflows/ci.yml/badge.svg)
+![CI](https://github.com/timoshishi/witter/actions/workflows/ci.yml/badge.svg)
 
-## Full stack boilerplate for a social media application
+## Some kind of application
 
-## Setting up your Local dev environment
+## Setting up your local dev environment
 
 Before getting started, make sure you have the following applications and packages installed on your machine
 
@@ -104,13 +104,6 @@ Run `yarn run-sql reset-privileges` to reset the database permissions for prisma
 
 ## Testing
 
-### Coverage
-
-- Currently local only
-  - `yarn test:coverage`
-- If you abort the test early, it will leave a .babelrc in the root directory. You will need to rename this back to
-  `.babel__rc` this file before pushing or running the test again.
-
 ### Unit tests
 
 - Co-located with the files that they are testing
@@ -181,7 +174,3 @@ We are currently following a truck based model of development.... a. preview dep
 Github Actions for our automated deployments at this time.
 
 1. Tests are run. Failing tests will block a PR from merge.
-
-```
-
-```
