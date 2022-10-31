@@ -42,7 +42,9 @@ describe('post-card', () => {
     cy.get('@likeButton').click();
     cy.get('@likeButton').should('be.disabled').and('have.descendants', 'svg');
     cy.get('@likeButton').should('not.be.disabled').and('have.descendants', 'svg');
+
     /* TODO: update these tests to work with new optimistic UI
+    
       cy.get('@firstPostCard')
         .find('[data-testid="likes-text"]')
         .as('likeCount1')
