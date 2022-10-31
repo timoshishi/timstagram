@@ -1,6 +1,6 @@
 # <sup>TiM</sup>stagram
 
-![CI](https://github.com/timoshishi/witter/actions/workflows/ci.yml/badge.svg)
+![CI](https://github.com/timoshishi/timstagram/actions/workflows/run-tests.yml/badge.svg)
 
 ## Some kind of application
 
