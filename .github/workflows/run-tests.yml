@@ -92,7 +92,3 @@ jobs:
         with:
           lcov-file: ./coverage/lcov.info
           github-token: ${{ secrets.GITHUB_TOKEN }}
-      # - name: E2E 🛩
-      #   run:
-      #     yarn start-server-and-test 'yarn build-start' http://localhost:3000 'yarn cypress run --record --key ${{
-      #     secrets.CYPRESS_RECORD_KEY }}'

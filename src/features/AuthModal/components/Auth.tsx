@@ -86,14 +86,12 @@ function Auth({
           />
         </Container>
       );
-
     case VIEWS.UPDATE_PASSWORD:
       return (
         <Container>
           <UpdatePassword supabaseClient={supabaseClient} />
         </Container>
       );
-
     default:
       return null;
   }
